@@ -1,4 +1,4 @@
-//import {OPENAI_API_KEY} from '@env';
+import { Audio } from "expo-av";
 import axios from 'axios';
 const apiKey = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
 
@@ -8,13 +8,33 @@ const client = axios.create({
         "Content-Type": "application/json"
     }
 })
+const whispcli = axios.create({
+    headers: {
+        "Authorization": "Bearer "+ apiKey,
+        "Content-Type": "multipart/form-data"
+    }
+})
 
+const whisperUrl='https://api.openai.com/v1/audio/transcriptions';
 const chatgptUrl = 'https://api.openai.com/v1/chat/completions';
 const dalleUrl = 'https://api.openai.com/v1/images/generations';
 
+
+export const whisperCall = async (formData) =>{
+    
+    try {
+        const res = await whispcli.post(whisperUrl,formData);
+        console.log(res.data?.text)
+        return res.data?.text
+    } catch (err) {
+        console.log(err)
+    }
+
+}
+
 export const apiCall = async (prompt)=>{
     
-    // // Logic 1 : this will check the prompt from chatgpt if user wants to create an image
+    ////  Logica 1 : analizar el texto devuelto, determinar que funcion debe ejecutarse segun lo que el usuario pida.
     
 try{
     console.log(prompt)
