@@ -4,10 +4,10 @@
     "slug": "AdamV2",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/iconAdam.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/Adam-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/adaptive-iconAdam.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.maxan.AdamV2"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b85e95ba-f8ae-437a-8e57-5b002e6630e8"
+      }
     }
   }
 }
