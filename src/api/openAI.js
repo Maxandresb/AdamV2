@@ -79,7 +79,7 @@ const chatgptApiCall = async (prompt)=>{
             messages:[{
                 role: "system",
                 content:
-                  "Eres un asistente virtual llamado adam, pensado para adultos mayores, responde preguntas medicas pero recordando que no eres un experto y recomiendas ver un profesional para tener mayor claridad",
+                  "Eres un asistente virtual llamado adam, pensado para adultos mayores, responde preguntas medicas pero recordando que no eres un experto y recomiendas ver un profesional para tener mayor claridad, responde en menos de 100 palabras",
               },
               { role: "user", content: `${prompt}` },],
               max_tokens:200,

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
+import * as Speech from 'expo-speech';
 // Creaciones propias
 import { apiCall , whisperCall} from "../api/openAI";
 import * as FileSystem from 'expo-file-system';
@@ -13,10 +14,15 @@ export default function PrincipalScreen() {
   const [mensajes, setMensajes]= useState([])
   const [cargando, setCargando] =useState(false)
   const [hablando, setHablando] =useState(false)
+  const [respondiendo, setRespondiendo]= useState(false)
   //useEffect(()=> dummyMessages.map((mensaje)=>setMensajes((mensajesPrevios)=>GiftedChat.append(mensajesPrevios,mensaje))))
  {/* inicio funciones de grabacion de voz de usuario  */ }
  const [grabacion, setGrabacion]= useState();
  const [grabaciones, setGrabaciones]= useState([]);
+
+
+ 
+
  async function iniciarGrabacion(){
    try {
      const permisos= await Audio.requestPermissionsAsync();
@@ -37,7 +43,7 @@ export default function PrincipalScreen() {
   // Copy the recording file to a temporary directory
   const tempDirectory = FileSystem.cacheDirectory + 'recordings/';
   await FileSystem.makeDirectoryAsync(tempDirectory, { intermediates: true });
-  const tempRecordingUri = tempDirectory + fileName;
+  let tempRecordingUri = tempDirectory + fileName;
   await FileSystem.copyAsync({
     from: uri,
     to: tempRecordingUri,
@@ -61,6 +67,7 @@ export default function PrincipalScreen() {
              _id: 1,
             
            }}];
+           console.log(res)
       console.log(newMensajes)
       obtenerRespuesta(newMensajes)
     });
@@ -108,6 +115,7 @@ export default function PrincipalScreen() {
           console.log(res.data);
           setMensajes((mensajesPrevios)=>GiftedChat.append(mensajesPrevios,res.data))
           setinputUsuario('');
+          respuestaVoz(res.data.text)
         }else{
           Alert.alert("Ha ocurrido un error : ", res.msg);
         }
@@ -116,7 +124,27 @@ export default function PrincipalScreen() {
   }; 
 
 
+  {/* Inicio Voz de respuesta de ADAM */}
 
+  {/* voces hombres
+  voice:"es-es-x-eed-local" 
+  voice:"es-us-x-esf-local" 
+  voice:"es-es-x-eed-network" 
+  voice:"es-us-x-esd-network"
+*/}
+
+  const respuestaVoz= (texto)=>{
+    //const saludo ='test de saludo';
+    const options={
+      voice:"es-us-x-esd-network"  ,
+      rate:0.9,
+      pitch: 0.85
+       
+    };
+    Speech.speak(texto,options)
+  };
+
+  {/* Fin Voz de respuesta de ADAM */}
 
 
 
@@ -185,16 +213,16 @@ export default function PrincipalScreen() {
                 </TouchableOpacity>
               )
           }
-          {/* {
-            mensajes.length>0 && (
+          {
+            mensajes.length>=0 && (
               <TouchableOpacity 
-               // onPress={clear} 
+                onPress={respuestaVoz} 
                 className="bg-neutral-400 rounded-3xl p-2 absolute right-10"
               >
                 <Text className="text-white font-semibold">Clear</Text>
               </TouchableOpacity>
             )
-          } */}
+          } 
           {/* {
             speaking && (
               <TouchableOpacity 
