@@ -14,11 +14,9 @@ const whispcli = axios.create({
         "Content-Type": "multipart/form-data"
     }
 })
-
 const whisperUrl='https://api.openai.com/v1/audio/transcriptions';
 const chatgptUrl = 'https://api.openai.com/v1/chat/completions';
 const dalleUrl = 'https://api.openai.com/v1/images/generations';
-
 
 export const whisperCall = async (formData) =>{
     
@@ -26,97 +24,194 @@ export const whisperCall = async (formData) =>{
         const res = await whispcli.post(whisperUrl,formData);
         console.log(res.data?.text)
         return res.data?.text
-    } catch (err) {
-        console.log(err)
-    }
-
-}
-
-export const apiCall = async (prompt)=>{
-    
-    ////  Logica 1 : analizar el texto devuelto, determinar que funcion debe ejecutarse segun lo que el usuario pida.
-    
-try{
-    console.log(prompt)
-    console.log('****obteniendo respuesta******')
-    const res = await client.post(chatgptUrl, {
-        model: "gpt-3.5-turbo",
-        messages: [{
-            role: 'system',
-            content: ` Eres un asistente que analiza el siguente prompt y define que funcion corresponde  usarse , solo responde el numero, nada mas, una respuesta de 1 caracter: 
-             1.Respuesta general , 2. crear imagen, 3.ver clima.
-            El promt es el siguiente
-             ${prompt}  .`
-        }],
-       
-    });
-    console.log('********funcion a usar**********')
-    console.log(res.data?.choices[0]?.message?.content)
-    funcionUsar = res.data?.choices[0]?.message?.content;
-    funcionUsar = funcionUsar.trim();
-    if(funcionUsar.toLowerCase().includes('1')){
-        console.log('chatgpt api call');
-        //return dalleApiCall(prompt)
-        return chatgptApiCall(prompt);
-    }else if(funcionUsar.toLowerCase().includes('2')){
-        console.log('dalle api call')
-        return chatgptApiCall(prompt);
-         //return dalleApiCall(prompt)
-    }
-
     }catch(err){
         console.log('error: ',err);
-        return Promise.resolve({success: false, msg: err.message});
+        if(err && err.msg){
+            return Promise.resolve({success: false, msg: err.msg});
+        } else if (err && err.message) {
+            return Promise.resolve({success: false, msg: err.message});
+        } else {
+            return Promise.resolve({success: false, msg: "An unknown error occurred"});
+        }
     }
-
-    
 }
 
-const chatgptApiCall = async (prompt)=>{
-    try{
-        const res = await client.post(chatgptUrl, {
-            model: "gpt-3.5-turbo",
-            messages:[{
-                role: "system",
-                content:
-                  "Eres un asistente virtual llamado adam, pensado para adultos mayores, responde preguntas medicas pero recordando que no eres un experto y recomiendas ver un profesional para tener mayor claridad",
-              },
-              { role: "user", content: `${prompt}` },],
-              max_tokens:200,
-        })
+let message;
+let function_name;
+let args;
+let function_response;
+let promises = [];
 
-        let answer = res.data?.choices[0]?.message?.content;
-        const respuesta={_id: new Date().getTime() + 1,
+
+const functions = [
+    {
+        "name": "hola",
+        "description": "Responder un saludo, debes saludar cordialmente en lenguaje natural con una formalidad intermedia cuando te digan 'hola' o un '¿como estas?' o '¿que tal hoy?'. ten en cuenta que eres un asistente virtual llamada SARA.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "saludo": {
+                    "type": "string",
+                    "description": "El saludo recibido, puede ser 'hola', '¿como estas?' o '¿que tal hoy?'",
+                },
+            },
+            "required": ["saludo"],
+        }
+    },
+    {
+        "name": "explicar_algo",
+        "description": "Explica un tema solicitado de manera comprensible.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "tema": {
+                    "type": "string",
+                    "description": "El tema sobre el que se solicita la explicación. Si no se proporciona, se solicitará al usuario.",
+                },
+                "nivel": {
+                    "type": "string",
+                    "description": "El nivel de profundidad deseado para la explicación, puede ser 'básico', 'intermedio' o 'avanzado'.",
+                },
+                "ejemplos": {
+                    "type": "boolean",
+                    "description": "Indica si se deben incluir ejemplos en la explicación.",
+                }
+            },
+            "required": ["tema"]
+        }
+    },
+    {
+        "name": "responder",
+        "description": "responde cordial y brevemente lo solicitado",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "contenido": {
+                    "type": "string",
+                    "description": "contenido o tema que compone la conversacion",
+                },
+            }
+        }
+    },
+    {
+        "name": "ubicacion",
+        "description": "obtener la ubicacion del usuario",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "latitud": {
+                    "type": "string",
+                    "description": "es la distancia angular de un punto de la Tierra al ecuador, medida en grados.",
+                },
+                "longitud": {
+                    "type": "string",
+                    "description": "es la distancia angular de un punto de la Tierra al meridiano de Greenwich, medida en grados.",
+                },
+            }
+        }
+    },
+    {
+        "name": "centro_salud_cercano",
+        "description": "identifica que centro de salud es el mas cercano a mi ubicacion ",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "centro_de_salud": {
+                    "type": "string",
+                    "description": "puede ser un hospital publico o privado, una POSTA, un centro medico, un centro de urgencias, una clinica, un SAPU, un SAR o un policlinico ",
+                }
+            }
+        }
+    }
+
+];
+
+export async function secondApiCall(prompt, message, function_name, function_response) {
+    console.log('START 2DA LLAMADA');
+    try {
+        const finalres = await client.post(chatgptUrl, {
+            model: "gpt-3.5-turbo-0613",
+            messages: [
+                {
+                role: 'system',
+                content: "Eres un asistente, tus funciones son: responder preguntas especificas, conversar sobre diversos temas y realizar funciones solicitadas"
+                },
+                {
+                role: 'user',
+                content: prompt
+                },
+                message,
+                {
+                role: "function",
+                name: function_name,
+                content: function_response,
+                },
+            ]                  
+            })
+            promises.push(finalres);
+    
+ 
+        console.log("TERMINO 2DA LLAMADA API OPENAI")
+        //console.log(finalres.data?.choices[0])
+        console.log(finalres.data?.choices[0]?.message?.content)
+        function generarIdUnico() {
+            return Date.now().toString(36) + Math.random().toString(36).substring(2);
+        }
+        let answer = finalres.data?.choices[0]?.message?.content;
+        promises.push(finalres);
+        const respuesta= await{_id: generarIdUnico(),
+            
             text: answer,
             createdAt: new Date(),
             user: {
-              _id: 2,
-              
+            _id: 2,
+            
             },};
-        // console.log('got chat response', answer);
-        return Promise.resolve({success: true, data: respuesta}); 
-
-    }catch(err){
-        console.log('error: ',err);
-        return Promise.resolve({success: false, msg: err.message});
+            console.log("FINAL DE LA CREACION DE LA RESPUESTA")
+        promises.push(respuesta);
+        const tex3 = JSON.stringify(respuesta)
+        console.log('MENSAJE: '+tex3)
+        //console.log("PRINT INTENTO: " + respuesta)
+        return respuesta;       
+    } catch (error) {
+        console.error(error);
     }
 }
 
-const dalleApiCall = async (prompt)=>{
-    try{
-        const res = await client.post(dalleUrl, {
-            prompt,
-            n: 1,
-            size: "512x512"
-        })
+export async function firstApiCall(prompt) {
+    try {
+        const res = await client.post(chatgptUrl, {
+            model: "gpt-3.5-turbo-0613",
+            messages: [
+                {
+                    role: 'system',
+                    content: "Eres un asistente, tus funciones son: responder preguntas especificas, conversar sobre diversos temas y realizar funciones solicitadas"
+                },
+                {
+                    role: "user", 
+                    content: prompt},
+            ],
+            functions: functions,
+            function_call: "auto",
+       
+        });
+        promises.push(res);
+        const tex = JSON.stringify(res.data?.choices[0])
+        //console.log('CHOICES: '+tex)
+        const tex2 = JSON.stringify(res.data?.choices[0]?.message)
+        //console.log('MENSAJE: '+tex2)
+        message = res.data?.choices[0]?.message;
+        function_name = res.data?.choices[0]?.message?.function_call?.name;
+        //console.log('function_name: ' + function_name)
+        args = res.data?.choices[0]?.message?.function_call?.arguments;
+        //console.log('args: ' + args)
 
-        let url = res?.data?.data[0]?.url;
-        // console.log('got image url: ',url);
-        messages.push({role: 'assistant', content: url});
-        return Promise.resolve({success: true, data: messages});
+        return { function_name: function_name, args: args, message: message };
 
-    }catch(err){
-        console.log('error: ',err);
-        return Promise.resolve({success: false, msg: err.message});
+    } catch (error) {
+        console.error(error);
     }
 }
+
+
+

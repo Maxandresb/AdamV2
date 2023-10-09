@@ -1,3 +1,4 @@
+
 //Modulos instalados
 import { View, Text,Image, SafeAreaView, TouchableOpacity , Alert} from 'react-native'
 import React, { useEffect, useState } from 'react'
@@ -5,9 +6,10 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
 // Creaciones propias
-import { apiCall , whisperCall} from "../api/openAI";
+import { secondApiCall ,firstApiCall, whisperCall} from "../api/openAI";
+import { obtenerUbicacion} from "../api/location";
+import { buscarEnCSV} from "../api/centrosMedicos";
 import * as FileSystem from 'expo-file-system';
-
 export default function PrincipalScreen() {
   const [inputUsuario, setinputUsuario]= useState('')
   const [mensajes, setMensajes]= useState([])
@@ -42,7 +44,6 @@ export default function PrincipalScreen() {
     from: uri,
     to: tempRecordingUri,
   });
-
   const formData = new FormData();
           formData.append('file', {
             uri: tempRecordingUri,
@@ -52,7 +53,6 @@ export default function PrincipalScreen() {
           formData.append('model', 'whisper-1');
     console.log (tempRecordingUri);
     console.log(formData)
-
     whisperCall(formData).then(res => {
       let newMensajes =[{ _id: new Date().getTime() + 2,  // para cuando se use voz
          text: res,
@@ -83,7 +83,6 @@ export default function PrincipalScreen() {
    setGrabaciones([])
  }
 {/* fin funciones de grabacion de voz de usuario  */ }
-
 {/* Inicio funciones de obtencion de data de apis  */ }
   const obtenerRespuesta = async (input)=>{
     setinputUsuario(input);
@@ -93,28 +92,47 @@ export default function PrincipalScreen() {
       console.log('entra en if')
     console.log("**********************************")
       setCargando(true);
-      // let newMensajes ={ _id: new Date().getTime() + 2,   para cuando se use voz
-      //   text: input,
-      //   createdAt: new Date(),
-      //   user: {
-      //     _id: 1,
-          
-      //   }};
-      let newMensaje = mensajeUsuario.text;
-          apiCall(newMensaje).then(res=>{
-        console.log('******respuesta api obtenida*****');
-        setCargando(false);
-        if(res.success){
-          console.log(res.data);
-          setMensajes((mensajesPrevios)=>GiftedChat.append(mensajesPrevios,res.data))
-          setinputUsuario('');
+      let prompt = mensajeUsuario.text;
+      console.log(prompt)
+      let { function_name, args, message } = await firstApiCall(prompt);
+      console.log('FUNCION SELECCIONADA: ', function_name)
+      if(function_name){
+        console.log('LOGICA DE SELECCION')
+        if (function_name === "hola") {
+            function_response = "responder el saludo, presentarse indicando tu nombre" 
+            respuesta= await secondApiCall(prompt, message, function_name, function_response)           
+        }else if (function_name === "explicar_algo") {
+            function_response = "explicar lo solicitado" 
+            respuesta= await secondApiCall(prompt, message, function_name, function_response)
+        }else if (function_name === "ubicacion") {
+            let ubicacion = await obtenerUbicacion('direccion');
+            function_response = `La ubicación actual es: ${ubicacion}`; 
+            respuesta= await secondApiCall(prompt, message, function_name, function_response)
+        }else if (function_name === "centro_salud_cercano") {
+            let comuna = await obtenerUbicacion('comuna');
+            let centros = buscarEnCSV(Comuna, comuna)
+            console.log('CENTROS: ', centros)
+            function_response = `estos son los centros de salud cercanos: ${centros}`; 
+            respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }else{
-          Alert.alert("Ha ocurrido un error : ", res.msg);
+            function_name = "responder"
+            function_response = "responde o trata de dar solucion a lo que te indiquen" 
+            respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }
-      })
+      }
+      console.log('******respuesta api obtenida*****');
+      setCargando(false);
+      if(respuesta){
+        console.log(respuesta);
+        setMensajes((mensajesPrevios)=>GiftedChat.append(mensajesPrevios,respuesta))
+        setinputUsuario('');
+        respuesta = null; // Vacía la variable respuesta
+      }else{
+        Alert.alert("Ha ocurrido un error : ", respuesta.msg);
+      }
+      
     }
   }; 
-
 
 
 
@@ -131,7 +149,6 @@ export default function PrincipalScreen() {
 // **********************************************************************************************************************************************************************************
 // ***                                                         Vista de pantalla                                                                                                  ***
 // **********************************************************************************************************************************************************************************
-
   return (
     <View className="flex-1 bg-green-100">
      <SafeAreaView className="flex-1 justify-center">
@@ -213,6 +230,5 @@ export default function PrincipalScreen() {
     </View>
   )
 }
-
 
 // axios instalado, navigation instalado, tailwindcss instalado
