@@ -5,6 +5,8 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
 import * as Speech from 'expo-speech';
+import { useNavigation } from '@react-navigation/native'
+
 // Creaciones propias
 import { apiCall , whisperCall} from "../api/openAI";
 import * as FileSystem from 'expo-file-system';
@@ -15,6 +17,8 @@ export default function PrincipalScreen() {
   const [cargando, setCargando] =useState(false)
   const [hablando, setHablando] =useState(false)
   const [respondiendo, setRespondiendo]= useState(false)
+  const navigation = useNavigation();
+
   //useEffect(()=> dummyMessages.map((mensaje)=>setMensajes((mensajesPrevios)=>GiftedChat.append(mensajesPrevios,mensaje))))
  {/* inicio funciones de grabacion de voz de usuario  */ }
  const [grabacion, setGrabacion]= useState();
@@ -43,7 +47,7 @@ export default function PrincipalScreen() {
   // Copy the recording file to a temporary directory
   const tempDirectory = FileSystem.cacheDirectory + 'recordings/';
   await FileSystem.makeDirectoryAsync(tempDirectory, { intermediates: true });
-  let tempRecordingUri = tempDirectory + fileName;
+  const tempRecordingUri = tempDirectory + fileName;
   await FileSystem.copyAsync({
     from: uri,
     to: tempRecordingUri,
@@ -181,7 +185,7 @@ export default function PrincipalScreen() {
      user={{_id:1}}
      />
      </View>
-      {/* recording, clear and stop buttons */}
+     
       
      </View>
      <View className="flex justify-center items-center">
@@ -216,7 +220,7 @@ export default function PrincipalScreen() {
           {
             mensajes.length>=0 && (
               <TouchableOpacity 
-                onPress={respuestaVoz} 
+                onPress={()=> navigation.navigate('Recordatorios')} 
                 className="bg-neutral-400 rounded-3xl p-2 absolute right-10"
               >
                 <Text className="text-white font-semibold">Clear</Text>
