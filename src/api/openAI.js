@@ -81,7 +81,7 @@ const functions = [
         }
     },
     {
-        "name": "responder",
+        "name": "funcion_extra",
         "description": "responde cordial y brevemente lo solicitado",
         "parameters": {
             "type": "object",
@@ -126,20 +126,24 @@ const functions = [
 
 ];
 
+let conversationHistory = [
+    {
+        role: 'system',
+        content: "Eres un asistente, tus funciones son: responder preguntas especificas, conversar sobre diversos temas y realizar funciones solicitadas"
+    }
+];
+
 export async function secondApiCall(prompt, message, function_name, function_response) {
     console.log('START 2DA LLAMADA');
+    conversationHistory.push({
+        role: 'user',
+        content: prompt
+    });
     try {
         const finalres = await client.post(chatgptUrl, {
             model: "gpt-3.5-turbo-0613",
             messages: [
-                {
-                role: 'system',
-                content: "Eres un asistente, tus funciones son: responder preguntas especificas, conversar sobre diversos temas y realizar funciones solicitadas"
-                },
-                {
-                role: 'user',
-                content: prompt
-                },
+                ...conversationHistory,
                 message,
                 {
                 role: "function",
@@ -152,7 +156,9 @@ export async function secondApiCall(prompt, message, function_name, function_res
     
  
         console.log("TERMINO 2DA LLAMADA API OPENAI")
-        //console.log(finalres.data?.choices[0])
+        // Añade la respuesta del asistente al historial de la conversación
+        conversationHistory.push(finalres.data?.choices[0]?.message);
+        console.log(conversationHistory)
         console.log(finalres.data?.choices[0]?.message?.content)
         function generarIdUnico() {
             return Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -178,6 +184,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
     }
 }
 
+
 export async function firstApiCall(prompt) {
     try {
         const res = await client.post(chatgptUrl, {
@@ -185,7 +192,7 @@ export async function firstApiCall(prompt) {
             messages: [
                 {
                     role: 'system',
-                    content: "Eres un asistente, tus funciones son: responder preguntas especificas, conversar sobre diversos temas y realizar funciones solicitadas"
+                    content: "Eres un asistente, tus funciones son: responder preguntas especificas, conversar sobre diversos temas y realizar funciones solicitadas. "
                 },
                 {
                     role: "user", 
@@ -196,15 +203,22 @@ export async function firstApiCall(prompt) {
        
         });
         promises.push(res);
-        const tex = JSON.stringify(res.data?.choices[0])
-        //console.log('CHOICES: '+tex)
-        const tex2 = JSON.stringify(res.data?.choices[0]?.message)
-        //console.log('MENSAJE: '+tex2)
-        message = res.data?.choices[0]?.message;
-        function_name = res.data?.choices[0]?.message?.function_call?.name;
-        //console.log('function_name: ' + function_name)
-        args = res.data?.choices[0]?.message?.function_call?.arguments;
-        //console.log('args: ' + args)
+        let message, function_name, args;
+        if(res.data?.choices[0]?.message?.function_call?.name){
+            const tex = JSON.stringify(res.data?.choices[0])
+            //console.log('CHOICES: '+tex)
+            const tex2 = JSON.stringify(res.data?.choices[0]?.message)
+            console.log('MENSAJE: '+tex2)
+            message = res.data?.choices[0]?.message;
+            function_name = res.data?.choices[0]?.message?.function_call?.name;
+            console.log('function_name: ' + function_name)
+            args = res.data?.choices[0]?.message?.function_call?.arguments;
+            console.log('args: ' + args)
+        }else{
+            function_name="funcion_extra"
+            message={"role":"assistant","content":null,"function_call":{"name":"funcion_extra","arguments":"{}"}}
+            args='{}'
+        }
 
         return { function_name: function_name, args: args, message: message };
 

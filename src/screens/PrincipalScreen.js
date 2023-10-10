@@ -109,14 +109,18 @@ export default function PrincipalScreen() {
             function_response = `La ubicación actual es: ${ubicacion}`; 
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }else if (function_name === "centro_salud_cercano") {
-            let comuna = await obtenerUbicacion('comuna');
-            let centros = buscarEnCSV(Comuna, comuna)
+            //let {comuna, region} = await obtenerUbicacion('comuna');
+            let comuna = 'Hualqui'
+            let region = 'Biobío Region'
+            console.log('COMUNA: ',comuna)
+            console.log('REGION: ',region)
+            let centros = buscarEnCSV('Comuna', comuna, region)
             console.log('CENTROS: ', centros)
             function_response = `estos son los centros de salud cercanos: ${centros}`; 
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }else{
             function_name = "responder"
-            function_response = "responde o trata de dar solucion a lo que te indiquen" 
+            function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta" 
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }
       }
