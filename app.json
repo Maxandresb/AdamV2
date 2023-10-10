@@ -25,7 +25,7 @@
       },
       "package": "com.maxan.AdamV2",
       "permissions": [
-        "ACCESS_FINE_LOCATION", "READ_EXTERNAL_STORAGE"
+        "ACCESS_FINE_LOCATION", "READ_EXTERNAL_STORAGE", "CALL_PHONE", "READ_CONTACTS"
       ]
     },
     "web": {

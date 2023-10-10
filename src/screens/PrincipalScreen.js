@@ -9,6 +9,8 @@ import { Audio } from "expo-av";
 import { secondApiCall ,firstApiCall, whisperCall} from "../api/openAI";
 import { obtenerUbicacion} from "../api/location";
 import { buscarEnCSV} from "../api/centrosMedicos";
+import { realizarLlamada} from "../api/llamada";
+import { requestContactsPermission} from "../api/contactos";
 import * as FileSystem from 'expo-file-system';
 export default function PrincipalScreen() {
   const [inputUsuario, setinputUsuario]= useState('')
@@ -118,6 +120,14 @@ export default function PrincipalScreen() {
             console.log('CENTROS: ', centros)
             function_response = `estos son los centros de salud cercanos: ${centros}`; 
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
+        }else if (function_name === "llamar") {
+          function_response = "llama al contacto predeterminado" 
+          realizarLlamada('56953598945');
+          respuesta= await secondApiCall(prompt, message, function_name, function_response)
+        }else if (function_name === "contactos") {
+          function_response = "obten los contactos" 
+          requestContactsPermission();
+          respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }else{
             function_name = "responder"
             function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta" 

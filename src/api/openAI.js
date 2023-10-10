@@ -122,6 +122,32 @@ const functions = [
                 }
             }
         }
+    },
+    {
+        "name": "llamar",
+        "description": "el usuario solicita llamar",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "llamar": {
+                    "type": "string",
+                    "description": "indica que se quiere llamar",
+                }
+            }
+        }
+    },
+    {
+        "name": "contactos",
+        "description": "el usuario solicita contactos",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "llamar": {
+                    "type": "string",
+                    "description": "indica que se quiere contactos",
+                }
+            }
+        }
     }
 
 ];
