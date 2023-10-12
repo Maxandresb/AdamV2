@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
+import * as Speech from 'expo-speech';
 // Creaciones propias
 import { secondApiCall ,firstApiCall, whisperCall} from "../api/openAI";
 import { obtenerUbicacion} from "../api/location";
@@ -150,7 +151,27 @@ export default function PrincipalScreen() {
 
 
 
+ {/* Inicio Voz de respuesta de ADAM */}
 
+  {/* voces hombres
+  voice:"es-es-x-eed-local" 
+  voice:"es-us-x-esf-local" 
+  voice:"es-es-x-eed-network" 
+  voice:"es-us-x-esd-network"
+*/}
+
+const respuestaVoz= (texto)=>{
+  //const saludo ='test de saludo';
+  const options={
+    voice:"es-us-x-esd-network"  ,
+    rate:0.9,
+    pitch: 0.85
+     
+  };
+  Speech.speak(texto,options)
+};
+
+{/* Fin Voz de respuesta de ADAM */}
 
 
 
