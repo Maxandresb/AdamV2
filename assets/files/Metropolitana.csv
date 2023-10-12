@@ -1,0 +1,965 @@
+Nombre Oficial;Comuna;Vía;Número;Dirección;Teléfono;Tiene Servicio de Urgencia;Tipo de Urgencia;Tipo de SAPU
+Sala de procedimientos Embalse;Alhué;Avenida;S/N;Calle Loncha;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar Villa Alhué;Alhué;Calle;440;21 de Mayo;"226125201; 226125222";NO;No Aplica;No Aplica
+SUR Villa Alhué;Alhué;Calle;S/N;21 de Mayo;225760105;SI;Urgencia Ambulatoria (SUR);No Aplica
+Posta de Salud Rural Aliro Cárcarmo (Lonquén);Talagante;Calle;S/N;Balmaceda;228559304;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Hacienda Alhué;Alhué;Calle;S/N;Camino público a Villa Alhué - Hacienda Alhué;945155265;NO;No Aplica;No Aplica
+Posta de Salud Rural Bollenar;Melipilla;Avenida;S/N;Valparaíso s;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural Chorombo;Maria Pinto;Calle;S/N;Sector Chorombo Alto;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural El Asiento;Alhué;Calle;S/N;Aldea El Asiento;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural El Prado;San Pedro;Calle;S/N;Aldea El Prado;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural Gacitúa;Isla de Maipo;Calle;S/N;Sector Gacitúa Pobl. Gacitúa;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural Chada;Paine;Calle;S/N;Camino Vec. Interior;229363380;NO;No Aplica;No Aplica
+Centro de Salud Familiar San Pedro;San Pedro;Avenida;11;Hermosilla;228326747;NO;No Aplica;No Aplica
+SUR San Pedro;San Pedro;Avenida;11;Hermosilla;228326747;SI;Urgencia Ambulatoria (SUR);No Aplica
+Posta de Salud Rural Pintué;Paine;Avenida;S/N;Alfonso Letelier;229363355;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Raúl Moya;Paine;Calle;S/N;Diego Portales;29363340 - 29363341;NO;No Aplica;No Aplica
+SUR Dr. Raúl Moya;Paine;Calle;S/N;Diego Portales;29363340 - 29363341;SI;Urgencia Ambulatoria (SUR);No Aplica
+Posta de Salud Rural Abrantes;Paine;Avenida;S/N;Alfonso Letelier;229363350;NO;No Aplica;No Aplica
+Posta de Salud Rural Rangue;Paine;Avenida;S/N;Alfonso Letelier;229363360;NO;No Aplica;No Aplica
+Posta de Salud Rural Huelquén;Paine;Calle;S/N;Sta. Filomena;229363365-229363366;NO;No Aplica;No Aplica
+Posta de Salud Rural El Volcán;San José de Maipo;Calle;S/N;Camino El Volcán;Pendiente;NO;No Aplica;No Aplica
+Centro Asistencial AChS Paine;Paine;Avenida;128;Presidente Prieto;228242564;NO;No Aplica;No Aplica
+SAPU Paine;Paine;Calle;118;José Joaquín Prieto;228241156;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Santa Catalina Salud Paine;Paine;Calle;57;Raúl Sánchez Cerda;56 993009676;NO;No Aplica;No Aplica
+Posta de Salud Rural Valdivia de Paine;Buin;Calle;S/N;Manuel Rodríguez;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Mutual CChC Paine;Paine;Calle;610-620;General Baquedano;228242146;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Miguel Ángel Solar (ex CESFAM Paine);Paine;Avenida;214;General Baquedano;29363320 - 29363321 - 29363322;NO;No Aplica;No Aplica
+Posta de Salud Rural La Manga;San Pedro;Calle;S/N;Sector La Manga;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural San Gabriel;San José de Maipo;Calle;41687;Los Rodados;228611836;NO;No Aplica;No Aplica
+Posta de Salud Rural Viluco;Buin;Calle;S/N;Camino Público Viluco;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar San Manuel;Melipilla;Calle;S/N;Camino San Manuel S/N Ruta      G-668;225745500;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Codigua;Melipilla;Calle;688;Ruta G. Km. 8;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Dr. Ramón Galindo;Buin;Calle;2825;Francisco Javier Krugger, esquina Juan Osorio, Linderos;226124615;NO;No Aplica;No Aplica
+Posta de Salud Rural Las Mercedes ( Isla de Maipo );Isla de Maipo;Calle;S/N;Juan Fco. Fresno, Aldea Villa Las Mercedes;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar Isla de Maipo;Isla de Maipo;Calle;1001;Manuel Rodríguez;225744350;NO;No Aplica;No Aplica
+SUR Isla de Maipo;Isla de Maipo;Calle;1001;Manuel Rodríguez;225744350;SI;Urgencia Ambulatoria (SUR);No Aplica
+SAPU Isla de Maipo;Isla de Maipo;Calle;1001;Manuel Rodríguez;225744350;SI;Urgencia Ambulatoria (SAPU);Corto
+SAPU Buin;Buin;Calle;703;Errázuriz;225179292;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Dr. Héctor García;Buin;Calle;703;Errázuriz;800500475;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar La Islita;Isla de Maipo;Calle;279;El Maitén;225744381;NO;No Aplica;No Aplica
+Centro de Salud Familiar Alto Jahuel;Buin;Calle;S/N;Camino Miraflores, Ciudad Alto Jahuel;Pendiente;NO;No Aplica;No Aplica
+SUR Alto Jahuel;Buin;Calle;S/N;Camino Miraflores, Ciudad Alto Jahuel;Pendiente;SI;Urgencia Ambulatoria (SUR);No Aplica
+Centro de Salud Familiar Maipo;Buin;Calle;S/N;Bellavista;228221180;NO;No Aplica;No Aplica
+SUR Maipo;Buin;Calle;S/N;Bellavista;228221180;SI;Urgencia Ambulatoria (SUR);No Aplica
+Centro de Salud Familiar La Islita;Isla de Maipo;Calle;4517;Río Maipo, Villa El Maitén, La Islita;Pendiente;NO;No Aplica;No Aplica
+Centro Médico y Dental Santa Catalina;Buin;Calle;436;Anibal Pinto;224892500;NO;No Aplica;No Aplica
+Hospital San Luis (Buin);Buin;Calle;240;Arturo Prat;225765800;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro Médico KINEROD;Buin;Calle;488;Manuel Bulnes;56942698815;NO;No Aplica;No Aplica
+Posta de Salud Rural Las Mercedes ( María Pinto );Maria Pinto;Calle;S/N;Aldea Las Mercedes;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural Loica;San Pedro;Calle;S/N;Aldea Loica;Pendiente;NO;No Aplica;No Aplica
+Centro Asistencial AChS Buin;Buin;Calle;755;Condell;228211490;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar San Vicente de Naltagua;Isla de Maipo;Avenida;7603;San Antonio de Naltagua;950917614 - 228769100;NO;No Aplica;No Aplica
+Centro de Salud Rural El Principal;Pirque;Calle;113;La Alameda;228547040;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Dr. Héctor García;Buin;Avenida;1591;Nuevo Buin Poniente Exclemencia Sazo;225769900;NO;No Aplica;No Aplica
+Posta de Salud Rural Nihue;San Pedro;Calle;S/N;Camino público de la Manga a Nihue Alto S/N;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Francisco Boris Soler;Melipilla;Calle;1650;Silvia Chávez;225745310;NO;No Aplica;No Aplica
+SAPU Dr. Francisco Boris Soler;Melipilla;Calle;1650;Silva Chávez;228318350;SI;Urgencia Ambulatoria (SAPU);Corto
+Servicio Médico Legal Melipilla;Melipilla;Avenida;1415;La Concepción, Santiago;28313496;NO;No Aplica;No Aplica
+Hospital San José (Melipilla);Melipilla;Calle;551;O'Higgins;225745555;SI;Urgencia Hospitalaria (UEH);No Aplica
+Posta de Salud Rural El Recurso;Buin;Calle;S/N;Camino Público Fundo Recurso, Aldea El Recurso;Pendiente;NO;No Aplica;No Aplica
+COSAM Melipilla;Melipilla;Calle;830;Pardo;225745850;NO;No Aplica;No Aplica
+Centro de Salud La Araucana Salud;Melipilla;Calle;592;Libertad;228321313;NO;No Aplica;No Aplica
+Clínica San Agustín de Melipilla;Melipilla;Calle;473;San Agustín;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Lo Chacón;El Monte;Pasaje;1214;Los Plátanos, Villa Los Álamos 3;225688070;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Melipilla;Melipilla;Calle;561-565;Plaza de Armas;6007071010;NO;No Aplica;No Aplica
+Centro de Salud Mutual CChC Melipilla;Melipilla;Calle;270;San Agustín;228324942;NO;No Aplica;No Aplica
+Centro de Salud Familiar Florencia;Melipilla;Calle;1923;Libertad;224897913;NO;No Aplica;No Aplica
+SAPU El Monte;El Monte;Avenida;531;Los Libertadores;225743102;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar El Monte;El Monte;Avenida;531;Avda. Los Libertadores N° 531                                Avda. Los Libertadores N° 1739;225743103;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Edelberto Elgueta;Melipilla;Calle;1576;Arza;225743550;NO;No Aplica;No Aplica
+SAPU Dr. Edelberto Elgueta;Melipilla;Calle;1576;Arza;228311159;SI;Urgencia Ambulatoria (SAPU);Corto
+Clínica del Trabajador AChS;Melipilla;Calle;710;Merced;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Obispo Pablo Lizama;Melipilla;Calle;2091;Guillermo Vera;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Villa Los Presidentes;Talagante;Avenida;1100;Salvador Allende, Villa Los Presidentes;226124470;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Padre Demetrio Bravo;Melipilla;Calle;60;Ignacio Carrera Pinto;225759850;NO;No Aplica;No Aplica
+Clínica Los Maitenes;Melipilla;Calle;S/N;Autopista del Sol, km. 70;228705800;SI;Urgencia Hospitalaria (UEH);No Aplica
+Posta de Salud Rural Santa Rita;Pirque;Calle;S/N;Camino Las Rozas;228546513;NO;No Aplica;No Aplica
+COSAM Pirque;Pirque;Calle;S/N;Camino las Rozas;228546513;NO;No Aplica;No Aplica
+Posta de Salud Rural Los Morros;Buin;Calle;S/N;Camino Padre Hurtado, Sector Los Morros;Pendiente;NO;No Aplica;No Aplica
+SAPU Dr. Alberto Allende Jones;Talagante;Calle;2049;Esmeralda;225919105;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Dr. Alberto Allende Jones;Talagante;Calle;2049;Esmeralda;225919106;NO;No Aplica;No Aplica
+COSAM Talagante;Talagante;Calle;2049;Esmeralda;225743505;NO;No Aplica;No Aplica
+Posta de Salud Rural San Vicente;Pirque;Calle;S/N;San Vicente;228547038;NO;No Aplica;No Aplica
+Hospital Adalberto Steeger (Talagante);Talagante;Calle;1458;Balmaceda;225744252;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro Asistencial AChS Talagante;Talagante;Calle;112;21 de Mayo;228152249;NO;No Aplica;No Aplica
+Centro Médico Clínica Maitenes - Talagante;Talagante;calle;1081;21 de mayo;228282505;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Lo Herrera;San Bernardo;Calle;8282;Volcán Guallatiri;225769920;NO;No Aplica;No Aplica
+Centro de Salud Esmeralda;Talagante;Calle;1062;Esmeralda, Piso 2, Oficina 14;228150210;NO;No Aplica;No Aplica
+SAPU Marcela Jacques Vargas;Talagante;Calle;750;Francisco Chacón;225919151;SI;Urgencia Ambulatoria (SAPU);Corto
+SAR Oriente María Eugenia Torres;Talagante;Pasaje;1075;Quemchi, Villa Mónaco;225688080 - 225688090;SI;Urgencia ambulatoria (SAR);No Aplica
+Centro de Salud Mutual CChC Talagante;Talagante;Calle;993;Enrique Alcalde;228155108;NO;No Aplica;No Aplica
+Centro de Salud Familiar Alfarera Rosa Reyes Vilches;Melipilla;Calle;354;Artesana Julita Vera;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Ribera del Maipo;San Bernardo;Calle;S/N;Parcela San Adolfo BC-1. Cancha San Adolfo;225769920;NO;No Aplica;No Aplica
+Hospital San José de Maipo;San José de Maipo;Avenida;19856;Comercio;225762700;SI;Urgencia Hospitalaria (UEH);No Aplica
+COSAM San José de Maipo;San José de Maipo;Calle;S/N;1 Sur con calle del Cerro;225762760;NO;No Aplica;No Aplica
+Posta de Salud Rural Santa Inés;Calera de Tango;Calle;S/N;Camino Santa Inés;228552191;NO;No Aplica;No Aplica
+Centro de Salud Familiar Calera de Tango;Calera de Tango;Calle;S/N;Lonquén Sur;228557292;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. José Manuel Balmaceda;Pirque;Avenida;385;Virginia Subercaseaux;223858576;NO;No Aplica;No Aplica
+SAPU Dr. José Manuel Balmaceda;Pirque;Avenida;385;Virginia Subercaseaux;223857576;SI;Urgencia Ambulatoria (SAPU);Pendiente
+Integramédica Mall Plaza Sur;San Bernardo;Avenida;20040;Jorge Alessandri;226366666;NO;No Aplica;No Aplica
+Fundación Vida Nueva (Clínica Psiquiátrica);Peñaflor;Avenida;26;Berlín A-1;988293339;NO;No Aplica;No Aplica
+Centro de Salud Familiar Cardenal Silva Henríquez;Puente Alto;Calle;3345;San Pedro;224854202;NO;No Aplica;No Aplica
+SAPU Cardenal Silva Henríquez de Puente Alto;Puente Alto;Calle;3345;Estación El Canelo;224854201;SI;Urgencia Ambulatoria (SAPU);Largo
+SAPU Karol Wojtyla;Puente Alto;Calle;4110;Curaco de Vélez;224854501;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Karol Wojtyla;Puente Alto;Calle;4110;Curaco de Vélez;224854500;NO;No Aplica;No Aplica
+Centro de Salud Familiar Los Bajos de San Agustín;Calera de Tango;Avenida;S/N;Calera de Tango;228551600;NO;No Aplica;No Aplica
+SUR Los Bajos de San Agustín;Calera de Tango;Avenida;S/N;Calera de Tango;228551600;SI;Urgencia Ambulatoria (SUR);No Aplica
+Clínica de Cirugía Plástica;San Bernardo;Avenida;321;Colón;228596291;NO;No Aplica;No Aplica
+Centro de Salud Familiar San Gerónimo;Puente Alto;Calle;1203;San Pedro;224854351;NO;No Aplica;No Aplica
+SAPU San Gerónimo;Puente Alto;Calle;1203;San Pedro;224854351;SI;Urgencia Ambulatoria (SAPU);Largo
+Posta de Salud Rural Puntilla;Pirque;Calle;S/N;Ramón Subercaseaux;228546033;NO;No Aplica;No Aplica
+Centro Especialidades Primarias San Lazaro;Puente Alto;Calle;1092;Sargento Menadier;224854401;NO;No Aplica;No Aplica
+COSAM CEIF Centro;Puente Alto;Calle;70;Tocornal;224344482;NO;No Aplica;No Aplica
+Centro de Salud Familiar Madre Teresa de Calcuta Red de Salud UC CHRISTUS;Puente Alto;Avenida;1815;Circunvalación;228515215;NO;No Aplica;No Aplica
+Centro de Referencia de Salud Hospital Provincia Cordillera;Puente Alto;Calle;2061;Eyzaguirre;226123200;NO;No Aplica;No Aplica
+SAPU Padre Joan Alsina;San Bernardo;Calle;5;Márquez de la Plata;225766050;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Padre Joan Alsina;San Bernardo;Calle;5;Márquez de la Plata;Pendiente;NO;No Aplica;No Aplica
+COSAM Puente Alto;Puente Alto;Calle;152;Tocornal;Pendiente;NO;No Aplica;No Aplica
+Integramédica Puente Alto;Puente Alto;Avenida;26;Concha;226207500;NO;No Aplica;No Aplica
+Servicios Médicos PEÑASalud;Peñaflor;Avenida;3051;Vicuña Mackenna;569 72165476;NO;No Aplica;No Aplica
+Centro de Salud Familiar Vista Hermosa;Puente Alto;Calle;275;Los Pinos;224344485;NO;No Aplica;No Aplica
+Clínica Policenter;Puente Alto;Calle;165;21 de Mayo;223933000;NO;No Aplica;No Aplica
+Centro Asistencial AChS Peñaflor;Peñaflor;Calle;1294;Vicuña Mackenna;228125741;NO;No Aplica;No Aplica
+SAPU Dr. Fernando Monckeberg;Peñaflor;Calle;73;Concepcion;228123726;SI;Urgencia Ambulatoria (SAPU);Corto
+Hospital de Peñaflor;Peñaflor;Calle;214;José Miguel Carrera;225742500;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Salud Familiar Dr. Fernando Monckeberg;Peñaflor;Calle;73;La Concepción;225745750;NO;No Aplica;No Aplica
+Clínica Astra Puente Alto;Puente Alto;Calle;140;Tocornal;228722264;NO;No Aplica;No Aplica
+Centro Medico de Clínica Maitenes Peñaflor;Peñaflor;Calle;750;Calle Balmaceda N°750, Local 5;56 228705900;NO;No Aplica;No Aplica
+Centro de Salud Familiar Peñaflor;Peñaflor;Calle;1000;Costa Rica;Pendiente;NO;No Aplica;No Aplica
+SAPU Peñaflor;Peñaflor;Calle;1000;Costa Rica;225688021;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Dr. Alejandro del Río;Puente Alto;Calle;105;Gandarillas;222454101;NO;No Aplica;No Aplica
+SAPU Dr. Alejandro del Río;Puente Alto;Calle;105;Gandarillas;222454101;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro Vida Integra de Puente Alto;Puente Alto;Calle;63;Ernesto;224107400;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Puente Alto;Puente Alto;Avenida;625;Concha y Toro, Local 4 y 12 al 15;6007071010;NO;No Aplica;No Aplica
+Laboratorio Medicina Nuclear Sur Ltda;Puente Alto;Avenida;648;Concha;228500172;NO;No Aplica;No Aplica
+Vacunatorio Home Nursing;Puente Alto;Avenida;648;Concha y Toro;229855162;NO;No Aplica;No Aplica
+Centro de Salud Mutual CChC Puente Alto;Puente Alto;Calle;66;Teniente Bello;223555850;NO;No Aplica;No Aplica
+Centro Asistencial AChS Puente Alto;Puente Alto;Calle;135;Teniente Bello;223478900;NO;No Aplica;No Aplica
+COSAM Peñaflor;Peñaflor;Avenida;160;Miraflores;225746000;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Las Hortensias;San Bernardo;Avenida;1789;Carlos Condell;222619340;NO;No Aplica;No Aplica
+SAPU Raúl Brañes F.;San Bernardo;Calle;1036;Carlos Condell;228451934;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar Raúl Brañes F.;San Bernardo;Avenida;1036;Carlos Condell;800500467 - 224290201;NO;No Aplica;No Aplica
+Centro de Salud Familiar Raúl Cuevas (Ex-San Bernardo);San Bernardo;Calle;1202;San Alfonso;225769920;NO;No Aplica;No Aplica
+SAPU Raúl Cuevas (Ex San Bernardo);San Bernardo;Calle;1201;San Alfonso;228799295;SI;Urgencia Ambulatoria (SAPU);Largo
+Clínica Santa Lucía;San Bernardo;Calle;717;Victoria;223907600;NO;No Aplica;No Aplica
+Centro de Salud Familiar San Alberto Hurtado Red de Salud UC CHRISTUS;Puente Alto;Avenida;1693;San Carlos;225879310;NO;No Aplica;No Aplica
+Centro de Salud Familiar Juan Pablo II Red de Salud UC CHRISTUS;La Pintana;Avenida;2870;La Primavera, Población Jorge Alessandri Rodríguez, El Castillo;224822410;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental San Bernardo;San Bernardo;Calle;650;Eyzaguirre, Piso 6;6007071010;NO;No Aplica;No Aplica
+Laboratorio Scala;San Bernardo;Calle;479;Calle Victoria # 479;56 2228598531;NO;No Aplica;No Aplica
+Centro Clínico San Bernardo;San Bernardo;Calle;237;O'Higgins;227199000;NO;No Aplica;No Aplica
+Hospital Parroquial de San Bernardo (D);San Bernardo;Calle;4;Libertador Bernardo O'Higgins;223732500;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro Vida Integra de San Bernardo;San Bernardo;Calle;513;Urmeneta;224107400;NO;No Aplica;No Aplica
+Integramédica Santa Lucía;San Bernardo;Calle;411;Victoria;229855162;NO;No Aplica;No Aplica
+Macromédica;San Bernardo;Calle;453;O'Higgins;228562978;NO;No Aplica;No Aplica
+Posta de Salud Rural Las Vertientes;San José de Maipo;Calle;2786;Parque Municipal;225761656;NO;No Aplica;No Aplica
+Centro de Salud Familiar Laurita Vicuña;Puente Alto;Avenida;2433;Ejército Libertador;224854600;NO;No Aplica;No Aplica
+Centro de Salud Mutual CChC San Bernardo;San Bernardo;Calle;339;Freire;228594343;NO;No Aplica;No Aplica
+Centro de Salud Familiar El Manzano;San Bernardo;Calle;1876;Camino Santa Teresa;225761241;NO;No Aplica;No Aplica
+COSAM San Bernardo;San Bernardo;Calle;14260;Martín de Solís;225761000;NO;No Aplica;No Aplica
+Centro de Salud Familiar Confraternidad;San Bernardo;Calle;14210;Martín de Solís;800500466;NO;No Aplica;No Aplica
+SAPU Confraternidad;San Bernardo;Calle;14210;Martín de Solís;225689120;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Santiago de Nueva Extremadura;La Pintana;Avenida;13558;Juanita;225750054;NO;No Aplica;No Aplica
+SAPU Santiago de Nueva Extremadura;La Pintana;Avenida;13558;Juanita;225750055;SI;Urgencia Ambulatoria (SAPU);Avanzado
+COSAM CEIF Puente Alto Norte;Puente Alto;Avenida;2531;Concha y Toro;227975496;NO;No Aplica;No Aplica
+Clínica Santa Elena;La Pintana;Calle;2861;Miguel Angel;223242771;NO;No Aplica;No Aplica
+Centro Asistencial AChS San Bernardo;San Bernardo;Calle;61;Eysaguirre;228594424;NO;No Aplica;No Aplica
+Centro de Salud Familiar Flor Fernández;La Pintana;Avenida;1503;Ciudad de México;225428211;NO;No Aplica;No Aplica
+SAPU Juan Pablo II;San Bernardo;Calle;277;Santa Marta;225766150;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Referencia de Salud El Pino;San Bernardo;Avenida;13560;Los Morros;223874500;NO;No Aplica;No Aplica
+Centro de Salud Familiar Juan Pablo II ( San Bernardo);San Bernardo;Calle;276;Santa Marta;228592168;NO;No Aplica;No Aplica
+Hospital El Pino (Santiago, San Bernardo);San Bernardo;Avenida;13560;Padre Hurtado;225767600;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Salud Familiar Bernardo Leighton;Puente Alto;Calle;1929;Miguel Ángel;224854250;NO;No Aplica;No Aplica
+SAR Padre Manuel Villaseca;Puente Alto;Calle;2312;Luis Matte Larraín;224854301;SI;Urgencia ambulatoria (SAR);No Aplica
+SAPU Bernardo Leighton;Puente Alto;Calle;1929;Miguel Ángel;224854250;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar Padre Manuel Villaseca;Puente Alto;Calle;2312;Luis Matte Larraín;224854301;NO;No Aplica;No Aplica
+COSAM La Pintana;La Pintana;Calle;12834;Patagonia;225457697;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Mario Salcedo;El Bosque;Pasaje;13256;Mar Báltico;Pendiente;NO;No Aplica;No Aplica
+SAPU San Rafael;La Pintana;Avenida;12577;Porto Alegre;225453392;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar San Rafael;La Pintana;Avenida;12577;Porto Alegre;225453392;NO;No Aplica;No Aplica
+Hospital Psiquiátrico El Peral (Santiago, Puente Alto);Puente Alto;Calle;2451;Camilo Henríquez;225766500;NO;No Aplica;No Aplica
+Centro Médico y Dental MegaSalud San Bernardo;San Bernardo;Avenida;654;América;224257800;NO;No Aplica;No Aplica
+Centro de Salud Familiar Canciller Orlando Letelier;El Bosque;Calle;890;Lo Moreno;800500454;NO;No Aplica;No Aplica
+Clínica Astra San Bernardo;San Bernardo;Calle;401;O'Higgins;228591864;NO;No Aplica;No Aplica
+Hospital Sotero del Río (Otro Dispositivo);Puente Alto;Calle;3459;Concha Y Toro;Pendiente;NO;No Aplica;No Aplica
+Complejo Hospitalario Dr. Sótero del Río (Santiago, Puente Alto);Puente Alto;Avenida;3459;Concha y Toro;223536000;SI;Urgencia Hospitalaria (UEH);No Aplica
+Unidad de Salud FuncionarioS.S Metropolitano Sur Oriente;Puente Alto;Avenida;3459;Concha y Toro;Pendiente;NO;No Aplica;No Aplica
+Actividades gestionadas por la Dirección del Servicio para apoyo de la Red (S.S Metropolitano Sur Oriente);Puente Alto;Avenida;3459;Concha y Toro;Pendiente;NO;No Aplica;No Aplica
+PRAIS (S.S Metropolitano Sur Oriente);Puente Alto;Avenida;3459;Concha y Toro;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar Pablo de Rokha;La Pintana;Calle;12221;Pedro Prado;225453393;NO;No Aplica;No Aplica
+SAPU Pablo de Rokha;La Pintana;Calle;12221;Pedro Prado;225453393;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Carol Urzúa;San Bernardo;Calle;958;Loncomilla;225761251;NO;No Aplica;No Aplica
+SAR Eugenia Muñoz Dalmatín;San Bernardo;Calle;855;Mendoza;228593716;SI;Urgencia ambulatoria (SAR);No Aplica
+Clínica Psiquiatrica Raquel Gaete;Puente Alto;Calle;2650;Gabriela Oriente;228745804;NO;No Aplica;No Aplica
+Centro Médico y Dental MegaSalud Puente Alto;Puente Alto;Avenida;3779;Concha;224202021;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dra. Haydeé López Casoou;El Bosque;Calle;862;Lo Martínez;225761451;NO;No Aplica;No Aplica
+SAR Haydee López;El Bosque;Calle;862;Lo Martínez;226187000;SI;Urgencia ambulatoria (SAR);No Aplica
+Centro de Salud Familiar Juan Pablo II ( Padre Hurtado);Padre Hurtado;Calle;1657;Primera Transversal;225746300;NO;No Aplica;No Aplica
+Centro de Enfermedades Respiratorias Infantiles Josefina Martínez (D);Puente Alto;Avenida;3691;Camilo Henríquez;227209000;NO;No Aplica;No Aplica
+Posta de Salud Rural Pabellón;Melipilla;Calle;S/N;Larraín;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural Pahuilmo;Melipilla;Calle;S/N;Calle Pahuilmo S/N°, Mallarauco;Pendiente;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Puente Alto 2;Puente Alto;Avenida;3955;Concha y Toro, Local 13 Piso 2;6007071010;NO;No Aplica;No Aplica
+Centro Integramédica Tobalaba;Puente Alto;Avenida;3296;Camilo Henríquez;228101500;NO;No Aplica;No Aplica
+COSAM El Bosque;El Bosque;Calle;11480;Padre Hurtado;228218480;NO;No Aplica;No Aplica
+SAPU Santa Rosa de Chena;Padre Hurtado;Calle;823;Teniente Sáenz Neira;228112246;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar El Roble;La Pintana;Avenida;1777;Observatorio;225433488;NO;No Aplica;No Aplica
+SAPU El Roble;La Pintana;Avenida;1777;Observatorio;225435488;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro Médico MAGNAVIDA;Padre Hurtado;Calle;956;El Trébol;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Rapa Nui;San Bernardo;Calle;2738;Miguel de Unamuno;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Los Sauces;El Bosque;Calle;1071;Portales;226187095;NO;No Aplica;No Aplica
+Centro de Salud Familiar Cóndores de Chile;El Bosque;Calle;555;Agusto D`Almar;800500452;NO;No Aplica;No Aplica
+SAPU Los Quillayes;La Florida;Calle;10905;Julio César;222819698;SI;Urgencia Ambulatoria (SAPU);Largo
+Clínica Familia;La Florida;Avenida;1569;Diego Portales;222881506;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Fernando Maffioletti;La Florida;Avenida;301;Central;225760350;NO;No Aplica;No Aplica
+Centro de Salud Familiar Los Quillayes;La Florida;Calle;10905;Julio César;222819698;NO;No Aplica;No Aplica
+SAPU Dr. Fernando Maffioletti;La Florida;Avenida;301;Central;225760351;SI;Urgencia Ambulatoria (SAPU);Corto
+SAPU Dr. Carlos Lorca;El Bosque;Pasaje;10675;El Pajar;225470523;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Rehabilitación Capredena;La Florida;Calle;450;General Arriagada;226541700;NO;No Aplica;No Aplica
+Centro de Salud Familiar José Alvo;La Florida;Avenida;10817;Bacteriológico;223783279;NO;No Aplica;No Aplica
+SAPU José Alvo;La Florida;Avenida;10817;Bacteriológico;223783277;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Santo Tomás;La Pintana;Calle;987;Santo Tomás;225417292;NO;No Aplica;No Aplica
+SAPU Santo Tomás;La Pintana;Avenida;987;Santo Tomás;225417292;SI;Urgencia Ambulatoria (SAPU);Corto
+Consultorio Tantauco;El Bosque;Calle;83;General Tavarías;225402940;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Carlos Lorca Tobar;El Bosque;Calle;11028;Claudina Parra;225470523;NO;No Aplica;No Aplica
+COSAM La Florida;La Florida;Calle;5820;Diagonal La Florida;222864984;NO;No Aplica;No Aplica
+Hospital Padre Alberto Hurtado (San Ramón);San Ramón;Calle;2150;Esperanza;225760600;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Salud Familiar Santa Laura;El Bosque;Calle;10460;Indio Gerónimo;800500453;NO;No Aplica;No Aplica
+Centro de Salud Familiar Granja Sur;La Granja;Avenida;10009;Sofía Eastman;225412443;NO;No Aplica;No Aplica
+SAPU Poetisa Gabriela Mistral;San Ramón;Calle;9872;Aurora de Chile;225765551;SI;Urgencia Ambulatoria (SAPU);Corto
+SAPU Granja Sur;La Granja;Calle;10036;Sofía Eastman;228627210;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Poetisa Gabriela Mistral;San Ramón;Calle;9872;Aurora de Chile;225765551;NO;No Aplica;No Aplica
+SAPU Cóndores de Chile;El Bosque;Avenida;9902;Gran Avenida José Miguel Carrera;225614085;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro Comunitario de Salud Familiar Los Bosquinos;Maipú;Calle;177;El Tranque;226778761;NO;No Aplica;No Aplica
+COSAM La Bandera;San Ramón;Calle;9696;La Bandera;225761806;NO;No Aplica;No Aplica
+Centro de Salud Familiar Trinidad;La Florida;Calle;10021;Uno;222910291;NO;No Aplica;No Aplica
+SAPU Trinidad;La Florida;Avenida;10021;Uno;222910148;SI;Urgencia Ambulatoria (SAPU);Corto
+SAPU Santa Laura;El Bosque;Calle;1050;Picton;225583822;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro Comunitario de Salud Familiar Santa Laura;El Bosque;Calle;1050;Picton;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Millalemu;La Granja;Calle;805;Tricolor, Población Millalemu;222823134;NO;No Aplica;No Aplica
+Centro de Salud Familiar La Bandera;San Ramón;Calle;1758;Vicuña Mackenna;225592932;NO;No Aplica;No Aplica
+Centro de Salud Familiar Santa Amalia;La Florida;Calle;202;Santa Amalia;222816900;NO;No Aplica;No Aplica
+SAPU Santa Amalia;La Florida;Calle;202;Santa Amalia;222816173;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro Comunitario de Salud Familiar Futramapu;Maipú;Calle;321;Judea;225350448;NO;No Aplica;No Aplica
+SAPU Eduardo Frei Montalva;La Cisterna;Avenida;140;Ossa;225580678;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Eduardo Frei Montalva;La Cisterna;Avenida;140;Ossa;225760900;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental La Cisterna;La Cisterna;Avenida;33;Américo Vespucio, Local 312 al 315;6007071010;NO;No Aplica;No Aplica
+COSAM La Granja;La Granja;Calle;8363;Angol;222627146;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar San Gregorio;La Granja;Calle;8363;Angol;222919143;NO;No Aplica;No Aplica
+SAPU San Ramón;San Ramón;Calle;1760;Uruguay;225714957;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Dr. Salvador Allende (Ex Consultorio San Ramón);San Ramón;Calle;8097;Los Claveles;225464191;NO;No Aplica;No Aplica
+SAPU La Granja;La Granja;Calle;28;San Gregorio;225760250;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar La Granja;La Granja;Avenida;28;San Gregorio;225760250;NO;No Aplica;No Aplica
+COSAM La Rinconada;San Ramón;Calle;8460;Rinconada;225412271;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Europa;Maipú;Calle;220;Europa;225759770;NO;No Aplica;No Aplica
+Consultorio Prefectura Sur;La Cisterna;Avenida;6868;Gran Avenida José Miguel Carrera;229222870;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Las Lomas;La Florida;Avenida;9057;Jardin Alto;232422111;NO;No Aplica;No Aplica
+Centro de Salud Familiar Pueblo Lo Espejo;Lo Espejo;Avenida;2891;Lo Espejo;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Eduardo Frei Montalva;La Cisterna;Calle;8396;Victoria;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Mutual CChC Lo Espejo;Lo Espejo;Avenida;3200;Lo Sierra;228542557;NO;No Aplica;No Aplica
+Nefrolab;La Cisterna;Calle;141;Celia Zegers;225484166;NO;No Aplica;No Aplica
+SAPU Villa O'Higgins;La Florida;Calle;870;Santa Julia;222827112;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Villa O'Higgins;La Florida;Calle;870;Santa Julia;222816402;NO;No Aplica;No Aplica
+Centro de Salud Familiar Santa Anselma;La Cisterna;Calle;8365;Fernando de Aragón;800500457;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Carlos Godoy;Maipú;Avenida;1565;El Conquistador;222562067;NO;No Aplica;No Aplica
+Centro de Salud Familiar Malaquías Concha;La Granja;Avenida;585;Linares;225269103;NO;No Aplica;No Aplica
+Centro Médico y Dental MegaSalud La Florida;La Florida;Avenida;7747;Vicuña;224257300;NO;No Aplica;No Aplica
+Centro de Salud Familiar Presidenta Michelle Bachelet;Maipú;Calle;776;Nueva San Martín;225742750;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental La Florida Dos;La Florida;Avenida;7372;Vicuña Mackenna Poniente, Local A-1;6007071010;NO;No Aplica;No Aplica
+Centro de Salud Familiar Julio Acuña Pinzón;Lo Espejo;Avenida;8260;Central Raúl Silva Henríquez;800500460;NO;No Aplica;No Aplica
+SAR Julio Acuña Pinzón;Lo Espejo;Avenida;8260;Central;227800559;SI;Urgencia ambulatoria (SAR);No Aplica
+Centro Vida Integra de La Florida;La Florida;Avenida;1396;Walker;222860066;NO;No Aplica;No Aplica
+Clínica Astra La Florida;La Florida;Avenida;7255;Vicuña Mackenna, Oficinas 202-203;222217198;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Modelo;San Ramón;Calle;6543;Alvear;225769980;NO;No Aplica;No Aplica
+SAPU Padre Esteban Gumucio;La Granja;Avenida;281;Padre Esteban Gumucio;225253063;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Padre Esteban Gumucio Vives;La Granja;Avenida;281;Central;225250363;NO;No Aplica;No Aplica
+Clínica Vespucio;La Florida;Calle;190;Serafín Zamora;224287600;SI;Urgencia Hospitalaria (UEH);No Aplica
+Laboratorio Vida Integra;La Florida;Calle;190;Serafín Zamora;222211287;NO;No Aplica;No Aplica
+Centro de Salud Familiar Bellavista;La Florida;Calle;6420;Froilan Roa;226115900;NO;No Aplica;No Aplica
+Centro Asistencial AChS La Florida;La Florida;Avenida;6903;Vicuña;223887200;NO;No Aplica;No Aplica
+Centro Integramédica La Florida;La Florida;Avenida;6969;Vicuña Mackenna Oriente;224257300;NO;No Aplica;No Aplica
+Posta de Salud Rural Las Perdices;La Florida;Calle;6706;El Panul;222855199;NO;No Aplica;No Aplica
+SAPU María Pinto;Maria Pinto;Calle;78;Francisco Costabal;226125002;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro Odontológico Uno Salud Dental La Florida;La Florida;Calle;894;Froilán Roa;6007071010;NO;No Aplica;No Aplica
+Centro de Salud Familiar Adriana Madrid De Costabal;Maria Pinto;Avenida;S/N;Francisco Costabal;225745000;NO;No Aplica;No Aplica
+Integramédica Florida Vespucio;La Florida;Avenida;7110;Vicuña Mackenna;6006366666;NO;No Aplica;No Aplica
+Centro Integramédica Oeste;Cerrillos;Avenida;1501;Américo Vespucio;228217200;NO;No Aplica;No Aplica
+Centro de Salud Familiar Clara Estrella;Lo Espejo;Calle;6868;Putre;800500459;NO;No Aplica;No Aplica
+SAPU La Florida;La Florida;Avenida;6015;La Florida;222854792;SI;Urgencia Ambulatoria (SAPU);Corto
+SAPU Clara Estrella;Lo Espejo;Calle;6868;Putre;225211977;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar La Florida;La Florida;Avenida;6015;La Florida;222854792;NO;No Aplica;No Aplica
+Centro de Salud Mutual CChC La Florida;La Florida;Avenida;6381;Vicuña;222033737;NO;No Aplica;No Aplica
+Hospital Clínico Metropolitano La Florida Dra. Eloísa Díaz Insunza;La Florida;Calle;6542;Froilan Roa;225681880;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Salud Familiar Dra. Ana María Juricic;Maipú;Calle;1841;El Conquistador;225144154;NO;No Aplica;No Aplica
+SAPU Dra. Ana María Juricic;Maipú;Calle;1841;El Conquistador;225745352;SI;Urgencia Ambulatoria (SAPU);Corto
+Posta de Salud Rural Rinconada de Maipú;Maipú;Calle;S/N;Camino Rinconada;Pendiente;NO;No Aplica;No Aplica
+Centro Vida Integra de San Miguel;San Miguel;Avenida;6251;Gran Avenida José Miguel Carrera;224107400;NO;No Aplica;No Aplica
+Servicios Médicos C y C;Maipú;Pasaje;261;Paula Jaraquemada;225501400;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Dr. Salvador Allende;San Joaquín;Calle;472;Juan Aravena;225769930;NO;No Aplica;No Aplica
+SAPU Los Castaños;La Florida;Calle;5820;Diagonal Los Castaños;225760451;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro Médico y Dental MegaSalud Maipú;Maipú;Calle;1770;Alberto Llona;224257400;NO;No Aplica;No Aplica
+Centro de Salud Familiar Los Castaños;La Florida;Calle;5820;Diagonal Los Castaños;225760450;NO;No Aplica;No Aplica
+Clínica Bellolio;Maipú;Calle;1735;Corregidor Zañartu;225501437;NO;No Aplica;No Aplica
+Integramédica Maipú;Maipú;Avenida;1790;Pajaritos;226366666;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Maipú;Maipú;Avenida;33;5 de Abril;6007071010;NO;No Aplica;No Aplica
+Centro de Salud Mutual CChC Maipú;Maipú;Calle;45;Esquina Blanca;228984928;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Coñimo;San Joaquín;Pasaje;275;Catruman;222210557;NO;No Aplica;No Aplica
+Centro de Salud Familiar Recreo;San Miguel;Calle;785;Varas Mena;225761436;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar El Abrazo;Maipú;Calle;1150;5 de Abril;225396511;NO;No Aplica;No Aplica
+Clínica Bupa Santiago;La Florida;Avenida;1455;Departamental;226669999;SI;Urgencia Hospitalaria (UEH);No Aplica
+COSAM Lo Espejo;Lo Espejo;Pasaje;2379;confirmar;225170903;NO;No Aplica;No Aplica
+Centro Médico Vida Integra Maipú;Maipú;Avenida;1958;Pajaritos;6006008432;NO;No Aplica;No Aplica
+Centro de Referencia de Salud de Maipú;Maipú;Calle;1001;Camino Rinconada;225746450;NO;No Aplica;No Aplica
+Hospital Clínico Metropolitano El Carmen Doctor Luis Valentín Ferrada;Maipú;Calle;1201;Camino a Rinconada, Avenida El Olimpo;226120491-226120256;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Salud Familiar San Luis;Peñalolén;Calle;5370;La Pradera;229397311;NO;No Aplica;No Aplica
+SAPU Dental Valledor Tres;Lo Espejo;Calle;3849;José María Caro;Pendiente;SI;Ambulatoria Dental;No Aplica
+Centro de Salud Familiar Dra. Mariela Salgado Zepeda;Lo Espejo;Calle;3849;José María Caro;Pendiente;NO;No Aplica;No Aplica
+SAPU Dra. Mariela Salgado;Lo Espejo;Avenida;3849;Cardenal Caro;227800561;SI;Urgencia Ambulatoria (SAPU);Corto
+UNO Salud MAIPU 2;Maipú;Calle;2196;Monumento;227639182;NO;No Aplica;No Aplica
+Centro Médico y Dental RedSalud;San Miguel;Avenida;5728;Gran Avenida José Miguel Carrera;224257500;NO;No Aplica;No Aplica
+SAPU Santa Teresa de Los Andes;San Joaquín;Pasaje;5379;Huara;225761163;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Santa Teresa de Los Andes;San Joaquín;Pasaje;5379;Huara;225761163;NO;No Aplica;No Aplica
+Clínica Astra San Miguel;San Miguel;Avenida;5681;Gran Avenida José Miguel Carrera;225217004;NO;No Aplica;No Aplica
+Clínica Astra;Maipú;Calle;21;Tristán Valdés;225343783;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. José Eduardo Ahués Salame;Maipú;Avenida;2200;Independencia;225742750;NO;No Aplica;No Aplica
+Centro Médico Clínica Hospital Profesor;Maipú;Calle;66;Tristán Valdés;222996000;NO;No Aplica;No Aplica
+SAR San Miguel;San Miguel;Calle;567;Llico;Pendiente;SI;Urgencia ambulatoria (SAR);No Aplica
+SAPU Maipú;Maipú;Avenida;2470;Pajaritos;224828308;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Maipú;Maipú;Avenida;2470;Ramón Freire;800500354;NO;No Aplica;No Aplica
+Centro Asistencial AChS Maipú;Maipú;Avenida;2521;Pajaritos;223857400;NO;No Aplica;No Aplica
+SAPU San Luis;Peñalolén;Calle;5556;Los Cerezos;229397301;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro Comunitario de Salud Familiar Atacama;San Miguel;Calle;1462;Segunda Avenida;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural Pichi;Alhué;Calle;S/N;Sector Pichi;Pendiente;NO;No Aplica;No Aplica
+SAR Dr. Amador Neghme R.;Pedro Aguirre Cerda;Calle;6043;Llanquihue, Población Dávila;226124000;SI;Urgencia ambulatoria (SAR);No Aplica
+Centro de Salud Familiar Amador Neghme;Pedro Aguirre Cerda;Calle;2085;Alhué;800500462;NO;No Aplica;No Aplica
+COSAM Maipú;Maipú;Calle;1000;O'Higgins;227667286;NO;No Aplica;No Aplica
+Centro de Salud Familiar Villa Sur;Pedro Aguirre Cerda;Calle;6035;Clotario Blest;225214665;NO;No Aplica;No Aplica
+Centro de Salud Familiar Félix de Amesti;Macul;Calle;5557;El Líbano;227192800;NO;No Aplica;No Aplica
+Centro de Salud Familiar Enfermera Sofía Pincheira;Cerrillos;Avenida;7590;Las Torres;225747800;NO;No Aplica;No Aplica
+SAR Enfermera Sofía Pincheira;Cerrillos;Avenida;7590;Las Torres;225747800;SI;Urgencia ambulatoria (SAR);No Aplica
+Hospital Dr. Luis Tisné B. (Santiago, Peñalolén);Peñalolén;Avenida;5150;Las Torres;224725200;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Referencia de Salud Cordillera Oriente;Peñalolén;Avenida;5100;Las Torres;225688200;NO;No Aplica;No Aplica
+Laboratorio Clínico Holanda Ltda.;Maipú;Avenida;2989;Manuel Rodríguez;228360700;NO;No Aplica;No Aplica
+CECOSF Dr. Miguel Enríquez Espinosa;Pedro Aguirre Cerda;Calle;6041;Cooperación;223965660;NO;No Aplica;No Aplica
+San Nicolás;San Miguel;Avenida;5018;Gran Avenida José Miguel Carrera;225514611;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Martín Henríquez;San Joaquín;Calle;4537;Martín Henríquez; 226124506;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Reverendo Javier Peró;San Joaquín;Calle;145;Reverendo Javier Peró;225528116;NO;No Aplica;No Aplica
+Consultorio Escuela de formación policial de Carabineros de Chile;Cerrillos;Calle;6655;Pedro Aguirre Cerda;229221415;NO;No Aplica;No Aplica
+Centro Médico San Joaquín Red de Salud UC CHRISTUS;Macul;Avenida;4686;Vicuña;225521765;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Bueras;Maipú;Calle;456;Bueras;225321459;NO;No Aplica;No Aplica
+Clínica Cima Salud;San Miguel;Avenida;4564;Gran Avenida José Miguel Carrera;223989000;NO;No Aplica;No Aplica
+Global Help;Macul;Calle;3626;Dr. Amador Neghme;222930501;NO;No Aplica;No Aplica
+COSAM Cerrillos;Cerrillos;Calle;6161;19 de Septiembre;225384083;NO;No Aplica;No Aplica
+Centro Odontológico Macul;Macul;Calle;4345;Arturo Prat;225739600;NO;No Aplica;No Aplica
+Centro de Salud Familiar Padre Alberto Hurtado;Macul;Calle;4345;Arturo Prat;225739500;NO;No Aplica;No Aplica
+SAPU Dr. Norman Voulliéme;Cerrillos;Calle;1323;Salomón Sack;225746663;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar Dr. Norman Voulliéme;Cerrillos;Calle;6376;Salomón Sack;225746650;NO;No Aplica;No Aplica
+COSAM Pedro Aguirre Cerda;Pedro Aguirre Cerda;Avenida;2256;La Marina;800500020;NO;No Aplica;No Aplica
+Clínica Santa Rosa;San Joaquín;Calle;493;Copacabana;225524816;NO;No Aplica;No Aplica
+Centro de Especialidades Clinicas spa (medicec);Macul;Avenida;4214;Macul;229338392;NO;No Aplica;No Aplica
+Centro Clínico Ochagavía;Pedro Aguirre Cerda;Calle;4676;Club Hípico;800381700;NO;No Aplica;No Aplica
+Centro de Salud Familiar Arturo Baeza Goñi;San Joaquín;Calle;399;Álvarez de Toledo;225960836;NO;No Aplica;No Aplica
+COSAM San Joaquín;San Joaquín;Calle;569;Álvarez de Toledo;225539035;NO;No Aplica;No Aplica
+Centro de diagnóstico y resonancia - Anestimagen;San Miguel;Calle;1299;Salesianos;225950717;NO;No Aplica;No Aplica
+Clínica Psiquiátrica Nelly Vergara;San Miguel;Calle;752;Curiñanca;223594090;NO;No Aplica;No Aplica
+Multimédica Ltda.;San Miguel;Calle;4005;Llano Subercaseaux;225514611;NO;No Aplica;No Aplica
+Clínica San Miguel;San Miguel;Calle;943;Álvarez de Toledo;225510862;NO;No Aplica;No Aplica
+Centro de Salud Familiar Clotario Blest;Maipú;Calle;999;Los Trabajadores;Pendiente;NO;No Aplica;No Aplica
+Centro Integramédica San Miguel;San Miguel;Calle;3965;El Llano Subercaseaux;226367445;NO;No Aplica;No Aplica
+Centro de Salud Familiar Padre Pierre Dubois (Ex La Feria);Pedro Aguirre Cerda;Calle;4772;Los Comandos;225760800;NO;No Aplica;No Aplica
+SAPU La Feria;Pedro Aguirre Cerda;Calle;3939;Uno Oriente;225966818;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro Odontológico Uno Salud Dental San Miguel;San Miguel;Avenida;3811;Llano Subercaseaux;6007071010;NO;No Aplica;No Aplica
+Posta de Salud Rural San Antonio de Naltagua;Isla de Maipo;Calle;S/N;Aldea San Antonio Naltagua;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar Lo Valledor Norte;Pedro Aguirre Cerda;Avenida;4000;Central;225747700;NO;No Aplica;No Aplica
+Clínica Universidad de Chile Quilín;Peñalolén;Calle;3349;Mar Tirreno;229770017;NO;No Aplica;No Aplica
+Centro Asistencial AChS San Miguel;San Miguel;Avenida;970;Alcalde;225544399;NO;No Aplica;No Aplica
+SAR Enrique Molina;San Joaquín;Calle;307;Schwager;Pendiente;SI;Urgencia Ambulatoria (SAR);No Aplica
+Centro de Salud Familiar San Joaquín;San Joaquín;Calle;3223;Francisca de Rimini;225960846;NO;No Aplica;No Aplica
+Corporación Renal Infantil Mater;San Miguel;Calle;3637;San Ignacio de Loyola;25401916;NO;No Aplica;No Aplica
+Unidad de Salud FuncionarioS.S Metropolitano Sur;San Miguel;Avenida;3453;Santa Rosa;Pendiente;NO;No Aplica;No Aplica
+Actividades gestionadas por la Dirección del Servicio para apoyo de la Red (S.S Metropolitano Sur);San Miguel;Avenida;3453;Santa Rosa;Pendiente;NO;No Aplica;No Aplica
+PRAIS (S.S Metropolitano Sur);San Miguel;Avenida;3453;Santa Rosa;Pendiente;NO;No Aplica;No Aplica
+Clínica del Carmen;Macul;Avenida;3679;Quilín;224722700;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Sierra Bella;San Joaquín;Calle;3208;Sierra Bella;225962136;NO;No Aplica;No Aplica
+Hospital de Enfermedades Infecciosas Dr. Lucio Córdova (Santiago, San Miguel);San Miguel;Avenida;3204;Gran Avenida José Miguel Carrera;225763700;NO;No Aplica;No Aplica
+Hospital Barros Luco Trudeau (Santiago, San Miguel);San Miguel;Avenida;3204;Gran Avenida José Miguel Carrera;225763700;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Imagenología Mamaria Metropolitano;San Miguel;Avenida;3204;Gran Avenida José Miguel Carrera;Pendiente;NO;No Aplica;No Aplica
+Hospital Dr. Exequiel González Cortés (Santiago, San Miguel);San Miguel;Avenida;3300;Gran Avenida José Miguel Carrera;225765700;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Salud Familiar Dr. Iván Insunza;Maipú;Calle;491;Mar de Chile;222750375;NO;No Aplica;No Aplica
+SAPU Dr. Iván Insunza;Maipú;Calle;491;Mar de Chile;222570375;SI;Urgencia Ambulatoria (SAPU);Corto
+Dispostivo Modular de Salud H. Barros Luco;San Miguel;Avenida;3204;Gran Avenida José Miguel Carrera;Pendiente;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Peñalolén;Peñalolén;Avenida;2701;Consistorial, Locales B28 y B29;6007071010;NO;No Aplica;No Aplica
+Centro Médico Alto Tobalaba - Vacunatorio Vacci Protex;Peñalolén;Avenida;11870;Mariano Sánchez Fontecilla;227586808;NO;No Aplica;No Aplica
+Centro de Salud Familiar Barros Luco;San Miguel;Calle;1319;Ángel Guarello;224063400;NO;No Aplica;No Aplica
+Centro de Salud Familiar Edgardo Enríquez Fröedden;Pedro Aguirre Cerda;Avenida;2650;Clotario Blest;800500464;NO;No Aplica;No Aplica
+SAPU Edgardo Enríquez Froedden;Pedro Aguirre Cerda;Calle;2650;Clotario Blest;227980512;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro Comunitario de Salud Familiar Esperanza Andina;Peñalolén;Calle;2087;Nueva Vida;229397111;NO;No Aplica;No Aplica
+INTEGRAMEDICA S.A. SUCURSAL PEÑALOLEN;Peñalolén;Avenida;2100;Avda. Consistorial (Locales 302 y 402);226366666;NO;No Aplica;No Aplica
+COSAM Macul;Macul;Calle;3556;Gregorio de la Fuente;226591746;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Yalta;San Joaquín;Calle;2514;Yalta;225960889;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Buzeta;Cerrillos;Avenida;3955;Carlos Valdovinos;Pendiente;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Macul;Macul;Avenida;2555;José Pedro Alessandri;6007071010;NO;No Aplica;No Aplica
+Centro Médico Macul;Macul;Calle;2555;Macul;222373909;NO;No Aplica;No Aplica
+SAR Carol Urzúa Ibáñez;Peñalolén;Avenida;1960;Consistorial;229397401;SI;Urgencia ambulatoria (SAR);No Aplica
+Centro de Salud Familiar Lo Hermida;Peñalolén;Calle;6931;Coronel Alejandro Sepúlveda;229397400;NO;No Aplica;No Aplica
+Centro de Salud Familiar Carol Urzúa Ibáñez;Peñalolén;Avenida;1960;Consistorial;229397100;NO;No Aplica;No Aplica
+Centro de Salud Familiar Santa Julia;Macul;Calle;2309;Santa Julia;226591713;NO;No Aplica;No Aplica
+SAPU Santa Julia;Macul;Calle;2309;Santa Julia;226591747;SI;Urgencia Ambulatoria (SAPU);Corto
+Hospital Clínico Instituto de Seguridad del Trabajo de Santiago;Santiago;Calle;1410;Placer;228107800;SI;Urgencia Hospitalaria (UEH);No Aplica
+Establecimiento Penitenciario Santiago 1;Santiago;Calle;1978;Nueva Centenario;979451228;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Villa Francia;Estación Central;Calle;1217;Las Estepas;225762884;NO;No Aplica;No Aplica
+Consultorio Escuela de Suboficiales de Carabineros de Chile;Macul;Calle;2601;Rodrigo de Araya;229221357;NO;No Aplica;No Aplica
+SAPU Lo Hermida;Peñalolén;Calle;5960;Litoral;229397401;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar Padre Gerardo Whelan;Peñalolén;Avenida;5960;Litoral;229397600;NO;No Aplica;No Aplica
+Centro de Salud Familiar San José de Chuchunco;Estación Central;Calle;6025;Coihaique;225746800;NO;No Aplica;No Aplica
+SAPU San José de Chuchunco;Estación Central;Calle;6025;Coihaique;225746804;SI;Urgencia Ambulatoria (SAPU);Largo
+Hospital Penitenciario;Santiago;Avenida;1902;Pedro Montt;225544018;NO;No Aplica;No Aplica
+Clínica Macul;Macul;Calle;3240;Rodrigo de Araya;222711066;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Luis Ferrada;Maipú;Calle;5161;Tierra Fértil;226776941;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Lo Errázuriz;Maipú;Avenida;S/N;Sur de Chile;227419209;NO;No Aplica;No Aplica
+Centro de Salud Familiar Padre Vicente Irarrázabal;Estación Central;Calle;1854;21 de Mayo;225746400;NO;No Aplica;No Aplica
+SAPU Padre Vicente Irarrázabal;Estación Central;Calle;1854;21 de Mayo;225746404;SI;Urgencia Ambulatoria (SAPU);Corto
+COSAM Ñuñoa;Ñuñoa;Calle;3650;Pichirangui;225750203;NO;No Aplica;No Aplica
+Centro de Salud Familiar Cardenal Silva Henríquez;Peñalolén;Calle;1020;Río Claro;229397500;NO;No Aplica;No Aplica
+Clínica Santa Inés;Santiago;Calle;1840;Arturo Prat;225569036;NO;No Aplica;No Aplica
+Centro de Diálisis Nephrocare San Vicente;Santiago;Calle;1759;San Vicente;Pendiente;NO;No Aplica;No Aplica
+SAPU Rosita Renard;Ñuñoa;Calle;2801;Las Encinas;223792284;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar Rosita Renard;Ñuñoa;Calle;2801;Las Encinas;225751100;NO;No Aplica;No Aplica
+SAPU La Faena;Peñalolén;Avenida;7250;Los Orientales;229397201;SI;Urgencia Ambulatoria (SAPU);Largo
+COSAM Peñalolén;Peñalolén;Avenida;7250;Oriental;229397280;NO;No Aplica;No Aplica
+Centro de Salud Familiar Arauco;Santiago;Calle;3288;Sepúlveda Leyton;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar La Faena;Peñalolén;Avenida;7250;Oriental;229397200;NO;No Aplica;No Aplica
+Centro Asistencial AChS Egaña;Peñalolén;Calle;1476;Américo Vespucio;228704000;NO;No Aplica;No Aplica
+Posta de Salud Rural Santa Emilia;Maria Pinto;Calle;S/N;Aldea Santa Emilia;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar Padre Orellana;Santiago;Calle;1706;Padre Orellana;225443335;NO;No Aplica;No Aplica
+SAPU Centro de Urgencia Ñuñoa;Ñuñoa;Calle;1320;Juan Moya;223792430;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar Salvador Bustos;Ñuñoa;Avenida;4369;Grecia;225752450;NO;No Aplica;No Aplica
+COSAM Estación Central;Estación Central;Calle;1313;Padre Vicente Irarrázabal;227764239;NO;No Aplica;No Aplica
+Clínica Santa Rosa;Santiago;Calle;1503;Santa Rosa;226594300;NO;No Aplica;No Aplica
+Centro de Salud Familiar Santiago Occidente de Carabineros de Chile;Estación Central;Avenida;6701;Gladys;229122700;NO;No Aplica;No Aplica
+Centro Médico y Dental ISP;Ñuñoa;Calle;1000;Marathon;225755241;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Villa Olímpica;Ñuñoa;Avenida;1350;Salvador;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Río Claro;Pudahuel;Pasaje;8312 - 8314;Río Claro;Pendiente;NO;No Aplica;No Aplica
+Clínica Juan Pablo II;Santiago;Calle;1448;Santa Rosa;224835100;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Padre Félix Gutiérrez Donoso;Pudahuel;Calle;267;Laguna Conguillío / Laguna San Rafael S/N;225759820;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Dragones de La Reina;La Reina;Calle;616;Dragones de La Reina;223610102;NO;No Aplica;No Aplica
+Hospital Clínico San Borja Arriarán;Santiago;Calle;1234;Santa Rosa;225749000;SI;Urgencia Hospitalaria (UEH);No Aplica
+Instituto Nacional de Rehabilitación Infantil Presidente Pedro Aguirre Cerda;Peñalolén;Avenida;5969;José Arrieta;225754350;NO;No Aplica;No Aplica
+Clínica Psicoterapia los Tiempos;La Reina;Avenida;6024;José Arrieta;222270273;NO;No Aplica;No Aplica
+Policlínico Institucional de Gendarmería de Chile - Santiago;Santiago;Calle;1173;Artemio Gutiérrez;224826800;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Gustavo Molina;Pudahuel;Calle;8759;Laguna Sur;225743950;NO;No Aplica;No Aplica
+SAPU Dr. Gustavo Molina;Pudahuel;Calle;8759;Laguna Sur;227495991;SI;Urgencia Ambulatoria (SAPU);Largo
+Vacunatorio Pharmavisan;Ñuñoa;Calle;263;Los Jardines;223039400;NO;No Aplica;No Aplica
+Clínica Hospital del Profesor;Estación Central;Calle;4860;Alameda;227786412;SI;Urgencia Hospitalaria (UEH);No Aplica
+Red Salud Santiago ex Clínica Bicentenario;Estación Central;Avenida;4850;Libertador Bernardo O'Higgins;229983435;SI;Urgencia Hospitalaria (UEH);No Aplica
+SAPU Violeta Parra;Pudahuel;Avenida;7447;La Travesía;227494626;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Violeta Parra;Pudahuel;Avenida;7447;Travesía;227490363;NO;No Aplica;No Aplica
+COSAM La Reina;La Reina;Calle;480;Quillahua;225750652;NO;No Aplica;No Aplica
+Centro de Salud Familiar Juan Pablo II ( La Reina);La Reina;Calle;440;Parinacota;224816388;NO;No Aplica;No Aplica
+Hospital Clínico Mutual de Seguridad C.CH.C.;Estación Central;Avenida;4848;Libertador Bernardo O'Higgins;227794778;SI;Urgencia Hospitalaria (UEH);No Aplica
+Instituto Teletón Santiago;Estación Central;Avenida;4620;Libertador Bernardo O'Higgins;227793565;NO;No Aplica;No Aplica
+Unidad de Salud FuncionarioS.S Metropolitano Central;Santiago;Calle;381;Victoria Subercaseaux;Pendiente;NO;No Aplica;No Aplica
+PRAIS (S.S Metropolitano Central);Santiago;Calle;381;Victoria Subercaseaux;Pendiente;NO;No Aplica;No Aplica
+SAPU Consultorio Nº1;Santiago;Calle;1323;Copiapó;224833408;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar N° 1 Dr. Ramón Corbalán Melgarejo;Santiago;Calle;1323;Copiapó;800500357;NO;No Aplica;No Aplica
+Vacunatorio Medicien_Ñuñoa;Ñuñoa;Avenida;3419;Irarrázaval Nro. 3419, local 2;562 32013750;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar María Salas;Curacaví;No Aplica;35.5;Batalla San Juan, Sector de Cerrillos;Pendiente;NO;No Aplica;No Aplica
+Clínica Pedro Montt;Santiago;Calle;779;Lord Cochrane;226886452;NO;No Aplica;No Aplica
+Clínica Oriente;Ñuñoa;Calle;92;Cauquenes;222275077;NO;No Aplica;No Aplica
+Centro Vida Integra de Ñuñoa;Ñuñoa;Avenida;3505;Pedro de Valdivia;224107400;NO;No Aplica;No Aplica
+Centro Médico Irarrázaval Red de Salud UC CHRISTUS;Ñuñoa;Avenida;4949;Irarrázaval;226767000;NO;No Aplica;No Aplica
+Vacunatorio Varik;Ñuñoa;Avenida;2401;Irarrázaval, Oficina 812;229932323;NO;No Aplica;No Aplica
+VACUNATORIO FASTFARMACHILE;Las Condes;Avenida;9792;Las Condes ( of 411);56 232567207;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Ñuñoa;Ñuñoa;Avenida;2401;Irarrázaval, Local 12;6007071010;NO;No Aplica;No Aplica
+Centro Médico y Dental MegaSalud Ñuñoa;Ñuñoa;Avenida;2303;Irarrázaval;223790233;NO;No Aplica;No Aplica
+Centro Asistencial AChS Alameda;Estación Central;Avenida;4227;Libertador Bernardo O'Higgins;228704200;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Estación Central;Estación Central;Calle;122;San Francisco de Borja, Local S122-A;6007071010;NO;No Aplica;No Aplica
+Integramédica Sucursal Plaza Egaña;La Reina;Avenida;5862;Larraín;229387150;NO;No Aplica;No Aplica
+Centro Médico - PDI;Ñuñoa;Calle;235;Brown Norte;227081326;NO;No Aplica;No Aplica
+Clínica Los Coihues;Estación Central;Calle;6561;Laguna Sur;224657900;NO;No Aplica;No Aplica
+Hospital Militar de Santiago;La Reina;Avenida;9100;Larraín;223653000;SI;Urgencia Hospitalaria (UEH);No Aplica
+Clínica Psiquiatrica Renacer;Ñuñoa;Calle;2404;Capitán Orella;222253545;NO;No Aplica;No Aplica
+Centro Odontológico La Reina;La Reina;Calle;25;Cordillera;224816184;NO;No Aplica;No Aplica
+Centro Integramédica Estación Central;Estación Central;Avenida;3466;Libertador Bernardo O'Higgins;224345500;NO;No Aplica;No Aplica
+SAR Dr. Raúl Yazigi;Lo Prado;Calle;214;Caleta Iquique;223641533;SI;Urgencia ambulatoria (SAR);No Aplica
+Centro de Salud Familiar Las Mercedes;Estación Central;Calle;5020;Embajador Quintana;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Raúl Yazigi;Lo Prado;Calle;214;Caleta Iquique;800500256;NO;No Aplica;No Aplica
+Centro Asistencial AChS La Reina;La Reina;Avenida;50;Jorge;222730422;NO;No Aplica;No Aplica
+Clínica Corporación de Ayuda al Paciente Mental;Ñuñoa;Avenida;1890;Condell;222336970;NO;No Aplica;No Aplica
+Centro de Salud Familiar Nº 5;Santiago;Calle;98;Unión Latinoamericana;225748400;NO;No Aplica;No Aplica
+Hospital Carabineros;Ñuñoa;Calle;2200;Simón Bolívar;228700000;SI;Urgencia Hospitalaria (UEH);No Aplica
+Clínica Recuperación Alcohol Alfa;Ñuñoa;Avenida;2581;Simón Bolívar;222047462;NO;No Aplica;No Aplica
+Centro Atencion Clínica Santa María La Reina;La Reina;Avenida;345;Ossa;223525100;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Santa Corina;Pudahuel;Calle;645;Relacionador Aranguíz;225759981;NO;No Aplica;No Aplica
+SAPU Pablo Neruda;Lo Prado;Calle;6741;Dorsal;223621129;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Pablo Neruda;Lo Prado;Calle;6741;Dorsal;225751450;NO;No Aplica;No Aplica
+Centro de Salud Universidad de Santiago de Chile;Estación Central;Avenida;3556;El Belloto;227183555;NO;No Aplica;No Aplica
+Centro Médico y Dental CAPREDENA;Santiago;Avenida;284;Bulnes;224227828;NO;No Aplica;No Aplica
+Red-Lab;Ñuñoa;Calle;155;Malaquías Concha;222220058;NO;No Aplica;No Aplica
+Unidad de Salud Funcionario S.S Metropolitano Occidente;Santiago;Calle;2429;Alameda Bernardo O'Higgins;Pendiente;NO;No Aplica;No Aplica
+Actividades gestionadas por la Dirección del Servicio para apoyo de la Red (S.S Metropolitano Occidente);Santiago;Calle;2429;Alameda Bernardo O'Higgins;Pendiente;NO;No Aplica;No Aplica
+PRAIS (S.S Metropolitano Occidente);Santiago;Calle;2429;Alameda Bernardo O'Higgins;Pendiente;NO;No Aplica;No Aplica
+COSAM Pudahuel;Pudahuel;Calle;8629;Santa Corina;226442614;NO;No Aplica;No Aplica
+COSAM Santiago;Santiago;Calle;21;Rojas Jiménez;223867750;NO;No Aplica;No Aplica
+Espacio EME;Ñuñoa;Calle;2911;Ricardo Lyon;227452614;NO;No Aplica;No Aplica
+Centro de Salud Familiar Pudahuel Poniente;Pudahuel;Calle;620;Federico Errázuriz;225745103;NO;No Aplica;No Aplica
+COSAM Provisam;Providencia;Calle;2051;Manuel Montt;223414150;NO;No Aplica;No Aplica
+Clínica Central;Santiago;Calle;231;San Isidro;224631400;NO;No Aplica;No Aplica
+Centro Médico Vida Integra Alameda;Santiago;Calle;1620;Alameda;224107400;NO;No Aplica;No Aplica
+SAR Violeta Parra;Pudahuel;Calle;800;Teniente Cruz;Pendiente;SI;Urgencia ambulatoria (SAR);No Aplica
+Policlínico Rosita Benveniste;San Bernardo;Calle;1857;Santa Teresa;957181168;NO;No Aplica;No Aplica
+Centro de Referencia de Salud Salvador Allende;Pudahuel;Calle;800;Teniente Cruz;225742695;NO;No Aplica;No Aplica
+Laboratorio Referencia Oxman y Cía. Ltda.;Santiago;Calle;79;Bulnes;226984440;NO;No Aplica;No Aplica
+Centro Médico y Dental MegaSalud Alameda;Santiago;Avenida;1511;Libertador Bernardo O'Higgins;224257000;NO;No Aplica;No Aplica
+Clínica San Andrés;Providencia;Calle;695;Los Jesuitas;222055344;NO;No Aplica;No Aplica
+Laboratorio Bio Reval Ltda;Santiago;Calle;1112;Libertador Bernardo O'Higgins;226971924;NO;No Aplica;No Aplica
+Elsa;Providencia;Avenida;1056;Italia;224763100;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Hernán Alessandri;Providencia;Calle;857;Los Jesuitas;227064300;NO;No Aplica;No Aplica
+Centro Médico HTS SpA;Providencia;Avenida;210;Vicuña Mackenna;226853763;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Plaza México;Quinta Normal;Calle;4490;Huérfanos;222726944;NO;No Aplica;No Aplica
+Hospital de Urgencia Asistencia Pública Dr. Alejandro del Río;Santiago;Avenida;125;Portugal;224681100;SI;Urgencia Hospitalaria (UEH);No Aplica
+Consultorio Escuela de Carabineros de Chile;Providencia;Calle;1842;Antonio Varas;229221243;NO;No Aplica;No Aplica
+Centro Médico Lira Red de Salud UC CHRISTUS;Santiago;Calle;85;Lira;Pendiente;NO;No Aplica;No Aplica
+Servicio Médico Dental (S) Armada de Chile;Quinta Normal;Calle;4040;Portales;227731888;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Elena Caffarena;Providencia;Calle;520;Marín;222054465;NO;No Aplica;No Aplica
+Hospital del Trabajador Santiago;Providencia;Calle;185;Ramón Carnicer;226853333;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro Odontológico Uno Salud Dental Santa Lucía;Santiago;Calle;12;Santa Rosa, Local 14;6007071010;NO;No Aplica;No Aplica
+Hernández y Gutiérrez Ltda;Santiago;Avenida;776;Libertador Bernardo O'Higgins;226388846;NO;No Aplica;No Aplica
+Clínica Instituto El Cedro;La Reina;Calle;1240;Julia Berstein;222751152;NO;No Aplica;No Aplica
+Laboratorio Perfil Bioquímico;Santiago;Calle;510;Guayaquil;226395908;NO;No Aplica;No Aplica
+SAPU Aguilucho;Providencia;Calle;3235;El Aguilucho;227066753;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro Integramédica Forestal;Santiago;Calle;654;Alameda;223536800;NO;No Aplica;No Aplica
+Centro Médico y Dental Servicio de Bienestar MOP;Santiago;Calle;59;Morandé;224493355;NO;No Aplica;No Aplica
+Centro Médico y Dental Fundación Asistencial Trabajadores Del Banco del Estado de Chile;Santiago;Calle;70;Profesora Amanda Labarca;223479000;NO;No Aplica;No Aplica
+Centro de Cáncer Red de Salud UC CHRISTUS;Santiago;Calle;319;Diagonal Paraguy;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar Ossandon;La Reina;Calle;8419;Echenique;226517295;NO;No Aplica;No Aplica
+SAPU La Reina;La Reina;Calle;8419;Echenique;226517291;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Aguilucho;Providencia;Calle;3292;El Aguilucho;222743516;NO;No Aplica;No Aplica
+Centro de Especialidades Médicas Red de Salud UC CHRISTUS;Santiago;Calle;352;Marcoleta;Pendiente;NO;No Aplica;No Aplica
+Laboratorio Labocenter;Santiago;Calle;22;Mac-Iver;226330867;NO;No Aplica;No Aplica
+COSAM Municipal de Pudahuel;Pudahuel;Calle;9176;San Pablo;226402572 - 226402563;NO;No Aplica;No Aplica
+SAPU Pudahuel Poniente;Pudahuel;Calle;620;Federico Errázuriz;226433336;SI;Urgencia Ambulatoria (SAPU);Corto
+Hospital San Juan de Dios (Santiago, Santiago);Santiago;Calle;3255;Huérfanos;225741900;SI;Urgencia Hospitalaria (UEH);No Aplica
+Instituto Oftalmológico Dr. David Bitran;Providencia;Avenida;943;Salvador;225941401;NO;No Aplica;No Aplica
+Hospital Clínico Red de Salud UC CHRISTUS;Santiago;Calle;367;Marcoleta;223543103;SI;Urgencia Hospitalaria (UEH);No Aplica
+Vacunatorio Marcoleta de la Pontificia Universidad Católica de Chile;Santiago;Calle;350;Marcoleta;223543534;NO;No Aplica;No Aplica
+Clínica UC Red de Salud UC CHRISTUS;Santiago;Calle;40;Lira;223696000;NO;No Aplica;No Aplica
+Centro de Salud Vida Integra Bandera;Santiago;Calle;101;Bandera;222333700;NO;No Aplica;No Aplica
+Centro de Oncología Preventiva de la Universidad de Chile;Quinta Normal;Calle;299;Carlos Schachtebeck;226822057;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Moneda;Santiago;Calle;953;Moneda;6007071010;NO;No Aplica;No Aplica
+Integramédica Bandera;Santiago;Calle;162;Bandera;226366666;NO;No Aplica;No Aplica
+Centro Asistencial AChS Santiago;Santiago;Calle;1428;Agustinas;225657200;NO;No Aplica;No Aplica
+Clínica Psiquiátrica Santa Cecilia;Santiago;Calle;2247;Huérfanos;226990643;NO;No Aplica;No Aplica
+Centro de Salud Mutual CChC Agustinas;Santiago;Calle;1365;Agustinas;228765700;NO;No Aplica;No Aplica
+Centro de Evaluación del Trabajo (CET) Santiago Centro;Santiago;Calle;865;Agustinas;227879925;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Amapolas;Ñuñoa;Calle;4899;Amapolas;228000649 -228000702;NO;No Aplica;No Aplica
+Laboratorio Sigma;Santiago;Calle;3040;Catedral;226816101;NO;No Aplica;No Aplica
+Mirandes S.P.A.;Providencia;Avenida;726;Salvador;226119550;NO;No Aplica;No Aplica
+Centro CONIN Credes;Providencia;Avenida;1880;Pedro de Valdivia;224810555;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Teatinos;Santiago;Calle;333;Teatinos, Local 335 - 339;6007071010;NO;No Aplica;No Aplica
+Laboratorio Clínico Dipreca - Sala Externa de Toma de Muestras;Santiago;Calle;257;Mac Iver, pisos 9;295177700;NO;No Aplica;No Aplica
+Clínica Astra Providencia;Providencia;Calle;701;Rancagua;222741377;NO;No Aplica;No Aplica
+Centro Integramédica;Santiago;Calle;1147;Huérfanos;226923300;NO;No Aplica;No Aplica
+COSAM Lo Prado;Lo Prado;Calle;1052;San Germán;225744851;NO;No Aplica;No Aplica
+Hospital Digital;Santiago;Calle;670;Huérfanos, Piso 18;933858910;NO;No Aplica;No Aplica
+Centro de Salud Familiar Santa Anita;Lo Prado;Calle;5302;Camino de Loyola;225743051;NO;No Aplica;No Aplica
+SAPU Santa Anita;Lo Prado;Calle;5302;Camino de Loyola;227864684;SI;Urgencia Ambulatoria (SAPU);Corto
+Instituto Clínico Oncológico Fundación Arturo López Pérez;Providencia;Calle;878;Rancagua;224457278;NO;No Aplica;No Aplica
+Centro de Salud Diagnostiko Ltda;Santiago;Calle;121;Victoria Subercaseaux;226328076;NO;No Aplica;No Aplica
+Centro de Salud Familiar Ignacio Domeyko;Santiago;Calle;543;Cueto;225747650;NO;No Aplica;No Aplica
+SAPU Ignacio Domeyko;Santiago;Calle;543;Cueto;224985441;SI;Urgencia Ambulatoria (SAPU);Corto
+JB Medical Test SpA;Santiago;Calle;370;Ahumada, oficina 728;227443387;NO;No Aplica;No Aplica
+Clínica Las Acacias;Providencia;Avenida;537;Salvador;222237977;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental La Reina;La Reina;Avenida;6938;Principe de Gales;6007071010;NO;No Aplica;No Aplica
+Instituto de Enfermedades Circulatorias;Providencia;Calle;988;Miguel Claro;227140600;NO;No Aplica;No Aplica
+Clínica Miguel Claro;Providencia;Calle;988;Miguel Claro;222649487;NO;No Aplica;No Aplica
+Bioánalisis Ltda.;Providencia;Avenida;32;Bustamante;222051976;NO;No Aplica;No Aplica
+Clínica Fundación Gantz;Pudahuel;Calle;8545;El Lazo;226438512;NO;No Aplica;No Aplica
+Instituto Nacional de Enfermedades Respiratorias y Cirugía Torácica;Providencia;Calle;717;José Manuel Infante;225755000;NO;No Aplica;No Aplica
+Laboratorio Santiago Centro;Santiago;Calle;418;San Antonio;226392276;NO;No Aplica;No Aplica
+Centro de Atencion Integral Merced;Santiago;Calle;472;Merced, piso 3;228107802;NO;No Aplica;No Aplica
+Dilab;Providencia;Avenida;6;Vicuña Mackenna, Piso 1;222223112;NO;No Aplica;No Aplica
+Centro de Salud La Araucana Salud;Santiago;Calle;472;Merced;229645751;NO;No Aplica;No Aplica
+Laboratorio Clínico Bionet S.A. - Providencia;Providencia;Avenida;4;Vicuña Mackenna, Piso 3;222224289;NO;No Aplica;No Aplica
+Actividades gestionadas por la Dirección del Servicio para apoyo de la Red (S.S Metropolitano Central);Santiago;Calle;381;Victoria Subercaseaux;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Andacollo;Providencia;Calle;1661;Andacollo;Pendiente;NO;No Aplica;No Aplica
+Centro Metropolitano de Atención Prehospitalaria;Santiago;Calle;176;Nueva Bueras;232204845;SI;Urgencia ambulatoria;No Aplica
+Centro Odontológico Uno Salud Dental Merced;Santiago;Calle;501;Merced, Piso 2;6007071010;NO;No Aplica;No Aplica
+Laboratorio Antonio Concha;Santiago;Calle;346;Merced;222518116;NO;No Aplica;No Aplica
+Centro de Salud Familiar Pudahuel Estrella;Pudahuel;Avenida;8698;San Francisco;225744150;NO;No Aplica;No Aplica
+SAR La Estrella;Pudahuel;Avenida;8631;El Lazo;Pendiente;SI;Urgencia ambulatoria (SAR);No Aplica
+SAPU Dr. Avendaño;Lo Prado;Calle;1087;Teniente Cruz;223621126;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Omega;Santiago;Avenida;727;Matucana;226813942;NO;No Aplica;No Aplica
+Centro de Salud Vival Ltda.;Santiago;Calle;843;Monjitas;226305500;NO;No Aplica;No Aplica
+Instituto de Neurocirugía Dr. Alfonso Asenjo;Providencia;Avenida;553;José M. Infante;225754600;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Salud Familiar Dr. Carlos Avendaño;Lo Prado;Calle;1087;Teniente Cruz;225744802;NO;No Aplica;No Aplica
+Consultorio Coaniquem;Pudahuel;Avenida;8586;San Francisco;Pendiente;NO;No Aplica;No Aplica
+Hospital Del Salvador de Santiago;Providencia;Avenida;364;Salvador;225754000;SI;Urgencia Hospitalaria (UEH);No Aplica
+Unidad de Salud Funcionario S.S Metropolitano Oriente;Providencia;Avenida;364;Salvador;225752958;NO;No Aplica;No Aplica
+Actividades gestionadas por la Dirección del Servicio para apoyo de la Red (S.S Metropolitano Oriente);Providencia;Avenida;364;Salvador;225752750;NO;No Aplica;No Aplica
+PRAIS (S.S Metropolitano Oriente);Providencia;Avenida;364;Salvador;225752958;NO;No Aplica;No Aplica
+Vacunatorio Internacional SEREMI de Salud Metropolitana;Providencia;Calle;551;José Miguel Infante;225753072;NO;No Aplica;No Aplica
+Instituto Radiológico Providencia;Providencia;Avenida;199;Providencia;224965500;NO;No Aplica;No Aplica
+Laboratorio SANALAB S.A.;Santiago;Calle;785;Chacabuco, 2º Piso;228986068;NO;No Aplica;No Aplica
+Clínica Psiquiatrica Bretaña;Providencia;Avenida;2638;Francisco Bilbao;222238855;NO;No Aplica;No Aplica
+VACUMED;Providencia;Avenida;149;Salvador OF. 501;225332127;NO;No Aplica;No Aplica
+Programa COVID19 - ISL;Santiago;Calle;726;Teatinos;223937635;NO;No Aplica;No Aplica
+Química Clínica Especializada;Providencia;Avenida;149;Salvador;222518116;NO;No Aplica;No Aplica
+AMIM;Providencia;Avenida;1727;Los Leones, oficina 206;227237472;NO;No Aplica;No Aplica
+Diagnóstika;Providencia;Calle;135;Salvador;Pendiente;NO;No Aplica;No Aplica
+Instituto Traumatológico Dr. Teodoro Gebauer;Santiago;Avenida;771;San Martin;225746150;SI;Urgencia Hospitalaria (UEH);No Aplica
+Instituto Nacional Geriátrico Presidente Eduardo Frei Montalva;Providencia;Calle;370;José Manuel Infante;225754459;NO;No Aplica;No Aplica
+Red Salud Providencia ex Clínica AvanSalud Providencia;Providencia;Avenida;100;Salvador;223662055;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Atencion Integral Providencia;Providencia;Calle;331;General Salvo;Pendiente;NO;No Aplica;No Aplica
+Laboratorio Clínico Blanco;Providencia;Avenida;31;Salvador;224905500;NO;No Aplica;No Aplica
+MegaSalud;Providencia;Calle;100;Salvador;223695100;NO;No Aplica;No Aplica
+Orlandi Oncología;Providencia;Calle;159;General Salvo;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar Andes;Quinta Normal;Calle;4234;Andes;800500270;NO;No Aplica;No Aplica
+Clínica New Clinic;Providencia;Calle;1588;Los Leones;223434100;NO;No Aplica;No Aplica
+Centro de Especialidades Odontológicas Leng;Providencia;Avenida;1261;Eliodoro Yáñez;222352510;NO;No Aplica;No Aplica
+SAPU Dr. Arturo Albertz;Cerro Navia;Avenida;1204;Las Torres;225743704;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Dr. Arturo Albertz;Cerro Navia;Calle;1204;Las Torres;225743653;NO;No Aplica;No Aplica
+Clínica Indisa;Providencia;Avenida;1810;Santa María;223625397;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro Comunitario de Salud Familiar Concejal Guillermo Flores O.;Pudahuel;Calle;1252;Copiapó;225759832;NO;No Aplica;No Aplica
+Clínica Santa María;Providencia;Avenida;410;Santa María;224613510;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro Servicios Médicos Santa María;Providencia;Avenida;410;Santa María;224613590;NO;No Aplica;No Aplica
+Centro Médico Manuel Montt ex Centro Clínico Integral Las Lilas;Providencia;Avenida;427;Manuel Montt;222726944;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Alfonso Leng;Providencia;Avenida;303;Manuel Montt;222359166;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Manuel Montt;Providencia;Avenida;217;Manuel Montt;6007071010;NO;No Aplica;No Aplica
+Hospital de Niños Dr. Luis Calvo Mackenna;Providencia;Avenida;360;Antonio Varas;225755800;SI;Urgencia Hospitalaria (UEH);No Aplica
+SAPU Garín;Quinta Normal;Calle;5612;Janequeo;226669205;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro Comunitario de Salud Familiar Mar Caribe;Pudahuel;Calle;1241;Mar Caribe;226402554;NO;No Aplica;No Aplica
+Centro de Salud Familiar Garín;Quinta Normal;Calle;5612;Janequeo;226669206;NO;No Aplica;No Aplica
+Departamento de Bienestar Social de la Dirección General de Aeronáutica Civil;Providencia;Avenida;2394;Eliodoro Yáñez;224392811;NO;No Aplica;No Aplica
+Unidad de Salud Funcionario SS Metropolitano Norte;Independencia;Calle;272;Maruri;Pendiente;NO;No Aplica;No Aplica
+Actividades gestionadas por la Dirección del Servicio para apoyo de la Red (S.S Metropolitano Norte);Independencia;Calle;272;Maruri;Pendiente;NO;No Aplica;No Aplica
+PRAIS (SS Metropolitano Norte);Independencia;Calle;272;Maruri;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar Cardenal Raúl Silva Henríquez;Pudahuel;Avenida;1382;El Tranque;800500409;NO;No Aplica;No Aplica
+Clínica Dental Móvil Simple. Pat. PW4082 (TilTil);Tiltil;Calle;272;Maruri;Pendiente;NO;No Aplica;No Aplica
+Barnafi Krause Diagnóstica;Providencia;Avenida;1195;Andrés Bello;226633400;NO;No Aplica;No Aplica
+Vacunatorio Clínica El Bosque;Providencia;Avenida;2820;Eliodoro Yáñez;963411100;NO;No Aplica;No Aplica
+Clínica Europa;Providencia;Avenida;483;Pedro de Valdivia;222741532;NO;No Aplica;No Aplica
+Centro de Salud Mutual CChC Pudahuel;Pudahuel;Calle;1309;Américo Vespucio;227879780;NO;No Aplica;No Aplica
+Clínica Dávila;Recoleta;Avenida;464;Recoleta;227308151;SI;Urgencia Hospitalaria (UEH);No Aplica
+Diagnóstico por imagen San Vicente de Paul;Providencia;Calle;249;Almirante Pastene;22943 3900;NO;No Aplica;No Aplica
+Dirección Previsional de Carabineros de Chile;Providencia;Calle;171;Santa Beatriz;224955784;NO;No Aplica;No Aplica
+Centro Médico y Dental Antonio Varas del Banco del Estado de Chile;Providencia;Avenida;1722;Providencia;222351440;NO;No Aplica;No Aplica
+Vacunatorio Darvax Salud;Las Condes;Avenida;3018;Cristóbal Colón;222287138;NO;No Aplica;No Aplica
+Vacunatorio Wengan SpA;Providencia;Avenida;1881;Nueva Providencia;Pendiente;NO;No Aplica;No Aplica
+Vacunatorio RENVAC;Providencia;Avenida;1860;Nueva Providencia, Oficina 52;229447478;NO;No Aplica;No Aplica
+SanaSalud Pedro de Valdivia;Providencia;Avenida;195;Pedro de Valdivia;6000061000;NO;No Aplica;No Aplica
+Clínica Quantumm;Providencia;Calle;1551;Pérez Valenzuela;222358146;NO;No Aplica;No Aplica
+Centro Médico y Dental MegaSalud Providencia;Providencia;Calle;1920;11 de Septiembre;224317200;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Independencia;Independencia;Avenida;565;Independencia, local B-03;6007071010;NO;No Aplica;No Aplica
+Centro Integramédica Barcelona;Providencia;Calle;2116;Barcelona;226796000;NO;No Aplica;No Aplica
+Vacunatorio RENVAC;Providencia;Calle;141;La Concepción;229447441;NO;No Aplica;No Aplica
+Clínica WLK;Providencia;Avenida;485;Los Leones;223628300;NO;No Aplica;No Aplica
+Centro de Salud Familiar Recoleta;Recoleta;Avenida;740;Recoleta;225751600;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental La Concepción;Providencia;Avenida;201;La Concepción, Local 102;6007071010;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Providencia;Providencia;Avenida;2229;Coyancura, Local 6 y 7;6007071010;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Las Condes;Las Condes;Avenida;1621;Padre Hurtado Sur, Piso 2 Locales 24-25-26, Centro Punto Vivo Padre Hurtado;6007071010;NO;No Aplica;No Aplica
+Vacunatorio Internacional Immunitas SpA;Providencia;Avenida;2155;Nueva Providencia, Oficina 509-C;982004601;NO;No Aplica;No Aplica
+Centro Médico y Dental MegaSalud Padre Hurtado;Las Condes;Avenida;1621;Padre;229799000;NO;No Aplica;No Aplica
+SAPU Lo Franco;Quinta Normal;Calle;4459;Carrascal;226669062;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Lo Franco;Quinta Normal;Calle;4459;Carrascal;225742454;NO;No Aplica;No Aplica
+Instituto Psiquiátrico Dr. José Horwitz Barak (Santiago, Recoleta);Recoleta;Avenida;841;La Paz;225758850;NO;No Aplica;No Aplica
+Nueva Clínica Cordillera;Las Condes;Avenida;7885;Alexander Fleming;228347500;SI;Urgencia Hospitalaria (UEH);No Aplica
+Clínica Oftalmológica Providencia;Providencia;Avenida;2167;Andres Bello;225995700;NO;No Aplica;No Aplica
+Centro Vida Integra Providencia;Providencia;Avenida;2350;11 de Septiembre;224107400;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Hernando de Aguirre;Providencia;Avenida;215;Hernando de Aguirre, Local 101;6007071010;NO;No Aplica;No Aplica
+Cruz Nacional;Independencia;Avenida;908;Independencia;224125850;NO;No Aplica;No Aplica
+Hospital Clínico Universidad de Chile;Independencia;Calle;999;Santos Dumond;229788551;SI;Urgencia Hospitalaria (UEH);No Aplica
+Clínica Ensenada;Independencia;Avenida;957;Fermín Vivaceta;Pendiente;NO;No Aplica;No Aplica
+Centro Médico Vivaceta;Independencia;Avenida;957;Vivaceta;229770220;NO;No Aplica;No Aplica
+Centro de Salud Familiar Cerro Navia;Cerro Navia;Calle;7965;Sado;225742900;NO;No Aplica;No Aplica
+SAPU Luis Chavarría;Cerro Navia;Pasaje;7965;Sado;227809603;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro Médico Vida Integra Tobalaba;Providencia;Calle;155;Tobalaba;225664761;NO;No Aplica;No Aplica
+Servicio Médico Legal Santiago-Sede Central;Independencia;Avenida;1012;La Paz, Santiago;27823500;NO;No Aplica;No Aplica
+COSAM Quinta Normal;Quinta Normal;Calle;5151;Dr. Carlos Ottolenghi;225743901;NO;No Aplica;No Aplica
+Hospital Metropolitano (Ex Militar);Providencia;Calle;50;Holanda;Pendiente;NO;No Aplica;No Aplica
+Centro Metropolitano de Sangre y Tejidos;Providencia;Avenida;115;Vitacura;225681506;NO;No Aplica;No Aplica
+Hospital Dipreca Teniente Hernán Merino;Las Condes;Avenida;1200;Vital Apoquindo;222401282;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro Comunitario de Salud Familiar Catamarca;Quinta Normal;Calle;2232;Catamarca;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Antumalal;Quinta Normal;Calle;5967;Heriberto Rojas;Pendiente;NO;No Aplica;No Aplica
+Instituto Nacional del Cáncer Dr. Caupolicán Pardo Correa (Santiago, Recoleta);Independencia;Avenida;1010;Profesor Zañartu;225757100;NO;No Aplica;No Aplica
+COSAM Las Condes;Las Condes;Avenida;153;Enrique Foster Sur;223358254;NO;No Aplica;No Aplica
+SAPU Dr. Adalberto Steeger;Cerro Navia;Calle;1629;Huelén;226430088;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Lo Amor;Cerro Navia;Calle;2198;Neptuno;227720332;NO;No Aplica;No Aplica
+SAPU Juan Antonio Ríos;Independencia;Calle;1180;Soberanía;227354966;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Dr. Adalberto Steeger;Cerro Navia;Calle;1629;Huelén;225744050;NO;No Aplica;No Aplica
+Centro de Salud Familiar Juan Antonio Ríos;Independencia;Calle;1180;Soberanía;Pendiente;NO;No Aplica;No Aplica
+COSAM Cerro Navia;Cerro Navia;Calle;2206;5 de Febrero;225745052;NO;No Aplica;No Aplica
+SAPU Aníbal Ariztía;Las Condes;Avenida;1229;La Escuela;227305584;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar Aníbal Ariztía;Las Condes;Avenida;1140;Paúl Harris;227305500;NO;No Aplica;No Aplica
+Centro Vida Integra de Las Condes;Las Condes;Avenida;3281;Apoquindo;223348806;NO;No Aplica;No Aplica
+Pensionado San José;Las Condes;Avenida;5850;Cristóbal Colón;222128516;NO;No Aplica;No Aplica
+Centro Médico Dávila Las Condes;Las Condes;Avenida;110;El Bosque Norte;225779300;NO;No Aplica;No Aplica
+Complejo Hospitalario San José (Santiago, Independencia);Independencia;Calle;1196;San José;225680000;SI;Urgencia Hospitalaria (UEH);No Aplica
+Hospital modular de Campaña Hospital San José Antiguo;Independencia;Calle;1086-1108;San José;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Los Lagos (Unidad Vecinal Nº 33);Cerro Navia;Calle;1780;Lanalhue;225759832;NO;No Aplica;No Aplica
+GENOSUR (Las Condes);Las Condes;Avenida;2736;Avda. Vitacura;56941658295;NO;No Aplica;No Aplica
+SAPU DR. AGUSTIN CRUZ MELO;Independencia;Calle;1269;Domingo Santa María;Pendiente;SI;Urgencia Ambulatoria (SAPU);Pendiente
+Centro Médico San Jorge Red de Salud UC CHRISTUS;Las Condes;Avenida;4444;Neveria;Pendiente;NO;No Aplica;No Aplica
+Hospital Clínico de Niños Dr. Roberto del Río (Santiago, Independencia);Independencia;Avenida;1085;Profesor Zañartu;225758000;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Salud Familiar Agustín Cruz Melo;Independencia;Avenida;1325;Independencia;227355547;NO;No Aplica;No Aplica
+Hospital Félix Bulnes Cerda;Cerro Navia;Calle;7432;Mapocho;225744400;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro Médico Medicien;Las Condes;Avenida;100;Américo Vespucio, of. 102, Piso 1;224820000;NO;No Aplica;No Aplica
+Centro Médico Alcántara Red de Salud UC CHRISTUS;Las Condes;Avenida;3990;Apoquindo;Pendiente;NO;No Aplica;No Aplica
+COSAM Independencia;Independencia;Calle;1485;Belisario Prats;227378222;NO;No Aplica;No Aplica
+Integramédica Las Condes;Las Condes;Avenida;4715;Nevería;226366666;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Escuela Militar;Las Condes;Avenida;4579;Apoquindo, Local 6;6007071010;NO;No Aplica;No Aplica
+INTEGRAMEDICA S.A. SUCURSAL LOS DOMINICOS;Las Condes;Avenida;758;Padre Hurtado Sur (piso 2 y 3 er. Piso, Sector Norte );226366666;NO;No Aplica;No Aplica
+Centro Dental RedSalud Apoquindo;Las Condes;Avenida;4700;Apoquindo, locales 1 y 2;600 718 6000;NO;No Aplica;No Aplica
+Instituto Oftalmológico Puerta del Sol;Las Condes;Avenida;36;Puerta del Sol;224115700;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Hernán Urzúa Merino;Renca;Calle;1011;Totoral Bajo;225742800;NO;No Aplica;No Aplica
+Centro Integra Médica Manquehue;Las Condes;Avenida;329;Manquehue;226366666;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Manquehue;Las Condes;Avenida;430;Manquehue Sur, Local 1-A;6007071010;NO;No Aplica;No Aplica
+Centro de Salud Familiar Valdivieso;Recoleta;Calle;1892;Los Cipreses;225751250;NO;No Aplica;No Aplica
+SAPU Valdivieso;Recoleta;Calle;1892;Adriana Miranda;229457021;SI;Urgencia Ambulatoria (SAPU);Corto
+Hospital de Curacaví;Curacaví;Avenida;500;Ambrosio O'Higgins;225745400;SI;Urgencia Hospitalaria (UEH);No Aplica
+Clínica Dental Móvil Simple. Pat. PW4083 (Curacaví);Curacaví;Avenida;500;Ambrosio O'Higgins;Pendiente;NO;No Aplica;No Aplica
+Clínica Paris SpA;Las Condes;Avenida;142;Hernando de Magallanes;222200949;NO;No Aplica;No Aplica
+Clínica Astra Independencia;Independencia;Avenida;1520;Hipódromo Chile;227374809;NO;No Aplica;No Aplica
+Hospital Clínico Universidad de Los Andes;Las Condes;Avenida;2501;Plaza;226183000;SI;Urgencia Hospitalaria (UEH);No Aplica
+CER;Las Condes;Avenida;5620;Los Militares, Oficina 1819;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Las Enredaderas;Independencia;Calle;2437;Las Enredaderas;Pendiente;NO;No Aplica;No Aplica
+Centro Médico Militar Rosa O'Higgins;Las Condes;Avenida;995;Américo Vespucio;224329078;NO;No Aplica;No Aplica
+COSAM Renca;Renca;Avenida;4511;Domingo Santa María;226412312;NO;No Aplica;No Aplica
+Vacunatorio Medicien Alto El Plomo;Las Condes;Avenida;5855;Cerro El Plomo Nro. 5855, local 10A;562 24820000;NO;No Aplica;No Aplica
+SAR Renca;Renca;Calle;4012;José Manuel Balmaceda;225745208;SI;Urgencia ambulatoria (SAR);No Aplica
+Centro de Salud Familiar Renca;Renca;Calle;4420;Balmaceda;225745150;NO;No Aplica;No Aplica
+Centro de Salud Familiar Quinta Bella;Recoleta;Calle;185;Justicia Social;800500161;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Irene Frei Montalva;Pudahuel;Calle;S/N;Camino Noviciado Km 17;226402595;NO;No Aplica;No Aplica
+Centro de la Vision Filial Clinica Las Condes;Las Condes;Avenida;9500;Camino El Alba Nª 9.500, Torre A, piso 2, Oficinas 201 al 208;233030043;NO;No Aplica;No Aplica
+Centro de Evaluación el Trabajo (CET) Arauco;Las Condes;Avenida;5413-B;Presidente Kennedy, edificio Centro Médico Clínica Tabancura, piso 2;2578 8381;NO;No Aplica;No Aplica
+Centro Asistencial AChS Las Condes;Las Condes;Avenida;5413;Kennedy;228704620;NO;No Aplica;No Aplica
+ENSalud;Vitacura;Avenida;1146;Americo Vespucio Norte;9 9499 9701;NO;No Aplica;No Aplica
+Centro Médico y Dental MegaSalud Arauco;Las Condes;Avenida;5413;Presidente Kennedy;224968200;NO;No Aplica;No Aplica
+COSAM Recoleta;Recoleta;Calle;2705;Inocencia;226296512;NO;No Aplica;No Aplica
+Clínica San Carlos de Apoquindo Red de Salud UC CHRISTUS;Las Condes;Avenida;12351;Camino El Alba;227548726;SI;Urgencia Hospitalaria (UEH);No Aplica
+Policlínico del Trabajador AChS Parque Las Américas;Conchalí;Avenida;2975;Monterrey;223939800;NO;No Aplica;No Aplica
+Centro Médico y Dental MegaSalud Kennedy;Las Condes;Avenida;5735;Kennedy;224317737;NO;No Aplica;No Aplica
+Centro de Salud Familiar Apoquindo;Las Condes;Avenida;6611;Cerro Altar;227305000;NO;No Aplica;No Aplica
+Biomer S.A.;Las Condes;Avenida;5735;Kennedy;224265277;NO;No Aplica;No Aplica
+Centro Médico y Dental MegaSalud Conchalí;Conchalí;Avenida;3161;Fermin Vivaceta;224609317;NO;No Aplica;No Aplica
+SAR Bicentenario;Renca;Avenida;8005;Brasil;226425579;SI;Urgencia ambulatoria (SAR);No Aplica
+Centro de Salud Familiar Bicentenario;Renca;Avenida;8005;Brasil;Pendiente;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Vitacura;Vitacura;Avenida;5250;Vitacura, Local 101;6007071010;NO;No Aplica;No Aplica
+Clínica Fundación Médica San Cristóbal;Vitacura;Avenida;5292;Luis Pasteur;227549501;NO;No Aplica;No Aplica
+San Cristóbal;Vitacura;Avenida;5292;Luis Pasteur;227549527;NO;No Aplica;No Aplica
+Central Odontológica de la Fuerzas Armadas y de Orden;Las Condes;Avenida;8631;Las Condes;227826800;NO;No Aplica;No Aplica
+Hospital FACH;Las Condes;Avenida;8631;Las Condes;227826000;SI;Urgencia Hospitalaria (UEH);No Aplica
+Clínica Oftalmológica Los Andes;Vitacura;Avenida;5951;Las Hualtatas;223704600;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Dr. José Symón Ojeda;Conchalí;Avenida;3988;Barón de Juras Reales;Pendiente;NO;No Aplica;No Aplica
+SAPU Alberto Bachelet Martínez;Conchalí;Avenida;3250;Guanaco;225760850;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro de Salud Familiar Alberto Bachelet Martínez;Conchalí;Calle;3250;El Guanaco;800500154;NO;No Aplica;No Aplica
+Clínica Psiquiátrica Mida;Vitacura;Avenida;1109;Gerónimo de Alderete;227556461;NO;No Aplica;No Aplica
+Instituto Europeo del Sueño;Vitacura;Avenida;5607;Luis Pasteur;225962480;NO;No Aplica;No Aplica
+Clínica Alemana;Vitacura;Avenida;5951;Vitacura;222101200;SI;Urgencia Hospitalaria (UEH);No Aplica
+Centro de Salud Familiar Huamachuco;Renca;Calle;2466;Las Margaritas;225743850;NO;No Aplica;No Aplica
+SAPU Huamachuco;Renca;Calle;2466;Las Margaritas;226411020;SI;Urgencia Ambulatoria (SAPU);Corto
+Clínica IST Vitacura;Vitacura;Avenida;5950;Santa María;223667800;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Curacaví;Curacaví;Calle;1155;Manuel Rodríguez;225745443;NO;No Aplica;No Aplica
+Centro de Diagnóstico Integramédica Alto Las Condes;Las Condes;Avenida;4º nivel;Mall Alto Las Condes;226796500;NO;No Aplica;No Aplica
+Santiago Medical Institute SPA;Vitacura;Avenida;6130;Juan XXIII, local 101, 1º Subterráneo;226566666;NO;No Aplica;No Aplica
+Centro de Salud Familiar Vitacura;Vitacura;Avenida;1195;Indiana;800500389;NO;No Aplica;No Aplica
+COSAM Vitacura;Vitacura;Avenida;1195;Indiana;227561178;NO;No Aplica;No Aplica
+Clínica Colonial;Huechuraba;Calle;4515;Palacio Riesco;222742322;NO;No Aplica;No Aplica
+SAPU Lucas Sierra;Conchalí;Avenida;4107;Pedro Fontova;227344762;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar Lucas Sierra;Conchalí;Calle;4107;Pedro Fontova;800500153;NO;No Aplica;No Aplica
+Clínica Orema;Vitacura;Avenida;6260;Juan XXIII;224055000;NO;No Aplica;No Aplica
+Clínica Psiquiatrica Pocuro;Vitacura;Avenida;9000;Presidente Kennedy;222204737;NO;No Aplica;No Aplica
+Centro Oftalmológico Luis Pasteur;Vitacura;Avenida;5917;Luis Pasteur;225205900;NO;No Aplica;No Aplica
+SAR Recoleta;Recoleta;Avenida;1099;Zapadores;226262284;SI;Urgencia ambulatoria (SAR);No Aplica
+Centro de Salud Mutual CChC las Tranqueras;Vitacura;Avenida;1327;Las Tranqueras;222203803;NO;No Aplica;No Aplica
+Centro de Salud Familiar Cristo Vive (ONG);Recoleta;Avenida;4125;Recoleta;226226380;NO;No Aplica;No Aplica
+Clínica Milano;Las Condes;Avenida;645;Estoril;232208310;NO;No Aplica;No Aplica
+SAPU Cristo Vive;Recoleta;Avenida;4125;Recoleta;226226380;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar Dr. Juan Petrinovic (Ex Scroggie);Recoleta;Calle;670;Teniente Colipí;225750792;NO;No Aplica;No Aplica
+Teledoc;Las Condes;Avenida;120;Estoril, Oficina 606;225888610;NO;No Aplica;No Aplica
+Clínica Las Condes;Las Condes;Avenida;441;Lo Fontecilla;224888450;SI;Urgencia Hospitalaria (UEH);No Aplica
+Clínica RedSalud Vitacura;Vitacura;Avenida;1185;Tabancura;600 718 6000;SI;Urgencia Hospitalaria (UEH);No Aplica
+Procedimientos Clínicos Alto Tabancura;Vitacura;Avenida;1515;Tabancura;223719062;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Alberto Bachelet;Conchalí;Pasaje;1424;Cunaco;232444179;NO;No Aplica;No Aplica
+Centro de Salud Familiar José Symon Ojeda;Conchalí;Avenida;2895;El Cortijo;226231674;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Pucara de Lasana;Quilicura;Avenida;211;Las Torres;226073310;NO;No Aplica;No Aplica
+Centro Asistencial AChS Vespucio Oeste;Quilicura;Calle;162;Cordillera;227390631;NO;No Aplica;No Aplica
+SAR Conchalí;Conchalí;Avenida;5663;Independencia;232444132;SI;Urgencia ambulatoria (SAR);No Aplica
+Centro de Salud Familiar El Barrero;Huechuraba;Calle;305;Las Petunias;800500156;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Dr. Lucas Sierra;Conchalí;Pasaje;1343;La Puntilla;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Familiar La Pincoya;Huechuraba;Avenida;5580;Recoleta;800500157;NO;No Aplica;No Aplica
+SAR La Pincoya;Huechuraba;Avenida;5580;Recoleta;226268509;SI;Urgencia ambulatoria (SAR);No Aplica
+Policlínico Instituto de Seguridad del Trabajo de Quilicura;Quilicura;Avenida;1720;Américo Vespucio;226032082;NO;No Aplica;No Aplica
+COSAM Huechuraba;Huechuraba;Avenida;5696;Recoleta;222440528;NO;No Aplica;No Aplica
+Laboratorio Clínico BIOSOLUCIONES;Lo Barnechea;Avenida;12438;Las Condes piso 3.;56 223279417;NO;No Aplica;No Aplica
+Vacunatorio Medicien_Vitacura;Vitacura;Avenida;150;San Francisco de Asís Nro. 150,Oficina 103;56222152132;NO;No Aplica;No Aplica
+Centro de Salud Familiar Juanita Aguirre;Conchalí;Calle;1835;Altona;225750350;NO;No Aplica;No Aplica
+COSAM Conchalí;Conchalí;Calle;5860;Canberra;226233236;NO;No Aplica;No Aplica
+Centro de Salud Familiar Marta Ugarte Román;Quilicura;Calle;460;Bernardo O'higgins;233286502;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental Quilicura;Quilicura;Calle;409;José Francisco Vergara, Locales 1 y 9;6007071010;NO;No Aplica;No Aplica
+Centro Médico y Dental MegaSalud Quilicura;Quilicura;Avenida;581;Bernardo O'Higgins, Local 67, Piso 3;225707900;NO;No Aplica;No Aplica
+SAPU Nº 1 Rodrigo Rojas Denegri;Quilicura;Calle;483;J. Pedro Escobar;227833621;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro Integramédica Norte;Huechuraba;Avenida;1737;Americo Vespucio, Mall Plaza Norte, Piso 3;222778700;NO;No Aplica;No Aplica
+Centro de Salud Familiar Irene Frei de Cid;Quilicura;Calle;525;San Luis;226272445;NO;No Aplica;No Aplica
+SAPU Nº 2 Irene Frei de Cid;Quilicura;Calle;525;San Luís;227833707;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro Comunitario de Salud Familiar Bicentenario;Lo Barnechea;Calle;229;Getsemani;229558146;NO;No Aplica;No Aplica
+COSAM Quilicura;Quilicura;Calle;330;San Luis;225751350;NO;No Aplica;No Aplica
+Centro de Salud Mutual CChC Quilicura;Quilicura;Calle;7500;Panamericana Norte;226235564;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Beato Padre Hurtado;Quilicura;Calle;551;Parroquia Nuestra Señora del Carmen;Pendiente;NO;No Aplica;No Aplica
+Clínica Alemana de La Dehesa;Lo Barnechea;Avenida;12205;José Alcalde Délano;229107000;SI;Urgencia Hospitalaria (UEH);No Aplica
+Clínica MEDS La Dehesa;Lo Barnechea;Avenida;10581;José Alcalde Délano;224996500;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Salvador Allende Gossens;Huechuraba;Avenida;6061;Recoleta;227198200;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Los Libertadores;Huechuraba;Calle;1925;San Pedro de Atacama;222493123;NO;No Aplica;No Aplica
+SAPU Libertadores;Huechuraba;Calle;1925;San Pedro de Atacama;222493123;SI;Urgencia Ambulatoria (SAPU);Corto
+Instituto Médico el Arrayán;Lo Barnechea;Calle;17040;Camino El Alto;223216506;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar La Foresta;Quilicura;Calle;434;Sotaqui;Pendiente;NO;No Aplica;No Aplica
+Centro Médico Clínica Santa María La Dehesa;Lo Barnechea;Avenida;1445;La Dehesa;223308430;NO;No Aplica;No Aplica
+Centro de Cadera Dr. Mardones;Lo Barnechea;Avenida;10545;José Alcalde Délano, oficina 205-206;229297370;NO;No Aplica;No Aplica
+Centro Médico Clínica Alemana (La Dehesa);Lo Barnechea;Avenida;1908;El Rodeo;225861707;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Cerro 18;Lo Barnechea;Calle;1050;Circunvalación Norte;225759872;NO;No Aplica;No Aplica
+Centro Vida Integra Quilicura;Quilicura;Avenida;334;Bernardo O'Higgins;224107400;NO;No Aplica;No Aplica
+Centro de Salud Familiar Presidente Salvador Allende Gossens;Quilicura;Calle;290;Santa Luisa;226072180;NO;No Aplica;No Aplica
+SAPU Presidente Salvador Allende Gossens;Quilicura;Calle;290;Santa Luisa;226073219;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro Médico Salud Asistencia;Huechuraba;Avenida;7323;Pedro Fontova;224591241- 224592315;NO;No Aplica;No Aplica
+Centro de Salud Familiar Manuel Bustos Huerta;Quilicura;Avenida;486;Lo Cruzat;226271398;NO;No Aplica;No Aplica
+Centro de Salud Familiar Dr. Victor Castro Wiren;Huechuraba;Avenida;1597;El Guanaco Norte;Pendiente;NO;No Aplica;No Aplica
+Centro Odontológico Uno Salud Dental La Dehesa;Lo Barnechea;Avenida;12850;El Rodeo, Local 60;227638962;NO;No Aplica;No Aplica
+Posta de Salud Rural de Farellones;Lo Barnechea;Calle;S/N;Camino a Farellones;222224591;NO;No Aplica;No Aplica
+COSAM Lo Barnechea;Lo Barnechea;Calle;1873;Padre Alfredo Arteaga;229557110;NO;No Aplica;No Aplica
+Centro de Salud Familiar Lo Barnechea;Lo Barnechea;Avenida;13533;El Rodeo;227573442;NO;No Aplica;No Aplica
+SAPU Lo Barnechea;Lo Barnechea;Avenida;13533;El Rodeo;227573443;SI;Urgencia Ambulatoria (SAPU);Largo
+Clínica Monteblanco;Lo Barnechea;Calle;18780;Camino a Farellones, km. 4;223215000;NO;No Aplica;No Aplica
+Centro Asistencial AChS Quilicura;Quilicura;Calle;9400;Panamericana Norte;226634100;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Sol de Septiembre;Lampa;Calle;367;Arco Iris;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural Las Canteras;Colina;Calle;159;Fermín Vergara;Pendiente;NO;No Aplica;No Aplica
+Centro Médico Clínica Alemana de Chicureo;Colina;Avenida;S/N;Camino Chicureo, Lote A-2 (Av. Chicureo con Av. El Valle);222101111;NO;No Aplica;No Aplica
+SAPU José Bauzá Frau;Lampa;Calle;898;Sargento Aldea;228796225;SI;Urgencia Ambulatoria (SAPU);Largo
+Centro de Salud Familiar José Bauza Frau;Lampa;Calle;1239;Barros Luco;228421039;NO;No Aplica;No Aplica
+COSAM Lampa;Lampa;Calle;735;Directora María Mella;225751449;NO;No Aplica;No Aplica
+Centro Médico Clinica Las Condes de Chicureo (Servicios de Salud Integrados S.A.);Colina;Avenida;S/N;Chicureo;Pendiente;NO;No Aplica;No Aplica
+VACUNATORIO CHICUREO SpA;Colina;Pendiente;Pendiente;Condominio El Algarrobal 1, Sitio R-16, oficina 207;981585385;NO;No Aplica;No Aplica
+Posta de Salud Rural Los Ingleses;Colina;Calle;S/N;Hermanos Carrera, Aldea Los Ingleses;Pendiente;NO;No Aplica;No Aplica
+SUR Batuco;Lampa;Calle;180;Santa Elena;225751581;SI;Urgencia Ambulatoria (SUR);No Aplica
+Centro de Salud Familiar Batuco;Lampa;Calle;180;Santa Elena;225751581;NO;No Aplica;No Aplica
+Posta de Salud Rural Santa Marta de Liray;Colina;Calle;S/N;Camino La Capilla;Pendiente;NO;No Aplica;No Aplica
+Centro Comunitario de Salud Familiar Batuco;Lampa;Avenida;S/N;Argentina;Pendiente;NO;No Aplica;No Aplica
+Centro Asistencial AChS Colina;Colina;Calle;85;General San Martín;228441513;NO;No Aplica;No Aplica
+SAR Colina;Colina;Calle;77;Carretera General San Martín;228445026;SI;Urgencia ambulatoria (SAR);No Aplica
+Centro de Salud Familiar Colina;Colina;Calle;540;Alpatacal;800500151;NO;No Aplica;No Aplica
+COSAM Colina;Colina;Pasaje;269;Amanda Labarca;228441851;NO;No Aplica;No Aplica
+Centro de Salud Familiar Esmeralda;Colina;Calle;S/N;Carretera General San Martín, Km. 31;225751450;NO;No Aplica;No Aplica
+SAPU Esmeralda;Colina;Calle;S/N;Carretera General San Martín, Km. 31;225751450;SI;Urgencia Ambulatoria (SAPU);Corto
+Centro Comunitario de Salud Familiar Esmeralda;Colina;Calle;2008;Atena;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural Polpaico;Tiltil;Calle;S/N;Estación Principal y Darío Ovalle;Pendiente;NO;No Aplica;No Aplica
+Centro Medico Huertos Familiares;Tiltil;Avenida;361;3 Oriente, Huertos Familiares;232504433;NO;No Aplica;No Aplica
+Centro de Salud Familiar Huertos Familiares;Tiltil;Calle;221;3 Oriente;225751450;NO;No Aplica;No Aplica
+SUR Huertos Familiares;Tiltil;Calle;221;3 Oriente;225751450;SI;Urgencia Ambulatoria (SUR);No Aplica
+COSAM Til Til;Tiltil;Calle;100;Daniel Moya;225751750;NO;No Aplica;No Aplica
+Hospital de Til Til;Tiltil;Calle;100;Daniel Moya;225751700;SI;Urgencia Hospitalaria (UEH);No Aplica
+Posta de Salud Rural Colorado;Colina;Calle;S/N;Calle Colorado sitio 4 D, Aldea El Colorado;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural Chacabuco (Colina);Colina;Calle;S/N;Carretera San Martín Km. 51, Aldea Chacabuco;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural Rungue;Tiltil;Calle;S/N;Estación;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural La Capilla de Caleu;Tiltil;Calle;S/N;Caserío Capilla de Caleu;Pendiente;NO;No Aplica;No Aplica
+Posta de Salud Rural Montenegro;Tiltil;Calle;S/N;Larga;Pendiente;NO;No Aplica;No Aplica
+Centro Logístico de Vacunación MINSAL;Ñuñoa;Pendiente;Pendiente;Pendiente;Pendiente;NO;No Aplica;No Aplica
+Centro de Registro de Vacunas Covid;Santiago;;;;;NO;No Aplica;No Aplica
+Centro de Salud Familiar Matta Sur;Santiago;Calle;945;Ñuble;224985386;NO;No Aplica;No Aplica
+SAR La Bandera;San Ramón;Avenida;9250;La Bandera;224058830 - 224058831;SI;Urgencia Ambulatoria (SAPU);Pendiente
+INNOVATION HEALTH;Las Condes;Avenida;4100;Avda. Apoquindo (Oficina 701);56 930503578, 56 952303092;NO;No Aplica;No Aplica
+Centro de Salud Familiar Las Torres;Peñalolén;Avenida;5511;Principal;229397315;NO;No Aplica;No Aplica
+Vacunatorio Patagonia;Las Condes;Avenida;9500;Camino El Alba Nro.( oficina 101);232244574;NO;No Aplica;No Aplica
+INTEGRAMEDICA INDEPENDENCIA;Independencia;Avenida;1121;Profesor Zañartu;Pendiente;NO;No Aplica;No Aplica
+Centro Dental REDSalud La Dehesa;Lo Barnechea;Avenida;1872;Luis Bascuñan;6007186000;NO;No Aplica;No Aplica
+Workmed Salud Ocupacional;Providencia;Avenida;425;Manuel Montt (oficina 501 );56233296769;NO;No Aplica;No Aplica
+Clínica Apoquindo;Las Condes;Avenida;4775;Apoquindo (Local 4);998706619;NO;No Aplica;No Aplica
+CECOSF LUMEN;Maipú;Calle;3756;Lumen;56953974845;NO;No Aplica;No Aplica
+Centro Medico y Dental Del Valle;Pudahuel;Avenida;1022;Avda. Las Flores # 1022;933870598;NO;No Aplica;No Aplica
+CENTRO DE ATENCION DE Salud FLUOR MUTUAL DE SEGURIDAD DE LA CAMARA CHILENA DE LA CONSTRUCCION;Las Condes;Avenida;3320;REYES LAVALLE 3320 , LOCAL 1-B;Pendiente;NO;No Aplica;No Aplica
+INTEGRAMEDICA VITACURA;Vitacura;Avenida;4705;VITACURA;982995026;NO;No Aplica;No Aplica
+VAXPROSalud;Providencia;Calle;2923;Avda. Eliodoro Yañez # 2923;Pendiente;NO;No Aplica;No Aplica
+Centro Médico y Dental Arauco Salud;Las Condes;Avenida;5413;Kennedy;Pendiente;NO;No Aplica;No Aplica
+BUPA SPORT;Las Condes;Avenida;8840;Las Condes;227828190;NO;No Aplica;No Aplica
+KUME FELEN SPA;Buin;Avenida;115;Avda. José Joaquín Pérez;Pendiente;NO;No Aplica;No Aplica
+LABORATORIO NÚCLEO LAB SpA.;Pedro Aguirre Cerda;Avenida;4676;Club Hípico;Pendiente;NO;No Aplica;No Aplica
+Centro Médico RedSalud Barrio Independencia;Independencia;Avenida;565;Avda. Independencia;Pendiente;NO;No Aplica;No Aplica
+Centro Médico del Trabajador Providencia;Providencia;Calle;2050;Barcelona;(+56) 2 25835531;NO;No Aplica;No Aplica
+MEGASalud AGUSTINAS;Santiago;Calle;641;Agustinas;6007186000;NO;No Aplica;No Aplica
+CMT Salud Santiago Centro;Santiago;Calle;354;Santa Victoria;(+56) 2 2634 2492;NO;No Aplica;No Aplica
+CMT Salud La Florida;La Florida;Calle;6969;Av. Vicuña Mackenna Oriente;(+56) 2 2595 2659;NO;No Aplica;No Aplica
+Centro Atencion de Salud Mutual Providencia;Providencia;Calle;438;Avda. Pedro de Valdivia # 438;22876 5723;NO;No Aplica;No Aplica
+Laboratorio Médico Bioclinic;Providencia;Calle;382;Los Leones;323722566;NO;No Aplica;No Aplica
+SONORAD ALAMEDA;Santiago;Avenida;1529;Libertador Bernardo O’Higgins;(+56) 982188765;NO;No Aplica;No Aplica
+Centro Médico Clínica Las Condes_Peñalolen;Peñalolén;Calle;8950;Avda. Los Presidentes;226108000;SI;Urgencia ambulatoria;No Aplica
+Procedimientos Odontológicos Maritza Salas Vega;La Cisterna;Calle;8471;Gran Avenida;(+56) 229454359;Pendiente;Pendiente;No Aplica
+SONORAD II - HUERFANOS;Santiago;Calle;757;HUERFANOS;(+56) 982188765;Pendiente;Pendiente;No Aplica
+RedSalud Ñuñoa;Ñuñoa;Avenida;2305;Irarrázaval;(+56) 982188765;NO;No Aplica;No Aplica
+SONORAD LA FLORIDA;La Florida;Calle;7255;Vicuña Mackenna;(+56) 982188765;Pendiente;Pendiente;No Aplica
+SONORAD LAS BELLOTAS;Providencia;Calle;200;Las Bellotas;(+56) 982188765;Pendiente;Pendiente;No Aplica
+SONORAD MAIPU;Maipú;Avenida;1605;Pajaritos;(+56) 982188765;Pendiente;Pendiente;No Aplica
+Sala Externa de Toma de Muestras Melipilla - UC CHRISTUS;Melipilla;Avenida;220;Vicuña Mackenna;(+56) 22 384 6014;NO;No Aplica;No Aplica
+Corporación Nacional del Cáncer;Providencia;Calle;86;Seminario;(+56) 223474000;Pendiente;Pendiente;No Aplica
+Sala Externa de Toma de MuestrasS SEREMI Aeropuerto SKYTEAM Antígenos;Pudahuel;Calle;2150;Jean Mermoz;Pendiente;NO;No Aplica;No Aplica
+LABORATORIO DE BIOLOGIA MOLECULAR DEPARTAMENTO DE MEDICINA PREVENTIVA;La Pintana;Calle;11735;Santa Rosa;(+56) 2978 5632- 2978 5562;No Aplica;No Aplica;No Aplica
+Médicos de Cuba;Ñuñoa;Avenida;3628;Irarrázaval;22341 1405;NO;No Aplica;No Aplica
+LABCLINI;Providencia;Avenida;222;Ricardo Lyon;(+56) 6000060606;No;No Aplica;No Aplica
+Laboratorio Clínico QUALIFIED SPA;Ñuñoa;Calle;240;Juan Enrique Concha;(+56) 229829910;No;No Aplica;No Aplica
+Instituto de la Visión;Providencia;Avenida;443;Salvador;(+56) 226669700;No;No Aplica;No Aplica
+MEDIES Centro Médico SpA;Santiago;Calle;1373;Huérfanos;(+56) 974866060;NO;No Aplica;No Aplica
+Sciensolutions SPA;Vitacura;Avenida;7120;Presidente Kennedy;(+56) 981440854;No;No Aplica;No Aplica
+Centro de Salud Familiar Juan Pablo II de Lampa;Lampa;Calle;2049;Cacique Colin;232787076;NO;No Aplica;No Aplica
+Centro Médico Total Salud;Santiago;Calle;1610;Bascuñan Guerrero;(+56) 999300742;NO;No Aplica;No Aplica
+Centro Odontologico Uno Salud Dental Gran Avenida;San Miguel;Avenida;5553;Gran Avenida Jose Miguel Carrera;227638962;NO;No Aplica;No Aplica
+Centro Odontologico Uno Salud Dental Maipu 3;Maipú;Avenida;1076;Vespucio;227638962;NO;No Aplica;No Aplica
+Centro Odontologico Uno Salud Dental Puente Alto 3;Puente Alto;Avenida;95;Concha y Toro;227638962;NO;No Aplica;No Aplica
+Centro Odontologico Uno Salud Dental Chile España;Ñuñoa;Avenida;43;Presidente José Pedro Alessandri;227638962;NO;No Aplica;No Aplica
+PROCELAB;Recoleta;Avenida;217;Santa María;Pendiente;NO;No Aplica;No Aplica
+Laboratorio Clínico LABEXX;Peñalolén;Calle;12058;Sanchez Fontecilla;Pendiente;NO;No Aplica;No Aplica
+Centro Médico Docente Asistencial USS;Providencia;Calle;2444;Calle Carmen Sylva;56 222606503;NO;No Aplica;No Aplica
+Centro de Vacunación Vaxcenter;Huechuraba;Avenida;1399;Avenida Santa Elena de Huechuraba, oficina 212;56 944231151;No;No Aplica;No Aplica
+Laboratorio WORKMED;Providencia;Calle;427;Manuel Montt, piso -2;56995426447;No;No Aplica;No Aplica
+Uno Salud Cerrillos;Cerrillos;Avenida;7003;Camino a Melipilla Local A-2;6007071010;NO;No Aplica;No Aplica
+CEINSA;Puente Alto;Calle;431;Eduardo Cordero;227922092;NO;No Aplica;No Aplica
+Laboratorio Bioingentech;Providencia;Avenida;149;Avda. Salvador # 149, oficina 706;Pendiente;NO;No Aplica;No Aplica
+Laboratorio Valab;Las Condes;Avenida;47;El Bosque;Pendiente;NO;No Aplica;No Aplica
+Workmed;Providencia;Avenida;427;Manuel Montt;233296798;NO;No Aplica;No Aplica
+Desert Health;Providencia;Calle;239;Canadá;Pendiente;NO;No Aplica;No Aplica
+Laboratorio Clínico Bradford Hill;Recoleta;Calle;377;Manzano;229490970;NO;No Aplica;No Aplica
+Clínica Alonso de Córdova;Las Condes;Avenida;4800;Apoquindo;56 934222808;NO;No Aplica;No Aplica
+Medicenter Recoleta;Recoleta;Avenida;418;Recoleta;Pendiente;NO;No Aplica;No Aplica
+Laboratorio Clínico MEDICEC;Renca;Avenida;1204;Vestisquero;Pendiente;NO;No Aplica;No Aplica
+Medicenter Puente Alto;Puente Alto;Avenida;735;Concha y Toro;Pendiente;NO;No Aplica;No Aplica
+UNO Salud CHILE ESPAÑA;Ñuñoa;Avenida;43;Presidente José Pedro Alessandri;600 707 1010;NO;No Aplica;No Aplica
+CLÍNICA NUCLEOSalud OCHAGAVIA;Pedro Aguirre Cerda;Avenida;4676;Club Hípico;6003650100;NO;No Aplica;No Aplica
+Laboratorio Clinico Metropolitano;Santiago;Avenida;776;Libertador Bernardo O´Higgins;226324595;NO;No Aplica;No Aplica
+Clínica Indisa (Maipú);Maipú;Avenida;1077;Américo Vespucio;56 962388565;SI;Urgencia Hospitalaria (UEH);No Aplica
+Vacunatorio INMUVAX;Maipú;Avenida;3195;Pajaritos;233399339;NO;No Aplica;No Aplica
+CENTRO DE VACUNACION INMUNOVAC;Las Condes;Avenida;3990;Apoquindo (Oficina 906);56 934686912;NO;No Aplica;No Aplica
+Centro Médico KINEROD 2;Buin;Calle;607;Arturo Prat;228212053;NO;No Aplica;No Aplica
+Centro de Diagnóstico y Laboratorio Clínica ASTRA;Providencia;Avenida;281;Salvador;232 03 2100;NO;No Aplica;No Aplica
+Centro médico Dávila Ñuñoa;Ñuñoa;Avenida;2401;Irarrázaval (local 31, Piso 3);222702700;NO;No Aplica;No Aplica
+Centro Médico Santa Lucía;Santiago;Avenida;420;Libertador Bernardo O¨Higgisns;226767000;NO;No Aplica;No Aplica
+Integramédica Dental Plaza Vespucio;La Florida;Calle;400;Plaza Vespucio ( locales 30 al 33 y 34A y 34B);600636666;NO;No Aplica;No Aplica
+Laboratorio Green Lab Sur;Providencia;Calle;2630;Doctor Pedro Lautaro Ferrer;990793864;NO;No Aplica;No Aplica
+GENOSUR (Providencia);Providencia;Calle;381;Marchant Pereira (local 1);Pendiente;NO;No Aplica;No Aplica
+IMALAB LTDA;Providencia;Calle;175;Providencia (Depto. 21);Pendiente;NO;No Aplica;No Aplica
+NANOLAB;Las Condes;Calle;5551;Alonso de Córdova (Oficina 603);Pendiente;NO;No Aplica;No Aplica
+Bionet Indisa Maipú;Maipú;Avenida;1077;Américo Vespucio (piso -1);223997705;No;No Aplica;No Aplica
+NANOMED;Las Condes;Calle;63;Juan Montalvo (local 8);Pendiente;No;No Aplica;No Aplica
+Clínica Cruz Nacional (Maipú);Maipú;Avenida;87;Esquina Blanca (local 2);22425858;No;No Aplica;No Aplica
+Centro Médico Plaza Egaña de Clínica Alemana;La Reina;Avenida;235;OSSA (oficina 100 y 105);Pendiente;No;No Aplica;No Aplica
+ABCMED Centro Médico;San Miguel;Avenida;3840;José Miguel Carrera (oficina 706);243672461;No;No Aplica;No Aplica
+Centro Médico 271/2 Ltda;La Cisterna;Avenida;9385;Avda. José Miguel Carrera #9385;225890000;No;No Aplica;No Aplica
+Grupo GAMMA;Melipilla;Calle;510;Serrano oficinas 5- 9- 10- 11;Pendiente;NO;No Aplica;No Aplica
+Laboratorio GAMMA;Providencia;Calle;147;Antonio Bellet, local 103;Pendiente;NO;No Aplica;No Aplica
+MEDICENTER Maipú;Maipú;Avenida;176;5 de Abril local 2, 2-A, 4 y 6;22425858;NO;No Aplica;No Aplica
+Centro Médico RyR;Buin;Calle;116;Arturo Prat;Pendiente;NO;No Aplica;No Aplica
+Centro de Salud Universidad de Los Andes;San Bernardo;Calle;396;Abraham Prado Marín;Pendiente;NO;No Aplica;No Aplica
+Aloha Lab;Providencia;Calle;14;Monseñor Félix Cabrera, Oficina 43;Pendiente;NO;No Aplica;No Aplica
+Laboratorio CLINILAB;Peñaflor;Avenida;1412;Francisco Bilbao (Local F-Of 1);Pendiente;NO;No Aplica;No Aplica
+Laboratorio Campus;Santiago;Avenida;787;Chacabuco (Piso 2);Pendiente;NO;No Aplica;No Aplica
+Laboratorio Clínico Vego;Maipú;Calle;430;Parque Central Oriente;Pendiente;NO;No Aplica;No Aplica
+GENOSUR (Las Condes);Las Condes;Avenida;2905;Vitacura;56 9 7492 2316;NO;No Aplica;No Aplica
+Laboratorio Clínico Cruz del Sur;Santiago;Calle;1040;Moneda;22673 0649;NO;No Aplica;No Aplica
+Clínica Cruz Nacional (Puente Alto);Puente Alto;Avenida;546;Concha y Toro;22412 5850;No;No Aplica;No Aplica
+CECOSF Unión y Esfuerzo Rural;Pudahuel;Camino;30043;Los Portones ;226402537;No;No Aplica;No Aplica
+CENTRO MEDICO BALMORAL;Las Condes;Calle;309;Calle Balmoral;224068771;No;No Aplica;No Aplica
+Clinica Odontológica Municipal de Peñalolén;Peñalolén;Avenida;9862;Grecia;229397702;NO;No Aplica;No Aplica

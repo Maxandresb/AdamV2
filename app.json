@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "AdamV2",
+    "slug": "AdamV2",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/iconAdam.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/images/Adam-splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*",
+      "./location.js"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-iconAdam.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.maxan.AdamV2",
+      "permissions": [
+        "ACCESS_FINE_LOCATION", "READ_EXTERNAL_STORAGE", "CALL_PHONE", "READ_CONTACTS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b85e95ba-f8ae-437a-8e57-5b002e6630e8"
+      }
+    }
+  }
+}
