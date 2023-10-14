@@ -148,6 +148,19 @@ const functions = [
                 }
             }
         }
+    },
+    {
+        "name": "base_de_datos",
+        "description": "el usuario solicita base de datos",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "llamar": {
+                    "type": "string",
+                    "description": "indica que se quiere base de datos",
+                }
+            }
+        }
     }
 
 ];
