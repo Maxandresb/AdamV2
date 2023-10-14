@@ -185,8 +185,9 @@ const respuestaVoz= (texto)=>{
 // ***                                                         Vista de pantalla                                                                                                  ***
 // **********************************************************************************************************************************************************************************
   return (
-    <View className="flex-1 bg-green-100">
+    
      <SafeAreaView className="flex-1 justify-center">
+      <View className="flex-1 bg-green-100">
      <View className="flex-row justify-center">
       <Image 
       source={require('../../assets/images/iron-adam.png')}
@@ -261,8 +262,9 @@ const respuestaVoz= (texto)=>{
             
           
         </View>
+        </View>
      </SafeAreaView>
-    </View>
+   
   )
 }
 
