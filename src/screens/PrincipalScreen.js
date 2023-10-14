@@ -6,9 +6,10 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
 // Creaciones propias
+import { initDB } from "../api/sqlite"
 import { secondApiCall ,firstApiCall, whisperCall} from "../api/openAI";
 import { obtenerUbicacion} from "../api/location";
-import { buscarEnCSV} from "../api/centrosMedicos";
+import { buscarEnDB} from "../api/centrosMedicos";
 import { realizarLlamada} from "../api/llamada";
 import { requestContactsPermission} from "../api/contactos";
 import * as FileSystem from 'expo-file-system';
@@ -116,10 +117,11 @@ export default function PrincipalScreen() {
             let region = 'Biobío Region'
             console.log('COMUNA: ',comuna)
             console.log('REGION: ',region)
-            let centros = buscarEnCSV('Comuna', comuna, region)
+            let centros = await buscarEnDB('Comuna', comuna)
             console.log('CENTROS: ', centros)
             function_response = `estos son los centros de salud cercanos: ${centros}`; 
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
+            console.log('CENTROS: ', centros)
         }else if (function_name === "llamar") {
           function_response = "llama al contacto predeterminado" 
           realizarLlamada('56953598945');
@@ -127,6 +129,10 @@ export default function PrincipalScreen() {
         }else if (function_name === "contactos") {
           function_response = "obten los contactos" 
           requestContactsPermission();
+          respuesta= await secondApiCall(prompt, message, function_name, function_response)
+        }else if (function_name === "base_de_datos") {
+          function_response = "bd creada" 
+          initDB();
           respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }else{
             function_name = "responder"
