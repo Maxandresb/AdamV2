@@ -35,6 +35,19 @@
       "eas": {
         "projectId": "b85e95ba-f8ae-437a-8e57-5b002e6630e8"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/assets/notification-sound.wav",
+            "./local/assets/notification-sound-other.wav"
+          ]
+        }
+      ]
+    ]
   }
 }

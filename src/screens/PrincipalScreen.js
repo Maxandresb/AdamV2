@@ -16,6 +16,7 @@ import { buscarEnDB} from "../api/centrosMedicos";
 import { realizarLlamada} from "../api/llamada";
 import { requestContactsPermission} from "../api/contactos";
 import * as FileSystem from 'expo-file-system';
+import { scheduleRecordatorioNotification } from "../api/notificaciones";
 export default function PrincipalScreen() {
   const [inputUsuario, setinputUsuario]= useState('')
   const [mensajes, setMensajes]= useState([])
@@ -143,13 +144,10 @@ export default function PrincipalScreen() {
           initDB();
           respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }else if (function_name === "recordatorio") {
-          //let json =JSON.parse(args);
-          //console.log(json.Titulo)
           function_response = "Di que se agrega el recordatorio" 
           respuesta= await secondApiCall(prompt, message, function_name, function_response)
-          //console.log("Respuesta texto:" + respuesta.text)
-          //console.log("Argumentos: " + args)
           addRecordatorio(JSON.parse(args))
+          scheduleRecordatorioNotification(JSON.parse(args))
         }else{
             function_name = "responder"
             function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta" 
