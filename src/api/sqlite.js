@@ -2,44 +2,150 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('adamdb.db');
 
-export function mostarDB() {
+export function mostarDB(tabla) {
   db.transaction(tx => {
-    tx.executeSql('SELECT * FROM centrosMedicos', [], (_, { rows }) => {
+    tx.executeSql(`SELECT * FROM ${tabla}`, [], (_, { rows }) => {
       console.log(JSON.stringify(rows));
     });
   }
 )};
 
 export function initDB() {
+    // eliminar tabla
     //db.transaction(tx => {
     //  tx.executeSql('DROP TABLE centrosMedicos', [], (_, { rows }) => {
     //    console.log('Tabla eliminada');
     //  });
     //});
-    db.transaction(tx => {
-        tx.executeSql(
-        `CREATE TABLE IF NOT EXISTS centrosMedicos (
-            id INTEGER PRIMARY KEY NOT NULL, 
-            NombreOficial TEXT, 
-            Region TEXT, 
-            Comuna TEXT, 
-            Via TEXT, 
-            Numero INTEGER, 
-            Calle TEXT, 
-            Telefono TEXT, 
-            TieneServicioDeUrgencia TEXT, 
-            TipoDeUrgencia TEXT, 
-            TipoDeSAPU TEXT
-        );`,
-        [],
-        (_, { rows }) => console.log('Tabla creada:', rows),
-        (_, error) => console.log('Error al crear la tabla:', error)
-        );
+
+    //eliminar contenido de una tabla
     //db.transaction(tx => {
     //  tx.executeSql('DELETE FROM centrosMedicos', [], (_, { rows }) => {
     //    console.log('Registros eliminados');
     //  });
     //});
+
+    db.transaction(tx => {
+      // Crear tabla Usuario
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS Usuario (
+          rut INTEGER PRIMARY KEY NOT NULL,
+          pnombre TEXT,
+          snombre TEXT,
+          apaterno TEXT,
+          amaterno TEXT,
+          alias TEXT,
+          genero TEXT,
+          tipo_sangre TEXT,
+          fecha_nacimiento TEXT,
+          alergias BOOLEAN,
+          cronico BOOLEAN,
+          donante BOOLEAN
+        );`
+        ,
+        [],
+        (_, { rows }) => console.log('Tabla usuario creada:', rows),
+        (_, error) => console.log('Error al crear la tabla:', error)
+      );
+    
+      // Crear tabla Alergias
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS Alergias (
+          id INTEGER PRIMARY KEY NOT NULL,
+          tipo TEXT,
+          alergeno TEXT,
+          usuario_rut INTEGER,
+          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        );`,
+        [],
+        (_, { rows }) => console.log('Tabla alergias creada:', rows),
+        (_, error) => console.log('Error al crear la tabla:', error)
+      );
+    
+      // Crear tabla Limitaciones
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS Limitaciones (
+          id INTEGER PRIMARY KEY NOT NULL,
+          tipo TEXT,
+          severidad TEXT,
+          usuario_rut INTEGER,
+          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        );`,
+        [],
+        (_, { rows }) => console.log('Tabla limitaciones creada:', rows),
+        (_, error) => console.log('Error al crear la tabla:', error)        
+      );
+    
+      // Crear tabla Medicamentos
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS Medicamentos (
+          id INTEGER PRIMARY KEY NOT NULL,
+          medicamento TEXT,
+          dosis TEXT,
+          periodicidad TEXT,
+          usuario_rut INTEGER,
+          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        );`,
+        [],
+        (_, { rows }) => console.log('Tabla medicamentos creada:', rows),
+        (_, error) => console.log('Error al crear la tabla:', error)
+      );
+    
+      // Crear tabla Historial
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS Historial (
+          id INTEGER PRIMARY KEY NOT NULL,
+          fecha_hora TEXT,
+          funcion TEXT, 
+          input TEXT,
+          output TEXT,
+          usuario_rut INTEGER,
+          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        );`,
+        [],
+        (_, { rows }) => console.log('Tabla historial creada:', rows),
+        (_, error) => console.log('Error al crear la tabla:', error)
+      );
+    
+      // Crear tabla Contacto
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS Contacto (
+          id INTEGER PRIMARY KEY NOT NULL,
+          alias TEXT,
+          numero TEXT,
+          nombre TEXT,
+          apellido TEXT,
+          relacion TEXT,
+          usuario_rut INTEGER,
+          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        );`,
+        [],
+        (_, { rows }) => console.log('Tabla contacto creada:', rows),
+        (_, error) => console.log('Error al crear la tabla:', error)
+      );
+
+      // Crear tabla centros medicos
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS centrosMedicos (
+          id INTEGER PRIMARY KEY NOT NULL, 
+          NombreOficial TEXT, 
+          Region TEXT, 
+          Comuna TEXT, 
+          Via TEXT, 
+          Numero INTEGER, 
+          Calle TEXT, 
+          Telefono TEXT, 
+          TieneServicioDeUrgencia TEXT, 
+          TipoDeUrgencia TEXT, 
+          TipoDeSAPU TEXT,
+          usuario_rut INTEGER,
+          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        );`,
+        [],
+        (_, { rows }) => console.log('Tabla centros medicos creada:', rows),
+        (_, error) => console.log('Error al crear la tabla:', error)
+        );
+
     db.transaction(tx => {
       tx.executeSql(
           "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",

@@ -139,12 +139,12 @@ export default function PrincipalScreen() {
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }else if (function_name === "mostrar_base_de_datos") {
             function_response = "visualizaras la BD" 
-            mostarDB();
+            mostarDB('Usuario');
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
       }else{
-            function_name = "responder"
-            function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta" 
-            respuesta= await secondApiCall(prompt, message, function_name, function_response)
+          function_name = "responder"
+          function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta" 
+          respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }
       }
       console.log('******respuesta api obtenida*****');
