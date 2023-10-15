@@ -6,8 +6,10 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
 import * as Speech from 'expo-speech';
+
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 // Creaciones propias
-import { initDB } from "../api/sqlite"
+import { addRecordatorio, initDB } from "../api/sqlite"
 import { secondApiCall ,firstApiCall, whisperCall} from "../api/openAI";
 import { obtenerUbicacion} from "../api/location";
 import { buscarEnDB} from "../api/centrosMedicos";
@@ -19,6 +21,7 @@ export default function PrincipalScreen() {
   const [mensajes, setMensajes]= useState([])
   const [cargando, setCargando] =useState(false)
   const [hablando, setHablando] =useState(false)
+  const [vozAdam, setVozAdam] =useState(false)
   //useEffect(()=> dummyMessages.map((mensaje)=>setMensajes((mensajesPrevios)=>GiftedChat.append(mensajesPrevios,mensaje))))
  {/* inicio funciones de grabacion de voz de usuario  */ }
  const [grabacion, setGrabacion]= useState();
@@ -32,6 +35,7 @@ export default function PrincipalScreen() {
        const { recording } =await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
        setGrabacion(recording);
        console.log('Recording started');//console.log(recording);
+       
      }
    } catch (error) {console.log(error)}}
  async function detenerGrabacion(){
@@ -52,9 +56,12 @@ export default function PrincipalScreen() {
           formData.append('file', {
             uri: tempRecordingUri,
             name: fileName,
-            type: 'audio/m4a', // Change to the desired audio format
+            type: 'audio/m4a', 
+            
           });
           formData.append('model', 'whisper-1');
+          formData.append('language', 'es');
+
     console.log (tempRecordingUri);
     console.log(formData)
     whisperCall(formData).then(res => {
@@ -135,19 +142,31 @@ export default function PrincipalScreen() {
           function_response = "bd creada" 
           initDB();
           respuesta= await secondApiCall(prompt, message, function_name, function_response)
+        }else if (function_name === "recordatorio") {
+          //let json =JSON.parse(args);
+          //console.log(json.Titulo)
+          function_response = "Di que se agrega el recordatorio" 
+          respuesta= await secondApiCall(prompt, message, function_name, function_response)
+          //console.log("Respuesta texto:" + respuesta.text)
+          //console.log("Argumentos: " + args)
+          addRecordatorio(JSON.parse(args))
         }else{
             function_name = "responder"
             function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta" 
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
+           
         }
       }
       console.log('******respuesta api obtenida*****');
       setCargando(false);
       if(respuesta){
-        console.log(respuesta);
+       // console.log(respuesta);
         setMensajes((mensajesPrevios)=>GiftedChat.append(mensajesPrevios,respuesta))
         setinputUsuario('');
+        respuestaVoz(respuesta.text)
         respuesta = null; // Vacía la variable respuesta
+        //console.log(JSON.parse(respuesta))
+       // 
       }else{
         Alert.alert("Ha ocurrido un error : ", respuesta.msg);
       }
@@ -171,12 +190,17 @@ const respuestaVoz= (texto)=>{
   const options={
     voice:"es-us-x-esd-network"  ,
     rate:0.9,
-    pitch: 0.85
-     
+    pitch: 0.85,
+    onDone:() => setVozAdam(false) 
   };
   Speech.speak(texto,options)
+  setVozAdam(true)
 };
 
+const detenerVoz =() =>{
+  Speech.stop()
+  setVozAdam(false)
+}
 {/* Fin Voz de respuesta de ADAM */}
 
 
@@ -234,7 +258,7 @@ const respuestaVoz= (texto)=>{
                 </TouchableOpacity>
                 
               ) : (
-                <TouchableOpacity onPress={iniciarGrabacion} >
+                <TouchableOpacity onPress={()=>{iniciarGrabacion().then(setTimeout(()=> detenerGrabacion, 1000));}} >
                   {/* recording start button */}
                   <Image 
                     className="rounded-full" 
@@ -254,16 +278,16 @@ const respuestaVoz= (texto)=>{
               </TouchableOpacity>
             )
           } */}
-          {/* {
-            speaking && (
+          {
+            vozAdam && (
               <TouchableOpacity 
-                //onPress={stopSpeaking} 
+                onPress={detenerVoz} 
                 className="bg-red-400 rounded-3xl p-2 absolute left-10"
               >
-                <Text className="text-white font-semibold">Stop</Text>
+                <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice-off" size={24} color="black" /></Text>
               </TouchableOpacity>
             )
-          } */}
+          }
             
             
           

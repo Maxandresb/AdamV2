@@ -17,7 +17,8 @@ const whispcli = axios.create({
 const whisperUrl='https://api.openai.com/v1/audio/transcriptions';
 const chatgptUrl = 'https://api.openai.com/v1/chat/completions';
 const dalleUrl = 'https://api.openai.com/v1/images/generations';
-
+let FechaHoy= new Date()
+//console.log('Fecha Hoy: ' + FechaHoy)
 export const whisperCall = async (formData) =>{
     
     try {
@@ -159,6 +160,36 @@ const functions = [
                     "type": "string",
                     "description": "indica que se quiere base de datos",
                 }
+            }
+        }
+    },
+    {
+        "name": "recordatorio",
+        "description": `el usuario solicita obtener el formato de un recordatorio, considera que hoy es  ${FechaHoy} para las referencias de dia y hora, debes incluir todas los parametros siempre.`,
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "Titulo": {
+                    "type": "string",
+                    "description": "indica el encabezado del recordatorio , obligatorio",
+                },
+                "Fecha": {
+                    "type": "string",
+                    "description": "indica la fecha del recordatorio en formato YYYY-MM-DD , obligatorio",
+                },
+                "Hora": {
+                    "type": "string",
+                    "description": "indica la hora del recordatorio en formato hh:mm , obligatorio",
+                },
+                "Descripcion": {
+                    "type": "string",
+                    "description": "indica el cuerpo del recordatorio , lo que complemente al titulo",
+                },
+                "SegundosHasta": {
+                    "type": "string",
+                    "description": "indica el numero de segundos entre ahora y el recordatorio, , obligatorio",
+                },
+
             }
         }
     }
