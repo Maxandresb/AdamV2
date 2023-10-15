@@ -19,14 +19,14 @@ export async function obtenerUbicacion(opcion) {
       // Realiza una solicitud a la API de Opencage Geocoder para obtener la dirección
       let response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=`+ apiKey);
       let data = await response.json();
-      console.log('DATA UBIC: ', data.results[0])
+      //console.log('DATA UBIC: ', data.results[0])
       let calle = data.results[0].components.road
       let pobla = data.results[0].components.neighbourhood
       let comuna = data.results[0].components.town
       let region = data.results[0].components.state
       let pais = data.results[0].components.country
 
-      dir_completa= `calle: ${calle}, sector: ${pobla}, comuna:${comuna}, region: ${region}, pais: ${pais}`;
+      dir_completa= `calle: ${calle}, cercano al sector: ${pobla}, comuna:${comuna}, region: ${region}, pais: ${pais}`;
 
       console.log('ELIGIENDO TIPO DE RETORNO')
       if (opcion === 'direccion'){

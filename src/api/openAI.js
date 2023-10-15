@@ -161,6 +161,19 @@ const functions = [
                 }
             }
         }
+    },
+    {
+        "name": "mostrar_base_de_datos",
+        "description": "el usuario solicita ver base de datos",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "llamar": {
+                    "type": "string",
+                    "description": "indica que se quiere ver la base de datos",
+                }
+            }
+        }
     }
 
 ];
@@ -197,8 +210,8 @@ export async function secondApiCall(prompt, message, function_name, function_res
         console.log("TERMINO 2DA LLAMADA API OPENAI")
         // Añade la respuesta del asistente al historial de la conversación
         conversationHistory.push(finalres.data?.choices[0]?.message);
-        console.log(conversationHistory)
-        console.log(finalres.data?.choices[0]?.message?.content)
+        //console.log(conversationHistory)
+        //console.log(finalres.data?.choices[0]?.message?.content)
         function generarIdUnico() {
             return Date.now().toString(36) + Math.random().toString(36).substring(2);
         }
@@ -215,7 +228,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
             console.log("FINAL DE LA CREACION DE LA RESPUESTA")
         promises.push(respuesta);
         const tex3 = JSON.stringify(respuesta)
-        console.log('MENSAJE: '+tex3)
+        console.log('RESPUESTA CREADA: '+tex3)
         //console.log("PRINT INTENTO: " + respuesta)
         return respuesta;       
     } catch (error) {
