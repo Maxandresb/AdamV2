@@ -139,8 +139,12 @@ export default function PrincipalScreen() {
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }else if (function_name === "mostrar_base_de_datos") {
             function_response = "visualizaras la BD" 
-            mostarDB('Usuario');
+            // tablas: Usuario Alergias Medicamentos Limitaciones Contacto Historial centrosMedicos 
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
+            if(respuesta){
+              console.log('MOSTRANDO BD')
+              mostarDB('Historial');
+            }
       }else{
           function_name = "responder"
           function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta" 
