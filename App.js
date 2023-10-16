@@ -4,7 +4,7 @@ import AppNavigation from "./src/navigation"
 import { initDB } from "./src/api/sqlite"
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-
+import Constants from 'expo-constants';
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -69,7 +69,7 @@ export default function App() {
       }
       // Learn more about projectId:
       // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
-      token = (await Notifications.getExpoPushTokenAsync({ projectId: 'your-project-id' })).data;
+      token = (await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig.extra.eas.projectId })).data;
       console.log(token);
     } else {
       alert('Must use physical device for Push Notifications');
