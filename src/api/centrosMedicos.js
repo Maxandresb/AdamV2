@@ -14,7 +14,7 @@ export async function buscarEnDB(columna, valor) {
         [valor],
         (_, { rows }) => {
           if (rows.length > 0) {
-            console.log('Datos encontrados:', rows);
+            console.log('Datos encontrados');
             resolve(rows);
           } else {
             console.log('No se encontraron datos.');
