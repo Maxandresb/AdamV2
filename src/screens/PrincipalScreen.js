@@ -180,13 +180,12 @@ export default function PrincipalScreen() {
     <View className="flex-1 bg-green-100">
      <SafeAreaView className="flex-1 justify-center">
      <View className="flex-row justify-center">
-      <Image 
+      {/*<Image 
       source={require('../../assets/images/iron-adam.png')}
       style={{height:hp(8), width:wp(12)}}
-      />
-      
+      />*/}
      </View>
-     <View><Text>Chat ADAM</Text></View>
+
      <View className="flex-1 flex-row justify-center">
       
       <View style={{height:hp(80), width:wp(90)}}  className= " bg-blue-100 rounded-3xl p-4">
