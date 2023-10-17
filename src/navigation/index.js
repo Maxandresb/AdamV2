@@ -15,7 +15,7 @@ import { View, Text } from 'react-native';
 
 // Importa tus pantallas aquí
 
-import SaludoScreen from '../screens/SaludoScreen';
+
 import Perfil from '../screens/Perfil'; 
 import Config from '../screens/Config'; 
 import HistorialChats from '../screens/HistorialChats'; 
@@ -40,7 +40,7 @@ function MyTabs(){
 function PrincipalStack() {
   return (
     <Drawer.Navigator initialRouteName="ADAM">
-      <Drawer.Screen name="ADAM" component={PrincipalScreen} />
+      <Drawer.Screen name="ADAM" component={MyTabs} />
       <Drawer.Screen name="Perfil de usuario" component={Perfil} />
       <Drawer.Screen name="Historial de chats" component={HistorialChats} />
       <Drawer.Screen name="Configuración" component={Config} />
@@ -52,7 +52,7 @@ export default function AppNavigation() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="Saludo">
         {/* <Stack.Screen name="Principal" component={PrincipalScreen} /> */}
-        <Stack.Screen name="Tabs" component={MyTabs}/>
+        {/* <Stack.Screen name="Tabs" component={MyTabs}/> */}
         <Stack.Screen name="Saludo" component={SaludoScreen} />
         <Stack.Screen name="Principal" component={PrincipalStack} />
       </Stack.Navigator>

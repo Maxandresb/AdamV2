@@ -26,7 +26,7 @@ export default function WelcomeScreen() {
         </View>
         
         {/* start button */}
-        <TouchableOpacity onPress={()=> navigation.navigate('Tabs')} className="bg-emerald-600 mx-5 p-4 rounded-2xl">
+        <TouchableOpacity onPress={()=> navigation.navigate('Principal')} className="bg-emerald-600 mx-5 p-4 rounded-2xl">
             <Text style={{fontSize: wp(6)}} className="text-center font-bold text-white">
                 Conversemos
             </Text>
