@@ -149,8 +149,12 @@ export default function PrincipalScreen() {
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }else if (function_name === "mostrar_base_de_datos") {
             function_response = "visualizaras la BD" 
-            mostarDB('Usuario');
+            // tablas: Usuario Alergias Medicamentos Limitaciones Contacto Historial centrosMedicos 
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
+            if(respuesta){
+              console.log('MOSTRANDO BD')
+              mostarDB('Historial');
+            }
         }else if (function_name === "recordatorio") {
           function_response = "Di que se agrega el recordatorio" 
           respuesta= await secondApiCall(prompt, message, function_name, function_response)
@@ -224,13 +228,12 @@ const detenerVoz =() =>{
      <SafeAreaView className="flex-1 justify-center">
       <View className="flex-1 bg-green-100">
      <View className="flex-row justify-center">
-      <Image 
+      {/*<Image 
       source={require('../../assets/images/iron-adam.png')}
       style={{height:hp(8), width:wp(12)}}
-      />
-      
+      />*/}
      </View>
-     <View><Text>Chat ADAM</Text></View>
+
      <View className="flex-1 flex-row justify-center">
       
       <View style={{height:hp(80), width:wp(90)}}  className= " bg-blue-100 rounded-3xl p-4">

@@ -1,5 +1,9 @@
 import { Audio } from "expo-av";
 import axios from 'axios';
+import * as SQLite from 'expo-sqlite';
+import { guardarHistoriarChats} from "../api/sqlite";
+
+
 const apiKey = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
 
 const client = axios.create({
@@ -215,6 +219,9 @@ let conversationHistory = [
     }
 ];
 
+// abrir bd para guardar historial de respuestas
+const db = SQLite.openDatabase('adamdb.db');
+
 export async function secondApiCall(prompt, message, function_name, function_response) {
     console.log('START 2DA LLAMADA');
     conversationHistory.push({
@@ -247,7 +254,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
         }
         let answer = finalres.data?.choices[0]?.message?.content;
         promises.push(finalres);
-        const respuesta= await{_id: generarIdUnico(),
+        let respuesta= await{_id: generarIdUnico(),
             
             text: answer,
             createdAt: new Date(),
@@ -260,6 +267,23 @@ export async function secondApiCall(prompt, message, function_name, function_res
         const tex3 = JSON.stringify(respuesta)
         console.log('RESPUESTA CREADA: '+tex3)
         //console.log("PRINT INTENTO: " + respuesta)
+        let id= respuesta._id.toString();
+        let fec_hor= respuesta.createdAt.toString();
+        let name_func= function_name.toString();
+        let consulta= prompt.toString();
+        let contestacion= respuesta.text.toString();
+        let rut= 195953171
+
+
+        console.log('id: ', id, 'fec_hor: ', fec_hor, )
+        if (respuesta){
+            console.log('********************************************************************')
+            console.log('id: ', id, 'fec_hor: ', fec_hor, 'function name: ',name_func, 'prompt: ', consulta, 'respuesta: ', contestacion, 'rut: ', rut)
+            guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+            console.log('********************************************************************')
+        }
+        
+
         return respuesta;       
     } catch (error) {
         console.error(error);
