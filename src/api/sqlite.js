@@ -26,43 +26,11 @@ export function initDB() {
     // tablas: Usuario Alergias Medicamentos Limitaciones Contacto Historial centrosMedicos   
 
     // eliminar tabla
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Usuario', [], (_, { rows }) => {
-            console.log('Tabla eliminada');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Alergias', [], (_, { rows }) => {
-            console.log('Tabla eliminada');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Medicamentos', [], (_, { rows }) => {
-            console.log('Tabla eliminada');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Limitaciones', [], (_, { rows }) => {
-            console.log('Tabla eliminada');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Contacto', [], (_, { rows }) => {
-            console.log('Tabla eliminada');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Historial', [], (_, { rows }) => {
-            console.log('Tabla eliminada');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE centrosMedicos', [], (_, { rows }) => {
-            console.log('Tabla eliminada');
-        });
-    });
-    
-    
+    //db.transaction(tx => {
+    //    tx.executeSql('DROP TABLE Usuario', [], (_, { rows }) => {
+    //        console.log('Tabla eliminada');
+    //    });
+    //});    
 
     //eliminar contenido de una tabla
     //db.transaction(tx => {
@@ -78,8 +46,8 @@ export function initDB() {
           rut TEXT PRIMARY KEY NOT NULL,
           pnombre TEXT,
           snombre TEXT,
-          apaterno TEXT,
-          amaterno TEXT,
+          papellido TEXT,
+          sapellido TEXT,
           alias TEXT,
           genero TEXT,
           tipo_sangre TEXT,
