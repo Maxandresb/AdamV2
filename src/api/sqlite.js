@@ -34,12 +34,12 @@ export function addRecordatorio(recordatorio){
   
 
 export function initDB() {
-    // eliminar tabla
-    //db.transaction(tx => {
-    //  tx.executeSql('DROP TABLE centrosMedicos', [], (_, { rows }) => {
-    //    console.log('Tabla eliminada');
-    //  });
-    //});
+   // eliminar tabla
+    db.transaction(tx => {
+     tx.executeSql('DROP TABLE centrosMedicos', [], (_, { rows }) => {
+       console.log('Tabla eliminada');
+     });
+    });
 
     //eliminar contenido de una tabla
     //db.transaction(tx => {
@@ -149,13 +149,13 @@ export function initDB() {
 
       // Crear tabla centros medicos
       tx.executeSql(
-        `CREATE TABLE IF NOT EXISTS centrosMedicos (
+        `CREATE  TABLE IF NOT EXISTS centrosMedicos (
           id INTEGER PRIMARY KEY NOT NULL, 
           NombreOficial TEXT, 
           Region TEXT, 
           Comuna TEXT, 
           Via TEXT, 
-          Numero INTEGER, 
+          Numero TEXT, 
           Calle TEXT, 
           Telefono TEXT, 
           TieneServicioDeUrgencia TEXT, 
