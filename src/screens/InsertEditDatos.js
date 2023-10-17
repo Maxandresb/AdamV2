@@ -98,7 +98,7 @@ const InsertEdirDatos = () => {
         <Picker
           selectedValue={genero}
           onValueChange={(itemValue) => setGenero(itemValue)}
-          style={styles.input}
+          style={styles.inputPicker2}
         >
           <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
           <Picker.Item label="Hombre" value="Hombre" />
@@ -112,7 +112,7 @@ const InsertEdirDatos = () => {
         <Picker
           selectedValue={tipo_sangre}
           onValueChange={(itemValue) => setTipoSangre(itemValue)}
-          style={styles.input}
+          style={styles.inputPicker2}
         >
           <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
           <Picker.Item label="O Positivo" value="O Positivo" />
@@ -129,7 +129,7 @@ const InsertEdirDatos = () => {
       <Text style={styles.header}>Selecciona tu fecha de nacimiento: </Text>
       <TouchableOpacity onPress={() => setShow(true)}>
         <TextInput
-          style={styles.input}
+          style={styles.inputfecha}
           placeholder="Fecha de nacimiento"
           value={date.toLocaleDateString()}
           editable={false}
@@ -150,7 +150,7 @@ const InsertEdirDatos = () => {
         <Picker
           selectedValue={alergias}
           onValueChange={(itemValue) => setAlergias(itemValue)}
-          style={styles.input}
+          style={styles.inputPicker2}
         >
           <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
           <Picker.Item label="Sí" value="Sí" />
@@ -162,7 +162,7 @@ const InsertEdirDatos = () => {
         <Picker
           selectedValue={cronico}
           onValueChange={(itemValue) => setCronico(itemValue)}
-          style={styles.input}
+          style={styles.inputPicker2}
           itemStyle={{ textAlign: 'left', textAlignments: 'left', textAlignmentsVertical: 'center' }}
         >
           <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
@@ -170,12 +170,12 @@ const InsertEdirDatos = () => {
           <Picker.Item label="No" value="No" />
         </Picker>
       </View>
-      <Text style={styles.header}>Selecciona si eres o no donante: </Text>
+      <Text style={styles.header}>Indica si eres o no donante: </Text>
       <View style={styles.inputPicker}>
         <Picker
           selectedValue={donante}
           onValueChange={(itemValue) => setDonante(itemValue)}
-          style={styles.input}
+          style={styles.inputPicker2}
         >
           <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
           <Picker.Item label="Sí" value="Sí" />
@@ -209,14 +209,34 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 20,
     color: 'black',
-    paddingLeft: 5,
+    paddingLeft: 18,
+  },
+  inputfecha: {
+    height: 40,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginBottom: 20,
+    color: 'gray',
+    paddingLeft: 18,
   },
   inputPicker: {
     height: 40,
     borderColor: 'black',
     borderWidth: 1,
-    marginBottom: 15,
+    marginBottom: 20,
+    alignContent:'flex-start',
     justifyContent: 'center', // Asegúrate de que el texto esté centrado verticalmente
+  },
+  inputPicker2: {
+    height: 40,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginBottom: 20,
+    color: 'gray',
+    alignItems: 'flex-start',
+    textAlignments: 0,
+    itemStyle:{paddingLeft:0},
+    paddingLeft: 0,
   },
   buttonContainer: {
     width: '50%',
