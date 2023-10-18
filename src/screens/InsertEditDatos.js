@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, Button, TextInput, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Button, TextInput, View, Text, ScrollView, TouchableOpacity, TouchableHighlight, Modal, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SQLite from 'expo-sqlite';
+
 const db = SQLite.openDatabase('adamdb.db');
+
 const InsertEdirDatos = () => {
+
   const [rut, setRut] = useState('');
   const [pnombre, setPNombre] = useState('');
   const [snombre, setSNombre] = useState('');
@@ -14,20 +17,40 @@ const InsertEdirDatos = () => {
   const [genero, setGenero] = useState('');
   const [tipo_sangre, setTipoSangre] = useState('');
   const [fecha_nacimiento, setFechaNacimiento] = useState('');
-  const [alergias, setAlergias] = useState('');
+  const [tieneAlergias, setTieneAlergias] = useState('');
   const [cronico, setCronico] = useState('');
   const [donante, setDonante] = useState('');
+  const [limitacion_fisica, setLimitacionFisica] = useState('');
+
+  const [tipoAlergia, setTipoAlergia] = useState('');
+  const [alergeno, setAlergeno] = useState('');
+  const [alergias, setAlergias] = useState([]);
+
+
   const guardarDatosUsuario = () => {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO Usuario (rut, pnombre, snombre, papellido, sapellido, alias, genero, tipo_sangre, fecha_nacimiento, alergias, cronico, donante) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [rut, pnombre, snombre, papellido, sapellido, alias, genero, tipo_sangre, fecha_nacimiento, alergias, cronico, donante],
+        'INSERT INTO Usuario (rut, pnombre, snombre, papellido, sapellido, alias, genero, tipo_sangre, fecha_nacimiento, alergias, cronico, donante, limitacion_fisica) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [rut, pnombre, snombre, papellido, sapellido, alias, genero, tipo_sangre, fecha_nacimiento, alergias, cronico, donante, limitacion_fisica],
         () => { },
         (_, error) => console.log('Error al insertar datos en la tabla Usuario:', error)
       );
     });
-    console.log('DATOS DEL USUARIO INGRESADOS CORRECTAMENTE')
+    // Guarda las alergias
+    alergias.forEach(alergia => {
+      db.transaction(tx => {
+        tx.executeSql(
+          'INSERT INTO Alergias (tipo, alergeno, usuario_rut) values (?, ?, ?)',
+          [alergia.tipo, alergia.alergeno, rut],
+          () => { },
+          (_, error) => console.log('Error al insertar datos en la tabla Alergias:', error)
+        );
+      });
+    });
+
+    console.log('DATOS DEL USUARIO Y ALERGIAS INGRESADOS CORRECTAMENTE')
   }
+
   //datepicker para fec_nac
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
@@ -41,7 +64,21 @@ const InsertEdirDatos = () => {
   const showDatepicker = () => {
     setShow(true);
   };
+  // mostrar formulario en caso de tener alergias, limitaciones fisicas o patologias cronicas
+  const [modalVisible, setModalVisible] = useState(false);
 
+  // Actualiza el estado de las alergias y decide si mostrar la ventana
+  const handleAlergiasChange = (itemValue) => {
+    setTieneAlergias(itemValue);
+    setModalVisible(itemValue === 'Sí');
+  };
+
+  const agregarAlergia = () => {
+    const nuevaAlergia = { tipo: tipoAlergia, alergeno: alergeno, rut: rut };
+    setAlergias([...alergias, nuevaAlergia]);
+    setTipoAlergia('');
+    setAlergeno('');
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -148,14 +185,69 @@ const InsertEdirDatos = () => {
       <Text style={styles.header}>Indica si posees o no alergias: </Text>
       <View style={styles.inputPicker}>
         <Picker
-          selectedValue={alergias}
-          onValueChange={(itemValue) => setAlergias(itemValue)}
+          selectedValue={tieneAlergias}
+          onValueChange={handleAlergiasChange}
           style={styles.inputPicker2}
         >
           <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
           <Picker.Item label="Sí" value="Sí" />
           <Picker.Item label="No" value="No" />
         </Picker>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('No haz ingresado tus alergias.');
+            setModalVisible(false);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.header}>Ingresa tu tipo de alergia:</Text>
+              <View style={styles.inputPicker}>
+                <Picker
+                  selectedValue={tipoAlergia}
+                  onValueChange={(itemValue) => setTipoAlergia(itemValue)}
+                  style={styles.inputPicker2}
+                >
+                  <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
+                  <Picker.Item label="Alergenos" value="Alergenos" />
+                  <Picker.Item label="Medicamentos" value="Medicamentos" />
+                  <Picker.Item label="Alimentos" value="Alimentos" />
+                </Picker>
+              </View>
+              <Text style={styles.header}>Ingresa tu alergeno:</Text>
+              <TextInput
+                style={styles.input}
+                placeholderTextColor="gray"
+                placeholder="ej: Perros"
+                onChangeText={text => setAlergeno(text)}
+                value={alergeno}
+              />
+              <View style={styles.buttonContainerCenter}>
+                <Button
+                  title="Agregar Nueva alergia"
+                  color="green"
+                  onPress={() => {
+                    agregarAlergia();
+                  }}
+                />
+              </View>
+              <View style={styles.buttonContainerCenter}>
+                <Button
+                  title="Listo"
+                  color="green"
+                  onPress={() => {
+                    setModalVisible(false);
+                    agregarAlergia();
+                  }}
+                />
+              </View>
+            </View>
+          </View>
+        </Modal>
+
       </View>
       <Text style={styles.header}>Indica si posees o no patologias cronicas: </Text>
       <View style={styles.inputPicker}>
@@ -182,6 +274,18 @@ const InsertEdirDatos = () => {
           <Picker.Item label="No" value="No" />
         </Picker>
       </View>
+      <Text style={styles.header}>Indica si posees o no limitaciones fisicas: </Text>
+      <View style={styles.inputPicker}>
+        <Picker
+          selectedValue={limitacion_fisica}
+          onValueChange={(itemValue) => setLimitacionFisica(itemValue)}
+          style={styles.inputPicker2}
+        >
+          <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
+          <Picker.Item label="Sí" value="Sí" />
+          <Picker.Item label="No" value="No" />
+        </Picker>
+      </View>
       <View style={styles.buttonContainer}>
         <Button
           title="Guardar Datos"
@@ -192,11 +296,20 @@ const InsertEdirDatos = () => {
     </ScrollView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
     padding: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    marginTop: 22
+  },
+  modalView: {
+    marginHorizontal: '10%',
   },
   header: {
     color: 'black',
@@ -224,7 +337,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     marginBottom: 20,
-    alignContent:'flex-start',
+    alignContent: 'flex-start',
     justifyContent: 'center', // Asegúrate de que el texto esté centrado verticalmente
   },
   inputPicker2: {
@@ -235,12 +348,17 @@ const styles = StyleSheet.create({
     color: 'gray',
     alignItems: 'flex-start',
     textAlignments: 0,
-    itemStyle:{paddingLeft:0},
+    itemStyle: { paddingLeft: 0 },
     paddingLeft: 0,
   },
   buttonContainer: {
     width: '50%',
     alignSelf: 'flex-end',
+    marginBottom: 30,
+  },
+  buttonContainerCenter: {
+    width: '50%',
+    alignSelf: 'center',
     marginBottom: 30,
   },
 });

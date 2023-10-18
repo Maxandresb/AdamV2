@@ -27,14 +27,14 @@ export function initDB() {
 
     // eliminar tabla
     //db.transaction(tx => {
-    //    tx.executeSql('DROP TABLE Usuario', [], (_, { rows }) => {
+    //    tx.executeSql('DROP TABLE Alergias', [], (_, { rows }) => {
     //        console.log('Tabla eliminada');
     //    });
-    //});    
+    //});   
 
     //eliminar contenido de una tabla
     //db.transaction(tx => {
-    //  tx.executeSql('DELETE FROM Historial', [], (_, { rows }) => {
+    //  tx.executeSql('DELETE FROM Usuario', [], (_, { rows }) => {
     //    console.log('Registros eliminados');
     //  });
     //});
@@ -54,7 +54,8 @@ export function initDB() {
           fecha_nacimiento TEXT,
           alergias TEXT,
           cronico TEXT,
-          donante TEXT
+          donante TEXT,
+          limitacion_fisica
         );`
         ,
         [],
@@ -65,10 +66,10 @@ export function initDB() {
       // Crear tabla Alergias
       tx.executeSql(
         `CREATE TABLE IF NOT EXISTS Alergias (
-          id TEXT PRIMARY KEY NOT NULL,
+          id INTEGER PRIMARY KEY NOT NULL,
           tipo TEXT,
           alergeno TEXT,
-          usuario_rut INTEGER,
+          usuario_rut TEXT,
           FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
         );`,
         [],
@@ -79,7 +80,7 @@ export function initDB() {
       // Crear tabla Limitaciones
       tx.executeSql(
         `CREATE TABLE IF NOT EXISTS Limitaciones (
-          id TEXT PRIMARY KEY NOT NULL,
+          id INTEGER PRIMARY KEY NOT NULL,
           tipo TEXT,
           severidad TEXT,
           usuario_rut TEXT,
@@ -93,7 +94,7 @@ export function initDB() {
       // Crear tabla Medicamentos
       tx.executeSql(
         `CREATE TABLE IF NOT EXISTS Medicamentos (
-          id TEXT PRIMARY KEY NOT NULL,
+          id INTEGER PRIMARY KEY NOT NULL,
           medicamento TEXT,
           dosis TEXT,
           periodicidad TEXT,
@@ -124,7 +125,7 @@ export function initDB() {
       // Crear tabla Contacto
       tx.executeSql(
         `CREATE TABLE IF NOT EXISTS Contacto (
-          id TEXT PRIMARY KEY NOT NULL,
+          id INTEGER PRIMARY KEY NOT NULL,
           alias TEXT,
           numero TEXT,
           nombre TEXT,

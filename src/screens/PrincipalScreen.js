@@ -140,6 +140,7 @@ export default function PrincipalScreen() {
         }else if (function_name === "mostrar_base_de_datos") {
             function_response = "visualizaras la BD" 
             // tablas: Usuario Alergias Medicamentos Limitaciones Contacto Historial centrosMedicos 
+            mostarDB('Alergias');
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
             if(respuesta){
               console.log('MOSTRANDO BD')
@@ -154,7 +155,7 @@ export default function PrincipalScreen() {
       console.log('******respuesta api obtenida*****');
       setCargando(false);
       if(respuesta){
-        console.log(respuesta);
+        //console.log(respuesta);
         setMensajes((mensajesPrevios)=>GiftedChat.append(mensajesPrevios,respuesta))
         setinputUsuario('');
         respuesta = null; // Vacía la variable respuesta

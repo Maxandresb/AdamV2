@@ -235,7 +235,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
             console.log("FINAL DE LA CREACION DE LA RESPUESTA")
         promises.push(respuesta);
         const tex3 = JSON.stringify(respuesta)
-        console.log('RESPUESTA CREADA: '+tex3)
+        //console.log('RESPUESTA CREADA: '+tex3)
         //console.log("PRINT INTENTO: " + respuesta)
         let id= respuesta._id.toString();
         let fec_hor= respuesta.createdAt.toString();
@@ -245,12 +245,12 @@ export async function secondApiCall(prompt, message, function_name, function_res
         let rut= 195953171
 
 
-        console.log('id: ', id, 'fec_hor: ', fec_hor, )
+        //console.log('id: ', id, 'fec_hor: ', fec_hor, )
         if (respuesta){
-            console.log('********************************************************************')
-            console.log('id: ', id, 'fec_hor: ', fec_hor, 'function name: ',name_func, 'prompt: ', consulta, 'respuesta: ', contestacion, 'rut: ', rut)
+            //console.log('********************************************************************')
+            //console.log('id: ', id, 'fec_hor: ', fec_hor, 'function name: ',name_func, 'prompt: ', consulta, 'respuesta: ', contestacion, 'rut: ', rut)
             guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-            console.log('********************************************************************')
+            //console.log('********************************************************************')
         }
         
 
