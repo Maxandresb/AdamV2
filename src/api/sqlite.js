@@ -33,6 +33,11 @@ export function initDB() {
     //        console.log('Tabla eliminada');
     //    });
     //});
+    db.transaction(tx => {
+        tx.executeSql('DROP TABLE Contacto', [], (_, { rows }) => {
+            console.log('Tabla eliminada Contacto');
+        });
+    });
 
     //eliminar contenido de una tabla
     //db.transaction(tx => {
@@ -40,44 +45,6 @@ export function initDB() {
     //    console.log('Registros eliminados');
     //  });
     //});
-
-    // eliminar tabla
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Usuario', [], (_, { rows }) => {
-            console.log('Tabla eliminada Usuario');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Alergias', [], (_, { rows }) => {
-            console.log('Tabla eliminada Alergias');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE PatologiasCronicas', [], (_, { rows }) => {
-            console.log('Tabla eliminada PatologiasCronicas');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Medicamentos', [], (_, { rows }) => {
-            console.log('Tabla eliminada Medicamentos');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Limitaciones', [], (_, { rows }) => {
-            console.log('Tabla eliminada Limitaciones');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Contacto', [], (_, { rows }) => {
-            console.log('Tabla eliminada Contacto');
-        });
-    });
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Historial', [], (_, { rows }) => {
-            console.log('Tabla eliminada Historial');
-        });
-    });
-
 
     db.transaction(tx => {
         // Crear tabla Usuario
