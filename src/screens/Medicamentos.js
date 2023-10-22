@@ -3,8 +3,6 @@ import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-
-
 const db = SQLite.openDatabase('adamdb.db');
 
 const Medicamento = ({ medicamento, isEditing, handlePress, handleDelete }) => {
