@@ -139,12 +139,16 @@ export default function PrincipalScreen() {
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
         }else if (function_name === "mostrar_base_de_datos") {
             function_response = "visualizaras la BD" 
-            // tablas: Usuario Alergias Medicamentos Limitaciones Contacto Historial centrosMedicos 
-            mostarDB('Alergias');
+            // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
             respuesta= await secondApiCall(prompt, message, function_name, function_response)
             if(respuesta){
               console.log('MOSTRANDO BD')
-              mostarDB('Historial');
+              mostarDB('Usuario');
+              mostarDB('Alergias');
+              mostarDB('Medicamentos');
+              mostarDB('Limitaciones');
+              mostarDB('PatologiasCronicas');
+
             }
       }else{
           function_name = "responder"
