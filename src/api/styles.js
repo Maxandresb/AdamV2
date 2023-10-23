@@ -1,6 +1,54 @@
 import { StyleSheet } from 'react-native';
 
+/*
+import styles from '../api/styles';
+
+<View style={styles.lineaContainer}></View>
+<View style={styles.espacioContainer}></View>
+
+*/
+
 export default StyleSheet.create({
+    msjContainer:{
+        borderColor: 'black',
+        borderWidth: 1,
+        padding:10,
+        borderRadius: 10,
+        margin: 4,
+    },
+    encabezadoInput: {
+        marginBottom: 5,
+        color: 'black',
+        fontSize: 18,
+        flex: 1, 
+        textAlign: 'left', 
+        paddingBottom:5
+    },
+    encabezadoOutput: {
+        marginBottom: 5,
+        color: 'black',
+        fontSize: 18,
+        flex: 1, 
+        textAlign: 'right',
+        paddingBottom:5,
+    },
+    inputTexto: {
+        marginBottom: 20,
+        color: 'black',
+        paddingLeft: 18,
+        paddingTop: 10, 
+        flex: 1, 
+        textAlign: 'left',
+    },
+    outputTexto: {
+        marginBottom: 20,
+        color: 'black',
+        paddingRight: 18,
+        paddingTop: 10, 
+        flex: 1, 
+        textAlign: 'right',
+    },
+    //-----------
     encabezadoInicial: {
         marginBottom: 5,
         color: 'black',
@@ -60,7 +108,13 @@ export default StyleSheet.create({
         borderBottomColor: 'black',
         borderBottomWidth: 1,
         marginTop: 10,
-        paddingTop: 10,
+        marginBottom:10
+    },
+    lineaContainer2: {
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        margin:10,
+        
     },
     espacioContainer: {
         borderBottomColor: '#fff',
@@ -73,6 +127,8 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         padding: 20,
+        
+
     },
     buttoningresar: {
         backgroundColor: 'green',
