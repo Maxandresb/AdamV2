@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import * as SQLite from 'expo-sqlite';
+import styles from '../api/styles';
+import CustomAlert from '../api/customAlert';
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -22,6 +24,8 @@ export default function DatosUsuario() {
   const [limitacion_fisica, setLimitacion_fisica] = useState('');
   const [toma_medicamentos, setToma_medicamentos] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+
+  const [isAlertVisible, setAlertVisible] = useState(false);
 
   const loadUserData = () => {
     db.transaction(tx => {
@@ -181,6 +185,8 @@ export default function DatosUsuario() {
                 onChangeText={setToma_medicamentos}
                 value={toma_medicamentos}
               />
+              <View style={styles.espacioContainer}>
+              </View>
             </>
           ) : (
             <>
@@ -212,6 +218,8 @@ export default function DatosUsuario() {
               <Text style={styles.content}>{item.limitacion_fisica}</Text>
               <Text style={styles.encabezado}>Toma Medicamentos:</Text>
               <Text style={styles.content}>{item.toma_medicamentos}</Text>
+              <View style={styles.espacioContainer}>
+            </View>
             </>
           )}
         </View>
@@ -219,61 +227,3 @@ export default function DatosUsuario() {
     </ScrollView>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    padding: 10,
-  },
-  viewStyle: {
-    marginTop: 25,
-  },
-  messageBox: {
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    marginBottom: 10,
-  },
-  buttonContainer: {
-    width: '50%',
-    alignSelf: 'center',
-    marginBottom: 2
-  },
-  button: {
-    backgroundColor: 'green',
-    padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  titulo: {
-    marginBottom: 10,
-    color: 'black',
-    fontSize: 24,
-    textAlign: 'center'
-  },
-  encabezado: {
-    marginBottom: 5,
-    color: 'black',
-    fontSize: 18,
-  },
-  content: {
-    height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginBottom: 20,
-    color: 'gray',
-    paddingLeft: 18,
-    paddingTop: 10
-  },
-  input: {
-    height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginBottom: 20,
-    color: 'black',
-    paddingLeft: 18,
-  },
-});

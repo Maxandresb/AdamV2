@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import * as SQLite from 'expo-sqlite';
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
+import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import styles from '../api/styles';
+import CustomAlert from '../api/customAlert';
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -100,6 +102,8 @@ const Medicamentos = () => {
     const [dosis, setDosis] = useState('');
     const [periodicidad, setPeriodicidad] = useState('');
 
+    const [isAlertVisible, setAlertVisible] = useState(false);
+
     useEffect(() => {
         db.transaction(tx => {
             tx.executeSql('SELECT * FROM Medicamentos', [], (_, { rows }) =>
@@ -174,9 +178,9 @@ const Medicamentos = () => {
 
     return (
         <ScrollView style={styles.container}>
-            <View style={styles.buttonContainer2}>
+            <View>
                 <TouchableOpacity
-                    style={styles.buttoningresar}
+                    style={styles.button}
                     onPress={handleAgregarMedicamentoPress} // Agregar esto
                 >
                     <Text style={styles.buttonText}>
@@ -195,10 +199,10 @@ const Medicamentos = () => {
             ))}
             <Modal
                 animationType="slide"
-                transparent={false}
+                transparent={true}
                 visible={modalVisibleMedicamentos}
                 onRequestClose={() => {
-                    Alert.alert('No haz ingresado tus medicamentos.');
+                    setAlertVisible(true);
                     setModalVisibleMedicamentos(false);
                 }}
             >
@@ -257,118 +261,12 @@ const Medicamentos = () => {
                     </View>
                 </View>
             </Modal>
+            <CustomAlert
+                isVisible={isAlertVisible}
+                onClose={() => setAlertVisible(false)}
+                message='No haz ingresado tus medicamentos.'
+            />
         </ScrollView>
     );
 };
-const styles = StyleSheet.create({
-    lineaContainer: {
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
-        marginTop: 10,
-        paddingTop: 10,
-    },
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-        padding: 10,
-        marginBottom: 10
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        marginTop: 22
-    },
-    modalView: {
-        marginHorizontal: '10%',
-    },
-    header: {
-        color: 'black',
-        fontSize: 18,
-        marginBottom: 5,
-    },
-    inputPicker: {
-        height: 40,
-        borderColor: 'black',
-        borderWidth: 1,
-        marginBottom: 20,
-        alignContent: 'flex-start',
-        justifyContent: 'center', // Asegúrate de que el texto esté centrado verticalmente
-    },
-    buttonContainer: {
-        alignSelf: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        width: '100%',
-    },
-    buttonContainer2: {
-        alignSelf: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        width: '100%',
-    },
-    buttoningresar: {
-        backgroundColor: 'green',
-        padding: 10,
-        borderRadius: 5,
-        padding: 10,
-        margin: 10,
-        width: '80%',
-
-    },
-    button: {
-        backgroundColor: 'green',
-        padding: 10,
-        borderRadius: 5,
-        padding: 10,
-        margin: 10
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 12,
-        textAlign: 'center',
-
-    },
-    deleteButton: {
-        backgroundColor: 'red',
-        padding: 10,
-        borderRadius: 5,
-        padding: 10,
-        margin: 10
-    },
-    buttonContainerCenter: {
-        width: '50%',
-        alignSelf: 'center',
-        marginBottom: 30,
-    },
-    encabezado: {
-        marginBottom: 5,
-        color: 'black',
-        fontSize: 18,
-    },
-    encabezadoInicial: {
-        marginBottom: 5,
-        color: 'black',
-        fontSize: 18,
-        marginBottom: 10,
-        paddingTop: 10
-    },
-    content: {
-        height: 40,
-        borderColor: 'black',
-        borderWidth: 1,
-        marginBottom: 20,
-        color: 'gray',
-        paddingLeft: 18,
-        paddingTop: 10
-    },
-    input: {
-        height: 40,
-        borderColor: 'black',
-        borderWidth: 1,
-        marginBottom: 20,
-        color: 'black',
-        paddingLeft: 18,
-    },
-});
-
 export default Medicamentos;

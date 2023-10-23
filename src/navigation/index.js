@@ -17,6 +17,7 @@ import Alergias from '../screens/Alergias';
 import Medicamentos from '../screens/Medicamentos';
 import Patologias from '../screens/Patologias';
 import LimitacionFisica from '../screens/LimitacionFisica';
+import ContactosEmergencia from '../screens/ContactosEmergencia';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -36,11 +37,13 @@ function PerfilNestedScreen() {
   return (
     <PerfilNestedStack.Navigator>
       <PerfilNestedStack.Screen name="Perfil" component={Perfil} />
-      <PerfilNestedStack.Screen name="Datos usuario" component={DatosUsuario} />
+      <PerfilNestedStack.Screen name="Datos de usuario" component={DatosUsuario} />
       <PerfilNestedStack.Screen name="Alergias" component={Alergias} />
       <PerfilNestedStack.Screen name="Medicamentos" component={Medicamentos} />
       <PerfilNestedStack.Screen name="Patologias" component={Patologias} />
-      <PerfilNestedStack.Screen name="Limitacion Fisica" component={LimitacionFisica} />
+      <PerfilNestedStack.Screen name="Limitacion fisica" component={LimitacionFisica} />
+      <PerfilNestedStack.Screen name="Contactos de emergencia" component={ContactosEmergencia} />
+
     </PerfilNestedStack.Navigator>
   );
 }

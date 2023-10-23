@@ -3,8 +3,13 @@ import { StyleSheet, Button, TextInput, View, Text, ScrollView, TouchableOpacity
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SQLite from 'expo-sqlite';
+import styles from '../api/styles';
+import CustomAlert from '../api/customAlert';
+
 const db = SQLite.openDatabase('adamdb.db');
+
 const InsertDatos = () => {
+
   const [rut, setRut] = useState('');
   const [pnombre, setPNombre] = useState('');
   const [snombre, setSNombre] = useState('');
@@ -36,6 +41,8 @@ const InsertDatos = () => {
   const [dosis, setDosis] = useState('');
   const [periodicidad, setPeriodicidad] = useState('');
   const [medicamentos, setMedicamentos] = useState([]);
+
+  const [isAlertVisible, setAlertVisible] = useState(false);
 
   const guardarDatosUsuario = () => {
     db.transaction(tx => {
@@ -283,10 +290,10 @@ const InsertDatos = () => {
         </Picker>
         <Modal
           animationType="slide"
-          transparent={false}
+          transparent={true}
           visible={modalVisibleAlergias}
           onRequestClose={() => {
-            Alert.alert('No haz ingresado tus alergias.');
+            setAlertVisible(true);
             setModalVisibleAlergias(false);
           }}
         >
@@ -335,6 +342,11 @@ const InsertDatos = () => {
             </View>
           </View>
         </Modal>
+        <CustomAlert
+          isVisible={isAlertVisible}
+          onClose={() => setAlertVisible(false)}
+          message='No haz ingresado tus alergias.'
+        />
       </View>
       <Text style={styles.header}>Indica si posees o no patologias cronicas: </Text>
       <View style={styles.inputPicker}>
@@ -349,10 +361,10 @@ const InsertDatos = () => {
         </Picker>
         <Modal
           animationType="slide"
-          transparent={false}
+          transparent={true}
           visible={modalVisiblePatologias}
           onRequestClose={() => {
-            Alert.alert('No haz ingresado tus patologias.');
+            setAlertVisible(true);
             setModalVisiblePatologias(false);
           }}
         >
@@ -430,6 +442,11 @@ const InsertDatos = () => {
             </View>
           </View>
         </Modal>
+        <CustomAlert
+          isVisible={isAlertVisible}
+          onClose={() => setAlertVisible(false)}
+          message='No haz ingresado tus patologias.'
+        />
       </View>
       <Text style={styles.header}>Indica si eres o no donante: </Text>
       <View style={styles.inputPicker}>
@@ -456,10 +473,10 @@ const InsertDatos = () => {
         </Picker>
         <Modal
           animationType="slide"
-          transparent={false}
+          transparent={true}
           visible={modalVisibleLimitaciones}
           onRequestClose={() => {
-            Alert.alert('No haz ingresado tus Limitaciones.');
+            setAlertVisible(true);
             setModalVisibleLimitaciones(false);
           }}
         >
@@ -533,6 +550,11 @@ const InsertDatos = () => {
             </View>
           </View>
         </Modal>
+        <CustomAlert
+          isVisible={isAlertVisible}
+          onClose={() => setAlertVisible(false)}
+          message='No haz ingresado tus Limitaciones.'
+        />
       </View>
       <Text style={styles.header}>Indica si tomas o no medicamentos: </Text>
       <View style={styles.inputPicker}>
@@ -547,10 +569,10 @@ const InsertDatos = () => {
         </Picker>
         <Modal
           animationType="slide"
-          transparent={false}
+          transparent={true}
           visible={modalVisibleMedicamentos}
           onRequestClose={() => {
-            Alert.alert('No haz ingresado tus medicamentos.');
+            setAlertVisible(true);
             setModalVisibleMedicamentos(false);
           }}
         >
@@ -609,8 +631,13 @@ const InsertDatos = () => {
             </View>
           </View>
         </Modal>
+        <CustomAlert
+          isVisible={isAlertVisible}
+          onClose={() => setAlertVisible(false)}
+          message='No haz ingresado tus medicamentos.'
+        />
       </View>
-      <View style={styles.buttonContainer}>
+      <View style={styles.buttonCInsert}>
         <Button
           title="Guardar Datos"
           color="green"
@@ -620,69 +647,4 @@ const InsertDatos = () => {
     </ScrollView>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    padding: 10,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    marginTop: 22
-  },
-  modalView: {
-    marginHorizontal: '10%',
-  },
-  header: {
-    color: 'black',
-    fontSize: 18,
-    marginBottom: 5,
-  },
-  input: {
-    height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginBottom: 20,
-    color: 'black',
-    paddingLeft: 18,
-  },
-  inputfecha: {
-    height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginBottom: 20,
-    color: 'gray',
-    paddingLeft: 18,
-  },
-  inputPicker: {
-    height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginBottom: 20,
-    alignContent: 'flex-start',
-    justifyContent: 'center', // Asegúrate de que el texto esté centrado verticalmente
-  },
-  inputPicker2: {
-    height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginBottom: 20,
-    color: 'gray',
-    alignItems: 'flex-start',
-    textAlignments: 0,
-    itemStyle: { paddingLeft: 0 },
-    paddingLeft: 0,
-  },
-  buttonContainer: {
-    width: '50%',
-    alignSelf: 'flex-end',
-    marginBottom: 30,
-  },
-  buttonContainerCenter: {
-    width: '50%',
-    alignSelf: 'center',
-    marginBottom: 30,
-  },
-});
 export default InsertDatos;

@@ -8,7 +8,7 @@ export default function Perfil({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.row}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Datos usuario' })}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Datos de usuario' })}>
           <Text style={styles.buttonText}>Ir a datos de usuario</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Alergias' })}>
@@ -24,9 +24,12 @@ export default function Perfil({ navigation }) {
         </TouchableOpacity>
       </View>
       <View style={styles.row}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Limitacion Fisica' })}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' })}>
           <Text style={styles.buttonText}>Ir a Limitación Física</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Contactos de emergencia' })}>
+          <Text style={styles.buttonText}>Ir a Contactos de emergencia</Text>
+        </TouchableOpacity>        
       </View>
     </ScrollView>
   );
