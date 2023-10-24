@@ -128,16 +128,16 @@ const functions = [
         }
     },
     {
-        "name": "llamar",
-        "description": "el usuario solicita llamar",
+        "name": "llamar_contacto",
+        "description": "el usuario solicita llamar a una persona, debes identificar el nombre de la persona",
         "parameters": {
             "type": "object",
             "properties": {
-                "llamar": {
+                "persona a llamar": {
                     "type": "string",
-                    "description": "indica que se quiere llamar",
+                    "description": "nombre de la persona a la cual se desea llamar, puede ser un nombre como tal o un alias",
                 }
-            }
+            }, "required": ["persona a llamar"]
         }
     },
     {
