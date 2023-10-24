@@ -152,10 +152,9 @@ export function initDB() {
         tx.executeSql(
             `CREATE TABLE IF NOT EXISTS Contacto (
           id INTEGER PRIMARY KEY NOT NULL,
+          nombreCompleto TEXT,
           alias TEXT,
           numero TEXT,
-          nombre TEXT,
-          apellido TEXT,
           relacion TEXT,
           usuario_rut TEXT,
           FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)

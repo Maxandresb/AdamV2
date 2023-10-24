@@ -1,22 +1,19 @@
+
 import React, { useEffect, useState } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
 import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
 
-
 const db = SQLite.openDatabase('adamdb.db');
-
 const ContactoEmergencia = ({ contacto, isEditing, handlePress, handleDelete }) => {
     const [currentContacto, setCurrentContacto] = useState(contacto);
-
     const handleChange = (key, val) => {
         setCurrentContacto(current => ({
             ...current,
             [key]: val
         }));
     };
-
     const handleDeletePress = () => {
         Alert.alert(
             "Eliminar Contacto",
@@ -33,11 +30,16 @@ const ContactoEmergencia = ({ contacto, isEditing, handlePress, handleDelete }) 
             ]
         );
     };
-
     return (
         <View>
             {isEditing ? (
                 <>
+                    <Text style={styles.encabezado}>Nombre completo:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={currentContacto.nombreCompleto}
+                        onChangeText={(val) => handleChange('nombreCompleto', val)}
+                    />
                     <Text style={styles.encabezadoInicial}>Alias:</Text>
                     <TextInput
                         style={styles.input}
@@ -50,18 +52,6 @@ const ContactoEmergencia = ({ contacto, isEditing, handlePress, handleDelete }) 
                         value={currentContacto.numero}
                         onChangeText={(val) => handleChange('numero', val)}
                     />
-                    <Text style={styles.encabezado}>Nombre:</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={currentContacto.nombre}
-                        onChangeText={(val) => handleChange('nombre', val)}
-                    />
-                    <Text style={styles.encabezado}>Apellido:</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={currentContacto.apellido}
-                        onChangeText={(val) => handleChange('apellido', val)}
-                    />
                     <Text style={styles.encabezado}>Relación:</Text>
                     <TextInput
                         style={styles.input}
@@ -71,19 +61,16 @@ const ContactoEmergencia = ({ contacto, isEditing, handlePress, handleDelete }) 
                 </>
             ) : (
                 <>
+                    <Text style={styles.encabezado}>Nombre completo:</Text>
+                    <Text style={styles.content}>{currentContacto.nombreCompleto}</Text>
                     <Text style={styles.encabezadoInicial}>Alias:</Text>
                     <Text style={styles.content}>{currentContacto.alias}</Text>
                     <Text style={styles.encabezado}>Número:</Text>
                     <Text style={styles.content}>{currentContacto.numero}</Text>
-                    <Text style={styles.encabezado}>Nombre:</Text>
-                    <Text style={styles.content}>{currentContacto.nombre}</Text>
-                    <Text style={styles.encabezado}>Apellido:</Text>
-                    <Text style={styles.content}>{currentContacto.apellido}</Text>
                     <Text style={styles.encabezado}>Relación:</Text>
                     <Text style={styles.content}>{currentContacto.relacion}</Text>
                 </>
             )}
-
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={styles.button}
@@ -104,24 +91,18 @@ const ContactoEmergencia = ({ contacto, isEditing, handlePress, handleDelete }) 
             </View>
             <View style={styles.lineaContainer}>
             </View>
-
         </View>
     );
 };
-
 const ContactosEmergencia = () => {
     const [contactos, setContactos] = useState([]);
     const [currentContactoId, setCurrentContactoId] = useState(null);
-
     const [modalVisibleContactos, setModalVisibleContactos] = useState(false);
     const [alias, setAlias] = useState('');
     const [numero, setNumero] = useState('');
-    const [nombre, setNombre] = useState('');
-    const [apellido, setApellido] = useState('');
+    const [nombreCompleto, setNombreCompleto] = useState('');
     const [relacion, setRelacion] = useState('');
-
     const [isAlertVisible, setAlertVisible] = useState(false);
-
 
     useEffect(() => {
         db.transaction(tx => {
@@ -130,18 +111,16 @@ const ContactosEmergencia = () => {
             );
         });
     }, []);
-
     const handleAgregarContactoPress = () => {
         setModalVisibleContactos(true);
     };
-
     const handlePress = (id, contacto) => {
         if (currentContactoId === id) {
             // Actualizar contacto 
             db.transaction(tx => {
                 tx.executeSql(
-                    'UPDATE Contacto SET alias = ?, numero = ?, nombre = ?, apellido = ?, relacion = ? WHERE id = ?',
-                    [contacto.alias, contacto.numero, contacto.nombre, contacto.apellido, contacto.relacion, id],
+                    'UPDATE Contacto SET  nombreCompleto = ?, alias = ?, numero = ?, relacion = ? WHERE id = ?',
+                    [contacto.nombreCompleto, contacto.alias, contacto.numero, contacto.relacion, id],
                     () => {
                         setCurrentContactoId(null);
                         setContactos(prevContactos =>
@@ -154,7 +133,6 @@ const ContactosEmergencia = () => {
             setCurrentContactoId(id);
         }
     };
-
     const handleDelete = (id) => {
         db.transaction(tx => {
             tx.executeSql(
@@ -168,34 +146,30 @@ const ContactosEmergencia = () => {
             );
         });
     };
-
     const agregarContacto = () => {
         db.transaction(tx => {
             tx.executeSql(
-                'INSERT INTO Contacto (alias, numero, nombre, apellido, relacion) VALUES (?, ?, ?, ?, ?)',
-                [alias, numero, nombre, apellido, relacion],
+                'INSERT INTO Contacto ( nombreCompleto, alias, numero, relacion) VALUES (?, ?, ?, ?)',
+                [ nombreCompleto, alias, numero, relacion],
                 (_, { insertId }) => {
                     setContactos(prevContactos => [
                         ...prevContactos,
                         {
                             id: insertId,
+                            nombreCompleto,
                             alias,
                             numero,
-                            nombre,
-                            apellido,
                             relacion
                         }
                     ]);
+                    setNombreCompleto('');
                     setAlias('');
                     setNumero('');
-                    setNombre('');
-                    setApellido('');
                     setRelacion('');
                 }
             );
         });
     };
-
     return (
         <ScrollView style={styles.container}>
             <View>
@@ -226,6 +200,14 @@ const ContactosEmergencia = () => {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
+                        <Text style={styles.header}>Nombre completo:</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholderTextColor="gray"
+                            placeholder="ej: XXXXXX"
+                            onChangeText={text => setNombreCompleto(text)}
+                            value={nombreCompleto}
+                        />
                         <Text style={styles.header}>Alias:</Text>
                         <TextInput
                             style={styles.input}
@@ -241,22 +223,6 @@ const ContactosEmergencia = () => {
                             placeholder="ej: XXXXXX"
                             onChangeText={text => setNumero(text)}
                             value={numero}
-                        />
-                        <Text style={styles.header}>Nombre:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholderTextColor="gray"
-                            placeholder="ej: XXXXXX"
-                            onChangeText={text => setNombre(text)}
-                            value={nombre}
-                        />
-                        <Text style={styles.header}>Apellido:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholderTextColor="gray"
-                            placeholder="ej: XXXXXX"
-                            onChangeText={text => setApellido(text)}
-                            value={apellido}
                         />
                         <Text style={styles.header}>Indica la relación con el contacto:</Text>
                         <TextInput
@@ -296,6 +262,4 @@ const ContactosEmergencia = () => {
         </ScrollView >
     );
 };
-
 export default ContactosEmergencia;
-
