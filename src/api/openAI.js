@@ -2,6 +2,7 @@ import { Audio } from "expo-av";
 import axios from 'axios';
 import * as SQLite from 'expo-sqlite';
 import { guardarHistoriarChats} from "../api/sqlite";
+import { format } from 'date-fns';
 
 
 const apiKey = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
@@ -192,6 +193,20 @@ let conversationHistory = [
 // abrir bd para guardar historial de respuestas
 const db = SQLite.openDatabase('adamdb.db');
 
+export async function crearRespuesta(answer) {
+    function generarIdUnico() {
+        return Date.now().toString(36) + Math.random().toString(36).substring(2);
+    }
+    return {
+        _id: generarIdUnico(),
+        text: answer,
+        createdAt: new Date(),
+        user: {
+            _id: 2,
+        },
+    };
+}
+
 export async function secondApiCall(prompt, message, function_name, function_response) {
     console.log('START 2DA LLAMADA');
     conversationHistory.push({
@@ -219,26 +234,16 @@ export async function secondApiCall(prompt, message, function_name, function_res
         conversationHistory.push(finalres.data?.choices[0]?.message);
         //console.log(conversationHistory)
         //console.log(finalres.data?.choices[0]?.message?.content)
-        function generarIdUnico() {
-            return Date.now().toString(36) + Math.random().toString(36).substring(2);
-        }
         let answer = finalres.data?.choices[0]?.message?.content;
         promises.push(finalres);
-        let respuesta= await{_id: generarIdUnico(),
-            
-            text: answer,
-            createdAt: new Date(),
-            user: {
-            _id: 2,
-            
-            },};
-            console.log("FINAL DE LA CREACION DE LA RESPUESTA")
+        let respuesta = await crearRespuesta(answer);
+        console.log("FINAL DE LA CREACION DE LA RESPUESTA")
         promises.push(respuesta);
         const tex3 = JSON.stringify(respuesta)
         //console.log('RESPUESTA CREADA: '+tex3)
         //console.log("PRINT INTENTO: " + respuesta)
         let id= respuesta._id.toString();
-        let fec_hor= respuesta.createdAt.toString();
+        let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
         let name_func= function_name.toString();
         let consulta= prompt.toString();
         let contestacion= respuesta.text.toString();
