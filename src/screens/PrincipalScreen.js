@@ -10,7 +10,7 @@ import { initDB, mostarDB, BuscarContactoEmergencia } from "../api/sqlite"
 import { crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
-import { realizarLlamada } from "../api/llamada";
+import { realizarLlamada, MostrarContactos } from "../api/llamada";
 import { requestContactsPermission } from "../api/contactos";
 import * as FileSystem from 'expo-file-system';
 export default function PrincipalScreen() {
@@ -113,7 +113,7 @@ export default function PrincipalScreen() {
           respuesta = await secondApiCall(prompt, message, function_name, function_response)
         } else if (function_name === "ubicacion") {
           let ubicacion = await obtenerUbicacion('direccion');
-          function_response = `La ubicación actual es: ${ubicacion}`;
+          function_response = `La ubicación actual es: ${ubicacion}, informa al uauario que debe tener en cuenta que la ubicacion tiene un margen de error de aproximadamente 100 metros`;
           respuesta = await secondApiCall(prompt, message, function_name, function_response)
         } else if (function_name === "centro_salud_cercano") {
           let { comuna, region } = await obtenerUbicacion('comuna');
@@ -123,7 +123,7 @@ export default function PrincipalScreen() {
           centros = await buscarEnDB('Comuna', comuna)
           if (centros) {
             console.log('CENTROS: ', centros)
-            function_response = `ubicacion del usuario: ${comuna} \n\ centros de salud encontrados en la base de datos, segun la ubicacion del usuario:\n\ ${JSON.stringify(centros)} \n\ esta iformacion es real y fidedigna, no debes modificarla bajo ningun punto. la informacion viene cpon el siguiente formato: \n\ {"_array": [{"Comuna": "ejcomuna", "Calle": "ejcalle", "NombreOficial": "ejnombreoficial", "Numero": "ejnumero", "Region": "ejregion", "Telefono": "ejtelefono", "TieneServicioDeUrgencia": "SI/NO", "TipoDeSAPU": "ejtiposapu", "TipoDeUrgencia": "ejtipourgencia", "Via": "ejvia", "id": 1}], "length": cantidad_de_centros_de_salud_identificados} \n\ para generar una respuesta con esta informacion debes dar un formato a la informacion como el siguiente: \n\ ejnombreoficial, ejcalle ejnumero, ejcomuna, ejtelefono `;
+            function_response = `ubicacion del usuario: ${comuna} \n\ centros de salud encontrados en la base de datos, segun la ubicacion del usuario:\n\ ${JSON.stringify(centros)} \n\ esta informacion es real y fidedigna, no debes modificarla bajo ningun punto. la informacion viene con el siguiente formato: \n\ {"_array": [{"Comuna": "ejcomuna", "Calle": "ejcalle", "NombreOficial": "ejnombreoficial", "Numero": "ejnumero", "Region": "ejregion", "Telefono": "ejtelefono", "TieneServicioDeUrgencia": "SI/NO", "TipoDeSAPU": "ejtiposapu", "TipoDeUrgencia": "ejtipourgencia", "Via": "ejvia", "id": 1}], "length": cantidad_de_centros_de_salud_identificados} \n\ para generar una respuesta con esta informacion debes dar un formato a la informacion como el siguiente: \n\ ejnombreoficial, ejcalle ejnumero, ejcomuna, ejtelefono `;
             console.log('FUNCION RESPONSE: \n\ ', function_response)
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
           } else {
@@ -134,16 +134,30 @@ export default function PrincipalScreen() {
           contactos = await BuscarContactoEmergencia(args)
           if (contactos) {
             console.log('CONTACTOS ENCONTRADOS: ', contactos)
-          }
-          //function_response = "llama al contacto predeterminado"
-          //realizarLlamada('56953598945');
-          //respuesta = await secondApiCall(prompt, message, function_name, function_response)
+            if (contactos.length === 1) {
+              console.log('********* UN CONTACTO ENCONTRADO *********')
+              let numeroDeContacto = contactos[0].numero;
+              let nombreContacto = contactos[0].nombreCompleto
+              //console.log('Nombre del contacto: ', nombreContacto);
+              //console.log('Número de contacto: ', numeroDeContacto);
+              function_response = `responde lo siguiente: \n\ Seras redigido a la aplicacion telefono para llamar al contacto de nombre ${JSON.stringify(nombreContacto)}.\n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario, no comentes tus capacidades solo responde con la frase indicada. solo estas informando el nombre del contacto. `
+              realizarLlamada(numeroDeContacto);
+              respuesta = await secondApiCall(prompt, message, function_name, function_response)
+            } else if (contactos.length > 1) { 
+              console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
+          
+            }
+          };
+        }
+        //function_response = "llama al contacto predeterminado"
+        //realizarLlamada('56953598945');
+        //respuesta = await secondApiCall(prompt, message, function_name, function_response)
 
-          /*} else if (function_name === "contactos") {
-            function_response = "obten los contactos"
-            requestContactsPermission();
-            respuesta = await secondApiCall(prompt, message, function_name, function_response)*/
-        } else if (function_name === "mostrar_base_de_datos") {
+        /*} else if (function_name === "contactos") {
+          function_response = "obten los contactos"
+          requestContactsPermission();
+          respuesta = await secondApiCall(prompt, message, function_name, function_response)*/
+        else if (function_name === "mostrar_base_de_datos") {
           // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
           console.log('MOSTRANDO BD')
           /*mostarDB('Usuario');
@@ -152,7 +166,7 @@ export default function PrincipalScreen() {
           mostarDB('Limitaciones');
           mostarDB('PatologiasCronicas');*/
           mostarDB('Contactos');
-          
+
         } else {
           function_name = "responder"
           function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
@@ -168,11 +182,8 @@ export default function PrincipalScreen() {
         respuesta = null; // Vacía la variable respuesta
       } else {
         console.log('NO SE OBTUVO UNA RESPUETA A LA SEGUNDA LLAMADA')
-        respuesta = crearRespuesta('ERROR, NO SE OBTUBO RESPUESTA')
-        setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
-        setinputUsuario('');
-        respuesta = null; 
-        //Alert.alert("Ha ocurrido un error : ", respuesta.msg);
+        let answer = 'NO SE OBTUVO RESPUESTA'
+        Alert.alert("Ha ocurrido un error : ", answer);
       }
     }
   };
@@ -202,7 +213,7 @@ export default function PrincipalScreen() {
         </View>
         {/*<View><Text className="text-center font-bold pt-0 -mt-4 mb-2 ">Chat ADAM</Text></View>*/}
         <View className="flex-1 flex-row justify-center">
-          <View className="rounded-3xl p-4 w-80 bg-pink-light shadow-md shadow-black">
+          <View className="rounded-3xl p-2 w-80 bg-pink-light shadow-md shadow-black">
             <GiftedChat
               messages={mensajes}
               renderUsernameOnMessage={false}

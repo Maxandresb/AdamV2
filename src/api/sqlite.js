@@ -2,6 +2,34 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('adamdb.db');
 
+
+export async function BuscarContactoEmergencia(nombre) {
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `SELECT * FROM Contacto WHERE alias LIKE ? OR nombreCompleto LIKE ?`,
+                [`%${nombre}%`, `%${nombre}%`],
+                (_, { rows: { _array } }) => {
+                    console.log('COINCIDENCIAS ENCONTRADAS')
+                    console.log(_array);
+                    // Agrega los nombres completos, alias y números de teléfono al array contactosEncontrados
+                    let contactosEncontrados = _array.map(contacto => ({
+                        nombreCompleto: contacto.nombreCompleto,
+                        alias: contacto.alias,
+                        numero: contacto.numero
+                    }));
+                    resolve(contactosEncontrados);
+                },
+                (_, error) => {
+                    console.log('Error al buscar contacto:', error);
+                    reject(error);
+                }
+            )
+        });
+    });
+};
+
+
 export async function guardarHistoriarChats(id, fecha_hora, function_name, prompt, respuesta, usuario_rut) {
     //Guardar en historial de chats
     db.transaction(tx => {
@@ -34,8 +62,8 @@ export function initDB() {
     //    });
     //});
     db.transaction(tx => {
-        tx.executeSql('DROP TABLE Contacto', [], (_, { rows }) => {
-            console.log('Tabla eliminada Contacto');
+        tx.executeSql('DROP TABLE Medicamentos', [], (_, { rows }) => {
+            console.log('Tabla eliminada Medicamentos');
         });
     });
 
