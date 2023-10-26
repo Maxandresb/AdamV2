@@ -141,7 +141,7 @@ const functions = [
             }, "required": ["persona a llamar"]
         }
     },
-    {
+    /*{
         "name": "contactos",
         "description": "el usuario solicita contactos",
         "parameters": {
@@ -153,7 +153,7 @@ const functions = [
                 }
             }
         }
-    },
+    },*/
     {
         "name": "base_de_datos",
         "description": "el usuario solicita base de datos",

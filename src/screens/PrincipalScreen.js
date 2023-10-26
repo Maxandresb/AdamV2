@@ -1,7 +1,7 @@
 
 //Modulos instalados
-import { View, Text, Image, SafeAreaView, TouchableOpacity, Alert } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { Button, Modal, View, Text, Image, SafeAreaView, TouchableOpacity, Alert } from 'react-native'
+import React, { useRef, useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
@@ -12,6 +12,7 @@ import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
 import { realizarLlamada, MostrarContactos } from "../api/llamada";
 import { requestContactsPermission } from "../api/contactos";
+import styles from '../api/styles';
 import * as FileSystem from 'expo-file-system';
 export default function PrincipalScreen() {
   const [inputUsuario, setinputUsuario] = useState('')
@@ -22,6 +23,13 @@ export default function PrincipalScreen() {
   {/* inicio funciones de grabacion de voz de usuario  */ }
   const [grabacion, setGrabacion] = useState();
   const [grabaciones, setGrabaciones] = useState([]);
+  //estados para el modal de mas de un contacto
+  const [modalVisible, setModalVisible] = useState(false);
+  const [nombreContacto, setNombreContacto] = useState('');
+  const [aliasContacto, setAliasContacto] = useState('');
+  const contactos = useRef([]);
+  const contactoSeleccionado = useRef([]);
+
   async function iniciarGrabacion() {
     try {
       const permisos = await Audio.requestPermissionsAsync();
@@ -92,6 +100,7 @@ export default function PrincipalScreen() {
   {/* fin funciones de grabacion de voz de usuario  */ }
   {/* Inicio funciones de obtencion de data de apis  */ }
   const obtenerRespuesta = async (input) => {
+    let respuesta = null;
     setinputUsuario(input);
     const mensajeUsuario = input[0];
     setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, mensajeUsuario))
@@ -131,33 +140,44 @@ export default function PrincipalScreen() {
           }
         } else if (function_name === "llamar_contacto") {
           console.log('PERSONA A LLAMAR: ', args)
-          contactos = await BuscarContactoEmergencia(args)
-          if (contactos) {
-            console.log('CONTACTOS ENCONTRADOS: ', contactos)
-            if (contactos.length === 1) {
+          contactos.current = await BuscarContactoEmergencia(args);
+          if (contactos.current) {
+            console.log('CONTACTOS ENCONTRADOS: ', contactos.current)
+            if (contactos.current.length === 1) {
               console.log('********* UN CONTACTO ENCONTRADO *********')
-              let numeroDeContacto = contactos[0].numero;
-              let nombreContacto = contactos[0].nombreCompleto
-              //console.log('Nombre del contacto: ', nombreContacto);
-              //console.log('Número de contacto: ', numeroDeContacto);
-              function_response = `responde lo siguiente: \n\ Seras redigido a la aplicacion telefono para llamar al contacto de nombre ${JSON.stringify(nombreContacto)}.\n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario, no comentes tus capacidades solo responde con la frase indicada. solo estas informando el nombre del contacto. `
+              let numeroDeContacto = contactos.numero;
+              let nombreContacto = contactos.nombreCompleto
+              let aliasContacto = contactos.alias
+              function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al contacto de nombre ${JSON.stringify(nombreContacto)}, alias ${JSON.stringify(aliasContacto)} .\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
               realizarLlamada(numeroDeContacto);
               respuesta = await secondApiCall(prompt, message, function_name, function_response)
-            } else if (contactos.length > 1) { 
+            } else if (contactos.current.length > 1) {
               console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
-          
+              setModalVisible(true);
+              if (!modalVisible) {
+                function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al contacto de nombre ${JSON.stringify(nombreContacto)}.\n\ \n\ Debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+                respuesta = await secondApiCall(prompt, message, function_name, function_response)
+                setAliasContacto('')
+                setNombreContacto('')
+              }
+            } else {
+              function_response = `responde lo exactamente siguiente: \n\ \n\ No posees algun contacto de nombre o alias ${JSON.stringify(nombreContacto)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes, SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO`
+              respuesta = await secondApiCall(prompt, message, function_name, function_response)
+              let answer = `No posees algun contacto de nombre o alias ${JSON.stringify(args)}`
+              Alert.alert("Contacto no encontrado: ", answer);
             }
-          };
-        }
-        //function_response = "llama al contacto predeterminado"
-        //realizarLlamada('56953598945');
-        //respuesta = await secondApiCall(prompt, message, function_name, function_response)
 
-        /*} else if (function_name === "contactos") {
-          function_response = "obten los contactos"
-          requestContactsPermission();
-          respuesta = await secondApiCall(prompt, message, function_name, function_response)*/
-        else if (function_name === "mostrar_base_de_datos") {
+          }
+
+          //function_response = "llama al contacto predeterminado"
+          //realizarLlamada('56953598945');
+          //respuesta = await secondApiCall(prompt, message, function_name, function_response)
+
+          /*} else if (function_name === "contactos") {
+            function_response = "obten los contactos"
+            requestContactsPermission();
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)*/
+        } else if (function_name === "mostrar_base_de_datos") {
           // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
           console.log('MOSTRANDO BD')
           /*mostarDB('Usuario');
@@ -251,6 +271,40 @@ export default function PrincipalScreen() {
                 </TouchableOpacity>
               )
           }
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => { setModalVisible(false); }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.header}>Nombre completo:</Text>
+                {contactos.current.map((contacto, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => {
+                      contactoSeleccionado.current = contacto;
+                      setModalVisible(false);
+                      realizarLlamada(contactoSeleccionado.numero)
+                      setNombreContacto(contactoSeleccionado.current.nombreCompleto);
+                      setAliasContacto(contactoSeleccionado.current.alias);
+                    }}
+                    style={styles.button} // Agrega los estilos que desees aquí
+                  >
+                    <Text>{`Contacto: ${contacto.nombreCompleto} y Alias: ${contacto.alias}`}</Text>
+                  </TouchableOpacity>
+                ))}
+                <Button
+                  title="Cerrar"
+                  onPress={() => {
+                    setModalVisible(false);
+                  }}
+                />
+              </View>
+            </View>
+          </Modal>
+
           {/* {
             mensajes.length>0 && (
               <TouchableOpacity 
@@ -278,4 +332,5 @@ export default function PrincipalScreen() {
     </SafeAreaView>
   )
 }
+
 // axios instalado, navigation instalado, tailwindcss instalado
