@@ -4,12 +4,16 @@ import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
 import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
+import * as Contacts from 'expo-contacts';
+import { CheckBox } from 'react-native-elements';
+
 
 const db = SQLite.openDatabase('adamdb.db');
-const ContactoEmergencia = ({ contacto, isEditing, handlePress, handleDelete }) => {
-    const [currentContacto, setCurrentContacto] = useState(contacto);
+
+const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete }) => {
+    const [Contacto, setContacto] = useState(contacto);
     const handleChange = (key, val) => {
-        setCurrentContacto(current => ({
+        setContacto(current => ({
             ...current,
             [key]: val
         }));
@@ -37,44 +41,44 @@ const ContactoEmergencia = ({ contacto, isEditing, handlePress, handleDelete }) 
                     <Text style={styles.encabezado}>Nombre completo:</Text>
                     <TextInput
                         style={styles.input}
-                        value={currentContacto.nombreCompleto}
+                        value={Contacto.nombreCompleto}
                         onChangeText={(val) => handleChange('nombreCompleto', val)}
                     />
                     <Text style={styles.encabezadoInicial}>Alias:</Text>
                     <TextInput
                         style={styles.input}
-                        value={currentContacto.alias}
+                        value={Contacto.alias}
                         onChangeText={(val) => handleChange('alias', val)}
                     />
                     <Text style={styles.encabezado}>Número:</Text>
                     <TextInput
                         style={styles.input}
-                        value={currentContacto.numero}
+                        value={Contacto.numero}
                         onChangeText={(val) => handleChange('numero', val)}
                     />
                     <Text style={styles.encabezado}>Relación:</Text>
                     <TextInput
                         style={styles.input}
-                        value={currentContacto.relacion}
+                        value={Contacto.relacion}
                         onChangeText={(val) => handleChange('relacion', val)}
                     />
                 </>
             ) : (
                 <>
                     <Text style={styles.encabezado}>Nombre completo:</Text>
-                    <Text style={styles.content}>{currentContacto.nombreCompleto}</Text>
+                    <Text style={styles.content}>{Contacto.nombreCompleto}</Text>
                     <Text style={styles.encabezadoInicial}>Alias:</Text>
-                    <Text style={styles.content}>{currentContacto.alias}</Text>
+                    <Text style={styles.content}>{Contacto.alias}</Text>
                     <Text style={styles.encabezado}>Número:</Text>
-                    <Text style={styles.content}>{currentContacto.numero}</Text>
+                    <Text style={styles.content}>{Contacto.numero}</Text>
                     <Text style={styles.encabezado}>Relación:</Text>
-                    <Text style={styles.content}>{currentContacto.relacion}</Text>
+                    <Text style={styles.content}>{Contacto.relacion}</Text>
                 </>
             )}
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => handlePress(contacto.id, currentContacto)}
+                    onPress={() => handlePress(contacto.id, Contacto)}
                 >
                     <Text style={styles.buttonText}>
                         {isEditing ? 'Guardar cambios' : 'Modificar Contacto'}
@@ -94,15 +98,40 @@ const ContactoEmergencia = ({ contacto, isEditing, handlePress, handleDelete }) 
         </View>
     );
 };
-const ContactosEmergencia = () => {
+const Contactos = () => {
     const [contactos, setContactos] = useState([]);
-    const [currentContactoId, setCurrentContactoId] = useState(null);
+    const [ContactoId, setContactoId] = useState(null);
     const [modalVisibleContactos, setModalVisibleContactos] = useState(false);
     const [alias, setAlias] = useState('');
     const [numero, setNumero] = useState('');
     const [nombreCompleto, setNombreCompleto] = useState('');
     const [relacion, setRelacion] = useState('');
     const [isAlertVisible, setAlertVisible] = useState(false);
+    //Contactos del telefono
+    const [contactosTelefono, setContactosTelefono] = useState([]);
+    const [contactosSeleccionados, setContactosSeleccionados] = useState([]);
+    const [modalCTVisible, setModalCTVisible] = useState(false);
+
+    const obtenerContactosTelefono = async () => {
+        console.log('Solicitando permiso para leer contactos...');
+        const { status } = await Contacts.requestPermissionsAsync();
+        let contactos = [];
+        if (status === 'granted') {
+            console.log('Permiso concedido. Leyendo contactos...');
+            const { data } = await Contacts.getContactsAsync({
+                fields: [Contacts.Fields.Emails, Contacts.Fields.PhoneNumbers, Contacts.Fields.Addresses],
+            });
+            if (data.length > 0) {
+                console.log(`Se encontraron ${data.length} contactos.`);
+                contactos = data;
+            } else {
+                console.log('No se encontraron contactos.');
+            }
+        } else {
+            console.log('Permiso para leer contactos no concedido.');
+        }
+        return contactos;
+    }
 
     useEffect(() => {
         db.transaction(tx => {
@@ -111,18 +140,33 @@ const ContactosEmergencia = () => {
             );
         });
     }, []);
+
+    const obtenerYGuardarContactos = async () => {
+        const contactos = await obtenerContactosTelefono();
+        setContactosTelefono(contactos);
+        setModalCTVisible(true);
+    };
+
+    const handleGuardarContactoPress = () => {
+        for (let contacto of contactosSeleccionados) {
+            // Aquí puedes llamar a tu función para guardar el contacto en la base de datos
+            // Por ejemplo: agregarContacto(contacto);
+        }
+        setContactosSeleccionados([]);
+    };
     const handleAgregarContactoPress = () => {
         setModalVisibleContactos(true);
+        setModalCTVisible(false);
     };
     const handlePress = (id, contacto) => {
-        if (currentContactoId === id) {
+        if (ContactoId === id) {
             // Actualizar contacto 
             db.transaction(tx => {
                 tx.executeSql(
                     'UPDATE Contacto SET  nombreCompleto = ?, alias = ?, numero = ?, relacion = ? WHERE id = ?',
                     [contacto.nombreCompleto, contacto.alias, contacto.numero, contacto.relacion, id],
                     () => {
-                        setCurrentContactoId(null);
+                        setContactoId(null);
                         setContactos(prevContactos =>
                             prevContactos.map(c => (c.id === id ? { ...c, ...contacto } : c))
                         );
@@ -130,7 +174,7 @@ const ContactosEmergencia = () => {
                 );
             });
         } else {
-            setCurrentContactoId(id);
+            setContactoId(id);
         }
     };
     const handleDelete = (id) => {
@@ -150,7 +194,7 @@ const ContactosEmergencia = () => {
         db.transaction(tx => {
             tx.executeSql(
                 'INSERT INTO Contacto ( nombreCompleto, alias, numero, relacion) VALUES (?, ?, ?, ?)',
-                [ nombreCompleto, alias, numero, relacion],
+                [nombreCompleto, alias, numero, relacion],
                 (_, { insertId }) => {
                     setContactos(prevContactos => [
                         ...prevContactos,
@@ -175,16 +219,58 @@ const ContactosEmergencia = () => {
             <View>
                 <TouchableOpacity
                     style={styles.button}
+                    onPress={obtenerYGuardarContactos}
+                >
+                    <Text style={styles.buttonText}>Agregar contactos desde el telefono</Text>
+                </TouchableOpacity>
+            </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalCTVisible}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <ScrollView>
+                            {contactosTelefono.map((contacto, index) => (
+                                <CheckBox
+                                    key={index}
+                                    checked={contactosSeleccionados.includes(contacto)}
+                                    onPress={() => {
+                                        if (contactosSeleccionados.includes(contacto)) {
+                                            setContactosSeleccionados(contactosSeleccionados.filter(c => c !== contacto));
+                                        } else {
+                                            setContactosSeleccionados([...contactosSeleccionados, contacto]);
+                                        }
+                                    }}
+                                    title={contacto.name}
+                                />
+                            ))}
+                        </ScrollView>
+                        <View>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={handleGuardarContactoPress}
+                            >
+                                <Text style={styles.buttonText}>Guardar contactos seleccionados</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+            <View>
+                <TouchableOpacity
+                    style={styles.button}
                     onPress={handleAgregarContactoPress}
                 >
-                    <Text style={styles.buttonText}>Agregar Contacto</Text>
+                    <Text style={styles.buttonText}>Agregar nuevo contacto</Text>
                 </TouchableOpacity>
             </View>
             {contactos.map(contacto => (
-                <ContactoEmergencia
+                <MostrarEditarContactos
                     key={contacto.id}
                     contacto={contacto}
-                    isEditing={currentContactoId === contacto.id}
+                    isEditing={ContactoId === contacto.id}
                     handlePress={handlePress}
                     handleDelete={handleDelete}
                 />
@@ -262,4 +348,4 @@ const ContactosEmergencia = () => {
         </ScrollView >
     );
 };
-export default ContactosEmergencia;
+export default Contactos;
