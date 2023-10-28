@@ -155,6 +155,19 @@ const functions = [
         }
     },
     {
+        "name": "llamar_numero",
+        "description": "el usuario solicita llamar a un numero, debes responder con el numero al que el usuario desea llamar",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "numero a llamar": {
+                    "type": "string",
+                    "description": "numero al cual se desea llamar",
+                }
+            }, "required": ["numero a llamar"]
+        }
+    },
+    {
         "name": "base_de_datos",
         "description": "el usuario solicita base de datos",
         "parameters": {
@@ -298,6 +311,10 @@ export async function firstApiCall(prompt) {
                 let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
                 let parsedArgs = JSON.parse(res_args);
                 args = parsedArgs["persona a llamar"];
+            } else if(function_name === 'llamar_numero'){
+                let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
+                let parsedArgs = JSON.parse(res_args);
+                args = parsedArgs["numero a llamar"];
             } else {
                 args = res.data?.choices[0]?.message?.function_call?.arguments;
             }

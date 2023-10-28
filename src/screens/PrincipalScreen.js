@@ -217,6 +217,12 @@ export default function PrincipalScreen() {
             Alert.alert("Centro de salud no encontrado: ", answer);
             centrosMed.current._array = [];
           }
+        } else if (function_name === "llamar_numero") {
+          console.log('NUMERO A LLAMAR: ', args)
+          function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+          realizarLlamada(args);
+          respuesta = await secondApiCall(prompt, message, function_name, function_response)
+          
         } else if (function_name === "mostrar_base_de_datos") {
           // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
           console.log('MOSTRANDO BD')
@@ -326,10 +332,11 @@ export default function PrincipalScreen() {
                     key={index}
                     onPress={() => {
                       contactoEmSeleccionado.current = contacto;
+                      console.log(contactoEmSeleccionado)
                       setModalCEVisible(false);
-                      realizarLlamada(contactoEmSeleccionado.current[0].numero)
-                      setNombreContactoEm(contactoEmSeleccionado.current[0].nombreCompleto);
-                      setAliasContactoEm(contactoEmSeleccionado.current[0].alias);
+                      realizarLlamada(contactoEmSeleccionado.current.numero)
+                      setNombreContactoEm(contactoEmSeleccionado.current.nombreCompleto);
+                      setAliasContactoEm(contactoEmSeleccionado.current.alias);
                       contactosEmergencia.current = [];
                       contactoEmSeleccionado.current = {};
 
