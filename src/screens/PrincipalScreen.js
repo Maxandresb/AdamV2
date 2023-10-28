@@ -35,6 +35,9 @@ export default function PrincipalScreen() {
   const centrosMed = useRef([]);
   const centroMedSeleccionado = useRef([]);
 
+  const [mensajeProcesamiento, setMensajeProcesamiento] = useState('');
+  const [respondiendo, setRespondiendo] = useState(false);
+
   async function iniciarGrabacion() {
     try {
       const permisos = await Audio.requestPermissionsAsync();
@@ -115,19 +118,24 @@ export default function PrincipalScreen() {
       setCargando(true);
       let prompt = mensajeUsuario.text;
       console.log(prompt)
+      setRespondiendo(true)
+      setMensajeProcesamiento('Procesando pregunta...');
       let { function_name, args, message } = await firstApiCall(prompt);
       console.log('FUNCION SELECCIONADA: ', function_name)
       if (function_name) {
         console.log('LOGICA DE SELECCION')
         if (function_name === "hola") {
           function_response = "responder el saludo, presentarse indicando tu nombre"
+          setMensajeProcesamiento('Procesando respuesta...');
           respuesta = await secondApiCall(prompt, message, function_name, function_response)
         } else if (function_name === "explicar_algo") {
           function_response = "explicar lo solicitado"
+          setMensajeProcesamiento('Procesando respuesta...');
           respuesta = await secondApiCall(prompt, message, function_name, function_response)
         } else if (function_name === "ubicacion") {
           let ubicacion = await obtenerUbicacion('direccion');
           function_response = `La ubicación actual es: ${ubicacion}, informa al uauario que debe tener en cuenta que la ubicacion tiene un margen de error de aproximadamente 100 metros`;
+          setMensajeProcesamiento('Procesando respuesta...');
           respuesta = await secondApiCall(prompt, message, function_name, function_response)
         } else if (function_name === "centro_salud_cercano") {
           let { comuna, region } = await obtenerUbicacion('comuna');
@@ -139,6 +147,7 @@ export default function PrincipalScreen() {
             console.log('CENTROS: ', centros)
             function_response = `ubicacion del usuario: ${comuna} \n\ centros de salud encontrados en la base de datos, segun la ubicacion del usuario:\n\ ${JSON.stringify(centros)} \n\ esta informacion es real y fidedigna, no debes modificarla bajo ningun punto. la informacion viene con el siguiente formato: \n\ {"_array": [{"Comuna": "ejcomuna", "Calle": "ejcalle", "NombreOficial": "ejnombreoficial", "Numero": "ejnumero", "Region": "ejregion", "Telefono": "ejtelefono", "TieneServicioDeUrgencia": "SI/NO", "TipoDeSAPU": "ejtiposapu", "TipoDeUrgencia": "ejtipourgencia", "Via": "ejvia", "id": 1}], "length": cantidad_de_centros_de_salud_identificados} \n\ para generar una respuesta con esta informacion debes dar un formato a la informacion como el siguiente: \n\ ejnombreoficial, ejcalle ejnumero, ejcomuna, ejtelefono `;
             console.log('FUNCION RESPONSE: \n\ ', function_response)
+            setMensajeProcesamiento('Procesando respuesta...');
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
           } else {
             console.log('No se encontraron centros')
@@ -155,6 +164,7 @@ export default function PrincipalScreen() {
               function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
               console.log('numeroDeContacto', JSON.stringify(numeroDeContacto))
               realizarLlamada(numeroDeContacto);
+              setMensajeProcesamiento('Procesando respuesta...');
               respuesta = await secondApiCall(prompt, message, function_name, function_response)
               contactosEmergencia.current = [];
             } else if (contactosEmergencia.current.length > 1) {
@@ -170,6 +180,7 @@ export default function PrincipalScreen() {
 
           } else{
             function_response = `responde lo exactamente siguiente: \n\ \n\ No posees algun contacto de nombre o alias ${JSON.stringify(args)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes, SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO`
+            setMensajeProcesamiento('Procesando respuesta...');
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
             let answer = `No posees algun contacto de nombre o alias ${JSON.stringify(args)}`
             Alert.alert("Contacto no encontrado: ", answer);
@@ -198,6 +209,7 @@ export default function PrincipalScreen() {
               function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
               console.log('numeroDeCentro', JSON.stringify(numeroDeCentro))
               realizarLlamada(numeroDeCentro);
+              setMensajeProcesamiento('Procesando respuesta...');
               respuesta = await secondApiCall(prompt, message, function_name, function_response)
               centrosMed.current._array = [];
             } else if (centrosMed.current._array.length > 1) {
@@ -205,6 +217,7 @@ export default function PrincipalScreen() {
               setModalNCMVisible(true);
               if (!modalNCMVisible) {
                 function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentroMed)}.\n\ \n\ Debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+                setMensajeProcesamiento('Procesando respuesta...');
                 respuesta = await secondApiCall(prompt, message, function_name, function_response)
                 setNombreCentroMed('')
               }
@@ -212,6 +225,7 @@ export default function PrincipalScreen() {
             }
           }else{
             function_response = `responde lo exactamente siguiente: \n\ \n\ No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes, SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO`
+            setMensajeProcesamiento('Procesando respuesta...');
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
             let answer = `No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}`
             Alert.alert("Centro de salud no encontrado: ", answer);
@@ -221,6 +235,7 @@ export default function PrincipalScreen() {
           console.log('NUMERO A LLAMAR: ', args)
           function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
           realizarLlamada(args);
+          setMensajeProcesamiento('Procesando respuesta...');
           respuesta = await secondApiCall(prompt, message, function_name, function_response)
           
         } else if (function_name === "mostrar_base_de_datos") {
@@ -236,11 +251,14 @@ export default function PrincipalScreen() {
         } else {
           function_name = "responder"
           function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
+          setMensajeProcesamiento('Procesando respuesta...');
           respuesta = await secondApiCall(prompt, message, function_name, function_response)
         }
       }
       console.log('******respuesta api obtenida*****');
       setCargando(false);
+      setRespondiendo(false)
+      setMensajeProcesamiento('');
       if (respuesta) {
         //console.log(respuesta);
         setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
@@ -248,8 +266,10 @@ export default function PrincipalScreen() {
         respuesta = null; // Vacía la variable respuesta
       } else {
         console.log('NO SE OBTUVO UNA RESPUETA A LA SEGUNDA LLAMADA')
+        setMensajeProcesamiento('');
         let answer = 'NO SE OBTUVO RESPUESTA'
         Alert.alert("Ha ocurrido un error : ", answer);
+        
       }
     }
   };
@@ -286,6 +306,16 @@ export default function PrincipalScreen() {
               onSend={(input) => obtenerRespuesta(input)}
               user={{ _id: 1 }}
             />
+            <View>
+            {respondiendo ? (
+                <>
+          <Text style={{ backgroundColor: 'black',color: 'green', fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{mensajeProcesamiento}</Text>
+          </>
+            ) : (
+              <>
+              </>
+            )}
+            </View>
           </View>
           {/* recording, clear and stop buttons */}
         </View>
