@@ -5,7 +5,7 @@ import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal, Button, Ale
 import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
 import * as Contacts from 'expo-contacts';
-import { CheckBox } from 'react-native-elements';
+import { CheckBoxRapido } from '../api/checkBoxRapido';
 
 
 const db = SQLite.openDatabase('adamdb.db');
@@ -147,16 +147,45 @@ const Contactos = () => {
         setModalCTVisible(true);
     };
 
-    const handleGuardarContactoPress = () => {
+    const guardarContactosSeleccionados = () => {
+        let contador = 0;
         for (let contacto of contactosSeleccionados) {
-            // Aquí puedes llamar a tu función para guardar el contacto en la base de datos
-            // Por ejemplo: agregarContacto(contacto);
+            const nombre = contacto.name;
+            const numero = contacto.phoneNumbers ? contacto.phoneNumbers[0].number : '';
+            db.transaction(tx => {
+                tx.executeSql(
+                    'INSERT INTO Contacto (nombreCompleto, numero) VALUES (?, ?)',
+                    [nombre, numero],
+                    (_, { insertId }) => {
+                        setContactos(prevContactos => [
+                            ...prevContactos,
+                            {
+                                id: insertId,
+                                nombreCompleto: nombre,
+                                numero: numero,
+                                alias: '',
+                                relacion: ''
+                            }
+                        ]);
+
+                    }
+                );
+            });
+            contador++;
         }
+        console.log(`Se agregaron ${contador} contactos a la base de datos.`);
         setContactosSeleccionados([]);
     };
     const handleAgregarContactoPress = () => {
         setModalVisibleContactos(true);
         setModalCTVisible(false);
+    };
+    const handleCheck = (contacto) => {
+        if (contactosSeleccionados.includes(contacto)) {
+            setContactosSeleccionados(contactosSeleccionados.filter(c => c !== contacto));
+        } else {
+            setContactosSeleccionados([...contactosSeleccionados, contacto]);
+        }
     };
     const handlePress = (id, contacto) => {
         if (ContactoId === id) {
@@ -214,8 +243,10 @@ const Contactos = () => {
             );
         });
     };
+
+
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <View>
                 <TouchableOpacity
                     style={styles.button}
@@ -228,21 +259,18 @@ const Contactos = () => {
                 animationType="slide"
                 transparent={true}
                 visible={modalCTVisible}
+                onRequestClose={() => {
+                    setModalCTVisible(false)
+                }}
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <ScrollView>
-                            {contactosTelefono.map((contacto, index) => (
-                                <CheckBox
-                                    key={index}
-                                    checked={contactosSeleccionados.includes(contacto)}
-                                    onPress={() => {
-                                        if (contactosSeleccionados.includes(contacto)) {
-                                            setContactosSeleccionados(contactosSeleccionados.filter(c => c !== contacto));
-                                        } else {
-                                            setContactosSeleccionados([...contactosSeleccionados, contacto]);
-                                        }
-                                    }}
+                            {contactosTelefono.map((contacto) => (
+                                <CheckBoxRapido
+                                    key={contacto.id}
+                                    isChecked={contactosSeleccionados.includes(contacto)}
+                                    onCheck={() => handleCheck(contacto)}
                                     title={contacto.name}
                                 />
                             ))}
@@ -250,11 +278,24 @@ const Contactos = () => {
                         <View>
                             <TouchableOpacity
                                 style={styles.button}
-                                onPress={handleGuardarContactoPress}
+                                onPress={()=>{
+                                    guardarContactosSeleccionados();
+                                    setModalCTVisible(false);
+                                    setContactosSeleccionados([]);
+                                }}
                             >
                                 <Text style={styles.buttonText}>Guardar contactos seleccionados</Text>
                             </TouchableOpacity>
                         </View>
+                        <TouchableOpacity
+                            style={styles.deleteButton}
+                            onPress={() => {
+                                setModalCTVisible(false);
+                                setContactosSeleccionados([]);
+                            }}
+                        >
+                            <Text style={styles.buttonText}>Cancelar</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
@@ -266,6 +307,9 @@ const Contactos = () => {
                     <Text style={styles.buttonText}>Agregar nuevo contacto</Text>
                 </TouchableOpacity>
             </View>
+            <View style={styles.espacioContainer}></View>
+            <View style={styles.lineaContainer}></View>
+            <ScrollView>
             {contactos.map(contacto => (
                 <MostrarEditarContactos
                     key={contacto.id}
@@ -275,6 +319,7 @@ const Contactos = () => {
                     handleDelete={handleDelete}
                 />
             ))}
+            </ScrollView>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -345,7 +390,7 @@ const Contactos = () => {
                 onClose={() => setAlertVisible(false)}
                 message='No haz ingresado tus contactos.'
             />
-        </ScrollView >
+        </View >
     );
 };
 export default Contactos;

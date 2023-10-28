@@ -142,7 +142,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        paddingVertical: '10%',
+        paddingVertical: '18%',
 
     },
     modalView: {
