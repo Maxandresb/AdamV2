@@ -29,6 +29,11 @@ export default function PrincipalScreen() {
   const [aliasContactoEm, setAliasContactoEm] = useState('');
   const contactosEmergencia = useRef([]);
   const contactoEmSeleccionado = useRef([]);
+  //estados para el numero de los centros medicos:
+  const [modalNCMVisible, setModalNCMVisible] = useState(false);
+  const [nombreCentroMed, setNombreCentroMed] = useState('');
+  const centrosMed = useRef([]);
+  const centroMedSeleccionado = useRef([]);
 
   async function iniciarGrabacion() {
     try {
@@ -161,27 +166,57 @@ export default function PrincipalScreen() {
                 setAliasContactoEm('')
                 setNombreContactoEm('')
               }
-            } else {
-              function_response = `responde lo exactamente siguiente: \n\ \n\ No posees algun contacto de nombre o alias ${JSON.stringify(nombreContactoEm)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes, SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO`
-              respuesta = await secondApiCall(prompt, message, function_name, function_response)
-              let answer = `No posees algun contacto de nombre o alias ${JSON.stringify(args)}`
-              Alert.alert("Contacto no encontrado: ", answer);
-              contactosEmergencia.current = [];
-            }
+            } 
 
-          } //contactosEmergencia.current = []
+          } else{
+            function_response = `responde lo exactamente siguiente: \n\ \n\ No posees algun contacto de nombre o alias ${JSON.stringify(args)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes, SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO`
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)
+            let answer = `No posees algun contacto de nombre o alias ${JSON.stringify(args)}`
+            Alert.alert("Contacto no encontrado: ", answer);
+            contactosEmergencia.current = [];
+          }
         }
 
 
-          //function_response = "llama al contacto predeterminado"
-          //realizarLlamada('56953598945');
-          //respuesta = await secondApiCall(prompt, message, function_name, function_response)
+        //function_response = "llama al contacto predeterminado"
+        //realizarLlamada('56953598945');
+        //respuesta = await secondApiCall(prompt, message, function_name, function_response)
 
-         else if (function_name === "contactos") {
-          function_response = "obten los contactos"
-          await Contactos();
-          //respuesta = await secondApiCall(prompt, message, function_name, function_response)
+        else if (function_name === "llamar_a_centro_salud") {
+          let { comuna, region } = await obtenerUbicacion('comuna');
+          console.log('REGION: ', region, 'COMUNA: ', comuna)
+          centrosMed.current = await buscarEnDB('Comuna', comuna)
+          if (centrosMed.current && Array.isArray(centrosMed.current._array)) {
+            console.log('CENTROS: ', centrosMed.current)
+            // Filtrar los centros de salud que tienen un número telefónico disponible
+            centrosMed.current._array = centrosMed.current._array.filter(centro => /\d/.test(centro.Telefono));
+            console.log('CENTROS: ', centrosMed.current._array)
+            if (centrosMed.current._array.length === 1) {
+              console.log('********* UN CENTRO ENCONTRADO *********')
+              let numeroDeCentro = centrosMed.current._array[0].Telefono;
+              let nombreCentro = centrosMed.current._array[0].NombreOficial
+              function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+              console.log('numeroDeCentro', JSON.stringify(numeroDeCentro))
+              realizarLlamada(numeroDeCentro);
+              respuesta = await secondApiCall(prompt, message, function_name, function_response)
+              centrosMed.current._array = [];
+            } else if (centrosMed.current._array.length > 1) {
+              console.log('********* MAS DE UN CENTRO ENCONTRADO *********')
+              setModalNCMVisible(true);
+              if (!modalNCMVisible) {
+                function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentroMed)}.\n\ \n\ Debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+                respuesta = await secondApiCall(prompt, message, function_name, function_response)
+                setNombreCentroMed('')
+              }
 
+            }
+          }else{
+            function_response = `responde lo exactamente siguiente: \n\ \n\ No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes, SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO`
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)
+            let answer = `No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}`
+            Alert.alert("Centro de salud no encontrado: ", answer);
+            centrosMed.current._array = [];
+          }
         } else if (function_name === "mostrar_base_de_datos") {
           // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
           console.log('MOSTRANDO BD')
@@ -276,6 +311,7 @@ export default function PrincipalScreen() {
                 </TouchableOpacity>
               )
           }
+          {/*Modal mas de un contactos de emergencia */}
           <Modal
             animationType="slide"
             transparent={true}
@@ -284,7 +320,7 @@ export default function PrincipalScreen() {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.header}>Nombre completo:</Text>
+                <Text style={styles.header}>Selecciona un contacto para llamar</Text>
                 {contactosEmergencia.current.map((contacto, index) => (
                   <TouchableOpacity
                     key={index}
@@ -312,7 +348,43 @@ export default function PrincipalScreen() {
               </View>
             </View>
           </Modal>
+          {/*Modal mas de un numero d centros medicos */}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalNCMVisible}
+            onRequestClose={() => { setModalNCMVisible(false); }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.header}>Selecciona un centro de salud a llamar </Text>
+                {centrosMed.current && Array.isArray(centrosMed.current._array) 
+                && centrosMed.current._array.map((centro, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => {
+                      centroMedSeleccionado.current = centro;
+                      setModalNCMVisible(false);
+                      realizarLlamada(centroMedSeleccionado.current[0].Telefono)
+                      setNombreCentroMed(centroMedSeleccionado.current[0].NombreOficial);
+                      centrosMed.current._array = [];
+                      centroMedSeleccionado.current = {};
 
+                    }}
+                    style={styles.button} // Agrega los estilos que desees aquí
+                  >
+                    <Text>{`Centro: ${centro.NombreOficial}`}</Text>
+                  </TouchableOpacity>
+                ))}
+                <Button
+                  title="Cerrar"
+                  onPress={() => {
+                    setModalNCMVisible(false);
+                  }}
+                />
+              </View>
+            </View>
+          </Modal>
           {/* {
             mensajes.length>0 && (
               <TouchableOpacity 

@@ -142,14 +142,14 @@ const functions = [
         }
     },
     {
-        "name": "contactos",
-        "description": "el usuario solicita contactos",
+        "name": "llamar_a_centro_salud",
+        "description": "identifica que el usuario desea llamar a un centro de salud",
         "parameters": {
             "type": "object",
             "properties": {
-                "llamar": {
+                "centro_de_salud": {
                     "type": "string",
-                    "description": "indica que se quiere contactos",
+                    "description": "puede ser un hospital publico o privado, una POSTA, un centro medico, un centro de urgencias, una clinica, un SAPU, un SAR o un policlinico que posea numero telefonico",
                 }
             }
         }
