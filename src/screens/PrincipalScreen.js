@@ -29,13 +29,6 @@ export default function PrincipalScreen() {
   const [aliasContactoEm, setAliasContactoEm] = useState('');
   const contactosEmergencia = useRef([]);
   const contactoEmSeleccionado = useRef([]);
-  //estados para el modal de guardar contactos
-  const [modalCVisible, setModalCVisible] = useState(false);
-  const [nombreContacto, setNombreContacto] = useState('');
-  const [aliasContacto, setAliasContacto] = useState('');
-  const contactos = useRef([]);
-  const contactoSeleccionado = useRef([]);
-
 
   async function iniciarGrabacion() {
     try {
@@ -152,17 +145,18 @@ export default function PrincipalScreen() {
             console.log('CONTACTOS ENCONTRADOS: ', contactosEmergencia.current)
             if (contactosEmergencia.current.length === 1) {
               console.log('********* UN CONTACTO ENCONTRADO *********')
-              let numeroDeContacto = contactosEmergencia.numero;
-              let nombreContacto = contactosEmergencia.nombreCompleto
-              let aliasContacto = contactosEmergencia.alias
-              function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al contacto de nombre ${JSON.stringify(nombreContacto)}, alias ${JSON.stringify(aliasContacto)} .\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+              let numeroDeContacto = contactosEmergencia.current[0].numero;
+              let nombreContacto = contactosEmergencia.current[0].nombreCompleto
+              function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+              console.log('numeroDeContacto', JSON.stringify(numeroDeContacto))
               realizarLlamada(numeroDeContacto);
               respuesta = await secondApiCall(prompt, message, function_name, function_response)
+              contactosEmergencia.current = [];
             } else if (contactosEmergencia.current.length > 1) {
               console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
               setModalCEVisible(true);
               if (!modalCEVisible) {
-                function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al contacto de nombre ${JSON.stringify(nombreContactoEm)}.\n\ \n\ Debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+                function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContactoEm)}.\n\ \n\ Debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
                 respuesta = await secondApiCall(prompt, message, function_name, function_response)
                 setAliasContactoEm('')
                 setNombreContactoEm('')
@@ -172,16 +166,18 @@ export default function PrincipalScreen() {
               respuesta = await secondApiCall(prompt, message, function_name, function_response)
               let answer = `No posees algun contacto de nombre o alias ${JSON.stringify(args)}`
               Alert.alert("Contacto no encontrado: ", answer);
+              contactosEmergencia.current = [];
             }
 
-          } contactosEmergencia.current = []
+          } //contactosEmergencia.current = []
+        }
 
 
           //function_response = "llama al contacto predeterminado"
           //realizarLlamada('56953598945');
           //respuesta = await secondApiCall(prompt, message, function_name, function_response)
 
-        } else if (function_name === "contactos") {
+         else if (function_name === "contactos") {
           function_response = "obten los contactos"
           await Contactos();
           //respuesta = await secondApiCall(prompt, message, function_name, function_response)
@@ -295,9 +291,11 @@ export default function PrincipalScreen() {
                     onPress={() => {
                       contactoEmSeleccionado.current = contacto;
                       setModalCEVisible(false);
-                      realizarLlamada(contactoEmSeleccionado.numero)
-                      setNombreContactoEm(contactoEmSeleccionado.current.nombreCompleto);
-                      setAliasContactoEm(contactoEmSeleccionado.current.alias);
+                      realizarLlamada(contactoEmSeleccionado.current[0].numero)
+                      setNombreContactoEm(contactoEmSeleccionado.current[0].nombreCompleto);
+                      setAliasContactoEm(contactoEmSeleccionado.current[0].alias);
+                      contactosEmergencia.current = [];
+                      contactoEmSeleccionado.current = {};
 
                     }}
                     style={styles.button} // Agrega los estilos que desees aquí

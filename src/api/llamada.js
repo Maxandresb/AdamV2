@@ -1,8 +1,5 @@
 import { Linking } from 'react-native';
 
-
-
-
 // Define la función para realizar una llamada
 export function realizarLlamada(phoneNumber) {
   // Verifica si el dispositivo puede abrir URLs con el esquema 'tel'
