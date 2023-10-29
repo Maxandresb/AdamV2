@@ -38,6 +38,7 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
         <View>
             {isEditing ? (
                 <>
+                    <View style={styles.lineaContainer}></View>
                     <Text style={styles.encabezado}>Nombre completo:</Text>
                     <TextInput
                         style={styles.input}
@@ -65,6 +66,7 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                 </>
             ) : (
                 <>
+                    <View style={styles.lineaContainer}></View>
                     <Text style={styles.encabezado}>Nombre completo:</Text>
                     <Text style={styles.content}>{Contacto.nombreCompleto}</Text>
                     <Text style={styles.encabezadoInicial}>Alias:</Text>
@@ -92,8 +94,6 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                         Eliminar Contacto
                     </Text>
                 </TouchableOpacity>
-            </View>
-            <View style={styles.lineaContainer}>
             </View>
         </View>
     );
@@ -278,7 +278,7 @@ const Contactos = () => {
                         <View>
                             <TouchableOpacity
                                 style={styles.button}
-                                onPress={()=>{
+                                onPress={() => {
                                     guardarContactosSeleccionados();
                                     setModalCTVisible(false);
                                     setContactosSeleccionados([]);
@@ -308,17 +308,17 @@ const Contactos = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.espacioContainer}></View>
-            <View style={styles.lineaContainer}></View>
+            {/*<View style={styles.lineaContainer}></View>*/}
             <ScrollView>
-            {contactos.map(contacto => (
-                <MostrarEditarContactos
-                    key={contacto.id}
-                    contacto={contacto}
-                    isEditing={ContactoId === contacto.id}
-                    handlePress={handlePress}
-                    handleDelete={handleDelete}
-                />
-            ))}
+                {contactos.map(contacto => (
+                    <MostrarEditarContactos
+                        key={contacto.id}
+                        contacto={contacto}
+                        isEditing={ContactoId === contacto.id}
+                        handlePress={handlePress}
+                        handleDelete={handleDelete}
+                    />
+                ))}
             </ScrollView>
             <Modal
                 animationType="slide"

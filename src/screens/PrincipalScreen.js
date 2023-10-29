@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
 // Creaciones propias
-import { initDB, mostarDB, BuscarContactoEmergencia } from "../api/sqlite"
+import { guardarHistoriarChats, mostarDB, BuscarContactoEmergencia } from "../api/sqlite"
 import { crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
@@ -14,6 +14,7 @@ import { realizarLlamada } from "../api/llamada";
 import { Contactos } from "../api/contactos";
 import styles from '../api/styles';
 import * as FileSystem from 'expo-file-system';
+import { format } from 'date-fns';
 export default function PrincipalScreen() {
   const [inputUsuario, setinputUsuario] = useState('')
   const [mensajes, setMensajes] = useState([])
@@ -161,29 +162,52 @@ export default function PrincipalScreen() {
               console.log('********* UN CONTACTO ENCONTRADO *********')
               let numeroDeContacto = contactosEmergencia.current[0].numero;
               let nombreContacto = contactosEmergencia.current[0].nombreCompleto
-              function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+              function_response = `Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
               console.log('numeroDeContacto', JSON.stringify(numeroDeContacto))
               realizarLlamada(numeroDeContacto);
               setMensajeProcesamiento('Procesando respuesta...');
-              respuesta = await secondApiCall(prompt, message, function_name, function_response)
+              respuesta = await crearRespuesta(function_response)
+              let id = respuesta._id.toString();
+              let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+              let name_func = function_name.toString();
+              let consulta = prompt.toString();
+              let contestacion = respuesta.text.toString();
+              let rut = 195953171
+              guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+              //respuesta = await secondApiCall(prompt, message, function_name, function_response)
               contactosEmergencia.current = [];
             } else if (contactosEmergencia.current.length > 1) {
               console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
               setModalCEVisible(true);
               if (!modalCEVisible) {
-                function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContactoEm)}.\n\ \n\ Debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
-                respuesta = await secondApiCall(prompt, message, function_name, function_response)
+                function_response = `Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
+                respuesta = await crearRespuesta(function_response)
+                let id = respuesta._id.toString();
+                let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+                let name_func = function_name.toString();
+                let consulta = prompt.toString();
+                let contestacion = respuesta.text.toString();
+                let rut = 195953171
+                guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+                //respuesta = await secondApiCall(prompt, message, function_name, function_response)
                 setAliasContactoEm('')
                 setNombreContactoEm('')
               }
-            } 
+            }
 
-          } else{
-            function_response = `responde lo exactamente siguiente: \n\ \n\ No posees algun contacto de nombre o alias ${JSON.stringify(args)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes, SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO`
+          } else {
+            function_response = `No posees algun contacto de nombre o alias ${JSON.stringify(args)}.`
             setMensajeProcesamiento('Procesando respuesta...');
-            respuesta = await secondApiCall(prompt, message, function_name, function_response)
-            let answer = `No posees algun contacto de nombre o alias ${JSON.stringify(args)}`
-            Alert.alert("Contacto no encontrado: ", answer);
+            respuesta = await crearRespuesta(function_response)
+            let id = respuesta._id.toString();
+            let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+            let name_func = function_name.toString();
+            let consulta = prompt.toString();
+            let contestacion = respuesta.text.toString();
+            let rut = 195953171
+            guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+            //respuesta = await secondApiCall(prompt, message, function_name, function_response)
+            Alert.alert("Contacto no encontrado: ", function_response);
             contactosEmergencia.current = [];
           }
         }
@@ -206,38 +230,69 @@ export default function PrincipalScreen() {
               console.log('********* UN CENTRO ENCONTRADO *********')
               let numeroDeCentro = centrosMed.current._array[0].Telefono;
               let nombreCentro = centrosMed.current._array[0].NombreOficial
-              function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+              function_response = `Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
               console.log('numeroDeCentro', JSON.stringify(numeroDeCentro))
               realizarLlamada(numeroDeCentro);
               setMensajeProcesamiento('Procesando respuesta...');
-              respuesta = await secondApiCall(prompt, message, function_name, function_response)
+              respuesta = await crearRespuesta(function_response)
+              let id = respuesta._id.toString();
+              let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+              let name_func = function_name.toString();
+              let consulta = prompt.toString();
+              let contestacion = respuesta.text.toString();
+              let rut = 195953171
+              guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+              //respuesta = await secondApiCall(prompt, message, function_name, function_response)
               centrosMed.current._array = [];
             } else if (centrosMed.current._array.length > 1) {
               console.log('********* MAS DE UN CENTRO ENCONTRADO *********')
               setModalNCMVisible(true);
               if (!modalNCMVisible) {
-                function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentroMed)}.\n\ \n\ Debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+                function_response = `Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
                 setMensajeProcesamiento('Procesando respuesta...');
-                respuesta = await secondApiCall(prompt, message, function_name, function_response)
+                respuesta = await crearRespuesta(function_response)
+                let id = respuesta._id.toString();
+                let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+                let name_func = function_name.toString();
+                let consulta = prompt.toString();
+                let contestacion = respuesta.text.toString();
+                let rut = 195953171
+                guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+                //respuesta = await secondApiCall(prompt, message, function_name, function_response)
                 setNombreCentroMed('')
               }
 
             }
-          }else{
-            function_response = `responde lo exactamente siguiente: \n\ \n\ No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes, SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO`
+          } else {
+            function_response = `No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}.`
             setMensajeProcesamiento('Procesando respuesta...');
-            respuesta = await secondApiCall(prompt, message, function_name, function_response)
-            let answer = `No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}`
-            Alert.alert("Centro de salud no encontrado: ", answer);
+            respuesta = await crearRespuesta(function_response)
+            let id = respuesta._id.toString();
+            let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+            let name_func = function_name.toString();
+            let consulta = prompt.toString();
+            let contestacion = respuesta.text.toString();
+            let rut = 195953171
+            guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+            //respuesta = await secondApiCall(prompt, message, function_name, function_response)
+            Alert.alert("Centro de salud no encontrado: ", function_response);
             centrosMed.current._array = [];
           }
         } else if (function_name === "llamar_numero") {
           console.log('NUMERO A LLAMAR: ', args)
-          function_response = `responde lo exactamente siguiente: \n\ \n\ Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.\n\ \n\ debes responder unicamente con la oracion anterior, ya que la llamada la realizara el usuario. \n\ No comentes tus capacidades ni algo similar, solo responde con la frase indicada ya que solo estas informando el nombre del contacto. \n\ Si te dicen "llama a ..." o similar, se refiere a que respondas con el mensaje que te entrege 3 lineas antes. SI RESPONDES CUALQUIER OTRA PARABRA U ORACION ESTARAS ARRUINANDO TODO `
+          function_response = `Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.`
           realizarLlamada(args);
           setMensajeProcesamiento('Procesando respuesta...');
-          respuesta = await secondApiCall(prompt, message, function_name, function_response)
-          
+          respuesta = await crearRespuesta(function_response)
+          let id = respuesta._id.toString();
+          let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+          let name_func = function_name.toString();
+          let consulta = prompt.toString();
+          let contestacion = respuesta.text.toString();
+          let rut = 195953171
+          guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+          //respuesta = await secondApiCall(prompt, message, function_name, function_response)
+
         } else if (function_name === "mostrar_base_de_datos") {
           // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
           console.log('MOSTRANDO BD')
@@ -263,13 +318,22 @@ export default function PrincipalScreen() {
         //console.log(respuesta);
         setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
         setinputUsuario('');
-        respuesta = null; // Vacía la variable respuesta
+        respuesta = null; 
       } else {
         console.log('NO SE OBTUVO UNA RESPUETA A LA SEGUNDA LLAMADA')
-        setMensajeProcesamiento('');
-        let answer = 'NO SE OBTUVO RESPUESTA'
-        Alert.alert("Ha ocurrido un error : ", answer);
-        
+        let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
+        respuesta = await crearRespuesta(answer)
+        let id = respuesta._id.toString();
+        let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+        let name_func = function_name.toString();
+        let consulta = prompt.toString();
+        let contestacion = respuesta.text.toString();
+        let rut = 195953171
+        guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+        //Alert.alert("Ha ocurrido un error : ", answer);
+        setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
+        setinputUsuario('');
+        respuesta = null;
       }
     }
   };
@@ -307,14 +371,14 @@ export default function PrincipalScreen() {
               user={{ _id: 1 }}
             />
             <View>
-            {respondiendo ? (
+              {respondiendo ? (
                 <>
-          <Text style={{ backgroundColor: 'black',color: 'green', fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{mensajeProcesamiento}</Text>
-          </>
-            ) : (
-              <>
-              </>
-            )}
+                  <Text style={{ backgroundColor: 'black', color: 'green', fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{mensajeProcesamiento}</Text>
+                </>
+              ) : (
+                <>
+                </>
+              )}
             </View>
           </View>
           {/* recording, clear and stop buttons */}
@@ -395,24 +459,24 @@ export default function PrincipalScreen() {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.header}>Selecciona un centro de salud a llamar </Text>
-                {centrosMed.current && Array.isArray(centrosMed.current._array) 
-                && centrosMed.current._array.map((centro, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => {
-                      centroMedSeleccionado.current = centro;
-                      setModalNCMVisible(false);
-                      realizarLlamada(centroMedSeleccionado.current[0].Telefono)
-                      setNombreCentroMed(centroMedSeleccionado.current[0].NombreOficial);
-                      centrosMed.current._array = [];
-                      centroMedSeleccionado.current = {};
+                {centrosMed.current && Array.isArray(centrosMed.current._array)
+                  && centrosMed.current._array.map((centro, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => {
+                        centroMedSeleccionado.current = centro;
+                        setModalNCMVisible(false);
+                        realizarLlamada(centroMedSeleccionado.current[0].Telefono)
+                        setNombreCentroMed(centroMedSeleccionado.current[0].NombreOficial);
+                        centrosMed.current._array = [];
+                        centroMedSeleccionado.current = {};
 
-                    }}
-                    style={styles.button} // Agrega los estilos que desees aquí
-                  >
-                    <Text>{`Centro: ${centro.NombreOficial}`}</Text>
-                  </TouchableOpacity>
-                ))}
+                      }}
+                      style={styles.button} // Agrega los estilos que desees aquí
+                    >
+                      <Text>{`Centro: ${centro.NombreOficial}`}</Text>
+                    </TouchableOpacity>
+                  ))}
                 <Button
                   title="Cerrar"
                   onPress={() => {
