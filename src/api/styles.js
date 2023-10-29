@@ -127,7 +127,12 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         padding: 20,
-        
+    },
+    container2: {
+        flex: 1,
+        backgroundColor: '#fff',
+        paddingTop: 30,
+        paddingBottom: 30,
 
     },
     buttoningresar: {

@@ -2,6 +2,24 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('adamdb.db');
 
+export const checkUser = () => {
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                'SELECT * FROM Usuario;',
+                [],
+                (_, { rows: { _array } }) => {
+                    resolve(_array.length > 0);
+                },
+                (_, error) => {
+                    console.log(error);
+                    reject(error);
+                    return true;
+                }
+            );
+        });
+    });
+}
 
 export async function BuscarContactoEmergencia(nombre) {
     return new Promise((resolve, reject) => {
@@ -45,7 +63,7 @@ export async function guardarHistoriarChats(id, fecha_hora, function_name, promp
 export function mostarDB(tabla) {
     db.transaction(tx => {
         tx.executeSql(`SELECT * FROM ${tabla}`, [], (_, { rows }) => {
-            console.log(JSON.stringify(rows));
+            console.log(tabla, JSON.stringify(rows));
         });
     }
     )
@@ -62,8 +80,8 @@ export function initDB() {
     //    });
     //});
     db.transaction(tx => {
-        tx.executeSql('DROP TABLE Medicamentos', [], (_, { rows }) => {
-            console.log('Tabla eliminada Medicamentos');
+        tx.executeSql('DROP TABLE Usuario', [], (_, { rows }) => {
+            console.log('Tabla eliminada Usuario');
         });
     });
 

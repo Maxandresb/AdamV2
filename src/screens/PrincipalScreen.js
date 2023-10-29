@@ -241,12 +241,12 @@ export default function PrincipalScreen() {
         } else if (function_name === "mostrar_base_de_datos") {
           // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
           console.log('MOSTRANDO BD')
-          /*mostarDB('Usuario');
+          mostarDB('Usuario');
           mostarDB('Alergias');
           mostarDB('Medicamentos');
           mostarDB('Limitaciones');
-          mostarDB('PatologiasCronicas');*/
-          mostarDB('Contactos');
+          mostarDB('PatologiasCronicas');
+          mostarDB('Contacto');
 
         } else {
           function_name = "responder"

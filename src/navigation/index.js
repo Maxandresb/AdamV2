@@ -11,7 +11,7 @@ import Perfil from '../screens/Perfil';
 import Config from '../screens/Config';
 import HistorialChats from '../screens/HistorialChats';
 // Pantallas formularios
-import InsertDatos from '../screens/InsertDatos';
+import SignIn from '../screens/SignIn';
 import DatosUsuario from '../screens/DatosUsuario';
 import Alergias from '../screens/Alergias';
 import Medicamentos from '../screens/Medicamentos';
@@ -26,7 +26,6 @@ function PrincipalStack() {
     <Drawer.Navigator initialRouteName="ADAM">
       <Drawer.Screen name="ADAM" component={PrincipalScreen} />
       <Drawer.Screen name="Perfil" component={Perfil} />
-      <Drawer.Screen name="Ingresar datos" component={InsertDatos} />
       <Drawer.Screen name="Historial de chats" component={HistorialChats} />
       <Drawer.Screen name="Configuración" component={Config} />
     </Drawer.Navigator>
@@ -54,6 +53,7 @@ export default function AppNavigation() {
         <Stack.Screen name="Saludo" component={SaludoScreen} />
         <Stack.Screen name="Principal" component={PrincipalStack} />
         <Stack.Screen name="PerfilNested" component={PerfilNestedScreen} />
+        <Stack.Screen name="SignIn" component={SignIn} />
       </Stack.Navigator>
     </NavigationContainer>
   );
