@@ -113,10 +113,9 @@ const SignIn = ({ navigation }) => {
       });
     });
     console.log('DATOS DEL USUARIO Y ALERGIAS INGRESADOS CORRECTAMENTE')
-    // navegar a la pantalla principal
-    navigation.navigate('Principal');
     // Mostrar alerta al guardar
     setSaveAlert(true);
+    
   }
   //datepicker para fec_nac
   const [date, setDate] = useState(new Date());
@@ -193,7 +192,10 @@ const SignIn = ({ navigation }) => {
       />
       <CustomAlert
         isVisible={saveAlert}
-        onClose={() => setSaveAlert(false)}
+        onClose={() => 
+          {setSaveAlert(false)
+          navigation.navigate('Principal');}
+        }
         message='Contactos guardados exitosamente'
       />
       <View style={styles.container2}>

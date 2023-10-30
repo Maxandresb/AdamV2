@@ -1,5 +1,7 @@
 import * as Location from 'expo-location';
-const apiKey = process.env.EXPO_PUBLIC_OPENCAGEDATA_API_KEY;
+const apiKeyOCD = process.env.EXPO_PUBLIC_OPENCAGEDATA_API_KEY;
+const apiKeyGOOGLE = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
+
 
 const obtenerUbicacion = async (opcion) => {
   let { status } = await Location.requestForegroundPermissionsAsync();
@@ -19,23 +21,23 @@ const obtenerUbicacion = async (opcion) => {
       console.log("La llamada fue exitosa, la ubicación es: ", location);
       console.log("Tiempo de ejecución: ", end - start, "ms");
     } catch (error) {
-      console.error("Ocurrió un error al obtener la ubicación: ", error);
-      
-      // Si falla expo-location, intenta con useLocation
-      console.log('INTENTANDO OBTENER UBICACION CON USELOCATION')
-      
-      location = useLocation();
-      console.log('segunda opcion de obtencion de location: ', location)
+    console.error("Ocurrió un error al obtener la ubicación: ", error);
+
+    // Si falla expo-location, intenta con Google Geolocation API
+    console.log('INTENTANDO OBTENER UBICACION CON GOOGLE GEOLOCATION API')
+
+    location = await useGoogleGeolocationAPI();
+    console.log('segunda opcion de obtencion de location: ', location)
     }
 
     let lat = location.coords.latitude;
     let lon = location.coords.longitude;
-    
+
     try {
       console.log('REALIZANDO GEOCODIFICACION')
-      let response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=` + apiKey);
+      let response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=` + apiKeyOCD);
       let data = await response.json();
-      
+
       let calle = data.results[0].components.road
       let pobla = data.results[0].components.neighbourhood
       let region = data.results[0].components.state
@@ -48,9 +50,9 @@ const obtenerUbicacion = async (opcion) => {
       }
 
       dir_completa = `calle: ${calle}, cercano al sector: ${pobla}, comuna:${comuna}, region: ${region}, pais: ${pais}`;
-      
+
       console.log('ELIGIENDO TIPO DE RETORNO')
-      
+
       if (opcion === 'direccion') {
         return dir_completa;
       } else if (opcion === 'comuna') {
@@ -66,20 +68,25 @@ const obtenerUbicacion = async (opcion) => {
   }
 }
 
-const useLocation = () => {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const { latitude, longitude } = position.coords;
-        resolve({
-          latitude,
-          longitude,
-        });
+const useGoogleGeolocationAPI = async () => {
+  try {
+    const response = await fetch(`https://www.googleapis.com/geolocation/v1/geolocate?key=`+ apiKeyGOOGLE, {
+      method: 'POST',
+    });
+    const data = await response.json();
+    console.log('data ', data)
+    const { location } = data;
+
+    // Convertir la respuesta de Google a un formato similar al de expo-location
+    return {
+      coords: {
+        latitude: location.lat,
+        longitude: location.lng,
       },
-      error => reject(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  });
+    };
+  } catch (error) {
+    console.error('Error al obtener la ubicación:', error);
+  }
 };
 
 export { obtenerUbicacion };
