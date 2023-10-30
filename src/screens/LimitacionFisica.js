@@ -4,6 +4,7 @@ import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal,
 import { Picker } from '@react-native-picker/picker';
 import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
+import { obtenerRut } from "../api/sqlite"
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -164,11 +165,12 @@ const Limitaciones = () => {
             );
         });
     };
-    const agregarLimitacion = () => {
+    const agregarLimitacion = async () => {
+        let usuario_rut= await obtenerRut()
         db.transaction(tx => {
             tx.executeSql(
-                'INSERT INTO Limitaciones (tipo_lim, severidad_lim, origen_lim, descripcion_lim) VALUES (?, ?, ?, ?)',
-                [tipoLimitacion, severidad, origen_lim, descripcion],
+                'INSERT INTO Limitaciones (tipo_lim, severidad_lim, origen_lim, descripcion_lim, usuario_rut) VALUES (?, ?, ?, ?, ?)',
+                [tipoLimitacion, severidad, origen_lim, descripcion, usuario_rut],
                 (_, resultSet) => {
                     console.log("Inserción exitosa!");
                     // Recargar datos
@@ -275,11 +277,10 @@ const Limitaciones = () => {
                         </View>
                         <View style={styles.buttonContainerCenter}>
                             <Button
-                                title="Listo"
+                                title="Cerrar"
                                 color="green"
                                 onPress={() => {
                                     setModalVisibleLimitaciones(false);
-                                    agregarLimitacion();
                                 }}
                             />
                         </View>

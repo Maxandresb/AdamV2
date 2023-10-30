@@ -6,6 +6,8 @@ import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
 import * as Contacts from 'expo-contacts';
 import { CheckBoxRapido } from '../api/checkBoxRapido';
+import { obtenerRut } from "../api/sqlite"
+
 
 
 const db = SQLite.openDatabase('adamdb.db');
@@ -147,15 +149,16 @@ const Contactos = () => {
         setModalCTVisible(true);
     };
 
-    const guardarContactosSeleccionados = () => {
+    const guardarContactosSeleccionados = async () => {
+        let usuario_rut= await obtenerRut()
         let contador = 0;
         for (let contacto of contactosSeleccionados) {
             const nombre = contacto.name;
             const numero = contacto.phoneNumbers ? contacto.phoneNumbers[0].number : '';
             db.transaction(tx => {
                 tx.executeSql(
-                    'INSERT INTO Contacto (nombreCompleto, numero) VALUES (?, ?)',
-                    [nombre, numero],
+                    'INSERT INTO Contacto (nombreCompleto, numero, usuario_rut) VALUES (?, ?, ?)',
+                    [nombre, numero, usuario_rut],
                     (_, { insertId }) => {
                         setContactos(prevContactos => [
                             ...prevContactos,
@@ -219,11 +222,12 @@ const Contactos = () => {
             );
         });
     };
-    const agregarContacto = () => {
+    const agregarContacto = async () => {
+        let usuario_rut= await obtenerRut()
         db.transaction(tx => {
             tx.executeSql(
-                'INSERT INTO Contacto ( nombreCompleto, alias, numero, relacion) VALUES (?, ?, ?, ?)',
-                [nombreCompleto, alias, numero, relacion],
+                'INSERT INTO Contacto ( nombreCompleto, alias, numero, relacion, usuario_rut) VALUES (?, ?, ?, ?, ?)',
+                [nombreCompleto, alias, numero, relacion, usuario_rut],
                 (_, { insertId }) => {
                     setContactos(prevContactos => [
                         ...prevContactos,
@@ -374,11 +378,10 @@ const Contactos = () => {
                         </View>
                         <View style={styles.buttonContainerCenter}>
                             <Button
-                                title="Listo"
+                                title="Cerrar"
                                 color="green"
                                 onPress={() => {
                                     setModalVisibleContactos(false);
-                                    agregarContacto();
                                 }}
                             />
                         </View>

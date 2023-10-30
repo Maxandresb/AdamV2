@@ -4,6 +4,7 @@ import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal, Button, Ale
 import { Picker } from '@react-native-picker/picker';
 import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
+import { obtenerRut } from "../api/sqlite"
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -155,11 +156,12 @@ const Medicamentos = () => {
             );
         });
     };
-    const agregarMedicamento = () => {
+    const agregarMedicamento = async () => {
+        let usuario_rut= await obtenerRut()
         db.transaction(tx => {
             tx.executeSql(
-                'INSERT INTO Medicamentos (medicamento, dosis, periodicidad) VALUES (?, ?, ?)',
-                [nomMedicamento, dosis, periodicidad],
+                'INSERT INTO Medicamentos (medicamento, dosis, periodicidad, usuario_rut) VALUES (?, ?, ?, ?)',
+                [nomMedicamento, dosis, periodicidad, usuario_rut],
                 (_, resultSet) => {
                     console.log("Inserción exitosa!");
                     // Recargar datos
@@ -250,11 +252,10 @@ const Medicamentos = () => {
                         </View>
                         <View style={styles.buttonContainerCenter}>
                             <Button
-                                title="Listo"
+                                title="Cerrar"
                                 color="green"
                                 onPress={() => {
                                     setModalVisibleMedicamentos(false);
-                                    agregarMedicamento();
                                 }}
                             />
                         </View>

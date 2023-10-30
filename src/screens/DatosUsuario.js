@@ -66,8 +66,8 @@ export default function DatosUsuario() {
       // Actualizar la base de datos
       db.transaction(tx => {
         tx.executeSql(
-          'UPDATE Usuario SET rut = ?, pnombre = ?, snombre = ?, papellido = ?, sapellido = ?, alias = ?, genero = ?, tipo_sangre = ?, fecha_nacimiento = ?, alergias = ?, cronico = ?, donante = ?, limitacion_fisica = ?, toma_medicamentos = ? WHERE rut = ?',
-          [rut, pnombre, snombre, papellido, sapellido, alias, genero, tipo_sangre, fecha_nacimiento, alergias, cronico, donante, limitacion_fisica, toma_medicamentos, rut],
+          'UPDATE Usuario SET pnombre = ?, snombre = ?, papellido = ?, sapellido = ?, alias = ?, genero = ?, tipo_sangre = ?, fecha_nacimiento = ?, alergias = ?, cronico = ?, donante = ?, limitacion_fisica = ?, toma_medicamentos = ? WHERE rut = ?',
+          [pnombre, snombre, papellido, sapellido, alias, genero, tipo_sangre, fecha_nacimiento, alergias, cronico, donante, limitacion_fisica, toma_medicamentos, rut],
           (_, resultSet) => {
             console.log("Actualización exitosa!");
             loadUserData(); // Vuelve a cargar los datos del usuario después de actualizar
@@ -101,12 +101,6 @@ export default function DatosUsuario() {
           )}
           {isEditing ? (
             <>
-              <Text style={styles.encabezado}>RUT:</Text>
-              <TextInput
-                style={styles.input}
-                onChangeText={setRut}
-                value={rut}
-              />
               <Text style={styles.encabezado}>Primer Nombre:</Text>
               <TextInput
                 style={styles.input}

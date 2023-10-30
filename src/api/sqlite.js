@@ -2,6 +2,33 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('adamdb.db');
 
+export function obtenerRut() {
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `SELECT rut FROM Usuario ORDER BY rut LIMIT 1;`,
+                [],
+                (_, { rows: { _array } }) => {
+                    if (_array.length > 0) {
+                        let rut = _array[0].rut;
+                        console.log('rut:', rut);
+                        resolve(rut);
+                    } else {
+                        console.log('No hay registros en la tabla Usuario.');
+                        resolve(null);
+                    }
+                },
+                (_, error) => {
+                    console.log('Error al obtener el primer rut:', error);
+                    reject(error);
+                }
+            );
+        });
+    });
+}
+
+
+
 export const checkUser = () => {
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
@@ -232,6 +259,6 @@ export function initDB() {
             (_, error) => console.log('Error al crear la tabla centrosMedicos:', error)
         );
 
-        
+
     })
 };

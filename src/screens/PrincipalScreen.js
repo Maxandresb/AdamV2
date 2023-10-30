@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
 // Creaciones propias
-import { guardarHistoriarChats, mostarDB, BuscarContactoEmergencia } from "../api/sqlite"
+import { guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut } from "../api/sqlite"
 import { crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
@@ -172,7 +172,7 @@ export default function PrincipalScreen() {
               let name_func = function_name.toString();
               let consulta = prompt.toString();
               let contestacion = respuesta.text.toString();
-              let rut = 195953171
+              let rut = await obtenerRut()
               guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
               //respuesta = await secondApiCall(prompt, message, function_name, function_response)
               contactosEmergencia.current = [];
@@ -187,7 +187,7 @@ export default function PrincipalScreen() {
                 let name_func = function_name.toString();
                 let consulta = prompt.toString();
                 let contestacion = respuesta.text.toString();
-                let rut = 195953171
+                let rut = await obtenerRut()
                 guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
                 //respuesta = await secondApiCall(prompt, message, function_name, function_response)
                 setAliasContactoEm('')
@@ -204,7 +204,7 @@ export default function PrincipalScreen() {
             let name_func = function_name.toString();
             let consulta = prompt.toString();
             let contestacion = respuesta.text.toString();
-            let rut = 195953171
+            let rut = await obtenerRut()
             guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
             //respuesta = await secondApiCall(prompt, message, function_name, function_response)
             Alert.alert("Contacto no encontrado: ", function_response);
@@ -240,7 +240,7 @@ export default function PrincipalScreen() {
               let name_func = function_name.toString();
               let consulta = prompt.toString();
               let contestacion = respuesta.text.toString();
-              let rut = 195953171
+              let rut = await obtenerRut()
               guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
               //respuesta = await secondApiCall(prompt, message, function_name, function_response)
               centrosMed.current._array = [];
@@ -256,7 +256,7 @@ export default function PrincipalScreen() {
                 let name_func = function_name.toString();
                 let consulta = prompt.toString();
                 let contestacion = respuesta.text.toString();
-                let rut = 195953171
+                let rut = await obtenerRut()
                 guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
                 //respuesta = await secondApiCall(prompt, message, function_name, function_response)
                 setNombreCentroMed('')
@@ -272,7 +272,7 @@ export default function PrincipalScreen() {
             let name_func = function_name.toString();
             let consulta = prompt.toString();
             let contestacion = respuesta.text.toString();
-            let rut = 195953171
+            let rut = await obtenerRut()
             guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
             //respuesta = await secondApiCall(prompt, message, function_name, function_response)
             Alert.alert("Centro de salud no encontrado: ", function_response);
@@ -289,20 +289,20 @@ export default function PrincipalScreen() {
           let name_func = function_name.toString();
           let consulta = prompt.toString();
           let contestacion = respuesta.text.toString();
-          let rut = 195953171
+          let rut = await obtenerRut()
           guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
           //respuesta = await secondApiCall(prompt, message, function_name, function_response)
 
         } else if (function_name === "mostrar_base_de_datos") {
           // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
           console.log('MOSTRANDO BD')
-          /*mostarDB('Usuario');
+          mostarDB('Usuario');
           mostarDB('Alergias');
           mostarDB('Medicamentos');
           mostarDB('Limitaciones');
           mostarDB('PatologiasCronicas');
-          mostarDB('Contacto');*/
-          mostarDB('centrosMedicos');
+          mostarDB('Contacto');
+          //mostarDB('centrosMedicos');
 
 
         } else {
@@ -330,8 +330,8 @@ export default function PrincipalScreen() {
         let name_func = function_name.toString();
         let consulta = prompt.toString();
         let contestacion = respuesta.text.toString();
-        let rut = 195953171
-        guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+        let rut = await obtenerRut()
+                guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
         //Alert.alert("Ha ocurrido un error : ", answer);
         setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
         setinputUsuario('');

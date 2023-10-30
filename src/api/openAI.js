@@ -1,8 +1,9 @@
 import { Audio } from "expo-av";
 import axios from 'axios';
 import * as SQLite from 'expo-sqlite';
-import { guardarHistoriarChats } from "../api/sqlite";
+import { guardarHistoriarChats, obtenerRut } from "../api/sqlite";
 import { format } from 'date-fns';
+
 
 
 const apiKey = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
@@ -260,7 +261,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
         let name_func = function_name.toString();
         let consulta = prompt.toString();
         let contestacion = respuesta.text.toString();
-        let rut = 195953171
+        let rut = await obtenerRut()
 
 
         //console.log('id: ', id, 'fec_hor: ', fec_hor, )
