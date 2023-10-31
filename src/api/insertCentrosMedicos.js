@@ -3,6 +3,7 @@ import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('adamdb.db');
 
 export function InsertCentrosMedicos() {
+    console.log('INSERTANDO CENTROS MEDICOS A LA BASE DE DATOS SQLITE')
     db.transaction(tx => {
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",

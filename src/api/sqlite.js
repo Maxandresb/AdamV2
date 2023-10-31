@@ -1,4 +1,5 @@
 import * as SQLite from 'expo-sqlite';
+import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
 
@@ -120,27 +121,23 @@ export function addRecordatorio(recordatorio){
   
 
 export function initDB() {
+    console.log('CREANDO BASE DE DATOS SQLITE')
     // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos   
 
 
     // eliminar tabla
-    //db.transaction(tx => {
-    //    tx.executeSql('DROP TABLE Usuario', [], (_, { rows }) => {
-    //        console.log('Tabla eliminada');
-    //    });
-    //});
-    db.transaction(tx => {
+    /*db.transaction(tx => {
         tx.executeSql('DROP TABLE Usuario', [], (_, { rows }) => {
             console.log('Tabla eliminada Usuario');
         });
-    });
+    });*/
 
     //eliminar contenido de una tabla
-    //db.transaction(tx => {
-    //  tx.executeSql('DELETE FROM Usuario', [], (_, { rows }) => {
-    //    console.log('Registros eliminados');
-    //  });
-    //});
+    /*db.transaction(tx => {
+      tx.executeSql('DELETE FROM Usuario', [], (_, { rows }) => {
+        console.log('Registros eliminados');
+      });
+    });*/
 
     db.transaction(tx => {
         // Crear tabla Usuario
@@ -281,6 +278,8 @@ export function initDB() {
             () => { },
             (_, error) => console.log('Error al crear la tabla centrosMedicos:', error)
         );
+
+        InsertCentrosMedicos()
 
 
     })
