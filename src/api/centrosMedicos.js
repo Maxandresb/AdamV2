@@ -1,11 +1,9 @@
 import * as SQLite from 'expo-sqlite';
-import { initDB } from './sqlite';
 
 
 let db = SQLite.openDatabase('adamdb.db');
 
 export async function buscarEnDB(columna, valor) {
-  //initDB();
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       console.log('BUSCANDO EN LA BD')

@@ -6,6 +6,8 @@ import { initDB } from "./src/api/sqlite"
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
+import { InsertCentrosMedicos } from "./src/api/insertCentrosMedicos"
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -13,6 +15,9 @@ Notifications.setNotificationHandler({
     shouldSetBadge: true,
   }),
 });
+
+
+
 
 
 export default function App() {
@@ -39,6 +44,7 @@ export default function App() {
 
 
   initDB();
+  InsertCentrosMedicos();
   return (
     <AppNavigation/>
   )

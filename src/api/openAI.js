@@ -1,24 +1,26 @@
 import { Audio } from "expo-av";
 import axios from 'axios';
 import * as SQLite from 'expo-sqlite';
-import { guardarHistoriarChats} from "../api/sqlite";
+import { guardarHistoriarChats, obtenerRut } from "../api/sqlite";
+import { format } from 'date-fns';
+
 
 
 const apiKey = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
 
 const client = axios.create({
     headers: {
-        "Authorization": "Bearer "+ apiKey,
+        "Authorization": "Bearer " + apiKey,
         "Content-Type": "application/json"
     }
 })
 const whispcli = axios.create({
     headers: {
-        "Authorization": "Bearer "+ apiKey,
+        "Authorization": "Bearer " + apiKey,
         "Content-Type": "multipart/form-data"
     }
 })
-const whisperUrl='https://api.openai.com/v1/audio/transcriptions';
+const whisperUrl = 'https://api.openai.com/v1/audio/transcriptions';
 const chatgptUrl = 'https://api.openai.com/v1/chat/completions';
 const dalleUrl = 'https://api.openai.com/v1/images/generations';
 let FechaHoy= new Date()
@@ -26,17 +28,17 @@ let FechaHoy= new Date()
 export const whisperCall = async (formData) =>{
     
     try {
-        const res = await whispcli.post(whisperUrl,formData);
+        const res = await whispcli.post(whisperUrl, formData);
         console.log(res.data?.text)
         return res.data?.text
-    }catch(err){
-        console.log('error: ',err);
-        if(err && err.msg){
-            return Promise.resolve({success: false, msg: err.msg});
+    } catch (err) {
+        console.log('error: ', err);
+        if (err && err.msg) {
+            return Promise.resolve({ success: false, msg: err.msg });
         } else if (err && err.message) {
-            return Promise.resolve({success: false, msg: err.message});
+            return Promise.resolve({ success: false, msg: err.message });
         } else {
-            return Promise.resolve({success: false, msg: "An unknown error occurred"});
+            return Promise.resolve({ success: false, msg: "An unknown error occurred" });
         }
     }
 }
@@ -129,29 +131,42 @@ const functions = [
         }
     },
     {
-        "name": "llamar",
-        "description": "el usuario solicita llamar",
+        "name": "llamar_contacto",
+        "description": "el usuario solicita llamar a una persona, debes responder con el nombre de la persona a la cual llamara",
         "parameters": {
             "type": "object",
             "properties": {
-                "llamar": {
+                "persona a llamar": {
                     "type": "string",
-                    "description": "indica que se quiere llamar",
+                    "description": "nombre de la persona a la cual se desea llamar, puede ser un nombre como tal o un alias",
+                }
+            }, "required": ["persona a llamar"]
+        }
+    },
+    {
+        "name": "llamar_a_centro_salud",
+        "description": "identifica que el usuario desea llamar a un centro de salud",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "centro_de_salud": {
+                    "type": "string",
+                    "description": "puede ser un hospital publico o privado, una POSTA, un centro medico, un centro de urgencias, una clinica, un SAPU, un SAR o un policlinico que posea numero telefonico",
                 }
             }
         }
     },
     {
-        "name": "contactos",
-        "description": "el usuario solicita contactos",
+        "name": "llamar_numero",
+        "description": "el usuario solicita llamar a un numero, debes responder con el numero al que el usuario desea llamar",
         "parameters": {
             "type": "object",
             "properties": {
-                "llamar": {
+                "numero a llamar": {
                     "type": "string",
-                    "description": "indica que se quiere contactos",
+                    "description": "numero al cual se desea llamar",
                 }
-            }
+            }, "required": ["numero a llamar"]
         }
     },
     {
@@ -222,6 +237,20 @@ let conversationHistory = [
 // abrir bd para guardar historial de respuestas
 const db = SQLite.openDatabase('adamdb.db');
 
+export async function crearRespuesta(answer) {
+    function generarIdUnico() {
+        return Date.now().toString(36) + Math.random().toString(36).substring(2);
+    }
+    return {
+        _id: generarIdUnico(),
+        text: answer,
+        createdAt: new Date(),
+        user: {
+            _id: 2,
+        },
+    };
+}
+
 export async function secondApiCall(prompt, message, function_name, function_response) {
     console.log('START 2DA LLAMADA');
     conversationHistory.push({
@@ -235,56 +264,46 @@ export async function secondApiCall(prompt, message, function_name, function_res
                 ...conversationHistory,
                 message,
                 {
-                role: "function",
-                name: function_name,
-                content: function_response,
+                    role: "function",
+                    name: function_name,
+                    content: function_response,
                 },
-            ]                  
-            })
-            promises.push(finalres);
-    
- 
+            ]
+        })
+        promises.push(finalres);
+
+
         console.log("TERMINO 2DA LLAMADA API OPENAI")
         // Añade la respuesta del asistente al historial de la conversación
         conversationHistory.push(finalres.data?.choices[0]?.message);
         //console.log(conversationHistory)
         //console.log(finalres.data?.choices[0]?.message?.content)
-        function generarIdUnico() {
-            return Date.now().toString(36) + Math.random().toString(36).substring(2);
-        }
         let answer = finalres.data?.choices[0]?.message?.content;
         promises.push(finalres);
-        let respuesta= await{_id: generarIdUnico(),
-            
-            text: answer,
-            createdAt: new Date(),
-            user: {
-            _id: 2,
-            
-            },};
-            console.log("FINAL DE LA CREACION DE LA RESPUESTA")
+        let respuesta = await crearRespuesta(answer);
+        console.log("FINAL DE LA CREACION DE LA RESPUESTA")
         promises.push(respuesta);
         const tex3 = JSON.stringify(respuesta)
-        console.log('RESPUESTA CREADA: '+tex3)
+        //console.log('RESPUESTA CREADA: '+tex3)
         //console.log("PRINT INTENTO: " + respuesta)
-        let id= respuesta._id.toString();
-        let fec_hor= respuesta.createdAt.toString();
-        let name_func= function_name.toString();
-        let consulta= prompt.toString();
-        let contestacion= respuesta.text.toString();
-        let rut= 195953171
+        let id = respuesta._id.toString();
+        let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+        let name_func = function_name.toString();
+        let consulta = prompt.toString();
+        let contestacion = respuesta.text.toString();
+        let rut = await obtenerRut()
 
 
-        console.log('id: ', id, 'fec_hor: ', fec_hor, )
-        if (respuesta){
-            console.log('********************************************************************')
-            console.log('id: ', id, 'fec_hor: ', fec_hor, 'function name: ',name_func, 'prompt: ', consulta, 'respuesta: ', contestacion, 'rut: ', rut)
+        //console.log('id: ', id, 'fec_hor: ', fec_hor, )
+        if (respuesta) {
+            //console.log('********************************************************************')
+            //console.log('id: ', id, 'fec_hor: ', fec_hor, 'function name: ',name_func, 'prompt: ', consulta, 'respuesta: ', contestacion, 'rut: ', rut)
             guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-            console.log('********************************************************************')
+            //console.log('********************************************************************')
         }
-        
 
-        return respuesta;       
+
+        return respuesta;
     } catch (error) {
         console.error(error);
     }
@@ -301,29 +320,40 @@ export async function firstApiCall(prompt) {
                     content: "Eres un asistente, tus funciones son: responder preguntas especificas, conversar sobre diversos temas y realizar funciones solicitadas. "
                 },
                 {
-                    role: "user", 
-                    content: prompt},
+                    role: "user",
+                    content: prompt
+                },
             ],
             functions: functions,
             function_call: "auto",
-       
+
         });
         promises.push(res);
         let message, function_name, args;
-        if(res.data?.choices[0]?.message?.function_call?.name){
+        if (res.data?.choices[0]?.message?.function_call?.name) {
             const tex = JSON.stringify(res.data?.choices[0])
             //console.log('CHOICES: '+tex)
-            const tex2 = JSON.stringify(res.data?.choices[0]?.message)
-            console.log('MENSAJE: '+tex2)
+            //const tex2 = JSON.stringify(res.data?.choices[0]?.message)
+            //console.log('MENSAJE: ' + tex2)
             message = res.data?.choices[0]?.message;
             function_name = res.data?.choices[0]?.message?.function_call?.name;
-            console.log('function_name: ' + function_name)
-            args = res.data?.choices[0]?.message?.function_call?.arguments;
-            console.log('args: ' + args)
-        }else{
-            function_name="funcion_extra"
-            message={"role":"assistant","content":null,"function_call":{"name":"funcion_extra","arguments":"{}"}}
-            args='{}'
+            //console.log('function_name: ' + function_name)
+            if (function_name === 'llamar_contacto') {
+                let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
+                let parsedArgs = JSON.parse(res_args);
+                args = parsedArgs["persona a llamar"];
+            } else if(function_name === 'llamar_numero'){
+                let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
+                let parsedArgs = JSON.parse(res_args);
+                args = parsedArgs["numero a llamar"];
+            } else {
+                args = res.data?.choices[0]?.message?.function_call?.arguments;
+            }
+            //console.log('args: ' + args)
+        } else {
+            function_name = "funcion_extra"
+            message = { "role": "assistant", "content": null, "function_call": { "name": "funcion_extra", "arguments": "{}" } }
+            args = '{}'
         }
 
         return { function_name: function_name, args: args, message: message };

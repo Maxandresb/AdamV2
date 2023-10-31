@@ -1,36 +1,22 @@
-import { PermissionsAndroid } from 'react-native';
-import Contacts from 'react-native-contacts';
+import * as Contacts from 'expo-contacts';
 
-export async function requestContactsPermission() {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-      {
-        title: "Permiso para leer contactos",
-        message: "Necesitamos tu permiso para leer tus contactos",
-        buttonNeutral: "Pregúntame luego",
-        buttonNegative: "Cancelar",
-        buttonPositive: "OK"
-      }
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log("Tienes permiso para leer contactos");
-      console.log(Contacts);
-      Contacts.getAll((err, contacts) => {
-        if (err === 'denied') {
-            console.log("Permiso denegado");
-        } else {
-            console.log(Contacts);
-        }
-    })
+export async function obtenerContactosTelefono() {
+  console.log('Solicitando permiso para leer contactos...');
+  const { status } = await Contacts.requestPermissionsAsync();
+  let contactos = [];
+  if (status === 'granted') {
+    console.log('Permiso concedido. Leyendo contactos...');
+    const { data } = await Contacts.getContactsAsync({
+      fields: [Contacts.Fields.Emails, Contacts.Fields.PhoneNumbers, Contacts.Fields.Addresses],
+    });
+    if (data.length > 0) {
+      console.log(`Se encontraron ${data.length} contactos.`);
+      contactos = data;
     } else {
-      console.log("Permiso para leer contactos denegado");
+      console.log('No se encontraron contactos.');
     }
-    
-    console.log('CONTACTOS: ', contacts); 
-  } catch (err) {
-    console.warn(err);
+  } else {
+    console.log('Permiso para leer contactos no concedido.');
   }
+  return contactos;
 }
-
-
