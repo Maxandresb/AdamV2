@@ -281,7 +281,21 @@ export function initDB() {
             () => { },
             (_, error) => console.log('Error al crear la tabla centrosMedicos:', error)
         );
-
+        
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS recordatorios (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                Titulo TEXT, 
+                Fecha TEXT, 
+                Hora TEXT, 
+                Descripcion TEXT, 
+                Estado INTEGER 
+                
+            );`,
+            [],
+            () => { },
+            (_, error) => console.log('Error al crear la tabla:', error)
+            );
 
     })
 };

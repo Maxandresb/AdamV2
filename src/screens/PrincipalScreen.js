@@ -311,7 +311,16 @@ export default function PrincipalScreen() {
           //mostarDB('centrosMedicos');
 
 
-        } else {
+        }else if (function_name === "recordatorio") {
+          function_response = "Di que se agrega el recordatorio" 
+          respuesta= await secondApiCall(prompt, message, function_name, function_response)
+          addRecordatorio(JSON.parse(args))
+          scheduleRecordatorioNotification(JSON.parse(args))
+        
+        
+        
+        
+        }else {
           function_name = "responder"
           function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
           setMensajeProcesamiento('Procesando respuesta...');
