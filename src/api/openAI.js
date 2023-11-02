@@ -255,7 +255,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
         role: 'user',
         content: prompt
     });
-    let retries = 3;
+    let retries = 2;
     while (retries > 0) {
         try {
             const finalres = await new Promise((resolve, reject) => {
@@ -312,6 +312,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
             }
             return respuesta;
         } catch (error) {
+            if (retries === 0) throw error; // Si se han agotado los intentos, lanza el error
             console.error('Error Message:', error.message);
             if (error.response) {
                 console.error('Response:', {
@@ -325,7 +326,6 @@ export async function secondApiCall(prompt, message, function_name, function_res
                 console.error('Error:', error.message);
             }
             retries--;
-            if (retries === 0) throw error; // Si se han agotado los intentos, lanza el error
         }
     }
 }
@@ -333,7 +333,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
 export async function firstApiCall(prompt) {
     var FechaHoy = new Date()
     console.log('Fecha Hoy: ' + FechaHoy)
-    let retries = 3;
+    let retries = 2;
     while (retries > 0) {
         try {
             const res = await new Promise((resolve, reject) => {
@@ -394,6 +394,7 @@ export async function firstApiCall(prompt) {
             return { function_name: function_name, args: args, message: message };
 
         } catch (error) {
+            if (retries === 0) throw error; // Si se han agotado los intentos, lanza el error
             console.error('Error Message:', error.message);
             if (error.response) {
                 console.error('Response:', {
@@ -407,7 +408,7 @@ export async function firstApiCall(prompt) {
                 console.error('Error:', error.message);
             }
             retries--;
-            if (retries === 0) throw error; // Si se han agotado los intentos, lanza el error
+            
         }
     }
 }

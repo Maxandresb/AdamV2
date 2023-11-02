@@ -48,22 +48,24 @@ function calcularProximaFecha(dia, hora) {
 
     let timezoneOffset = new Date().getTimezoneOffset();
     // Crea un nuevo objeto Date para la fecha actual
-    let fecha = new Date();
-    fecha.setMinutes(fecha.getMinutes() - timezoneOffset);
+    let proximaFecha = new Date();
+    proximaFecha.setMinutes(proximaFecha.getMinutes() - timezoneOffset);
 
     // Calcula cuántos días faltan hasta el próximo día deseado
-    let diasHastaProximo = (indiceDia - fecha.getDay() + 7) % 7;
+    let diasHastaProximo = (indiceDia - proximaFecha.getDay() + 7) % 7;
 
     // Añade ese número de días a la fecha actual
-    fecha.setDate(fecha.getDate() + diasHastaProximo);
+    proximaFecha.setDate(proximaFecha.getDate() + diasHastaProximo);
 
     // Configura la hora de la fecha a la hora del recordatorio
-    fecha.setHours(hora.split(':')[0], hora.split(':')[1], 0, 0);
+    let [horaRecordatorio, minutoRecordatorio] = hora.split(':').map(Number);
+    proximaFecha.setHours(horaRecordatorio, minutoRecordatorio - timezoneOffset, 0, 0);
 
-    return fecha;
+    return proximaFecha;
   }
 }
 export { calcularProximaFecha };
+
 
 
 async function scheduleRecordatorioNotification(recordatorio) {
@@ -118,13 +120,10 @@ async function scheduleRecordatorioNotification(recordatorio) {
 
     // Obtén la fecha y hora actuales
     let timezoneOffset = new Date().getTimezoneOffset();
-    let ahora =  new Date()
+    let ahora = new Date()
     ahora.setMinutes(ahora.getMinutes() - timezoneOffset);
-    // Calcula la diferencia en milisegundos entre la próxima fecha y la fecha y hora actuales
-    // valueOf() devuelve el tiempo en milisegundos pero relativo a la zona horaria local, en lugar de getTime()
-    let diferencia = proximaFecha.valueOf() - ahora.valueOf();
-    // Convierte la diferencia a segundos
-    let segundos = diferencia / 1000;
+    // Calcula la diferencia en segundos entre la próxima fecha y la fecha y hora actuales
+    let segundos = calcularDiferenciaSegundos(ahora, proximaFecha);
     // Configura el disparador de la notificación
     let trigger = {
       seconds: segundos,
@@ -134,9 +133,6 @@ async function scheduleRecordatorioNotification(recordatorio) {
     console.log('prox fecha: ', proximaFecha)
     console.log('ahora: ', ahora)
     console.log(' proximaFecha: ', proximaFecha)
-    console.log('ahora.valueOf(): ', ahora.valueOf())
-    console.log(' proximaFecha.valueOf(): ', proximaFecha.valueOf())
-    console.log('diferencia: ', diferencia)
     console.log('segundos: ', segundos)
 
     // Programa la notificación para esta fecha
@@ -171,7 +167,12 @@ Notifications.addNotificationResponseReceivedListener(async response => {
     });
   }
 });
-
-
-
-
+function calcularDiferenciaSegundos(ahora, proximaFecha) {
+  // Calculate the difference in milliseconds
+  let diferenciaMiliSegundos = proximaFecha - ahora;
+ 
+  // Convert the difference to seconds
+  let totalSegundos = diferenciaMiliSegundos / 1000;
+ 
+  return totalSegundos;
+}
