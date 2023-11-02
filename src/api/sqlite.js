@@ -1,7 +1,27 @@
+//sqlite.js
 import * as SQLite from 'expo-sqlite';
 import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
+
+export async function addRecordatorio(recordatorio) {
+    let data = recordatorio
+    let usuario_rut = await obtenerRut()
+    console.log('registro de dias: ', data.Dias)
+    db.transaction(tx => {
+        tx.executeSql(
+            "INSERT OR IGNORE INTO Recordatorios ( Titulo, Fecha, Hora, Descripcion, Estado, Dias, usuario_rut ) VALUES (?, ?, ?, ?, ?, ?, ?);",
+            [data.Titulo, data.Fecha, data.Hora, data.Descripcion, '0', data.Dias.toString(), usuario_rut,],
+
+            (_, { rows }) => console.log('Datos insertados:', rows),
+            (_, error) => console.log('Error al insertar datos:', error)
+        );
+
+    });
+};
+
+// resto de la implementacion de la bd
+
 
 export function obtenerRut() {
     return new Promise((resolve, reject) => {
@@ -102,23 +122,7 @@ export function mostarDB(tabla) {
 
 
 
-export function addRecordatorio(recordatorio){
-    let data = recordatorio
-  
-    db.transaction(tx => {
-      tx.executeSql(
-        "INSERT OR IGNORE INTO Recordatorios ( Titulo, Fecha, Hora, Descripcion, Estado) VALUES (?,?, ?,?,?);",
-        [data.Titulo,data.Fecha, data.Hora,data.Descripcion,'0'],
-        
-        (_, { rows }) => console.log('Datos insertados:', rows),
-        (_, error) => console.log('Error al insertar datos:', error)
-      );
-     
-    });
-  };
-  
 
-  
 
 export function initDB() {
     console.log('CREANDO BASE DE DATOS SQLITE')
@@ -138,6 +142,27 @@ export function initDB() {
         console.log('Registros eliminados');
       });
     });*/
+
+    db.transaction(tx => {
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS recordatorios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            Titulo TEXT, 
+            Fecha TEXT, 
+            Hora TEXT, 
+            Descripcion TEXT, 
+            Estado INTEGER,
+            Dias TEXT,
+            usuario_rut TEXT,
+            FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+            
+        );`,
+            [],
+            (_, { rows }) => console.log('Tabla creada:', rows),
+            (_, error) => console.log('Error al crear la tabla:', error)
+        );
+
+    });
 
     db.transaction(tx => {
         // Crear tabla Usuario

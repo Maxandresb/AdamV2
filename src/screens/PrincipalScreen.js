@@ -9,12 +9,12 @@ import * as Speech from 'expo-speech';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // Creaciones propias
-import { guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut } from "../api/sqlite"
+import { addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut } from "../api/sqlite"
 import { crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
 import { realizarLlamada } from "../api/llamada";
-import { Contactos } from "../api/contactos";
+import { scheduleRecordatorioNotification } from "../api/notificaciones";
 import styles from '../api/styles';
 import * as FileSystem from 'expo-file-system';
 import { format } from 'date-fns';
@@ -310,6 +310,13 @@ export default function PrincipalScreen() {
           mostarDB('Contacto');
           //mostarDB('centrosMedicos');
 
+        //principal.js
+        }else if (function_name === "recordatorio") {
+          console.log('args: ', JSON.parse(args))
+          function_response = "Di que se agrega el recordatorio" 
+          addRecordatorio(JSON.parse(args))
+          scheduleRecordatorioNotification(JSON.parse(args))
+          respuesta= await secondApiCall(prompt, message, function_name, function_response)
 
         } else {
           function_name = "responder"
