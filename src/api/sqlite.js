@@ -129,11 +129,11 @@ export function initDB() {
     //        console.log('Tabla eliminada');
     //    });
     //});
-    db.transaction(tx => {
-        tx.executeSql('DROP TABLE Usuario', [], (_, { rows }) => {
-            console.log('Tabla eliminada Usuario');
-        });
-    });
+    // db.transaction(tx => {
+    //     tx.executeSql('DROP TABLE Usuario', [], (_, { rows }) => {
+    //         console.log('Tabla eliminada Usuario');
+    //     });
+    // });
 
     //eliminar contenido de una tabla
     //db.transaction(tx => {

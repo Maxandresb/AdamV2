@@ -25,9 +25,17 @@ export async function scheduleRecordatorioNotification(recordatorio) {
       content: {
         sound:'default',
         title: data.Titulo,
-        body: data.Descripcion,
+        body: 'programada para el miercoles ',//data.Descripcion,
         data: { data: 'aun en trabajo' },
       },
-      trigger: {seconds: parseInt(data.SegundosHasta)},
+     trigger: {seconds: parseInt(data.SegundosHasta)},
+    //  trigger:{
+      
+    //   weekday:4,
+
+    //   hour:19,
+    //   minute:49,
+    //   repeats:true,
+    //  }
     });
   }
