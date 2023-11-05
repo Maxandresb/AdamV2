@@ -19,6 +19,7 @@ import { Contactos } from "../api/contactos";
 import styles from '../api/styles';
 import * as FileSystem from 'expo-file-system';
 import { format } from 'date-fns';
+import { obtenerClima } from "../api/clima";
 export default function PrincipalScreen() {
   const [inputUsuario, setinputUsuario] = useState('')
   const [mensajes, setMensajes] = useState([])
@@ -91,7 +92,22 @@ export default function PrincipalScreen() {
         }
       }];
       console.log(newMensajes)
-      obtenerRespuesta(newMensajes)
+      if (res.includes('Error')){
+        Alert.alert(
+          'Ha ocurrido un error',
+          'Lo siento ocurrio un problema con tu grabacion, intentalo nuevamente',
+          [
+            {
+              text: 'Cerrar',
+             
+            }
+          ],
+          { cancelable: false }
+        );
+      }else{
+        obtenerRespuesta(newMensajes)
+      }
+      
     });
     //whisperCall(uri).then(res =>{
     //console.log('******respuesta api obtenida*****');
@@ -321,7 +337,17 @@ export default function PrincipalScreen() {
         
         
         
-        }else {
+        }else if (function_name === "clima") {
+          
+          clima = await obtenerClima('coordenadas',JSON.parse(args))
+          jsonclima = JSON.stringify(clima)
+          //console.log(jsonclima)
+          function_response= `${jsonclima} Este json contiene informacion del clima Convierte este json en informacion util  para un usuario que habla español, resumelo presicamente, usa Celsius y terminologia basica, resume en no mas de 50 palabras `
+          //console.log(function_response)
+         respuesta = await secondApiCall(prompt, message, function_name, function_response)
+        }
+        
+        else {
           function_name = "responder"
           function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
           setMensajeProcesamiento('Procesando respuesta...');

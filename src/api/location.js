@@ -57,6 +57,8 @@ const obtenerUbicacion = async (opcion) => {
         return dir_completa;
       } else if (opcion === 'comuna') {
         return { comuna: comuna, region: region };
+      } else if (opcion === 'coordenadas') {
+        return { lat: lat, lon: lon };
       } else {
         console.log('NO EXISTE ESE RETONO PARA LA FUNCION OBTENER UBICACION')
       }

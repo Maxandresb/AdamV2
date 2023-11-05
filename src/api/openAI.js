@@ -34,11 +34,12 @@ export const whisperCall = async (formData) =>{
     } catch (err) {
         console.log('error: ', err);
         if (err && err.msg) {
-            return Promise.resolve({ success: false, msg: err.msg });
+            return `Error : ${err.msg}`
+            
         } else if (err && err.message) {
-            return Promise.resolve({ success: false, msg: err.message });
+            return `Error : ${err.msg}`
         } else {
-            return Promise.resolve({ success: false, msg: "An unknown error occurred" });
+            return `Error : A ocurrido un error desconocido`
         }
     }
 }
@@ -220,6 +221,19 @@ const functions = [
                 "llamar": {
                     "type": "string",
                     "description": "indica que se quiere ver la base de datos",
+                }
+            }
+        }
+    },
+    {
+        "name": "clima",
+        "description": "el usuario solicita conocer el clima o informacion relacionada a este, infomracion que pueda entregrar openweathermap, de una zona tipo cuidad pais .Hoy ,mañana,ayer no son ubicaciones ",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "Locacion": {
+                    "type": "string",
+                    "description": " responde solo en español, indica la ubicacion real  sobre la cual el usuario quiere conocer el clima, hoy ,mañana,ayer no son ubicaciones, solo ubicaciones nada mas ni dias ni tiempo ni otros parametros idealmente ubicaciones tipo (ciudad pais), a menos que exista explicito la locacion responde: No definido",
                 }
             }
         }
