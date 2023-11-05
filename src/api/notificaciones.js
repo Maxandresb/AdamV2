@@ -69,7 +69,7 @@ export { calcularProximaFecha };
 
 
 async function scheduleRecordatorioNotification(recordatorio) {
-
+  console.log('recordatorio: ', recordatorio)
   // Verifica los permisos de notificación
   let permissions = await Notifications.getPermissionsAsync();
   console.log('Permisos de notificación: ', permissions);
@@ -81,10 +81,7 @@ async function scheduleRecordatorioNotification(recordatorio) {
 
   // Desestructurando los datos del recordatorio
   const { Descripcion, Dias, Fecha, Hora, Titulo } = recordatorio;
-  console.log('Dias: ', Dias)
-  console.log('Fecha: ', Fecha)
-  console.log('Hora: ', Hora)
-
+  console.log('Descripcion, Dias, Fecha, Hora, Titulo: ', Descripcion, Dias, Fecha, Hora, Titulo)
 
   // Comprobar si Dias es una cadena de texto y convertirlo en un array si es así
   let dias = typeof Dias === 'string' ? [Dias] : Dias;
@@ -95,7 +92,7 @@ async function scheduleRecordatorioNotification(recordatorio) {
 
     // Si Dias es 'Unico', usa la Fecha y Hora proporcionadas en el recordatorio
     if (dias[i] === 'Unico') {
-      console.log('UNICOO')
+      console.log('RECORDATORIO UNICO')
       // Convierte la fecha y hora a la zona horaria local
       let [year, month, day] = Fecha.split('-').map(Number);
       let [hour, minute] = Hora.split(':').map(Number);
@@ -132,14 +129,16 @@ async function scheduleRecordatorioNotification(recordatorio) {
 
     console.log('prox fecha: ', proximaFecha)
     console.log('ahora: ', ahora)
-    console.log(' proximaFecha: ', proximaFecha)
     console.log('segundos: ', segundos)
 
     // Programa la notificación para esta fecha
-    await Notifications.scheduleNotificationAsync({ content, trigger });
+    let notification = await Notifications.scheduleNotificationAsync({ content, trigger });
     // Verifica si la notificación se programó correctamente
     let scheduledNotifications = await Notifications.getAllScheduledNotificationsAsync();
     console.log('Notificaciones programadas: ', scheduledNotifications);
+
+    console.log('ID-NOTIFICATION:', notification)
+    return notification;
   }
 }
 

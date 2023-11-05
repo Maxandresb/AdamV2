@@ -181,31 +181,32 @@ const functions = [
             }
         }
     },
+
     {
         "name": "recordatorio",
-        "description": `El usuario solicita crear un recordatorio identificando las propiedades de la funcion en el prompt del usuario. Debes saber que el dia de hoy es: ${FechaHoy}. Tienes que analizar el prompt del usuario y devolver siempre los siguientes parámetros o propiedades obligatorios: Titulo, Fecha, Hora y Dias. Si no se menciona alguna debes seguir las descripciones de cada propiedad para saber como intrepretar el prompt del usuario, bajo niun punto pueden faltar alguna de estas 4 propiedades, siempre las debes encontrar.`,
+        "description": `El usuario solicita crear un recordatorio, tu debes identificar las propiedades de la funcion en el prompt del usuario. Debes saber que el dia de hoy es: ${FechaHoy} ya que lo usaras mas adelante para indicar la fecha del recordatorio, siempre debes retornar la fecha. Tienes que analizar el prompt del usuario y devolver siempre los siguientes parámetros o propiedades obligatorios: Titulo, Fecha, Hora y Dias. Si no se menciona alguna debes seguir las descripciones de cada propiedad para saber como intrepretar el prompt del usuario, bajo niun punto pueden faltar alguna de estas 4 propiedades, siempre las debes encontrar.`,
         "parameters": {
             "type": "object",
             "properties": {
                 "Titulo": {
                     "type": "string",
-                    "description": "El título o encabezado del recordatorio. Por ejemplo, si el usuario dice 'recordarme comprar leche', el título sería 'Comprar leche'. este parámetro es obligatorio."
+                    "description": "Retornar esta property es obligatorio. El título o encabezado del recordatorio. Por ejemplo, si el usuario dice 'recordarme comprar leche', el título sería 'Comprar leche'. este parámetro es obligatorio."
                 },
                 "Fecha": {
                     "type": "string",
-                    "description": "La fecha del recordatorio en formato YYYY-MM-DD. Debes analizar la fecha mencionada por el usuario e intentar convertirla a este formato. Por ejemplo, si dice 'el 15 de marzo', la fecha sería '2023-03-15'. Si el usuario no menciona una fecha, asume la fecha actual como la fecha del recordatorio. Este parámetro es obligatorio."
+                    "description": "Retornar esta property es obligatorio. La fecha del recordatorio en formato YYYY-MM-DD. Debes analizar la fecha mencionada por el usuario e intentar convertirla a este formato. Por ejemplo, si dice 'el 15 de marzo', la fecha sería '2023-03-15'. Si se indica una fecha como por ejemplo, 10 de marzo, pero esa fecha ya paso, debes asignar el dia y mes que indica el usuario pero en el año asignar el año proximo, entonces segun el ejemplo lo que deberias indicar es: '2024-03-10'. Si el usuario no menciona una fecha, indica la fecha actual como la fecha del recordatorio, esto es obligatorio, no puede faltar. Recuerda que Titulo, Fecha, Hora y Dias son parametros obligatorios. Este parámetro es obligatorio."
                 },
                 "Hora": {
                     "type": "string",
-                    "description": "La hora del recordatorio en formato 24h (hh:mm). Debes analizar la hora mencionada por el usuario y convertirla a este formato. Por ejemplo, si dice 'a las 3pm', la hora sería '15:00'. Si no se menciona hora, asume la hora actual. Este parámetro es obligatorio."
+                    "description": "Retornar esta property es obligatorio. La hora del recordatorio en formato 24h (hh:mm). Debes analizar la hora mencionada por el usuario y convertirla a este formato. Por ejemplo, si dice 'a las 3pm', la hora sería '15:00'. Si no se menciona hora, asume la hora actual. Recuerda que Titulo, Fecha, Hora y Dias son parametros obligatorios. Este parámetro es obligatorio."
                 },
                 "Descripcion": {
                     "type": "string",
-                    "description": "La descripción o detalles del recordatorio. Completa la información del título. Por ejemplo, para el título 'Comprar leche', la descripción podría ser, por ejemplo '2 litros de leche descremada' segun lo que mencione el usuario. Este parámetro es opcional."
+                    "description": "La descripción o detalles del recordatorio. Completa la información del título. Por ejemplo, para el título 'Comprar leche', la descripción podría ser, por ejemplo '2 litros de leche descremada' segun lo que mencione el usuario. Recuerda que Titulo, Fecha, Hora y Dias son parametros obligatorios. Este parámetro es opcional."
                 },
                 "Dias": {
                     "type": "string",
-                    "description": "Los días en que se repetirá el recordatorio. Por ejemplo, 'Lunes, Miércoles, Viernes'. Si no se especifican días, el valor debe ser 'Unico'. Este parámetro es obligatorio."
+                    "description": "Retornar esta property es obligatorio. Los días en que se repetirá el recordatorio. Por ejemplo, 'Lunes, Miércoles, Viernes'. Si no se especifican días, el valor debe ser 'Unico'. Recuerda que Titulo, Fecha, Hora y Dias son parametros obligatorios. Este parámetro es obligatorio."
                 }
             }, "required": ["Fecha", "Hora", "Dias"]
         }
@@ -408,7 +409,7 @@ export async function firstApiCall(prompt) {
                 console.error('Error:', error.message);
             }
             retries--;
-            
+
         }
     }
 }

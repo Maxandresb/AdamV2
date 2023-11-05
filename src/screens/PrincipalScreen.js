@@ -268,8 +268,6 @@ export default function PrincipalScreen() {
                   //respuesta = await secondApiCall(prompt, message, function_name, function_response)
                   setNombreCentroMed('')
                 }
-
-
               } else {
                 function_response = `No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}.`
                 setMensajeProcesamiento('Procesando respuesta...');
@@ -320,31 +318,23 @@ export default function PrincipalScreen() {
             function_response = "Di que se agrega el recordatorio"
             /*addRecordatorio(args)
             scheduleRecordatorioNotification(args)*/
-            addRecordatorio(JSON.parse(args))
-            scheduleRecordatorioNotification(JSON.parse(args))
+            let idNotificacion= await scheduleRecordatorioNotification(JSON.parse(args))
+            addRecordatorio(JSON.parse(args), idNotificacion)
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
 
           } else {
+            console.log('FUNCION NO ENCONTRADA')
             function_name = "responder"
-            function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
+            function_response = "indica al uduario que esa funcion no esta dentro del catalogo de funciones disponibles, pero responde o trata de dar solucion a lo que te indiquen en base a tus conocimientos, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
             setMensajeProcesamiento('Procesando respuesta...');
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
           }
         } else {
-          console.log('NO SE OBTUVO RESPUESTA')
-          let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
-          respuesta = await crearRespuesta(answer)
-          let id = respuesta._id.toString();
-          let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
-          let name_func = function_name.toString();
-          let consulta = prompt.toString();
-          let contestacion = respuesta.text.toString();
-          let rut = await obtenerRut()
-          guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-          //Alert.alert("Ha ocurrido un error : ", answer);
-          setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
-          setinputUsuario('');
-          respuesta = null;
+          console.log('FUNCION NO ENCONTRADA')
+          function_name = "responder"
+          function_response = "indica al uduario que esa funcion no esta dentro del catalogo de funciones disponibles, pero responde o trata de dar solucion a lo que te indiquen en base a tus conocimientos, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
+          setMensajeProcesamiento('Procesando respuesta...');
+          respuesta = await secondApiCall(prompt, message, function_name, function_response)
         }
         console.log('******respuesta api obtenida*****');
         setCargando(false);
@@ -373,8 +363,7 @@ export default function PrincipalScreen() {
         }
 
       } catch (error) {
-        console.error('Error al llamar a firstApiCall:', error);
-        console.log('NO SE OBTUVO RESPUESTA A LA PRIMERA LLAMADA')
+        console.log('ERROR: ', error)
         setCargando(false);
         setRespondiendo(false)
         setMensajeProcesamiento('');

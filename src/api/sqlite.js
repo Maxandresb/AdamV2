@@ -4,16 +4,16 @@ import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
 
-export async function addRecordatorio(recordatorio) {
+export async function addRecordatorio(recordatorio, idNotificacion) {
     let data = recordatorio
     let usuario_rut = await obtenerRut()
-    console.log('registro de dias: ', data.Dias)
+    console.log('idNitification: ', idNotificacion.toString())
     db.transaction(tx => {
         tx.executeSql(
-            "INSERT OR IGNORE INTO Recordatorios ( Titulo, Fecha, Hora, Descripcion, Estado, Dias, usuario_rut ) VALUES (?, ?, ?, ?, ?, ?, ?);",
-            [data.Titulo, data.Fecha, data.Hora, data.Descripcion, '0', data.Dias.toString(), usuario_rut,],
+            "INSERT OR IGNORE INTO Recordatorios ( Titulo, Fecha, Hora, Descripcion, Estado, Dias, idNotificacion, usuario_rut ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
+            [data.Titulo, data.Fecha, data.Hora, data.Descripcion, '0', data.Dias.toString(), idNotificacion.toString(), usuario_rut],
 
-            (_, { rows }) => console.log('Recordatorio insertado:', data.Titulo, data.Fecha, data.Hora, data.Descripcion, '0', data.Dias.toString(), usuario_rut,),
+            (_, { rows }) => console.log('Recordatorio insertado:', data.Titulo, data.Fecha, data.Hora, data.Descripcion, '0', data.Dias.toString(), idNotificacion.toString(), usuario_rut,),
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
@@ -131,7 +131,7 @@ export function initDB() {
 
     // eliminar tabla
     /*db.transaction(tx => {
-        tx.executeSql('DROP TABLE Usuario', [], (_, { rows }) => {
+        tx.executeSql('DROP TABLE Recordatorios', [], (_, { rows }) => {
             console.log('Tabla eliminada Usuario');
         });
     });*/
@@ -151,8 +151,9 @@ export function initDB() {
             Fecha TEXT, 
             Hora TEXT, 
             Descripcion TEXT, 
-            Estado INTEGER,
+            Estado TEXT,
             Dias TEXT,
+            idNotificacion TEXT,
             usuario_rut TEXT,
             FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
             
