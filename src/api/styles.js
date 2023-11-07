@@ -10,15 +10,22 @@ import styles from '../api/styles';
 
 export default StyleSheet.create({
     msjContainer:{
-        borderColor: 'black',
+        backgroundColor: '#f5f1c4',
+        color: '#233050',
+        borderColor: '#f9a79c',
         borderWidth: 1,
         padding:10,
         borderRadius: 10,
         margin: 4,
+        shadowColor: '#000000',
+        shadowOffset: {width: -2, height: 2},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 8
     },
     encabezadoInput: {
         marginBottom: 5,
-        color: 'black',
+        color: '#fa614f',
         fontSize: 18,
         flex: 1, 
         textAlign: 'left', 
@@ -26,7 +33,7 @@ export default StyleSheet.create({
     },
     encabezadoOutput: {
         marginBottom: 5,
-        color: 'black',
+        color: '#fa614f',
         fontSize: 18,
         flex: 1, 
         textAlign: 'right',
@@ -34,7 +41,7 @@ export default StyleSheet.create({
     },
     inputTexto: {
         marginBottom: 20,
-        color: 'black',
+        color: '#233050',
         paddingLeft: 18,
         paddingTop: 10, 
         flex: 1, 
@@ -42,7 +49,7 @@ export default StyleSheet.create({
     },
     outputTexto: {
         marginBottom: 20,
-        color: 'black',
+        color: '#233050',
         paddingRight: 18,
         paddingTop: 10, 
         flex: 1, 
@@ -50,74 +57,106 @@ export default StyleSheet.create({
     },
     //-----------
     encabezadoInicial: {
-        marginBottom: 5,
-        color: 'black',
+        marginTop: 15,
+        color: "#fa614f",
         fontSize: 18,
-        marginBottom: 10,
+        fontWeight: 'bold',
+        marginBottom: 5,
         paddingTop: 10
     },
     input: {
-        height: 40,
-        borderColor: 'black',
-        borderWidth: 1,
-        marginBottom: 20,
-        color: 'black',
+        height: 45,
+        borderColor: '#f9a79c',
+        backgroundColor: '#f5f1c4',
+        borderWidth: 2,
+        borderRadius: 5,
+        marginBottom: 10,
+        color: '#233050',
+        fontWeight: 'bold',
         paddingLeft: 18,
     },
     encabezado: {
-        marginBottom: 5,
-        color: 'black',
+        marginTop: 0,
+        color: "#fa614f",
         fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 5,
+        paddingTop: 10
     },
     content: {
         height: 40,
-        borderColor: 'black',
-        borderWidth: 1,
-        marginBottom: 20,
-        color: 'gray',
-        paddingLeft: 18,
+        borderWidth: 0,
+        marginBottom: 0,
+        color: '#233050',
+        paddingLeft: 3,
         paddingTop: 10
     },
     //-----------
     buttonContainer: {
+        marginTop: 20,
         alignSelf: 'center',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         width: '100%',
     },
-    button: {
-        backgroundColor: 'green',
+    redcoralButton: {
+        backgroundColor: '#fa614f',
         padding: 18,
         borderRadius: 5,
         margin: 2.5,
+        shadowColor: 'black',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5
     },
+
+    damascoButton: {
+        backgroundColor: '#fad9a0',
+        padding: 10,
+        borderRadius: 5,
+        margin: 2.5,
+        shadowColor: 'black',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5
+    },
+
     buttonText: {
-        color: '#fff',
+        color: '#fad9a0',
         fontWeight: 'bold',
         textAlign: 'center'
 
     },
     deleteButton: {
-        backgroundColor: 'red',
+        backgroundColor: '#233050',
         borderRadius: 5,
         padding: 18,
         margin: 2.5,
 
     },
+
+    deleteButtonText: {
+        color: '#96b9f3',
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+
     lineaContainer: {
-        borderBottomColor: 'black',
+        borderBottomColor: '#233050',
         borderBottomWidth: 1,
-        marginTop: 10,
-        marginBottom:10
+        marginTop: 20,
+        marginBottom: 20,
     },
     lineaContainer2: {
-        borderBottomColor: 'black',
+        borderBottomColor: '#233050',
         borderBottomWidth: 1,
         margin:10,
         
     },
     espacioContainer: {
-        borderBottomColor: '#fff',
+        borderBottomColor: '#233050',
         borderBottomWidth: 1,
         marginTop: 10,
         paddingTop: 10,
@@ -125,7 +164,7 @@ export default StyleSheet.create({
     //-----------
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#fad9a0',
         padding: 20,
     },
     container2: {
@@ -151,30 +190,53 @@ export default StyleSheet.create({
 
     },
     modalView: {
-        backgroundColor: '#fff',
+        backgroundColor: '#fa614f',
         padding: 20,
         borderRadius: 10,
-        width: '80%'
+        width: '90%'
     },
     header: {
+        color: '#fad9a0',
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10
     },
     buttonContainerCenter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         width: '100%',
         alignSelf: 'center',
-        marginBottom: 10,
+        marginTop: 15,
+    },
+
+    closeButton: {
+        backgroundColor: '#233050',
+        margin: 2.5,
+        padding: 10,
+        justifyContent: 'center',
+        borderRadius: 5,
+        shadowColor: 'black',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5
     },
     //-----------
     inputPicker: {
-        height: 40,
-        borderColor: 'black',
-        borderWidth: 1,
+        height: 45,
+        backgroundColor: '#f5f1c4',
+        borderColor: '#f9a79c',
+        borderWidth: 2,
+        borderRadius: 5,
         marginBottom: 20,
-        alignContent: 'flex-start',
         justifyContent: 'center',
     },
+
+    pickerItem: {
+        color: "#96b9f3",
+        backgroundColor: "#fa614f",
+    },
+
     inputfecha: {
         height: 40,
         borderColor: 'black',
@@ -191,7 +253,7 @@ export default StyleSheet.create({
         color: 'gray',
         alignItems: 'flex-start',
         textAlignments: 0,
-        itemStyle: { paddingLeft: 0 },
+        itemStyle: { paddingLeft: 0},
         paddingLeft: 0,
     },
     buttonCInsert: {
@@ -212,6 +274,70 @@ export default StyleSheet.create({
         backgroundColor: '#DDDDDD',
         padding: 10,
         marginBottom: 10,
+    },
+
+    tabnavigator: {
+        backgroundColor: "#fa614f"
+    },
+
+    redcoralText: {
+        color: '#fa614f',
+        textAlign: 'center',
+        fontWeight: 'bold'
+    },
+
+    azulText: {
+        color: '#96b9f3',
+        textAlign: 'center',
+        fontWeight: 'bold'
+    },
+
+    alertFondo: {
+        flex: 1,
+        justifyContent: 'center',
+        alignContent: 'center',
+        paddingHorizontal: 40,
+        backgroundColor: 'rgba(0,0,0,0.5)'
+    },
+
+    alertContainer: {
+        backgroundColor: '#fa614f',
+        padding: 15,
+        borderRadius: 15,
+        shadowColor: 'black',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5,
+    },
+
+    alertButton: {
+        flexDirection: "row",
+        width: 120,
+        paddingVertical: 15,
+        marginTop: 10,
+        backgroundColor: '#f5f1c4',
+        shadowColor: 'black',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignSelf: 'center'
+    },
+
+    alertText: {
+        color: '#fad9a0',
+        marginBottom: 40,
+        fontSize: 24,
+        alignSelf: 'center'
+    },
+
+    alertButtonText: {
+        color: '#fa614f',
+        fontSize: 15,
+        fontWeight: 'bold'
     },
 
 })

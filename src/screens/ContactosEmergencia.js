@@ -40,7 +40,6 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
         <View>
             {isEditing ? (
                 <>
-                    <View style={styles.lineaContainer}></View>
                     <Text style={styles.encabezado}>Nombre completo:</Text>
                     <TextInput
                         style={styles.input}
@@ -81,7 +80,7 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
             )}
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    style={styles.button}
+                    style={styles.redcoralButton}
                     onPress={() => handlePress(contacto.id, Contacto)}
                 >
                     <Text style={styles.buttonText}>
@@ -92,7 +91,7 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                     style={styles.deleteButton}
                     onPress={handleDeletePress}
                 >
-                    <Text style={styles.buttonText}>
+                    <Text style={styles.azulText}>
                         Eliminar Contacto
                     </Text>
                 </TouchableOpacity>
@@ -253,7 +252,7 @@ const Contactos = () => {
         <View style={styles.container}>
             <View>
                 <TouchableOpacity
-                    style={styles.button}
+                    style={styles.redcoralButton}
                     onPress={obtenerYGuardarContactos}
                 >
                     <Text style={styles.buttonText}>Agregar contactos desde el telefono</Text>
@@ -281,14 +280,14 @@ const Contactos = () => {
                         </ScrollView>
                         <View>
                             <TouchableOpacity
-                                style={styles.button}
+                                style={styles.damascoButton}
                                 onPress={() => {
                                     guardarContactosSeleccionados();
                                     setModalCTVisible(false);
                                     setContactosSeleccionados([]);
                                 }}
                             >
-                                <Text style={styles.buttonText}>Guardar contactos seleccionados</Text>
+                                <Text style={styles.redcoralText}>Guardar contactos seleccionados</Text>
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity
@@ -298,7 +297,7 @@ const Contactos = () => {
                                 setContactosSeleccionados([]);
                             }}
                         >
-                            <Text style={styles.buttonText}>Cancelar</Text>
+                            <Text style={styles.azulText}>Cancelar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -368,22 +367,16 @@ const Contactos = () => {
                             value={relacion}
                         />
                         <View style={styles.buttonContainerCenter}>
-                            <Button
-                                title="Agregar Nuevo Contacto"
-                                color="green"
-                                onPress={() => {
-                                    agregarContacto();
-                                }}
-                            />
-                        </View>
-                        <View style={styles.buttonContainerCenter}>
-                            <Button
-                                title="Cerrar"
-                                color="green"
-                                onPress={() => {
-                                    setModalVisibleContactos(false);
-                                }}
-                            />
+                            <TouchableOpacity clasName="w-32" style={styles.closeButton} onPress={() => {setModalVisibleContactos(false);}}>
+                                <Text>
+                                    Cerrar
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity clasName="w-32" style={styles.damascoButton} onPress={() => {agregarContacto();}}>
+                                <Text>
+                                    Agregar Nuevo Contacto
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

@@ -7,6 +7,8 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { InsertCentrosMedicos } from "./src/api/insertCentrosMedicos"
+import {TailwindProvider} from 'tailwind-rn';
+import utilities from './tailwind.json';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

@@ -6,61 +6,31 @@ const { width, height } = Dimensions.get('window');
 
 export default function Perfil({ navigation }) {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.row}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Datos de usuario' })}>
-          <Text style={styles.buttonText}>Ir a datos de usuario</Text>
+    <ScrollView className="flex-1 p-5 space-y-5 bg-beige">
+      <View className="flex-row h-56 justify-around space-x-10 px-5">
+        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() => navigation.navigate('PerfilNested', { screen: 'Datos de usuario' })}>
+          <Text className="text-xl text-damasco text-center font-bold">Ir a datos de usuario</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Alergias' })}>
-          <Text style={styles.buttonText}>Ir a Alergias</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.row}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Medicamentos' })}>
-          <Text style={styles.buttonText}>Ir a Medicamentos</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Patologias' })}>
-          <Text style={styles.buttonText}>Ir a Patologías</Text>
+        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() => navigation.navigate('PerfilNested', { screen: 'Alergias' })}>
+          <Text className="text-xl text-damasco text-center font-bold">Ir a Alergias</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.row}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' })}>
-          <Text style={styles.buttonText}>Ir a Limitación Física</Text>
+      <View className="flex-row h-56 justify-around space-x-10 px-5">
+        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() => navigation.navigate('PerfilNested', { screen: 'Medicamentos' })}>
+          <Text className="text-xl text-damasco text-center font-bold">Ir a Medicamentos</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PerfilNested', { screen: 'Contactos de emergencia' })}>
-          <Text style={styles.buttonText}>Ir a Contactos de emergencia</Text>
+        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() => navigation.navigate('PerfilNested', { screen: 'Patologias' })}>
+          <Text className="text-xl text-damasco text-center font-bold">Ir a Patologías</Text>
+        </TouchableOpacity>
+      </View>
+      <View className="flex-row h-56 justify-around space-x-10 px-5">
+        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() => navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' })}>
+          <Text className="text-xl text-damasco text-center font-bold">Ir a Limitación Física</Text>
+        </TouchableOpacity>
+        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() => navigation.navigate('PerfilNested', { screen: 'Contactos de emergencia' })}>
+          <Text className="text-xl text-damasco text-center font-bold">Ir a Contactos de emergencia</Text>
         </TouchableOpacity>        
       </View>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '5%', 
-  },
-  row: {
-    flexDirection: 'row',
-    width: '100%', 
-  },
-  button: {
-    width: '45%', 
-    height: height * 0.25, 
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    margin:10
-  },
-  icon: {
-    width: 20,
-    height: 20,
-    marginBottom: 10,
-  },
-  buttonText: {
-    fontSize: 18,
-  },
-});

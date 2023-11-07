@@ -40,8 +40,8 @@ const Alergia = ({ alergia, isEditing, handlePress, handleDelete }) => {
         <View>
             {isEditing ? (
                 <>
-                    <Text style={styles.encabezadoInicial}>Tipo de alergia:</Text>
-                    <View style={styles.inputPicker}>
+                    <Text className="text-redcoral text-lg font-bold mb-3 ml-5">Tipo de alergia:</Text>
+                    <View className="bg-beige h-12 mb-3 mx-5 border-2 border-salmon rounded-md">
                         <Picker
                             selectedValue={currentAlergia.tipo}
                             onValueChange={(itemValue) => handleChange('tipo', itemValue)}
@@ -53,36 +53,36 @@ const Alergia = ({ alergia, isEditing, handlePress, handleDelete }) => {
                             <Picker.Item label="Alimentos" value="Alimentos" />
                         </Picker>
                     </View>
-                    <Text style={styles.encabezado}>Alergeno:</Text>
+                    <Text className="text-redcoral text-lg font-bold mb-3 ml-5">Alergeno:</Text>
                     <TextInput
-                        style={styles.input}
+                        className="bg-beige h-12 mb-3 mx-5 border-b-2 border-salmon rounded-t-md placeholder:text-azulnegro pl-3"
                         value={currentAlergia.alergeno}
                         onChangeText={(val) => handleChange('alergeno', val)}
                     />
                 </>
             ) : (
                 <>
-                    <Text style={styles.encabezadoInicial}>Tipo de alergia:</Text>
-                    <Text style={styles.content}>{currentAlergia.tipo}</Text>
-                    <Text style={styles.encabezado}>Alergeno:</Text>
-                    <Text style={styles.content}>{currentAlergia.alergeno}</Text>
+                    <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Tipo de alergia:</Text>
+                    <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentAlergia.tipo}</Text>
+                    <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Alergeno:</Text>
+                    <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentAlergia.alergeno}</Text>
                 </>
             )}
 
-            <View style={styles.buttonContainer}>
+            <View className="flex-row self-center justify-around w-full mt-3">
                 <TouchableOpacity
-                    style={styles.button}
+                    className="bg-redcoral p-3 rounded-md justify-center shadow-lg shadow-negro"
                     onPress={() => handlePress(alergia.id, currentAlergia)}
                 >
-                    <Text style={styles.buttonText}>
+                    <Text className="text-damasco text-center font-bold">
                         {isEditing ? 'Guardar cambios' : 'Modificar Alergia'}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.deleteButton}
+                    className="bg-azulnegro p-3 rounded-md justify-center shadow-lg shadow-negro"
                     onPress={handleDeletePress}
                 >
-                    <Text style={styles.buttonText}>
+                    <Text className="text-center text-azul font-bold">
                         Eliminar Alergia
                     </Text>
                 </TouchableOpacity>
@@ -174,13 +174,13 @@ const Alergias = () => {
 
 
     return (
-        <ScrollView style={styles.container}>
-            <View>
+        <ScrollView className="bg-damasco">
+            <View className="mt-5 mx-3 mb-5">
                 <TouchableOpacity
-                    style={styles.button}
+                    className="bg-redcoral rounded-md h-10 justify-center shadow-lg shadow-negro"
                     onPress={handleAgregarAlergiaPress} // Agregar esto
                 >
-                    <Text style={styles.buttonText}>
+                    <Text className="text-damasco font-bold text-lg self-center">
                         Agregar nueva alergia
                     </Text>
                 </TouchableOpacity>
@@ -203,10 +203,10 @@ const Alergias = () => {
                     setModalVisibleAlergias(false);
                 }}
             >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.header}>Ingresa tu tipo de alergia:</Text>
-                        <View style={styles.inputPicker}>
+                <View className="flex-1 justify-center align-middle bg-fondoOscurecido py-12">
+                    <View className="bg-redcoral py-5 mx-6 rounded-lg">
+                        <Text className="text-center text-damasco text-lg font-bold pb-3">Ingresa tu tipo de alergia:</Text>
+                        <View className="h-12 border-2 border-salmon mb-5 bg-beige rounded-md justify-center pt-4 mx-10">
                             <Picker
                                 selectedValue={tipoAlergia}
                                 onValueChange={(itemValue) => setTipoAlergia(itemValue)}
@@ -218,32 +218,27 @@ const Alergias = () => {
                                 <Picker.Item label="Alimentos" value="Alimentos" />
                             </Picker>
                         </View>
-                        <Text style={styles.header}>Ingresa tu alergeno:</Text>
+                        <Text className="text-center text-damasco text-lg font-bold pb-3">Ingresa tu alergeno:</Text>
                         <TextInput
-                            style={styles.input}
+                            className="bg-beige h-12 border-2 border-salmon mb-5 rounded-md pl-2 mx-10 placeholder:text-azulnegro"
                             placeholderTextColor="gray"
                             placeholder="ej: Perros"
                             onChangeText={text => setAlergeno(text)}
                             value={alergeno}
                         />
-                        <View style={styles.buttonContainerCenter}>
-                            <Button
-                                title="Agregar Nueva alergia"
-                                color="green"
-                                onPress={() => {
-                                    agregarAlergia();
-                                }}
-                            />
+                        <View className="flex-row w-4/5 justify-between self-center mt-5">
+                            <TouchableOpacity className="h-12 w-28 p-2 bg-azulnegro justify-center rounded-md shadow-md shadow-negro"  onPress={() => {setModalVisibleAlergias(false)}}>
+                                <Text className=" text-md text-azul font-bold text-center">
+                                    Cerrar
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity className="h-12 w-28 p-2 bg-damasco justify-center rounded-md shadow-md shadow-negro" onPress={() => {agregarAlergia()}}>
+                                <Text className="text-md text-redcoral font-bold text-center">
+                                    Agregar nueva alergia
+                                </Text>
+                            </TouchableOpacity>
                         </View>
-                        <View style={styles.buttonContainerCenter}>
-                            <Button
-                                title="Cerrar"
-                                color="green"
-                                onPress={() => {
-                                    setModalVisibleAlergias(false);
-                                }}
-                            />
-                        </View>
+                        
                     </View>
                 </View>
             </Modal>
