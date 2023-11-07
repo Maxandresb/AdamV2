@@ -66,7 +66,10 @@ function calcularProximaFecha(dia, hora) {
 }
 export { calcularProximaFecha };
 
-
+export async function MostrarNotificacionesGuardadas() {
+  let scheduledNotifications = await Notifications.getAllScheduledNotificationsAsync();
+  console.log('Notificaciones programadas: ', scheduledNotifications);
+}
 
 async function scheduleRecordatorioNotification(recordatorio) {
   console.log('recordatorio: ', recordatorio)
@@ -134,10 +137,9 @@ async function scheduleRecordatorioNotification(recordatorio) {
     // Programa la notificación para esta fecha
     let notification = await Notifications.scheduleNotificationAsync({ content, trigger });
     // Verifica si la notificación se programó correctamente
-    let scheduledNotifications = await Notifications.getAllScheduledNotificationsAsync();
-    console.log('Notificaciones programadas: ', scheduledNotifications);
+    await MostrarNotificacionesGuardadas()
 
-    console.log('ID-NOTIFICATION:', notification)
+    console.log('ID-NOTIFICATION DESDE LA FUNCION:', notification)
     return notification;
   }
 }
@@ -169,9 +171,9 @@ Notifications.addNotificationResponseReceivedListener(async response => {
 function calcularDiferenciaSegundos(ahora, proximaFecha) {
   // Calculate the difference in milliseconds
   let diferenciaMiliSegundos = proximaFecha - ahora;
- 
+
   // Convert the difference to seconds
   let totalSegundos = diferenciaMiliSegundos / 1000;
- 
+
   return totalSegundos;
 }

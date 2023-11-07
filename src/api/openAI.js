@@ -169,20 +169,6 @@ const functions = [
         }
     },
     {
-        "name": "base_de_datos",
-        "description": "el usuario solicita base de datos",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "llamar": {
-                    "type": "string",
-                    "description": "indica que se quiere base de datos",
-                }
-            }
-        }
-    },
-
-    {
         "name": "recordatorio",
         "description": `El usuario solicita crear un recordatorio, tu debes identificar las propiedades de la funcion en el prompt del usuario. Debes saber que el dia de hoy es: ${FechaHoy} ya que lo usaras mas adelante para indicar la fecha del recordatorio, siempre debes retornar la fecha. Tienes que analizar el prompt del usuario y devolver siempre los siguientes parámetros o propiedades obligatorios: Titulo, Fecha, Hora y Dias. Si no se menciona alguna debes seguir las descripciones de cada propiedad para saber como intrepretar el prompt del usuario, bajo niun punto pueden faltar alguna de estas 4 propiedades, siempre las debes encontrar.`,
         "parameters": {

@@ -97,12 +97,23 @@ export default StyleSheet.create({
         textAlign: 'center'
 
     },
+    buttonText2: {
+        color: 'black',
+        fontWeight: 'bold',
+        textAlign: 'center'
+
+    },
     deleteButton: {
         backgroundColor: 'red',
         borderRadius: 5,
         padding: 18,
         margin: 2.5,
 
+    },
+    lineaContainer3: {
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        marginTop: 10,
     },
     lineaContainer: {
         borderBottomColor: 'black',

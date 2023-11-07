@@ -14,7 +14,7 @@ import { crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
 import { realizarLlamada } from "../api/llamada";
-import { scheduleRecordatorioNotification } from "../api/notificaciones";
+import { scheduleRecordatorioNotification, MostrarNotificacionesGuardadas } from "../api/notificaciones";
 import styles from '../api/styles';
 import * as FileSystem from 'expo-file-system';
 import { format } from 'date-fns';
@@ -309,7 +309,19 @@ export default function PrincipalScreen() {
             mostarDB('PatologiasCronicas');
             mostarDB('Contacto');
             mostarDB('recordatorios');
+            await MostrarNotificacionesGuardadas()
             //mostarDB('centrosMedicos');
+
+            let answer = 'La base de datos se mostrara en la consola.'
+            respuesta = await crearRespuesta(answer)
+            let id = respuesta._id.toString();
+            let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+            let name_func = 'mostrar_base_de_datos'
+            let consulta = prompt.toString();
+            let contestacion = respuesta.text.toString();
+            let rut = await obtenerRut()
+            guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+           
 
             //principal.js
           } else if (function_name === "recordatorio") {
@@ -318,7 +330,7 @@ export default function PrincipalScreen() {
             function_response = "Di que se agrega el recordatorio"
             /*addRecordatorio(args)
             scheduleRecordatorioNotification(args)*/
-            let idNotificacion= await scheduleRecordatorioNotification(JSON.parse(args))
+            let idNotificacion = await scheduleRecordatorioNotification(JSON.parse(args))
             addRecordatorio(JSON.parse(args), idNotificacion)
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
 
