@@ -236,6 +236,17 @@ export async function crearRespuesta(answer) {
         },
     };
 }
+export async function generarRespuesta(name_func, answer, prompt) {
+    console.log('generando respuesta')
+    let respuesta = await crearRespuesta(answer);
+    let id = respuesta._id.toString();
+    let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+    let consulta = prompt.toString();
+    let contestacion = respuesta.text.toString();
+    let rut = await obtenerRut();
+    await guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut);
+    return respuesta
+  }
 export async function secondApiCall(prompt, message, function_name, function_response) {
     console.log('START 2DA LLAMADA');
     conversationHistory.push({
