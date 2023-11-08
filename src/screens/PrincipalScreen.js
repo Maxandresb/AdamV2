@@ -1,6 +1,6 @@
 
 //Modulos instalados
-import { Button, Modal, View, Text, Image, SafeAreaView, TouchableOpacity, Alert } from 'react-native'
+import { Button, Modal, View, Text, Image, SafeAreaView, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import React, { useRef, useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { GiftedChat } from 'react-native-gifted-chat'
@@ -279,17 +279,7 @@ export default function PrincipalScreen() {
             console.log('NUMERO A LLAMAR: ', args)
             function_response = `Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.`
             realizarLlamada(args);
-            setMensajeProcesamiento('Procesando respuesta...');
-            respuesta = await crearRespuesta(function_response)
-            let id = respuesta._id.toString();
-            let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
-            let name_func = function_name.toString();
-            let consulta = prompt.toString();
-            let contestacion = respuesta.text.toString();
-            let rut = await obtenerRut()
-            guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-            //respuesta = await secondApiCall(prompt, message, function_name, function_response)
-  
+            respuesta = await generarRespuesta('Llamar a numero', function_response, prompt)
           } else if (function_name === "mostrar_base_de_datos") {
             // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
             console.log('MOSTRANDO BD')
@@ -299,14 +289,18 @@ export default function PrincipalScreen() {
             mostarDB('Limitaciones');
             mostarDB('PatologiasCronicas');
             mostarDB('Contacto');
+            mostarDB('recordatorios');
+            await MostrarNotificacionesGuardadas()
             //mostarDB('centrosMedicos');
+            respuesta = await generarRespuesta('Mostrar base de datos', 'La base de datos se mostrara en la consola.', prompt)
   
-  
-          }else if (function_name === "recordatorio") {
-            function_response = "Di que se agrega el recordatorio" 
-            respuesta= await secondApiCall(prompt, message, function_name, function_response)
-            addRecordatorio(JSON.parse(args))
-            scheduleRecordatorioNotification(JSON.parse(args))
+          } else if (function_name === "recordatorio") {
+            //let args={"Descripcion": "", "Dias": "Unico", "Fecha": "2026-07-13", "Hora": "19:43", "Titulo": "Llamar a sax"}
+            respuestaRecordatorio = seleccionarRespuestaRecordatorio(args)
+            let idNotificacion = await scheduleRecordatorioNotification(JSON.parse(args))
+            addRecordatorio(JSON.parse(args), idNotificacion)
+            respuesta = await generarRespuesta(function_name, respuestaRecordatorio, prompt)
+
           
           
           
@@ -325,7 +319,13 @@ export default function PrincipalScreen() {
             function_response = "indica al usuario que esa funcion no esta dentro del catalogo de funciones disponibles, pero responde o trata de dar solucion a lo que te indiquen en base a tus conocimientos, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
           }
+        } else {
+          console.log('FUNCION NO ENCONTRADA')
+          function_name = "responder"
+          function_response = "indica al usuario que esa funcion no esta dentro del catalogo de funciones disponibles, pero responde o trata de dar solucion a lo que te indiquen en base a tus conocimientos, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
+          respuesta = await secondApiCall(prompt, message, function_name, function_response)
         }
+        
       
         
         
@@ -512,6 +512,7 @@ export default function PrincipalScreen() {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.header}>Selecciona un centro de salud a llamar </Text>
+                <ScrollView>
                 {centrosMed.current && Array.isArray(centrosMed.current._array)
                   && centrosMed.current._array.map((centro, index) => (
                     <TouchableOpacity
@@ -519,8 +520,8 @@ export default function PrincipalScreen() {
                       onPress={() => {
                         centroMedSeleccionado.current = centro;
                         setModalNCMVisible(false);
-                        realizarLlamada(centroMedSeleccionado.current[0].Telefono)
-                        setNombreCentroMed(centroMedSeleccionado.current[0].NombreOficial);
+                        realizarLlamada(centroMedSeleccionado.current.Telefono)
+                        setNombreCentroMed(centroMedSeleccionado.current.NombreOficial);
                         centrosMed.current._array = [];
                         centroMedSeleccionado.current = {};
 
@@ -530,6 +531,7 @@ export default function PrincipalScreen() {
                       <Text>{`Centro: ${centro.NombreOficial}`}</Text>
                     </TouchableOpacity>
                   ))}
+                </ScrollView>
                 <Button
                   title="Cerrar"
                   onPress={() => {

@@ -3,12 +3,14 @@ import * as SQLite from 'expo-sqlite';
 
 let db = SQLite.openDatabase('adamdb.db');
 
-export async function buscarEnDB(columna, valor) {
+export async function buscarEnDB(columna, valorRaw) {
+  let valor= valorRaw.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       console.log('BUSCANDO EN LA BD')
       tx.executeSql(
-        `SELECT * FROM centrosMedicos WHERE ${columna} = ?;`,
+        `SELECT * FROM centrosMedicos WHERE ${columna} = ? AND Telefono NOT LIKE '%Pendiente%' ;`,
         [valor],
         (_, { rows }) => {
           if (rows.length > 0) {
