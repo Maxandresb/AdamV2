@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
 import * as Speech from 'expo-speech';
-import {scheduleRecordatorioNotification} from '../api/notificaciones';
+
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // Creaciones propias
