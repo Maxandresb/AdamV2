@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import { View, Text } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 //PANTALLAS
 
 import Recordatorios from "../screens/Recordatorios";
@@ -24,24 +24,49 @@ import Patologias from '../screens/Patologias';
 import LimitacionFisica from '../screens/LimitacionFisica';
 import ContactosEmergencia from '../screens/ContactosEmergencia';
 
+import styles from '../api/styles';
+
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
 function MyTabs(){
   return(
-    <Tab.Navigator screenOptions={{headerShown:false}}>
-      <Tab.Screen name="Principal" component={PrincipalScreen} options={{tabBarIcon:({color,size}) =>(<MaterialCommunityIcons name="chat-question" size={24} color="black" />)}} />
-      <Tab.Screen name="Recordatorios" component={Recordatorios} options={{tabBarIcon:({color,size}) =>(<MaterialCommunityIcons name="calendar" size={24} color="black" />)}}/>
-
+    <Tab.Navigator screenOptions={{headerShown:false, 
+      tabBarActiveColor: '#f9a79c',
+      tabBarLabelStyle: {color: '#fad9a0', fontWeight: 'bold', fontSize: 12, marginBottom: 5},
+    tabBarStyle:{
+      backgroundColor: "#fa614f",  
+      height: "10%"}}}>
+        
+      <Tab.Screen name="Principal" component={PrincipalScreen} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/conversation_icon.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
+      <Tab.Screen name="Recordatorios" component={Recordatorios} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/calendar_icon.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
     </Tab.Navigator>
   )
 }
 
 function PrincipalStack() {
   return (
-    <Drawer.Navigator initialRouteName="ADAM">
+    <Drawer.Navigator initialRouteName="ADAM" screenOptions={{
+
+      drawerActiveTintColor: '#fa614f',
+      drawerActiveBackgroundColor: '#fad9a0',
+      drawerInactiveTintColor: '#fad9a0',
+
+      drawerStyle: {
+        backgroundColor:"#fa614f",
+        },
+      
+      drawerItemStyle: {
+        height: 65,
+      },
+
+      drawerLabelStyle: {
+        fontWeight: 'bold',
+        fontSize: 25
+      }
+
+      }}>
       <Drawer.Screen name="ADAM" component={MyTabs} />
       <Drawer.Screen name="Perfil" component={Perfil} />
       <Drawer.Screen name="Historial de chats" component={HistorialChats} />

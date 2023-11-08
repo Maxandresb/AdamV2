@@ -6,6 +6,8 @@ import * as SQLite from 'expo-sqlite';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
+import { useTailwind } from 'tailwind-rn';
+
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -47,6 +49,7 @@ const SignIn = ({ navigation }) => {
 
   const [initialAlert, setInitialAlert] = useState(true);
   const [saveAlert, setSaveAlert] = useState(false);
+
 
   const guardarDatosUsuario = () => {
     db.transaction(tx => {
@@ -183,12 +186,15 @@ const SignIn = ({ navigation }) => {
     setDosis('');
     setPeriodicidad('');
   };
+
+
+  /**///////////////////////////////////////////////////////////////////PANTALLA//////////////////////////////////////////////////////////////////////////////*/
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView classname="container">
       <CustomAlert
         isVisible={initialAlert}
         onClose={() => setInitialAlert(false)}
-        message='Ingresa tus datos personales'
+        message='Ingrese sus datos personales'
       />
       <CustomAlert
         isVisible={saveAlert}
@@ -198,71 +204,64 @@ const SignIn = ({ navigation }) => {
         }
         message='Contactos guardados exitosamente'
       />
-      <View style={styles.container2}>
-        <Text style={styles.header}>Ingresa tu Rut: </Text>
+      <View className="container px-5 py-9 bg-damasco">
+        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu Rut: </Text>
         <TextInput
-          style={styles.input}
-          placeholderTextColor="gray"
+          className="bg-beige h-10 pl-4 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
           placeholder="ej: 12345678-9"
           onChangeText={text => setRut(text)}
           value={rut}
         />
-        <Text style={styles.header}>Ingresa tu primer nombre: </Text>
+        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu primer nombre: </Text>
         <TextInput
-          style={styles.input}
-          placeholderTextColor="gray"
+          className="bg-beige h-10 pl-4 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
           placeholder="Primer nombre"
           onChangeText={text => setPNombre(text)}
           value={pnombre}
         />
-        <Text style={styles.header}>Ingresa tu segundo nombre: </Text>
+        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu segundo nombre: </Text>
         <TextInput
-          style={styles.input}
-          placeholderTextColor="gray"
+          className="bg-beige h-10 pl-4 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
           placeholder="Segundo nombre"
           onChangeText={text => setSNombre(text)}
           value={snombre}
         />
-        <Text style={styles.header}>Ingresa tu  primer apellido: </Text>
+        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu  primer apellido: </Text>
         <TextInput
-          style={styles.input}
-          placeholderTextColor="gray"
+          className="bg-beige h-10 pl-4 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
           placeholder="Primer apellido"
           onChangeText={text => setPApellido(text)}
           value={papellido}
         />
-        <Text style={styles.header}>Ingresa tu segundo apellido: </Text>
+        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu segundo apellido: </Text>
         <TextInput
-          style={styles.input}
-          placeholderTextColor="gray"
+          className="bg-beige h-10 pl-4 mb-5 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
           placeholder="Segundo apellido"
           onChangeText={text => setSApellido(text)}
           value={sapellido}
         />
-        <Text style={styles.header}>Ingresa tu  Alias: </Text>
+        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu  Alias: </Text>
         <TextInput
-          style={styles.input}
-          placeholderTextColor="gray"
+          className="bg-beige h-10 pl-4 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
           placeholder="Alias"
           onChangeText={text => setAlias(text)}
           value={alias}
         />
-        <Text style={styles.header}>Indica tu genero: </Text>
-        <View style={styles.inputPicker}>
+        <Text className="text-lg font-bold text-redcoral mb-2">Indica tu genero: </Text>
+        <View className="bg-beige h-10 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
           <Picker
             selectedValue={genero}
             onValueChange={(itemValue) => setGenero(itemValue)}
-            style={styles.inputPicker2}
           >
-            <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
+            <Picker.Item label="Toca aqui para seleccionar una opción" value=""/>
             <Picker.Item label="Hombre" value="Hombre" />
             <Picker.Item label="Mujer" value="Mujer" />
             <Picker.Item label="No Binario" value="No Binario" />
             <Picker.Item label="Prefiero no decirlo" value="Prefiero no decirlo" />
           </Picker>
         </View>
-        <Text style={styles.header}>Selecciona tu tipo de sangre: </Text>
-        <View style={styles.inputPicker}>
+        <Text className="text-lg font-bold text-redcoral mb-2">Selecciona tu tipo de sangre: </Text>
+        <View className="bg-beige h-10 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
           <Picker
             selectedValue={tipo_sangre}
             onValueChange={(itemValue) => setTipoSangre(itemValue)}
@@ -279,10 +278,10 @@ const SignIn = ({ navigation }) => {
             <Picker.Item label="AB Negativo" value="AB Negativo" />
           </Picker>
         </View>
-        <Text style={styles.header}>Selecciona tu fecha de nacimiento: </Text>
+        <Text className="text-lg font-bold text-redcoral mb-2">Selecciona tu fecha de nacimiento: </Text>
         <TouchableOpacity onPress={() => setShow(true)}>
           <TextInput
-            style={styles.inputfecha}
+            className="bg-beige h-10 pl-4 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
             placeholder="Fecha de nacimiento"
             value={date.toLocaleDateString()}
             editable={false}
@@ -298,8 +297,8 @@ const SignIn = ({ navigation }) => {
             onChange={onChange}
           />
         )}
-        <Text style={styles.header}>Indica si posees o no alergias: </Text>
-        <View style={styles.inputPicker}>
+        <Text className="text-lg font-bold text-redcoral mb-2">Indica si posees o no alergias: </Text>
+        <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
           <Picker
             selectedValue={tieneAlergias}
             onValueChange={handleAlergiasChange}
@@ -369,8 +368,8 @@ const SignIn = ({ navigation }) => {
             message='No haz ingresado tus alergias.'
           />
         </View>
-        <Text style={styles.header}>Indica si posees o no patologias cronicas: </Text>
-        <View style={styles.inputPicker}>
+        <Text className="text-lg font-bold text-redcoral mb-2">Indica si posees o no patologias cronicas: </Text>
+        <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
           <Picker
             selectedValue={cronico}
             onValueChange={handlePatologiaChange}
@@ -392,7 +391,7 @@ const SignIn = ({ navigation }) => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.header}>Ingresa tu tipo de patologia:</Text>
-                <View style={styles.inputPicker}>
+                <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
                   <Picker
                     selectedValue={tipoPatologia}
                     onValueChange={(itemValue) => setTipoPatologia(itemValue)}
@@ -418,7 +417,7 @@ const SignIn = ({ navigation }) => {
                   value={nombre_patologia}
                 />
                 <Text style={styles.header}>Indica la transmisibilidad de tu patologia:</Text>
-                <View style={styles.inputPicker}>
+                <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
                   <Picker
                     selectedValue={transmisibilidad}
                     onValueChange={(itemValue) => setTransmisibilidad(itemValue)}
@@ -469,8 +468,8 @@ const SignIn = ({ navigation }) => {
             message='No haz ingresado tus patologias.'
           />
         </View>
-        <Text style={styles.header}>Indica si eres o no donante: </Text>
-        <View style={styles.inputPicker}>
+        <Text className="text-lg font-bold text-redcoral mb-2">Indica si eres o no donante: </Text>
+        <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
           <Picker
             selectedValue={donante}
             onValueChange={(itemValue) => setDonante(itemValue)}
@@ -481,8 +480,8 @@ const SignIn = ({ navigation }) => {
             <Picker.Item label="No" value="No" />
           </Picker>
         </View>
-        <Text style={styles.header}>Indica si posees o no limitaciones fisicas: </Text>
-        <View style={styles.inputPicker}>
+        <Text className="text-lg font-bold text-redcoral mb-2">Indica si posees o no limitaciones fisicas: </Text>
+        <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
           <Picker
             selectedValue={limitacion_fisica}
             onValueChange={handleLimitacionesChange}
@@ -577,8 +576,8 @@ const SignIn = ({ navigation }) => {
             message='No haz ingresado tus Limitaciones.'
           />
         </View>
-        <Text style={styles.header}>Indica si tomas o no medicamentos: </Text>
-        <View style={styles.inputPicker}>
+        <Text className="text-lg font-bold text-redcoral mb-2">Indica si tomas o no medicamentos: </Text>
+        <View className="bg-beige h-10 pl-4 pb-12 mb-6 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
           <Picker
             selectedValue={toma_medicamentos}
             onValueChange={handleMedicamentosChange}
@@ -659,18 +658,18 @@ const SignIn = ({ navigation }) => {
           />
         </View>
         <TouchableOpacity
-          style={styles.button}
+          className="bg-redcoral py-3 rounded-md mb-3"
           onPress={guardarDatosUsuario} 
         >
-          <Text style={styles.buttonText}>
+          <Text className="text-damasco text-lg text-center font-bold">
           Guardar 
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.deleteButton}
+          className="bg-azulnegro py-3 rounded-md"
           onPress={() => navigation.navigate('Saludo')} 
         >
-          <Text style={styles.buttonText}>
+          <Text className="text-azul text-lg text-center font-bold">
             Cancelar
           </Text>
         </TouchableOpacity>

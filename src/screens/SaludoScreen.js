@@ -27,28 +27,27 @@ export default function SaludoScreen() {
     }
 
     return (
-        <SafeAreaView className="flex-1 flex justify-around bg-white">
+        <SafeAreaView className="flex-1 flex justify-around bg-damasco">
             {/* title */}
             <View className="space-y-2">
-                <Text style={{fontSize: wp(10)}} className="text-center font-bold text-gray-700">
+                <Text className="text-center text-4xl font-bold text-redcoral">
                     ADAM
                 </Text>
-                <Text style={{fontSize: wp(4)}} className="text-center tracking-wider font-semibold text-gray-600">
+                <Text className="text-center tracking-wider font-semibold text-md text-salmon">
                     Tu asistente personal
                 </Text>
             </View>
             
             {/* assistant image */}
             <View className="flex-row justify-center">
-                <Image  
-                    source={require('../../assets/images/iron-adam.png')}
-                    style={{height: wp(75), width: wp(75)}}
+                <Image className="w-72 h-64"
+                    source={require('../../assets/images/logo_inicio_ADAM.png')}
                 />
             </View>
             
             {/* start button */}
-            <TouchableOpacity onPress={handlePress} className="bg-emerald-600 mx-5 p-4 rounded-2xl">
-                <Text style={{fontSize: wp(6)}} className="text-center font-bold text-white">
+            <TouchableOpacity onPress={handlePress} className="bg-redcoral mx-5 p-4 rounded-2xl active:bg-azul">
+                <Text className="text-damasco text-center font-semibold text-2xl active:text-azulnegro">
                     Conversemos
                 </Text>
             </TouchableOpacity>

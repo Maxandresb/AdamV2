@@ -36,53 +36,53 @@ const Medicamento = ({ medicamento, isEditing, handlePress, handleDelete }) => {
     };
 
     return (
-        <View>
+        <View className="mt-2">
             {isEditing ? (
                 <>
-                    <Text style={styles.encabezadoInicial}>Medicamento:</Text>
+                    <Text className="text-redcoral text-lg font-bold mb-3 ml-5 mt-2">Medicamento:</Text>
                     <TextInput
-                        style={styles.input}
+                        className="bg-beige h-12 mb-3 mx-5 border-b-2 border-salmon rounded-t-md placeholder:text-azulnegro pl-3"
                         value={currentMedicamento.medicamento}
                         onChangeText={(val) => handleChange('medicamento', val)}
                     />
-                    <Text style={styles.encabezado}>Dosis:</Text>
+                    <Text className="text-redcoral text-lg font-bold mb-3 ml-5 mt-2">Dosis:</Text>
                     <TextInput
-                        style={styles.input}
+                        className="bg-beige h-12 mb-3 mx-5 border-b-2 border-salmon rounded-t-md placeholder:text-azulnegro pl-3"
                         value={currentMedicamento.dosis}
                         onChangeText={(val) => handleChange('dosis', val)}
                     />
-                    <Text style={styles.encabezado}>Periodicidad:</Text>
+                    <Text className="text-redcoral text-lg font-bold mb-3 ml-5 mt-2">Periodicidad:</Text>
                     <TextInput
-                        style={styles.input}
+                        className="bg-beige h-12 mb-3 mx-5 border-b-2 border-salmon rounded-t-md placeholder:text-azulnegro pl-3"
                         value={currentMedicamento.periodicidad}
                         onChangeText={(val) => handleChange('periodicidad', val)}
                     />
                 </>
             ) : (
                 <>
-                    <Text style={styles.encabezadoInicial}>Medicamento:</Text>
-                    <Text style={styles.content}>{currentMedicamento.medicamento}</Text>
-                    <Text style={styles.encabezado}>Dosis:</Text>
-                    <Text style={styles.content}>{currentMedicamento.dosis}</Text>
-                    <Text style={styles.encabezado}>Periodicidad:</Text>
-                    <Text style={styles.content}>{currentMedicamento.periodicidad}</Text>
+                    <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Medicamento:</Text>
+                    <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.medicamento}</Text>
+                    <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Dosis:</Text>
+                    <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.dosis}</Text>
+                    <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Periodicidad:</Text>
+                    <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.periodicidad}</Text>
                 </>
             )}
 
-            <View style={styles.buttonContainer}>
+            <View className="flex-row self-center justify-around w-full mt-3">
                 <TouchableOpacity
-                    style={styles.button}
+                    className="bg-redcoral p-3 rounded-md justify-center shadow-lg shadow-negro"
                     onPress={() => handlePress(medicamento.id, currentMedicamento)}
                 >
-                    <Text style={styles.buttonText}>
+                    <Text className="text-damasco text-center font-bold">
                         {isEditing ? 'Guardar cambios' : 'Modificar Medicamento'}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.deleteButton}
+                    className="bg-azulnegro p-3 rounded-md justify-center shadow-lg shadow-negro"
                     onPress={handleDeletePress} // Modificar esto
                 >
-                    <Text style={styles.buttonText}>
+                    <Text className="text-center text-azul font-bold">
                         Eliminar Medicamento
                     </Text>
                 </TouchableOpacity>
@@ -179,13 +179,13 @@ const Medicamentos = () => {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView className="flex-1 bg-damasco px-5 pt-3">
             <View>
                 <TouchableOpacity
-                    style={styles.button}
+                    className="bg-redcoral p-3 rounded-md m-5 shadow-lg shadow-negro"
                     onPress={handleAgregarMedicamentoPress} // Agregar esto
                 >
-                    <Text style={styles.buttonText}>
+                    <Text className="text-center text-damasco font-bold">
                         Agregar un nuevo medicamento
                     </Text>
                 </TouchableOpacity>
@@ -208,26 +208,26 @@ const Medicamentos = () => {
                     setModalVisibleMedicamentos(false);
                 }}
             >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.header}>Indica el nombre del medicamento:</Text>
+                <View className="flex-1 justify-center items-center px-3 bg-fondoOscurecido">
+                    <View className="bg-redcoral py-5 mx-6 rounded-lg px-2">
+                        <Text className="text-center text-damasco font-bold text-lg pb-3">Indica el nombre del medicamento:</Text>
                         <TextInput
-                            style={styles.input}
+                            className="bg-beige h-12 mb-3 mx-5 border-2 border-salmon rounded-md placeholder:text-azulnegro pl-3"
                             placeholderTextColor="gray"
                             placeholder="ej: XXXXXX"
                             onChangeText={text => setNomMedicamento(text)}
                             value={nomMedicamento}
                         />
-                        <Text style={styles.header}>Indica la dosis a ingerir:</Text>
+                        <Text className="text-center text-damasco font-bold text-lg pb-3">Indica la dosis a ingerir:</Text>
                         <TextInput
-                            style={styles.input}
+                            className="bg-beige h-12 mb-3 mx-5 border-2 border-salmon rounded-md placeholder:text-azulnegro pl-3"
                             placeholderTextColor="gray"
                             placeholder="ej: XXXXXX"
                             onChangeText={text => setDosis(text)}
                             value={dosis}
                         />
-                        <Text style={styles.header}>Indica cada cuanto debes tomar el medicamento:</Text>
-                        <View style={styles.inputPicker}>
+                        <Text className="text-center text-damasco font-bold text-lg pb-3">Indica cada cuanto debes tomar el medicamento:</Text>
+                        <View className="h-12 border-2 border-salmon mb-5 bg-beige rounded-md justify-center pt-4 mx-5">
                             <Picker
                                 selectedValue={periodicidad}
                                 onValueChange={(itemValue) => setPeriodicidad(itemValue)}
@@ -241,23 +241,17 @@ const Medicamentos = () => {
                                 <Picker.Item label="Cada 4 hrs (Seis veces al dia)" value="Cada 4 hrs (Seis veces al dia)" />
                             </Picker>
                         </View>
-                        <View style={styles.buttonContainerCenter}>
-                            <Button
-                                title="Agregar Nuevo Medicamento"
-                                color="green"
-                                onPress={() => {
-                                    agregarMedicamento();
-                                }}
-                            />
-                        </View>
-                        <View style={styles.buttonContainerCenter}>
-                            <Button
-                                title="Cerrar"
-                                color="green"
-                                onPress={() => {
-                                    setModalVisibleMedicamentos(false);
-                                }}
-                            />
+                        <View className="flex-row self-center justify-around w-full mt-5">
+                        <TouchableOpacity className="h-12 w-28 p-2 bg-azulnegro justify-center rounded-md shadow-md shadow-negro"  onPress={() => {setModalVisibleMedicamentos(false)}}>
+                                <Text className=" text-md text-azul font-bold text-center">
+                                    Cerrar
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity className="h-12 w-28 p-2 bg-damasco justify-center rounded-md shadow-md shadow-negro" onPress={() => {agregarMedicamento()}}>
+                                <Text className="text-md text-redcoral font-bold text-center">
+                                    Agregar nuevo medicamento
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

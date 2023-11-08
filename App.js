@@ -8,6 +8,9 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { calcularProximaFecha, scheduleRecordatorioNotification } from "../AdamV2/src/api/notificaciones"
+import { InsertCentrosMedicos } from "./src/api/insertCentrosMedicos"
+import {TailwindProvider} from 'tailwind-rn';
+import utilities from './tailwind.json';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
