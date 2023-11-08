@@ -9,10 +9,10 @@ import styles from '../api/styles';
 */
 
 export default StyleSheet.create({
-    msjContainer:{
+    msjContainer: {
         borderColor: 'black',
         borderWidth: 1,
-        padding:10,
+        padding: 10,
         borderRadius: 10,
         margin: 4,
     },
@@ -20,32 +20,32 @@ export default StyleSheet.create({
         marginBottom: 5,
         color: 'black',
         fontSize: 18,
-        flex: 1, 
-        textAlign: 'left', 
-        paddingBottom:5
+        flex: 1,
+        textAlign: 'left',
+        paddingBottom: 5
     },
     encabezadoOutput: {
         marginBottom: 5,
         color: 'black',
         fontSize: 18,
-        flex: 1, 
+        flex: 1,
         textAlign: 'right',
-        paddingBottom:5,
+        paddingBottom: 5,
     },
     inputTexto: {
         marginBottom: 20,
         color: 'black',
         paddingLeft: 18,
-        paddingTop: 10, 
-        flex: 1, 
+        paddingTop: 10,
+        flex: 1,
         textAlign: 'left',
     },
     outputTexto: {
         marginBottom: 20,
         color: 'black',
         paddingRight: 18,
-        paddingTop: 10, 
-        flex: 1, 
+        paddingTop: 10,
+        flex: 1,
         textAlign: 'right',
     },
     //-----------
@@ -97,6 +97,12 @@ export default StyleSheet.create({
         textAlign: 'center'
 
     },
+    buttonText2: {
+        color: 'black',
+        fontWeight: 'bold',
+        textAlign: 'center'
+
+    },
     deleteButton: {
         backgroundColor: 'red',
         borderRadius: 5,
@@ -104,17 +110,22 @@ export default StyleSheet.create({
         margin: 2.5,
 
     },
+    lineaContainer3: {
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        marginTop: 10,
+    },
     lineaContainer: {
         borderBottomColor: 'black',
         borderBottomWidth: 1,
         marginTop: 10,
-        marginBottom:10
+        marginBottom: 10
     },
     lineaContainer2: {
         borderBottomColor: 'black',
         borderBottomWidth: 1,
-        margin:10,
-        
+        margin: 10,
+
     },
     espacioContainer: {
         borderBottomColor: '#fff',
@@ -213,5 +224,19 @@ export default StyleSheet.create({
         padding: 10,
         marginBottom: 10,
     },
+    //------------ recordatorio:
 
+    item: {
+        backgroundColor: 'white',
+        flex: 1,
+        borderRadius: 5,
+        padding: 10,
+        marginRight: 10,
+        marginTop: 17
+    },
+    emptyDate: {
+        height: 15,
+        flex: 1,
+        paddingTop: 30
+    },
 })

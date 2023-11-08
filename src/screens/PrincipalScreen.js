@@ -10,12 +10,12 @@ import {scheduleRecordatorioNotification} from '../api/notificaciones';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // Creaciones propias
-import { guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut, addRecordatorio } from "../api/sqlite"
-import { crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
+import { addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut } from "../api/sqlite"
+import { generarRespuesta, crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
 import { realizarLlamada } from "../api/llamada";
-import { Contactos } from "../api/contactos";
+import { scheduleRecordatorioNotification, MostrarNotificacionesGuardadas } from "../api/notificaciones";
 import styles from '../api/styles';
 import * as FileSystem from 'expo-file-system';
 import { format } from 'date-fns';
@@ -25,7 +25,7 @@ export default function PrincipalScreen() {
   const [mensajes, setMensajes] = useState([])
   const [cargando, setCargando] = useState(false)
   const [hablando, setHablando] = useState(false)
-  const [vozAdam, setVozAdam] =useState(false)
+  const [vozAdam, setVozAdam] = useState(false)
   //useEffect(()=> dummyMessages.map((mensaje)=>setMensajes((mensajesPrevios)=>GiftedChat.append(mensajesPrevios,mensaje))))
   {/* inicio funciones de grabacion de voz de usuario  */ }
   const [grabacion, setGrabacion] = useState();
@@ -129,6 +129,31 @@ export default function PrincipalScreen() {
     setGrabaciones([])
   }
   {/* fin funciones de grabacion de voz de usuario  */ }
+  function seleccionarRespuestaRecordatorio(args) {
+    args = JSON.parse(args);
+    let partes = args.Fecha.split('-');
+    args.Fecha = `${partes[2]}-${partes[1]}-${partes[0]}`;
+    let respuestas = [];
+    if (args.Dias === 'Unico') {
+      respuestas = [
+        `¡Perfecto! He configurado un recordatorio para el ${args.Fecha} a las ${args.Hora} para que no olvides '${args.Titulo}'. Te avisaré mediante una notificación cuando llegue el momento.`,
+        `¡Hecho! No te preocupes, te recordaré '${args.Titulo}' el ${args.Fecha} a las ${args.Hora} mediante una notificación.`,
+        `¡Listo! Te recordaré '${args.Titulo}' el ${args.Fecha} a las ${args.Hora} con una notificación. ¡No te preocupes, estaré aquí para recordártelo!`,
+        `¡Genial! He programado un recordatorio para el ${args.Fecha} a las ${args.Hora}. Te recordaré '${args.Titulo}' mediante una notificación cuando llegue el momento.`,
+        `¡Está todo listo! Te recordaré '${args.Titulo}' el ${args.Fecha} a las ${args.Hora} con una notificación. ¡Puedes contar conmigo!`
+      ];
+    } else {
+      respuestas = [
+        `¡Perfecto! He configurado un recordatorio para que suene ${args.Dias} a las ${args.Hora} para que no olvides '${args.Titulo}'. Te avisaré cada vez mediante una notificación.`,
+        `¡Hecho! No te preocupes, te recordaré '${args.Titulo}' ${args.Dias} a las ${args.Hora} con una notificación.`,
+        `¡Listo! Te recordaré '${args.Titulo}' ${args.Dias} a las ${args.Hora} mediante una notificación. ¡No te preocupes, estaré aquí para recordártelo!`,
+        `¡Genial! He programado un recordatorio para ${args.Dias} a las ${args.Hora}. Te recordaré '${args.Titulo}' cada vez con una notificación.`,
+        `¡Está todo listo! Te recordaré '${args.Titulo}' ${args.Dias} a las ${args.Hora} mediante una notificación. ¡Puedes contar conmigo!`
+      ];
+    }
+    return respuestas[Math.floor(Math.random() * respuestas.length)];
+  }
+
   {/* Inicio funciones de obtencion de data de apis  */ }
   const obtenerRespuesta = async (input) => {
     let respuesta = null;
@@ -143,150 +168,117 @@ export default function PrincipalScreen() {
       console.log(prompt)
       setRespondiendo(true)
       setMensajeProcesamiento('Procesando pregunta...');
-      let { function_name, args, message } = await firstApiCall(prompt);
-      console.log('FUNCION SELECCIONADA: ', function_name)
-      if (function_name) {
-        console.log('LOGICA DE SELECCION')
-        if (function_name === "hola") {
-          function_response = "responder el saludo, presentarse indicando tu nombre"
+      try {
+        let { function_name, args, message } = await firstApiCall(prompt);
+        //let function_name='recordatorio'
+        if (function_name) {
           setMensajeProcesamiento('Procesando respuesta...');
-          respuesta = await secondApiCall(prompt, message, function_name, function_response)
-        } else if (function_name === "explicar_algo") {
-          function_response = "explicar lo solicitado"
-          setMensajeProcesamiento('Procesando respuesta...');
-          respuesta = await secondApiCall(prompt, message, function_name, function_response)
-        } else if (function_name === "ubicacion") {
-          let ubicacion = await obtenerUbicacion('direccion');
-          function_response = `La ubicación actual es: ${ubicacion}, informa al uauario que debe tener en cuenta que la ubicacion tiene un margen de error de aproximadamente 100 metros`;
-          setMensajeProcesamiento('Procesando respuesta...');
-          respuesta = await secondApiCall(prompt, message, function_name, function_response)
-        } else if (function_name === "centro_salud_cercano") {
-          let { comuna, region } = await obtenerUbicacion('comuna');
-          //let comuna = 'Hualqui'
-          //let region = 'Biobío Region'
-          console.log('REGION: ', region, 'COMUNA: ', comuna)
-          centros = await buscarEnDB('Comuna', comuna)
-          if (centros) {
-            console.log('CENTROS: ', centros)
-            function_response = `ubicacion del usuario: ${comuna} \n\ centros de salud encontrados en la base de datos, segun la ubicacion del usuario:\n\ ${JSON.stringify(centros)} \n\ esta informacion es real y fidedigna, no debes modificarla bajo ningun punto. la informacion viene con el siguiente formato: \n\ {"_array": [{"Comuna": "ejcomuna", "Calle": "ejcalle", "NombreOficial": "ejnombreoficial", "Numero": "ejnumero", "Region": "ejregion", "Telefono": "ejtelefono", "TieneServicioDeUrgencia": "SI/NO", "TipoDeSAPU": "ejtiposapu", "TipoDeUrgencia": "ejtipourgencia", "Via": "ejvia", "id": 1}], "length": cantidad_de_centros_de_salud_identificados} \n\ para generar una respuesta con esta informacion debes dar un formato a la informacion como el siguiente: \n\ ejnombreoficial, ejcalle ejnumero, ejcomuna, ejtelefono `;
-            console.log('FUNCION RESPONSE: \n\ ', function_response)
-            setMensajeProcesamiento('Procesando respuesta...');
+          console.log('FUNCION SELECCIONADA: ', function_name)
+          console.log('LOGICA DE SELECCION')
+          if (function_name === "hola") {
+            function_response = "responder el saludo, presentarse indicando tu nombre"
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
-          } else {
-            console.log('No se encontraron centros')
-          }
-        } else if (function_name === "llamar_contacto") {
-          console.log('PERSONA A LLAMAR: ', args)
-          contactosEmergencia.current = await BuscarContactoEmergencia(args);
-          if (contactosEmergencia.current) {
-            console.log('CONTACTOS ENCONTRADOS: ', contactosEmergencia.current)
-            if (contactosEmergencia.current.length === 1) {
-              console.log('********* UN CONTACTO ENCONTRADO *********')
-              let numeroDeContacto = contactosEmergencia.current[0].numero;
-              let nombreContacto = contactosEmergencia.current[0].nombreCompleto
-              function_response = `Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
-              console.log('numeroDeContacto', JSON.stringify(numeroDeContacto))
-              realizarLlamada(numeroDeContacto);
-              setMensajeProcesamiento('Procesando respuesta...');
-              respuesta = await crearRespuesta(function_response)
-              let id = respuesta._id.toString();
-              let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
-              let name_func = function_name.toString();
-              let consulta = prompt.toString();
-              let contestacion = respuesta.text.toString();
-              let rut = await obtenerRut()
-              guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-              //respuesta = await secondApiCall(prompt, message, function_name, function_response)
-              contactosEmergencia.current = [];
-            } else if (contactosEmergencia.current.length > 1) {
-              console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
-              setModalCEVisible(true);
-              if (!modalCEVisible) {
-                function_response = `Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
-                respuesta = await crearRespuesta(function_response)
-                let id = respuesta._id.toString();
-                let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
-                let name_func = function_name.toString();
-                let consulta = prompt.toString();
-                let contestacion = respuesta.text.toString();
-                let rut = await obtenerRut()
-                guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-                //respuesta = await secondApiCall(prompt, message, function_name, function_response)
-                setAliasContactoEm('')
-                setNombreContactoEm('')
-              }
-            }
-
-          } else {
-            function_response = `No posees algun contacto de nombre o alias ${JSON.stringify(args)}.`
-            setMensajeProcesamiento('Procesando respuesta...');
-            respuesta = await crearRespuesta(function_response)
-            let id = respuesta._id.toString();
-            let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
-            let name_func = function_name.toString();
-            let consulta = prompt.toString();
-            let contestacion = respuesta.text.toString();
-            let rut = await obtenerRut()
-            guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-            //respuesta = await secondApiCall(prompt, message, function_name, function_response)
-            Alert.alert("Contacto no encontrado: ", function_response);
-            contactosEmergencia.current = [];
-          }
-        }
-
-
-        //function_response = "llama al contacto predeterminado"
-        //realizarLlamada('56953598945');
-        //respuesta = await secondApiCall(prompt, message, function_name, function_response)
-
-        else if (function_name === "llamar_a_centro_salud") {
-          let { comuna, region } = await obtenerUbicacion('comuna');
-          console.log('REGION: ', region, 'COMUNA: ', comuna)
-          centrosMed.current = await buscarEnDB('Comuna', comuna)
-          if (centrosMed.current && Array.isArray(centrosMed.current._array)) {
-            console.log('CENTROS: ', centrosMed.current)
-            // Filtrar los centros de salud que tienen un número telefónico disponible
-            centrosMed.current._array = centrosMed.current._array.filter(centro => /\d/.test(centro.Telefono));
-            console.log('CENTROS: ', centrosMed.current._array)
-            if (centrosMed.current._array.length === 1) {
-              console.log('********* UN CENTRO ENCONTRADO *********')
-              let numeroDeCentro = centrosMed.current._array[0].Telefono;
-              let nombreCentro = centrosMed.current._array[0].NombreOficial
-              function_response = `Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
-              console.log('numeroDeCentro', JSON.stringify(numeroDeCentro))
-              realizarLlamada(numeroDeCentro);
-              setMensajeProcesamiento('Procesando respuesta...');
-              respuesta = await crearRespuesta(function_response)
-              let id = respuesta._id.toString();
-              let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
-              let name_func = function_name.toString();
-              let consulta = prompt.toString();
-              let contestacion = respuesta.text.toString();
-              let rut = await obtenerRut()
-              guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-              //respuesta = await secondApiCall(prompt, message, function_name, function_response)
-              centrosMed.current._array = [];
-            } else if (centrosMed.current._array.length > 1) {
-              console.log('********* MAS DE UN CENTRO ENCONTRADO *********')
-              setModalNCMVisible(true);
-              if (!modalNCMVisible) {
-                function_response = `Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
-                setMensajeProcesamiento('Procesando respuesta...');
-                respuesta = await crearRespuesta(function_response)
-                let id = respuesta._id.toString();
-                let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
-                let name_func = function_name.toString();
-                let consulta = prompt.toString();
-                let contestacion = respuesta.text.toString();
-                let rut = await obtenerRut()
-                guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-                //respuesta = await secondApiCall(prompt, message, function_name, function_response)
-                setNombreCentroMed('')
-              }
-
-            
+          } else if (function_name === "explicar_algo") {
+            function_response = "explicar lo solicitado"
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)
+          } else if (function_name === "ubicacion") {
+            let ubicacion = await obtenerUbicacion('direccion');
+            function_response = `La ubicación actual es: ${ubicacion}, informa al uauario que debe tener en cuenta que la ubicacion tiene un margen de error de aproximadamente 100 metros`;
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)
+          } else if (function_name === "centro_salud_cercano") {
+            let { comuna, region } = await obtenerUbicacion('comuna');
+            //let comuna = 'Hualqui'
+            //let region = 'Biobío Region'
+            console.log('REGION: ', region, 'COMUNA: ', comuna)
+            centros = await buscarEnDB('Comuna', comuna)
+            if (centros) {
+              console.log('CENTROS: ', centros)
+              function_response = `ubicacion del usuario: ${comuna} \n\ centros de salud encontrados en la base de datos, segun la ubicacion del usuario:\n\ ${JSON.stringify(centros)} \n\ esta informacion es real y fidedigna, no debes modificarla bajo ningun punto. la informacion viene con el siguiente formato: \n\ {"_array": [{"Comuna": "ejcomuna", "Calle": "ejcalle", "NombreOficial": "ejnombreoficial", "Numero": "ejnumero", "Region": "ejregion", "Telefono": "ejtelefono", "TieneServicioDeUrgencia": "SI/NO", "TipoDeSAPU": "ejtiposapu", "TipoDeUrgencia": "ejtipourgencia", "Via": "ejvia", "id": 1}], "length": cantidad_de_centros_de_salud_identificados} \n\ para generar una respuesta con esta informacion debes dar un formato a la informacion como el siguiente: \n\ ejnombreoficial, ejcalle ejnumero, ejcomuna, ejtelefono `;
+              console.log('FUNCION RESPONSE: \n\ ', function_response)
+              respuesta = await secondApiCall(prompt, message, function_name, function_response)
             } else {
-            function_response = `No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}.`
+              console.log('No se encontraron centros')
+            }
+          } else if (function_name === "llamar_contacto") {
+            console.log('PERSONA A LLAMAR: ', args)
+            contactosEmergencia.current = await BuscarContactoEmergencia(args);
+
+            if (contactosEmergencia.current) {
+              console.log('CONTACTOS ENCONTRADOS: ', contactosEmergencia.current)
+
+              if (contactosEmergencia.current.length === 1) {
+                console.log('********* UN CONTACTO ENCONTRADO *********')
+                let numeroDeContacto = contactosEmergencia.current[0].numero;
+                let nombreContacto = contactosEmergencia.current[0].nombreCompleto
+                function_response = `Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
+                console.log('numeroDeContacto', JSON.stringify(numeroDeContacto))
+                realizarLlamada(numeroDeContacto);
+                respuesta = await generarRespuesta('Llamar a contacto', function_response, prompt)
+                contactosEmergencia.current = [];
+              } else if (contactosEmergencia.current.length > 1) {
+                console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
+                setModalCEVisible(true);
+                if (!modalCEVisible) {
+                  function_response = `Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
+                  respuesta = await generarRespuesta('Llamar a contacto', function_response, prompt)
+                  setAliasContactoEm('')
+                  setNombreContactoEm('')
+                }
+              } else {
+                function_response = `No posees algun contacto de nombre o alias ${JSON.stringify(args)}.`
+                respuesta = await generarRespuesta('Llamar a contacto', function_response, prompt)
+                //Alert.alert("Contacto no encontrado: ", function_response);
+                contactosEmergencia.current = [];
+              }
+            }else{
+              function_response = `No se encontraron contactos de emergencia guardados en la aplicacion.`
+              respuesta = await generarRespuesta('ERROR', function_response, prompt)
+              //Alert.alert("Contacto no encontrado: ", function_response);
+              contactosEmergencia.current = [];
+            }
+            //function_response = "llama al contacto predeterminado"
+            //realizarLlamada('56953598945');
+            //respuesta = await secondApiCall(prompt, message, function_name, function_response)
+
+          }else if (function_name === "llamar_a_centro_salud") {
+            let { comuna, region } = await obtenerUbicacion('comuna');
+            console.log('REGION: ', region, 'COMUNA: ', comuna)
+            centrosMed.current = await buscarEnDB('Comuna', comuna)
+
+            if (centrosMed.current && Array.isArray(centrosMed.current._array)) {
+              console.log('CENTROS: ', centrosMed.current)
+              // Filtrar los centros de salud que tienen un número telefónico disponible
+              centrosMed.current._array = centrosMed.current._array.filter(centro => /\d/.test(centro.Telefono));
+              console.log('CENTROS: ', centrosMed.current._array)
+
+              if (centrosMed.current._array.length === 1) {
+                console.log('********* UN CENTRO ENCONTRADO *********')
+                let numeroDeCentro = centrosMed.current._array[0].Telefono;
+                let nombreCentro = centrosMed.current._array[0].NombreOficial
+                function_response = `Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
+                console.log('numeroDeCentro', JSON.stringify(numeroDeCentro))
+                realizarLlamada(numeroDeCentro);
+                respuesta = await generarRespuesta('Llamar a centro de salud', function_response, prompt)
+                centrosMed.current._array = [];
+              } else if (centrosMed.current._array.length > 1) {
+                console.log('********* MAS DE UN CENTRO ENCONTRADO *********')
+                setModalNCMVisible(true);
+                if (!modalNCMVisible) {
+                  function_response = `Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
+                  respuesta = await generarRespuesta('Llamar a centro de salud', function_response, prompt)
+                  setNombreCentroMed('')
+                }
+              } else {
+                function_response = `No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}.`
+                respuesta = await generarRespuesta('Llamar a centro de salud', function_response, prompt)
+                //Alert.alert("Centro de salud no encontrado: ", function_response);
+                centrosMed.current._array = [];
+              }
+            }console.log('ERROR: centrosMed no esxiste o no es un array')
+          } else if (function_name === "llamar_numero") {
+            console.log('NUMERO A LLAMAR: ', args)
+            function_response = `Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.`
+            realizarLlamada(args);
             setMensajeProcesamiento('Procesando respuesta...');
             respuesta = await crearRespuesta(function_response)
             let id = respuesta._id.toString();
@@ -297,94 +289,86 @@ export default function PrincipalScreen() {
             let rut = await obtenerRut()
             guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
             //respuesta = await secondApiCall(prompt, message, function_name, function_response)
-            Alert.alert("Centro de salud no encontrado: ", function_response);
-            centrosMed.current._array = [];
+  
+          } else if (function_name === "mostrar_base_de_datos") {
+            // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
+            console.log('MOSTRANDO BD')
+            mostarDB('Usuario');
+            mostarDB('Alergias');
+            mostarDB('Medicamentos');
+            mostarDB('Limitaciones');
+            mostarDB('PatologiasCronicas');
+            mostarDB('Contacto');
+            //mostarDB('centrosMedicos');
+  
+  
+          }else if (function_name === "recordatorio") {
+            function_response = "Di que se agrega el recordatorio" 
+            respuesta= await secondApiCall(prompt, message, function_name, function_response)
+            addRecordatorio(JSON.parse(args))
+            scheduleRecordatorioNotification(JSON.parse(args))
+          
+          
+          
+          
+          }else if (function_name === "clima") {
+            
+            clima = await obtenerClima('coordenadas',JSON.parse(args))
+            jsonclima = JSON.stringify(clima)
+            //console.log(jsonclima)
+            function_response= `${jsonclima} Este json contiene informacion del clima Convierte este json en informacion util  para un usuario que habla español, resumelo presicamente, usa Celsius y terminologia basica, resume en no mas de 50 palabras `
+            //console.log(function_response)
+           respuesta = await secondApiCall(prompt, message, function_name, function_response)
+          } else {
+            console.log('FUNCION NO ENCONTRADA')
+            function_name = "responder"
+            function_response = "indica al usuario que esa funcion no esta dentro del catalogo de funciones disponibles, pero responde o trata de dar solucion a lo que te indiquen en base a tus conocimientos, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)
           }
         }
-      } else if (function_name === "llamar_numero") {
-          console.log('NUMERO A LLAMAR: ', args)
-          function_response = `Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.`
-          realizarLlamada(args);
+      
+        
+        
+        console.log('******respuesta api obtenida*****');
+        setCargando(false);
+        setRespondiendo(false)
+        setMensajeProcesamiento('');
+        if (respuesta) {
+          //console.log(respuesta);
+          setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
+          setinputUsuario('');
+          respuesta = null;
+        } else {
           setMensajeProcesamiento('Procesando respuesta...');
-          respuesta = await crearRespuesta(function_response)
-          let id = respuesta._id.toString();
-          let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
-          let name_func = function_name.toString();
-          let consulta = prompt.toString();
-          let contestacion = respuesta.text.toString();
-          let rut = await obtenerRut()
-          guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-          //respuesta = await secondApiCall(prompt, message, function_name, function_response)
+          console.log('NO SE OBTUVO UNA RESPUETA A LA SEGUNDA LLAMADA')
+          let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
+          respuesta = await generarRespuesta('ERROR', answer, prompt)
+          setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
+          setinputUsuario('');
+          respuesta = null;
+          setMensajeProcesamiento('');
 
-        } else if (function_name === "mostrar_base_de_datos") {
-          // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
-          console.log('MOSTRANDO BD')
-          mostarDB('Usuario');
-          mostarDB('Alergias');
-          mostarDB('Medicamentos');
-          mostarDB('Limitaciones');
-          mostarDB('PatologiasCronicas');
-          mostarDB('Contacto');
-          //mostarDB('centrosMedicos');
-
-
-        }else if (function_name === "recordatorio") {
-          function_response = "Di que se agrega el recordatorio" 
-          respuesta= await secondApiCall(prompt, message, function_name, function_response)
-          addRecordatorio(JSON.parse(args))
-          scheduleRecordatorioNotification(JSON.parse(args))
-        
-        
-        
-        
-        }else if (function_name === "clima") {
-          
-          clima = await obtenerClima('coordenadas',JSON.parse(args))
-          jsonclima = JSON.stringify(clima)
-          //console.log(jsonclima)
-          function_response= `${jsonclima} Este json contiene informacion del clima Convierte este json en informacion util  para un usuario que habla español, resumelo presicamente, usa Celsius y terminologia basica, resume en no mas de 50 palabras `
-          //console.log(function_response)
-         respuesta = await secondApiCall(prompt, message, function_name, function_response)
         }
-        
-        else {
-          function_name = "responder"
-          function_response = "responde o trata de dar solucion a lo que te indiquen, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
-          setMensajeProcesamiento('Procesando respuesta...');
-          respuesta = await secondApiCall(prompt, message, function_name, function_response)
-        }
-      }
-      console.log('******respuesta api obtenida*****');
-      setCargando(false);
-      setRespondiendo(false)
-      setMensajeProcesamiento('');
-      if (respuesta) {
-        //console.log(respuesta);
-        setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
-        setinputUsuario('');
-        respuesta = null; 
-      } else {
-        console.log('NO SE OBTUVO UNA RESPUETA A LA SEGUNDA LLAMADA')
+
+      } catch (error) {
+        setMensajeProcesamiento('Procesando respuesta...');
+        console.log('ERROR: ', error)
+        setCargando(false);
+        setRespondiendo(false)
         let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
-        respuesta = await crearRespuesta(answer)
-        let id = respuesta._id.toString();
-        let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
-        let name_func = function_name.toString();
-        let consulta = prompt.toString();
-        let contestacion = respuesta.text.toString();
-        let rut = await obtenerRut()
-                guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-        //Alert.alert("Ha ocurrido un error : ", answer);
+        respuesta = await generarRespuesta('ERROR', answer, prompt)
         setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
         setinputUsuario('');
         respuesta = null;
+        setMensajeProcesamiento('');
       }
     }
   };
 
 
 
- {/* Inicio Voz de respuesta de ADAM */}
+
+  {/* Inicio Voz de respuesta de ADAM */ }
 
   {/* voces hombres
   voice:"es-es-x-eed-local" 
@@ -393,23 +377,23 @@ export default function PrincipalScreen() {
   voice:"es-us-x-esd-network"
 */}
 
-const respuestaVoz= (texto)=>{
-  //const saludo ='test de saludo';
-  const options={
-    voice:"es-us-x-esd-network"  ,
-    rate:0.9,
-    pitch: 0.85,
-    onDone:() => setVozAdam(false) 
+  const respuestaVoz = (texto) => {
+    //const saludo ='test de saludo';
+    const options = {
+      voice: "es-us-x-esd-network",
+      rate: 0.9,
+      pitch: 0.85,
+      onDone: () => setVozAdam(false)
+    };
+    Speech.speak(texto, options)
+    setVozAdam(true)
   };
-  Speech.speak(texto,options)
-  setVozAdam(true)
-};
 
-const detenerVoz =() =>{
-  Speech.stop()
-  setVozAdam(false)
-}
-{/* Fin Voz de respuesta de ADAM */}
+  const detenerVoz = () => {
+    Speech.stop()
+    setVozAdam(false)
+  }
+  {/* Fin Voz de respuesta de ADAM */ }
 
 
 
@@ -470,7 +454,7 @@ const detenerVoz =() =>{
                   />
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity onPress={()=>{iniciarGrabacion().then(setTimeout(()=> detenerGrabacion, 1000));}} >
+                <TouchableOpacity onPress={() => { iniciarGrabacion().then(setTimeout(() => detenerGrabacion, 1000)); }} >
                   {/* recording start button */}
                   <Image
                     className="rounded-full"
@@ -567,14 +551,14 @@ const detenerVoz =() =>{
           } */}
           {
             vozAdam && (
-              <TouchableOpacity 
-                onPress={detenerVoz} 
+              <TouchableOpacity
+                onPress={detenerVoz}
                 className="bg-red-400 rounded-3xl p-2 absolute left-10"
               >
                 <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice-off" size={24} color="black" /></Text>
               </TouchableOpacity>
             )
-          } 
+          }
 
 
         </View>
