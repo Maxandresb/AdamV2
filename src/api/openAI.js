@@ -209,6 +209,19 @@ const functions = [
                 }
             }
         }
+    },
+    {
+        "name": "informacion_medica_del_usuario",
+        "description": "el usuario solicita obtener sus informacion medicos, debes reconocer frases como 'dimes mi informacion medica', 'dame la informacion de usuario', 'informacion de emergencia' o algo similar",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "frase rconocida": {
+                    "type": "string",
+                    "description": "indica la frase que reconociste del usuario, esta propiedad es oblogatoria",
+                }
+            }
+        }
     }
 
 ];

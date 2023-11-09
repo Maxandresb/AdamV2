@@ -523,6 +523,7 @@ export default function SelecDatosVocalizar({ navigation }) {
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
+      console.log('ACTUALIZANDO DATOS PANTALLA SDV');
       obtenerDatosUsuario();
       obtenerPatologias();
       obtenerMedicamentos();
@@ -543,7 +544,7 @@ export default function SelecDatosVocalizar({ navigation }) {
     newKey = newKey.charAt(0).toUpperCase() + newKey.slice(1).toLowerCase();
     return newKey;
   }
-  useEffect(() => {
+  /*useEffect(() => {
     console.log('patologiasSeleccionadas: ', patologiasSeleccionadas.current)
   }, [patologiasSeleccionadas.current]);
   useEffect(() => {
@@ -557,7 +558,7 @@ export default function SelecDatosVocalizar({ navigation }) {
   }, [limitacionesSeleccionadas.current]);
   useEffect(() => {
     console.log('datosUsuarioSeleccionados: ', datosUsuarioSeleccionados.current)
-  }, [datosUsuarioSeleccionados.current]);
+  }, [datosUsuarioSeleccionados.current]);*/
   const rutRef = useRef(null)
 
 
@@ -628,7 +629,7 @@ export default function SelecDatosVocalizar({ navigation }) {
 
 
   const obtenerDatosPreviosSelec = (rutUsuario) => {
-    console.log('OBTENIENDO DATOS PREVIOS DEL RUT: ', rutUsuario);
+    console.log('OBTENIENDO DATOS MEDICOS PREVIOS DEL RUT: ', rutUsuario);
     return new Promise((resolve, reject) => {
       try {
         db.transaction(tx => {
@@ -660,11 +661,11 @@ export default function SelecDatosVocalizar({ navigation }) {
     })
   }
 
-  console.log('--showUsuario:', showUsuario);
+  /*console.log('--showUsuario:', showUsuario);
   console.log('showPatologia:', showPatologia);
   console.log('showMedicamento:', showMedicamento);
   console.log('showAlergia:', showAlergia);
-  console.log('--showLimitacion:', showLimitacion);
+  console.log('--showLimitacion:', showLimitacion);*/
 
   return (
     <ScrollView contentContainerStyle={styles.containerPerfil}>
