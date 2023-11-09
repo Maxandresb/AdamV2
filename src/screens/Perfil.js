@@ -277,6 +277,7 @@ export default function Perfil({ navigation }) {
   useEffect(() => {
     if (isFocused) {
       obtenerDatosUsuario();
+      console.log('data: ', data)
       obtenerPatologias();
       obtenerMedicamentos();
       obtenerAlergias();

@@ -378,5 +378,39 @@ export default StyleSheet.create({
         width:'80%',
         justifyContent: 'flex-start'
     },
-
+    //SelecDatosVocalizar
+    selectedText: {
+        backgroundColor: 'lightgreen',
+    },
+    unselectedText: {
+        backgroundColor: 'white',
+    },
+    tituloContainer:{
+        fontSize:16,
+        fontWeight:'bold',
+        marginBottom:10,
+        marginTop:10,
+        textAlign:'center'
+    },
+    textContainer:{
+        fontSize:14,
+        marginBottom:2,
+        marginTop:2,
+        marginLeft:10
+    },
+    espacioContainer4: {
+        borderBottomColor: '#fff',
+        borderBottomWidth: 1,
+        marginTop: height * 0.079,
+    },
+    espacioContainer5: {
+        borderBottomColor: '#fff',
+        borderBottomWidth: 1,
+        marginTop: height * 0.124,
+    },
+    espacioContainer6: {
+        borderBottomColor: '#fff',
+        borderBottomWidth: 1,
+        marginTop: height * 0.124,
+    },
 })

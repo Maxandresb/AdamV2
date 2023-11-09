@@ -23,6 +23,9 @@ import Medicamentos from '../screens/Medicamentos';
 import Patologias from '../screens/Patologias';
 import LimitacionFisica from '../screens/LimitacionFisica';
 import ContactosEmergencia from '../screens/ContactosEmergencia';
+//Pantallas configuracion
+import SelecDatosVocalizar from '../screens/SelecDatosVocalizar';
+
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -64,6 +67,17 @@ function PerfilNestedScreen() {
     </PerfilNestedStack.Navigator>
   );
 }
+const ConfiguracionNestedStack = createNativeStackNavigator();
+function ConfiguracionNestedScreen() {
+  return (
+    <ConfiguracionNestedStack.Navigator>
+      <ConfiguracionNestedStack.Screen name="Configuración" component={Config} />
+      <ConfiguracionNestedStack.Screen name="Seleccionar datos a vocalizar" component={SelecDatosVocalizar} />
+    </ConfiguracionNestedStack.Navigator>
+  );
+  
+}
+
 export default function AppNavigation() {
   return (
     <NavigationContainer>
@@ -73,6 +87,7 @@ export default function AppNavigation() {
         <Stack.Screen name="Saludo" component={SaludoScreen} />
         <Stack.Screen name="Principal" component={PrincipalStack} />
         <Stack.Screen name="PerfilNested" component={PerfilNestedScreen} />
+        <Stack.Screen name="ConfiguracionNested" component={ConfiguracionNestedScreen} />
         <Stack.Screen name="SignIn" component={SignIn} />
       </Stack.Navigator>
     </NavigationContainer>

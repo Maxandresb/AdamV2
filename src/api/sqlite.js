@@ -32,7 +32,7 @@ export function obtenerRut() {
                 (_, { rows: { _array } }) => {
                     if (_array.length > 0) {
                         let rut = _array[0].rut;
-                        console.log('rut:', rut);
+                        console.log('rut obtenido con la funcion:', rut);
                         resolve(rut);
                     } else {
                         console.log('No hay registros en la tabla Usuario.');
@@ -159,10 +159,25 @@ export function initDB() {
             
         );`,
             [],
-            (_, { rows }) => console.log('Tabla creada:', rows),
-            (_, error) => console.log('Error al crear la tabla:', error)
+            (_, { rows }) => console.log('Tabla recordatorios creada:', rows),
+            (_, error) => console.log('Error al crear la tabla recordatorios:', error)
         );
 
+    });
+
+    db.transaction(tx => {
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS Configuracion (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                DatosSeleccionados TEXT,
+                EstadoLlamadaDS TEXT, 
+                usuario_rut TEXT,
+                FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+            );`,
+            [],
+            (_, { rows }) => console.log('Tabla Configuracion creada:', rows),
+            (_, error) => console.log('Error al crear la tabla Configuracion:', error)
+        )
     });
 
     db.transaction(tx => {
