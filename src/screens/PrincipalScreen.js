@@ -338,12 +338,14 @@ export default function PrincipalScreen() {
         if (respuesta) {
           //console.log(respuesta);
           setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
+          respuestaVoz(respuesta.text)
           setinputUsuario('');
           respuesta = null;
         } else {
           setMensajeProcesamiento('Procesando respuesta...');
           console.log('NO SE OBTUVO UNA RESPUETA A LA SEGUNDA LLAMADA')
           let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
+          respuestaVoz(answer)
           respuesta = await generarRespuesta('ERROR', answer, prompt)
           setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
           setinputUsuario('');
@@ -358,6 +360,7 @@ export default function PrincipalScreen() {
         setCargando(false);
         setRespondiendo(false)
         let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
+        respuestaVoz(answer)
         respuesta = await generarRespuesta('ERROR', answer, prompt)
         setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
         setinputUsuario('');
