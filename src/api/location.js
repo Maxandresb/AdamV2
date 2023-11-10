@@ -15,7 +15,7 @@ const obtenerUbicacion = async (opcion) => {
       let start = new Date().getTime();
       location = await Promise.race([
         Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest }),
-        new Promise((_, reject) => setTimeout(reject, 20000, 'Tiempo agotado al obtener la ubicación'))
+        new Promise((_, reject) => setTimeout(reject, 10000, 'Tiempo agotado al obtener la ubicación'))
       ]);
       let end = new Date().getTime();
       console.log("La llamada fue exitosa, la ubicación es: ", location);

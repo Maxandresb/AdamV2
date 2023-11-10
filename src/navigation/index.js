@@ -25,6 +25,7 @@ import LimitacionFisica from '../screens/LimitacionFisica';
 import ContactosEmergencia from '../screens/ContactosEmergencia';
 
 import styles from '../api/styles';
+import Emergencias from "../screens/Emergencias";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -38,9 +39,10 @@ function MyTabs(){
     tabBarStyle:{
       backgroundColor: "#fa614f",  
       height: "10%"}}}>
-        
+       <Tab.Screen name="Emergencias" component={Emergencias} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/calendar_icon.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} /> 
       <Tab.Screen name="Principal" component={PrincipalScreen} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/conversation_icon.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
       <Tab.Screen name="Recordatorios" component={Recordatorios} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/calendar_icon.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
+      
     </Tab.Navigator>
   )
 }

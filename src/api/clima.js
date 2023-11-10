@@ -17,6 +17,7 @@ export const obtenerClima = async (opcion, args) => {
   try {
     const response = await axios.get(url);
     const data = response.data;
+    console.log(data)
     return data;
   } catch (error) {
     console.log(error);
@@ -27,6 +28,7 @@ export const obtenerClima = async (opcion, args) => {
     try {
         const response = await axios.get(url);
         const data = response.data;
+        console.log(data)
         return data;
       } catch (error) {
         console.log(error);

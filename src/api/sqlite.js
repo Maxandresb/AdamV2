@@ -22,6 +22,30 @@ export async function addRecordatorio(recordatorio, idNotificacion) {
 
 // resto de la implementacion de la bd
 
+export  function obtenerContactosEmergencia(){
+ return new Promise((resolve,reject)=>{
+    db.transaction(tx=> {
+        tx.executeSql(
+            `SELECT * FROM Contacto;`,
+            [],
+            (_, { rows: { _array } }) => {
+                if (_array.length > 0) {
+                    let contacto = _array;
+                    
+                    resolve(contacto);
+                } else {
+                    console.log('No hay registros en la tabla Contacto.');
+                    resolve([]);
+                }
+            },
+            (_, error) => {
+                console.log('Error al obtener el primer rut:', error);
+                reject(error);
+            }
+        );
+    })
+ });
+}
 
 export function obtenerRut() {
     return new Promise((resolve, reject) => {

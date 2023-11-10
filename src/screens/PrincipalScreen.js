@@ -178,7 +178,7 @@ export default function PrincipalScreen() {
           console.log('FUNCION SELECCIONADA: ', function_name)
           console.log('LOGICA DE SELECCION')
           if (function_name === "hola") {
-            function_response = "responder el saludo, presentarse indicando tu nombre"
+            function_response = "responder el saludo, presentarse indicando tu nombre el cual es ADAM"
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
           } else if (function_name === "explicar_algo") {
             function_response = "explicar lo solicitado"
@@ -312,7 +312,7 @@ export default function PrincipalScreen() {
             clima = await obtenerClima('coordenadas',JSON.parse(args))
             jsonclima = JSON.stringify(clima)
             //console.log(jsonclima)
-            function_response= `${jsonclima} Este json contiene informacion del clima Convierte este json en informacion util  para un usuario que habla español, resumelo presicamente, usa Celsius y terminologia basica, resume en no mas de 50 palabras `
+            function_response= `${jsonclima} Este json contiene informacion del clima Convierte este json en informacion util  para un usuario que habla español, resumelo presicamente,  y terminologia basica, resume en no mas de 50 palabras `
             //console.log(function_response)
            respuesta = await secondApiCall(prompt, message, function_name, function_response)
           } else {
