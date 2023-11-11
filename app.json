@@ -33,7 +33,19 @@
         "WRITE_CONTACTS",
         "READ_PROFILE",
         "USE_FULL_SCREEN_INTENT"
-      ]
+      ],
+      "notification": {
+        "channels": [
+          {
+            "name": "default",
+            "sound": true,
+            "priority": "max",
+            "autoDismiss": false, 
+            "expires": "never" 
+          }
+          
+        ]
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -45,8 +57,17 @@
     },
     "plugins": [
       [
-        "expo-notifications"
-        
+        "expo-notifications",
+        {
+
+          "icon": "./assets/images/bot.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./assets/sounds/click.mp3"
+            
+          ],
+          "mode": "development"
+        }
       ]
     ]
   }

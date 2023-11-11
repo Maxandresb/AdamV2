@@ -110,9 +110,14 @@ async function scheduleRecordatorioNotification(recordatorio) {
       proximaFecha = calcularProximaFecha(dias[i], Hora);
     }
 
+    
+
     // Configura el contenido de la notificación
     let content = {
-      sound: 'default',
+      sound: true,
+      badge:true,
+      sticky:false,
+      
       title: Titulo,
       body: Descripcion,
       data: { data: 'aun en trabajo' },
@@ -126,6 +131,7 @@ async function scheduleRecordatorioNotification(recordatorio) {
     let segundos = calcularDiferenciaSegundos(ahora, proximaFecha);
     // Configura el disparador de la notificación
     let trigger = {
+      channelId:'default',
       seconds: segundos,
       repeats: dias[i] !== 'Unico' // Repite solo si el día no es 'Unico'
     };
