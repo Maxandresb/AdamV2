@@ -9,6 +9,9 @@ export default function Config({ navigation }) {
       <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() => navigation.navigate('ConfiguracionNested', { screen: 'Seleccionar datos a vocalizar' })}>
         <Text className="text-xl text-damasco text-center font-bold">Seleccionar datos </Text>
       </TouchableOpacity>
+      <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() => navigation.navigate('ConfiguracionNested', { screen: 'Contactos de emergencia' })}>
+        <Text className="text-xl text-damasco text-center font-bold">Contactos de Emergencia</Text>
+      </TouchableOpacity>
     </View>
     </ScrollView>
   )

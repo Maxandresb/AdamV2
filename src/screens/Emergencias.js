@@ -44,6 +44,7 @@ export default function Emergencias ()  {
   const contactoEmSeleccionado = useRef([]);
   //estados para el numero de los centros medicos:
   const [modalNCMVisible, setModalNCMVisible] = useState(false);
+  const[modalDMVisible, setModalDMVisible] = useState(false);
   const [nombreCentroMed, setNombreCentroMed] = useState('');
   const centrosMed = useRef([]);
   const centroMedSeleccionado = useRef([]);
@@ -56,6 +57,10 @@ export default function Emergencias ()  {
 
   const navigation = useNavigation();
 
+
+  async function datos_medicos(){
+    
+  }
 
   async function compartir_ubicacion(){
     contactosEmergencia.current = await obtenerContactosEmergencia();
@@ -267,6 +272,12 @@ export default function Emergencias ()  {
               </View>
             </View>
           </Modal>
+          <Modal
+             animationType="slide"
+             transparent={true}
+             visible={modalDMVisible}
+          
+          ></Modal>
     </ScrollView>
   
   

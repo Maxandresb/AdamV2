@@ -100,6 +100,7 @@ function ConfiguracionNestedScreen() {
     <ConfiguracionNestedStack.Navigator>
       <ConfiguracionNestedStack.Screen name="Configuración" component={Config} />
       <ConfiguracionNestedStack.Screen name="Seleccionar datos a vocalizar" component={SelecDatosVocalizar} />
+      <PerfilNestedStack.Screen name="Contactos de emergencia" component={ContactosEmergencia} />
     </ConfiguracionNestedStack.Navigator>
   );
   
