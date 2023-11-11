@@ -4,6 +4,37 @@ import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
 
+export async function obtenerDatosPreviosSelec (rutUsuario) {
+    console.log('OBTENIENDO DATOS MEDICOS PREVIOS DEL RUT: ', rutUsuario);
+    return new Promise((resolve, reject) => {
+      try {
+        db.transaction(tx => {
+          tx.executeSql(
+            'SELECT * FROM Configuracion WHERE usuario_rut = ?',
+            [rutUsuario],
+            (_, { rows: { _array } }) => {
+              if (_array.length > 0) {
+                const datosPreviosSelec = _array[0].DatosSeleccionados;
+                //console.log('Datos previos a vocalizar obtenidos:', datosPreviosSelec);
+                resolve(datosPreviosSelec)
+
+              } else {
+                console.log('No se encontraron datos previos a vocalizar');
+                resolve()
+              }
+            },
+            (_, error) => { reject(error), console.log('Error al obtener los datos al obtener datos previos a vocalizar:', error) }
+          );
+        });
+      } catch (error) {
+        console.log('Error al obtener los datos al obtener datos previos a vocalizar:', error)
+        reject(error)
+
+      }
+    })
+  }
+
+
 export async function addRecordatorio(recordatorio, idNotificacion) {
     let data = recordatorio
     let usuario_rut = await obtenerRut()
@@ -56,15 +87,15 @@ export function obtenerRut() {
                 (_, { rows: { _array } }) => {
                     if (_array.length > 0) {
                         let rut = _array[0].rut;
-                        console.log('rut:', rut);
+                        //console.log('rut obtenido con la funcion:', rut);
                         resolve(rut);
                     } else {
-                        console.log('No hay registros en la tabla Usuario.');
+                        console.log('No hay rut en la tabla Usuario.');
                         resolve(null);
                     }
                 },
                 (_, error) => {
-                    console.log('Error al obtener el primer rut:', error);
+                    console.log('Error al obtener el rut:', error);
                     reject(error);
                 }
             );
@@ -183,10 +214,25 @@ export function initDB() {
             
         );`,
             [],
-            (_, { rows }) => console.log('Tabla creada:', rows),
-            (_, error) => console.log('Error al crear la tabla:', error)
+            (_, { rows }) => console.log('Tabla recordatorios creada:', rows),
+            (_, error) => console.log('Error al crear la tabla recordatorios:', error)
         );
 
+    });
+
+    db.transaction(tx => {
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS Configuracion (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                DatosSeleccionados TEXT,
+                EstadoLlamadaDS TEXT, 
+                usuario_rut TEXT,
+                FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+            );`,
+            [],
+            (_, { rows }) => console.log('Tabla Configuracion creada:', rows),
+            (_, error) => console.log('Error al crear la tabla Configuracion:', error)
+        )
     });
 
     db.transaction(tx => {

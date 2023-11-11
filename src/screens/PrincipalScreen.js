@@ -10,7 +10,7 @@ import * as Speech from 'expo-speech';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // Creaciones propias
-import { addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut } from "../api/sqlite"
+import { obtenerDatosPreviosSelec, addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut } from "../api/sqlite"
 import { generarRespuesta, crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
@@ -232,7 +232,7 @@ export default function PrincipalScreen() {
                 //Alert.alert("Contacto no encontrado: ", function_response);
                 contactosEmergencia.current = [];
               }
-            }else{
+            } else {
               function_response = `No se encontraron contactos de emergencia guardados en la aplicacion.`
               respuesta = await generarRespuesta('ERROR', function_response, prompt)
               //Alert.alert("Contacto no encontrado: ", function_response);
@@ -242,7 +242,7 @@ export default function PrincipalScreen() {
             //realizarLlamada('56953598945');
             //respuesta = await secondApiCall(prompt, message, function_name, function_response)
 
-          }else if (function_name === "llamar_a_centro_salud") {
+          } else if (function_name === "llamar_a_centro_salud") {
             let { comuna, region } = await obtenerUbicacion('comuna');
             console.log('REGION: ', region, 'COMUNA: ', comuna)
             centrosMed.current = await buscarEnDB('Comuna', comuna)
@@ -276,12 +276,24 @@ export default function PrincipalScreen() {
                 //Alert.alert("Centro de salud no encontrado: ", function_response);
                 centrosMed.current._array = [];
               }
-            }console.log('ERROR: centrosMed no esxiste o no es un array')
+            } console.log('ERROR: centrosMed no esxiste o no es un array')
           } else if (function_name === "llamar_numero") {
             console.log('NUMERO A LLAMAR: ', args)
             function_response = `Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.`
             realizarLlamada(args);
             respuesta = await generarRespuesta('Llamar a numero', function_response, prompt)
+          } else if (function_name === "informacion_medica_del_usuario") {
+            console.log('FRASE RECONOCIDA: ', args)
+            let rut = await obtenerRut();
+            let infMedica = await obtenerDatosPreviosSelec(rut)
+            if(infMedica){
+              console.log('INFORMACION MEDICA: ', infMedica)
+              let answer = `Esta es la informacion medica del usuario: \n\ ${infMedica}`
+              respuesta = await generarRespuesta('informacion_medica_del_usuario', answer, prompt)
+            } else {
+              let answer = `No se han configurado datos medicos a mostrar.`
+              respuesta = await generarRespuesta('informacion_medica_del_usuario', answer, prompt)
+            }
           } else if (function_name === "mostrar_base_de_datos") {
             // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
             console.log('MOSTRANDO BD')
@@ -292,6 +304,7 @@ export default function PrincipalScreen() {
             mostarDB('PatologiasCronicas');
             mostarDB('Contacto');
             mostarDB('recordatorios');
+            mostarDB('Configuracion');
             await MostrarNotificacionesGuardadas()
             //mostarDB('centrosMedicos');
             respuesta = await generarRespuesta('Mostrar base de datos', 'La base de datos se mostrara en la consola.', prompt)

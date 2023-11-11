@@ -220,6 +220,16 @@ const functions = [
                 "Locacion": {
                     "type": "string",
                     "description": " responde solo en español, indica la ubicacion real  sobre la cual el usuario quiere conocer el clima, hoy ,mañana,ayer no son ubicaciones, solo ubicaciones nada mas ni dias ni tiempo ni otros parametros idealmente ubicaciones tipo (ciudad pais), a menos que exista explicito la locacion responde: No definido",
+                }}}},{
+        
+                    "name": "informacion_medica_del_usuario",
+        "description": "el usuario solicita obtener sus informacion medicos, debes reconocer frases como 'dimes mi informacion medica', 'dame la informacion de usuario', 'informacion de emergencia' o algo similar",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "frase rconocida": {
+                    "type": "string",
+                    "description": "indica la frase que reconociste del usuario, esta propiedad es oblogatoria",
                 }
             }
         }

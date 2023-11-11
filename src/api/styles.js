@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 /*
 import styles from '../api/styles';
@@ -365,4 +367,176 @@ export default StyleSheet.create({
         fontWeight: 'bold'
     },
 
+
+    //perfilUsuario
+    containerPerfil: {
+        backgroundColor: 'white',
+    },
+    rowPerfil: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    alingRowPerfil: {
+        width: '45%',
+        height: height * 0.25,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#DDDDDD',
+        padding: 10,
+        margin: 10
+    },
+    alingRowPerfilLeft: {
+        width: '40%',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        marginLeft:10
+
+    },
+    alingRowPerfilRight: {
+        width: '40%',
+        alignItems: 'flex-start',
+
+    },
+    iconPerfil: {
+        width: 20,
+        height: 20,
+        marginBottom: 10,
+    },
+    buttonPerfil: {
+        backgroundColor: 'white',
+        padding: 18,
+        borderRadius: 5,
+        margin: 2.5,
+        shadowColor: 'black',
+        shadowRadius: 5,
+        shadowOpacity: 0.5,
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 5,
+    },
+    buttonTextPerfil: {
+        color: 'green',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        fontSize: 18,
+    },
+
+    content2: {
+        color: 'black',
+        marginStart: 18,
+    },
+    content3: {
+        color: 'black',
+        marginBottom: 5,
+    },
+    lineaVertical: {
+        width: 1,
+        borderBottomColor: 'black',
+        borderWidth: 0.8,
+        height: height * 0.05,
+
+    },
+    container3: {
+        flex: 1,
+        backgroundColor: 'white',
+        padding: 10,
+        shadowColor: 'black',
+        shadowRadius: 5,
+        shadowOpacity: 0.5,
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 5,
+
+    },
+    lineaContainer3: {
+        borderBottomColor: 'gray',
+        borderBottomWidth: 1,
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 18,
+    },
+    lineaContainer4: {
+        borderBottomColor: 'green',
+        borderBottomWidth: 1,
+        marginTop: 10,
+        marginBottom: 10,
+
+    },
+
+    centeredText: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    lineaVertical2: {
+        width: 1,
+        borderBottomColor: 'black',
+        borderWidth: 1,
+        height: height * 0.03,
+        marginLeft:15
+    },
+    espacioContainer2: {
+        borderBottomColor: '#fff',
+        borderBottomWidth: 1,
+        marginTop: height * 0.15,
+    },
+    espacioContainer3: {
+        borderBottomColor: '#fff',
+        borderBottomWidth: 1,
+        marginTop: height * 0.03,
+    },
+    centeredText2: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    rowPerfil2: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10,
+
+    },
+    centeredText3: {
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+    alingRowPerfilRight2: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    },
+    alingRowPerfilLeft2: {
+        width:'80%',
+        justifyContent: 'flex-start'
+    },
+    //SelecDatosVocalizar
+    selectedText: {
+        backgroundColor: 'lightgreen',
+    },
+    unselectedText: {
+        backgroundColor: 'white',
+    },
+    tituloContainer:{
+        fontSize:16,
+        fontWeight:'bold',
+        marginBottom:10,
+        marginTop:10,
+        textAlign:'center'
+    },
+    textContainer:{
+        fontSize:14,
+        marginBottom:2,
+        marginTop:2,
+        marginLeft:10
+    },
+    espacioContainer4: {
+        borderBottomColor: '#fff',
+        borderBottomWidth: 1,
+        marginTop: height * 0.079,
+    },
+    espacioContainer5: {
+        borderBottomColor: '#fff',
+        borderBottomWidth: 1,
+        marginTop: height * 0.124,
+    },
+    espacioContainer6: {
+        borderBottomColor: '#fff',
+        borderBottomWidth: 1,
+        marginTop: height * 0.124,
+    },
 })
