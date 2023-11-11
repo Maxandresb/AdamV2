@@ -59,12 +59,14 @@ export default function Emergencias ()  {
 
   async function compartir_ubicacion(){
     contactosEmergencia.current = await obtenerContactosEmergencia();
-    if(contactosEmergencia.length == 1 || contactosEmergencia=== undefined ){
-      let contacto= contactosEmergencia[0]
+    
+    if(contactosEmergencia.current.length == 1  ){
+      let contacto= contactosEmergencia.current[0]
       let numero= contacto.numero.replace(/\D/g, '')
-      realizarLlamada(numero)
+      enviarMensaje(numero)
     }
-    else if (contactosEmergencia.length == 0 || contactosEmergencia=== undefined){
+    else if (contactosEmergencia.current.length == 0 || contactosEmergencia.current.length == undefined){
+      
       Alert.alert(
         "¡No tienes contactos de emergencia!",
         "¿Quieres que te dirija donde puedes agregarlo?",
@@ -80,7 +82,8 @@ export default function Emergencias ()  {
         ]
     );
     }
-    else{
+    else  {
+      
       console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
       setMensaje(true)
       setModalCEVisible(true);
@@ -88,12 +91,12 @@ export default function Emergencias ()  {
   }
     async function llamada_contacto(){
        contactosEmergencia.current = await obtenerContactosEmergencia();
-      if(contactosEmergencia.length == 1 || contactosEmergencia=== undefined ){
-        let contacto= contactosEmergencia[0]
+      if(contactosEmergencia.current.length == 1  ){
+        let contacto= contactosEmergencia.current[0]
         let numero= contacto.numero.replace(/\D/g, '')
         realizarLlamada(numero)
       }
-      else if (contactosEmergencia.length == 0 || contactosEmergencia=== undefined){
+      else if (contactosEmergencia.current.length == 0 || contactosEmergencia.current.length === undefined){
         Alert.alert(
           "¡No tienes contactos de emergencia!",
           "¿Quieres que te dirija donde puedes agregarlo?",
@@ -109,7 +112,7 @@ export default function Emergencias ()  {
           ]
       );
       }
-      else{
+      else {
         console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
         setLlamada(true)
         setModalCEVisible(true);
@@ -155,7 +158,7 @@ export default function Emergencias ()  {
           <Text className="text-xl text-damasco text-center font-bold">Llamar a centro de salud</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await compartir_ubicacion()}>
+        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() =>  compartir_ubicacion()}>
           <Text className="text-xl text-damasco text-center font-bold">Compartir ubicación </Text>
         </TouchableOpacity>
 
@@ -190,7 +193,7 @@ export default function Emergencias ()  {
                         centroMedSeleccionado.current = {};
 
                       }}
-                      style={styles.button} // Agrega los estilos que desees aquí
+                      style={styles.redcoralButton} // Agrega los estilos que desees aquí
                     >
                       <Text>{`Centro: ${centro.NombreOficial}`}</Text>
                     </TouchableOpacity>
@@ -216,6 +219,7 @@ export default function Emergencias ()  {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.header}>{llamada ==true && `Selecciona un contacto para llamar`} {mensaje ==true && `Selecciona un contacto para compartir ubicación`}</Text>
+                <ScrollView>
                 {contactosEmergencia.current.map((contacto, index) => (
                   <TouchableOpacity
                     key={index}
@@ -237,7 +241,7 @@ export default function Emergencias ()  {
                       contactoEmSeleccionado.current = {};
 
                     }}
-                    style={styles.button} // Agrega los estilos que desees aquí
+                    style={[styles.damascoButton, {padding:'8%' , margin:'2%'}]} // Agrega los estilos que desees aquí
                   >
                    
                    <Text>
@@ -247,14 +251,19 @@ export default function Emergencias ()  {
                   </Text>
                   </TouchableOpacity>
                 ))}
-                <Button
-                  title="Cerrar"
+                </ScrollView>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  
                   onPress={() => {
                     setModalCEVisible(false);
                     setLlamada(false)
                     setMensaje(false)
                   }}
-                />
+                >
+                  <Text style={styles.buttonText}>Cerrar</Text>
+                </TouchableOpacity>
+
               </View>
             </View>
           </Modal>

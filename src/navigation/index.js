@@ -33,13 +33,13 @@ const Tab = createBottomTabNavigator();
 
 function MyTabs(){
   return(
-    <Tab.Navigator screenOptions={{headerShown:false, 
+    <Tab.Navigator  initialRouteName="Principal" screenOptions={{headerShown:false, 
       tabBarActiveColor: '#f9a79c',
       tabBarLabelStyle: {color: '#fad9a0', fontWeight: 'bold', fontSize: 12, marginBottom: 5},
     tabBarStyle:{
       backgroundColor: "#fa614f",  
       height: "10%"}}}>
-       <Tab.Screen name="Emergencias" component={Emergencias} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/calendar_icon.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} /> 
+       <Tab.Screen name="Emergencias" component={Emergencias} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/sos.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} /> 
       <Tab.Screen name="Principal" component={PrincipalScreen} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/conversation_icon.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
       <Tab.Screen name="Recordatorios" component={Recordatorios} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/calendar_icon.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
       

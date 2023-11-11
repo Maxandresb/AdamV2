@@ -521,7 +521,7 @@ export default function PrincipalScreen() {
                 <ScrollView>
                 {centrosMed.current && Array.isArray(centrosMed.current._array)
                   && centrosMed.current._array.map((centro, index) => (
-                    <TouchableOpacity
+                    <TouchableOpacity 
                       key={index}
                       onPress={() => {
                         centroMedSeleccionado.current = centro;
@@ -532,7 +532,7 @@ export default function PrincipalScreen() {
                         centroMedSeleccionado.current = {};
 
                       }}
-                      style={styles.button} // Agrega los estilos que desees aquí
+                      style={styles.redcoralButton} // Agrega los estilos que desees aquí
                     >
                       <Text>{`Centro: ${centro.NombreOficial}`}</Text>
                     </TouchableOpacity>
