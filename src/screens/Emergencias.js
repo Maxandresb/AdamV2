@@ -228,10 +228,10 @@ export default function Emergencias ()  {
                       console.log(contactoEmSeleccionado)
                       setModalCEVisible(false);
                       if(llamada ==true){
-                        realizarLlamada(contactoEmSeleccionado.current.numero)
-                        setLlamada(true)
+                        realizarLlamada(contactoEmSeleccionado.current.numero.replace(/\D/g, ''))
+                        setLlamada(false)
                       } else if (mensaje==true){
-                        enviarMensaje(contactoEmSeleccionado.current.numero)
+                        enviarMensaje(contactoEmSeleccionado.current.numero.replace(/\D/g, ''))
                         setMensaje(false)
                       }
                       

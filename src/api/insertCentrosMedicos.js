@@ -1505,7 +1505,7 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['215', 'Clínica de Diálisis Diasermed', 'Biobío', 'Concepción', 'Calle', '377', 'Carlos Cousiño', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['215', 'Clínica de Diálisis Diasermed', 'Biobío', 'Concepcion', 'Calle', '377', 'Carlos Cousiño', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -1701,7 +1701,7 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['243', 'Servicios Clínicos Neuropsiquiátricos y Geriátricos R y G Limitada', 'Biobío', 'Concepción', 'Calle', '5500', 'La Araucana', '412312786', 'NO', 'No Aplica', 'No Aplica'],
+            ['243', 'Servicios Clínicos Neuropsiquiátricos y Geriátricos R y G Limitada', 'Biobío', 'Concepcion', 'Calle', '5500', 'La Araucana', '412312786', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -1806,7 +1806,7 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['258', 'Centro Comunitario de Salud Familiar Chaimávida', 'Biobío', 'Concepción', 'Pasaje', '1', 'Kilometro 23 Ruta Concepción- Cabrero, sector Chaimávida', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['258', 'Centro Comunitario de Salud Familiar Chaimávida', 'Biobío', 'Concepcion', 'Pasaje', '1', 'Kilometro 23 Ruta Concepción- Cabrero, sector Chaimávida', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -1820,14 +1820,14 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['260', 'Servicios Médicos CIDIAL Ltda.', 'Biobío', 'Concepción', 'Calle', '98', 'Junge, Pedro de Valdivia', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['260', 'Servicios Médicos CIDIAL Ltda.', 'Biobío', 'Concepcion', 'Calle', '98', 'Junge, Pedro de Valdivia', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['261', 'Clínica de la Mujer Sanatorio Alemán', 'Biobío', 'Concepción', 'Avenida', '801', 'Pedro de Valdivia', '412796207', 'NO', 'No Aplica', 'No Aplica'],
+            ['261', 'Clínica de la Mujer Sanatorio Alemán', 'Biobío', 'Concepcion', 'Avenida', '801', 'Pedro de Valdivia', '412796207', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -1862,7 +1862,7 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['266', 'Centro de Salud Familiar Pedro de Valdivia', 'Biobío', 'Concepción', 'Calle', 'S/N', 'Arrau Méndez', '800500812', 'NO', 'No Aplica', 'No Aplica'],
+            ['266', 'Centro de Salud Familiar Pedro de Valdivia', 'Biobío', 'Concepcion', 'Calle', 'S/N', 'Arrau Méndez', '800500812', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -1911,210 +1911,210 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['273', 'Servicios Médicos Medinefro Ltda.', 'Biobío', 'Concepción', 'Calle', '217', 'Cochrane', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['273', 'Servicios Médicos Medinefro Ltda.', 'Biobío', 'Concepcion', 'Calle', '217', 'Cochrane', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['274', 'Laboratorio Clínico Diagnomed', 'Biobío', 'Concepción', 'Avenida', '39', "O'Higgins Poniente", '412888243', 'NO', 'No Aplica', 'No Aplica'],
+            ['274', 'Laboratorio Clínico Diagnomed', 'Biobío', 'Concepcion', 'Avenida', '39', "O'Higgins Poniente", '412888243', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['275', 'Centro Médico Medisan', 'Biobío', 'Concepción', 'Calle', '255', 'Cochrane', '41288 8103', 'NO', 'No Aplica', 'No Aplica'],
+            ['275', 'Centro Médico Medisan', 'Biobío', 'Concepcion', 'Calle', '255', 'Cochrane', '41288 8103', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['276', 'Centro de Vacunación y Servcio de Enfermería SpA', 'Biobío', 'Concepción', 'Calle', '255', 'Cochrane, Piso 2', '413364927', 'NO', 'No Aplica', 'No Aplica'],
+            ['276', 'Centro de Vacunación y Servcio de Enfermería SpA', 'Biobío', 'Concepcion', 'Calle', '255', 'Cochrane, Piso 2', '413364927', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['277', 'Vacunatorio El Salvador', 'Biobío', 'Concepción', 'Calle', '532', 'Chacabuco', '412246595', 'NO', 'No Aplica', 'No Aplica'],
+            ['277', 'Vacunatorio El Salvador', 'Biobío', 'Concepcion', 'Calle', '532', 'Chacabuco', '412246595', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['278', 'Centro de Salud Familiar Villa Nonguén (Organizaciones sin fines de lucro y ONG)', 'Biobío', 'Concepción', 'Calle', '1397', 'Río Loa', '412723450', 'NO', 'No Aplica', 'No Aplica'],
+            ['278', 'Centro de Salud Familiar Villa Nonguén (Organizaciones sin fines de lucro y ONG)', 'Biobío', 'Concepcion', 'Calle', '1397', 'Río Loa', '412723450', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['279', 'Centro de Referencia de Salud Municipal', 'Biobío', 'Concepción', 'Calle', '278', 'San Martin 262 - 246', '2449920-2449910', 'NO', 'No Aplica', 'No Aplica'],
+            ['279', 'Centro de Referencia de Salud Municipal', 'Biobío', 'Concepcion', 'Calle', '278', 'San Martin 262 - 246', '2449920-2449910', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['280', 'Laboratorio Clínico Lincoyán', 'Biobío', 'Concepción', 'Calle', '252', 'Lincoyán', '412225181', 'NO', 'No Aplica', 'No Aplica'],
+            ['280', 'Laboratorio Clínico Lincoyán', 'Biobío', 'Concepcion', 'Calle', '252', 'Lincoyán', '412225181', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['281', 'Unidad de Salud Funcionario S.S Concepción', 'Biobío', 'Concepción', 'Calle', '345', 'Rengo', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['281', 'Unidad de Salud Funcionario S.S Concepción', 'Biobío', 'Concepcion', 'Calle', '345', 'Rengo', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['282', 'PRAIS (S.S Concepción)', 'Biobío', 'Concepción', 'Calle', '345', 'Rengo', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['282', 'PRAIS (S.S Concepción)', 'Biobío', 'Concepcion', 'Calle', '345', 'Rengo', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['283', 'Laboratorio Clínico Seres Ltda.', 'Biobío', 'Concepción', 'Calle', '472', 'San Martín', '412220915', 'NO', 'No Aplica', 'No Aplica'],
+            ['283', 'Laboratorio Clínico Seres Ltda.', 'Biobío', 'Concepcion', 'Calle', '472', 'San Martín', '412220915', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['284', 'Laboratorio Clínico Dr. Fructuoso Biel y Cia Ltda.', 'Biobío', 'Concepción', 'Calle', '76', 'Castellon', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['284', 'Laboratorio Clínico Dr. Fructuoso Biel y Cia Ltda.', 'Biobío', 'Concepcion', 'Calle', '76', 'Castellon', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['285', 'Laboratorio Clínico Bionet S.A. - Concepción', 'Biobío', 'Concepción', 'Calle', '230', 'Caupolicán', '412520712', 'NO', 'No Aplica', 'No Aplica'],
+            ['285', 'Laboratorio Clínico Bionet S.A. - Concepción', 'Biobío', 'Concepcion', 'Calle', '230', 'Caupolicán', '412520712', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['286', 'Centro Odontológico Uno Salud Dental Concepción', 'Biobío', 'Concepción', 'Calle', '635', 'Lord Cochrane, Local 106', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['286', 'Centro Odontológico Uno Salud Dental Concepción', 'Biobío', 'Concepcion', 'Calle', '635', 'Lord Cochrane, Local 106', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['287', 'Vacunatorio Concepción', 'Biobío', 'Concepción', 'Calle', '215', 'Aníbal Pinto, Of. 406 Box 3', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['287', 'Vacunatorio Concepción', 'Biobío', 'Concepcion', 'Calle', '215', 'Aníbal Pinto, Of. 406 Box 3', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['288', 'Actividades gestionadas por la Dirección del Servicio para apoyo de la Red (S.S de Concepción)', 'Biobío', 'Concepción', 'Calle', '345', 'Rengo', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['288', 'Actividades gestionadas por la Dirección del Servicio para apoyo de la Red (S.S de Concepción)', 'Biobío', 'Concepcion', 'Calle', '345', 'Rengo', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['289', 'Laboratorio Clínico MACROLAB', 'Biobío', 'Concepción', 'Calle', '235-B', 'Colo Colo', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['289', 'Laboratorio Clínico MACROLAB', 'Biobío', 'Concepcion', 'Calle', '235-B', 'Colo Colo', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['290', 'Centro de Salud Familiar Juan Soto Fernández', 'Biobío', 'Concepción', 'Calle', '393', 'Desiderio Sanhueza', '800500809', 'NO', 'No Aplica', 'No Aplica'],
+            ['290', 'Centro de Salud Familiar Juan Soto Fernández', 'Biobío', 'Concepcion', 'Calle', '393', 'Desiderio Sanhueza', '800500809', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['291', "Centro de Salud Familiar O'Higgins", 'Biobío', 'Concepción', 'Calle', '534', 'Salas', '800500811', 'NO', 'No Aplica', 'No Aplica'],
+            ['291', "Centro de Salud Familiar O'Higgins", 'Biobío', 'Concepcion', 'Calle', '534', 'Salas', '800500811', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['292', "SAPU CESFAM O'HIGGINS", 'Biobío', 'Concepción', 'Calle', '538', 'Salas', '412449301', 'SI', 'Urgencia Ambulatoria (SAPU)', 'Corto'],
+            ['292', "SAPU CESFAM O'HIGGINS", 'Biobío', 'Concepcion', 'Calle', '538', 'Salas', '412449301', 'SI', 'Urgencia Ambulatoria (SAPU)', 'Corto'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['293', 'SAPU Juan Soto Fernández', 'Biobío', 'Concepción', 'Avenida', '850', 'Zañartu', '412449736', 'SI', 'Urgencia Ambulatoria (SAPU)', 'Corto'],
+            ['293', 'SAPU Juan Soto Fernández', 'Biobío', 'Concepcion', 'Avenida', '850', 'Zañartu', '412449736', 'SI', 'Urgencia Ambulatoria (SAPU)', 'Corto'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['294', 'Vacunatorio Seres', 'Biobío', 'Concepción', 'Calle', '143', 'Tucapel', '412514001', 'NO', 'No Aplica', 'No Aplica'],
+            ['294', 'Vacunatorio Seres', 'Biobío', 'Concepcion', 'Calle', '143', 'Tucapel', '412514001', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['295', 'Vacunatorio Israel', 'Biobío', 'Concepción', 'Calle', '548', 'Salas, Piso 3', '412747293', 'NO', 'No Aplica', 'No Aplica'],
+            ['295', 'Vacunatorio Israel', 'Biobío', 'Concepcion', 'Calle', '548', 'Salas, Piso 3', '412747293', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['296', 'Centro Médico Kenal', 'Biobío', 'Concepción', 'Calle', '301', 'Barros Arana', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['296', 'Centro Médico Kenal', 'Biobío', 'Concepcion', 'Calle', '301', 'Barros Arana', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['297', 'Laboratorio Clínico Hasiles', 'Biobío', 'Concepción', 'Calle', '510', 'Angol', '412290940', 'NO', 'No Aplica', 'No Aplica'],
+            ['297', 'Laboratorio Clínico Hasiles', 'Biobío', 'Concepcion', 'Calle', '510', 'Angol', '412290940', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['298', 'Laboratorio de Especialidades Medicas EMSA S.A', 'Biobío', 'Concepción', 'Calle', '116', 'Ongolmo', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['298', 'Laboratorio de Especialidades Medicas EMSA S.A', 'Biobío', 'Concepcion', 'Calle', '116', 'Ongolmo', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['299', 'Laboratorio Clínico Tecnimed Ltda.', 'Biobío', 'Concepción', 'Calle', '357', 'Colo Colo', '412628800', 'NO', 'No Aplica', 'No Aplica'],
+            ['299', 'Laboratorio Clínico Tecnimed Ltda.', 'Biobío', 'Concepcion', 'Calle', '357', 'Colo Colo', '412628800', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['300', 'Vacunatorio Biovax SpA', 'Biobío', 'Concepción', 'Calle', '920', 'San Martín', '412108244', 'NO', 'No Aplica', 'No Aplica'],
+            ['300', 'Vacunatorio Biovax SpA', 'Biobío', 'Concepcion', 'Calle', '920', 'San Martín', '412108244', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['301', 'Centro Médico Inmunomédica', 'Biobío', 'Concepción', 'Calle', '912', 'San Martín', '412466340', 'NO', 'No Aplica', 'No Aplica'],
+            ['301', 'Centro Médico Inmunomédica', 'Biobío', 'Concepcion', 'Calle', '912', 'San Martín', '412466340', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['302', 'Laboratorio Clínico C.D.S', 'Biobío', 'Concepción', 'Calle', '940', 'San Martín', '412629700', 'NO', 'No Aplica', 'No Aplica'],
+            ['302', 'Laboratorio Clínico C.D.S', 'Biobío', 'Concepcion', 'Calle', '940', 'San Martín', '412629700', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -2128,98 +2128,98 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['304', 'Laboratorio Clínico Inmunomedica Ltda.', 'Biobío', 'Concepción', 'Calle', '316', 'Castellón', '412108650', 'NO', 'No Aplica', 'No Aplica'],
+            ['304', 'Laboratorio Clínico Inmunomedica Ltda.', 'Biobío', 'Concepcion', 'Calle', '316', 'Castellón', '412108650', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['305', 'Kiñewen Ltda.', 'Biobío', 'Concepción', 'Calle', '174', 'Ongolmo', '412227979', 'NO', 'No Aplica', 'No Aplica'],
+            ['305', 'Kiñewen Ltda.', 'Biobío', 'Concepcion', 'Calle', '174', 'Ongolmo', '412227979', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['306', 'Laboratorio Clínico Diagonal', 'Biobío', 'Concepción', 'Calle', '174', 'Ongolmo', '412237704', 'NO', 'No Aplica', 'No Aplica'],
+            ['306', 'Laboratorio Clínico Diagonal', 'Biobío', 'Concepcion', 'Calle', '174', 'Ongolmo', '412237704', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['307', 'Laboratorio Clínico Dr. Gustavo Torrejón Sanhueza y Cía. Ltda.', 'Biobío', 'Concepción', 'Calle', '286', 'Tucapel', '412227896', 'NO', 'No Aplica', 'No Aplica'],
+            ['307', 'Laboratorio Clínico Dr. Gustavo Torrejón Sanhueza y Cía. Ltda.', 'Biobío', 'Concepcion', 'Calle', '286', 'Tucapel', '412227896', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['308', 'Centro Odontológico Uno Salud Dental Concepción Dos', 'Biobío', 'Concepción', 'Calle', '820', 'Freire', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['308', 'Centro Odontológico Uno Salud Dental Concepción Dos', 'Biobío', 'Concepcion', 'Calle', '820', 'Freire', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['309', 'Dispositivo Modular de Salud Hospital Guillermo Grant Benavente', 'Biobío', 'Concepción', 'Pendiente', 'S/N', 'Estacionamiento de Facultad de Odontología de la Universidad de Concepción', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['309', 'Dispositivo Modular de Salud Hospital Guillermo Grant Benavente', 'Biobío', 'Concepcion', 'Pendiente', 'S/N', 'Estacionamiento de Facultad de Odontología de la Universidad de Concepción', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['310', 'Centro Médico Radiológico Concepción Ltda.', 'Biobío', 'Concepción', 'Calle', '1213', 'San Martín', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['310', 'Centro Médico Radiológico Concepción Ltda.', 'Biobío', 'Concepcion', 'Calle', '1213', 'San Martín', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['311', 'Hospital Clínico Regional Dr. Guillermo Grant Benavente (Concepción)', 'Biobío', 'Concepción', 'Calle', '1436', 'San Martín', '412417588', 'SI', 'Urgencia Hospitalaria (UEH)', 'No Aplica'],
+            ['311', 'Hospital Clínico Regional Dr. Guillermo Grant Benavente (Concepción)', 'Biobío', 'Concepcion', 'Calle', '1436', 'San Martín', '412417588', 'SI', 'Urgencia Hospitalaria (UEH)', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['312', 'Centro Médico Integramédica Bio Bio', 'Biobío', 'Concepción', 'Calle', '301', 'Los Carrera', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['312', 'Centro Médico Integramédica Bio Bio', 'Biobío', 'Concepcion', 'Calle', '301', 'Los Carrera', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['313', 'Hospital Traumatológico (Concepción)', 'Biobío', 'Concepción', 'Calle', '1580', 'San Martín', '412412003', 'NO', 'No Aplica', 'No Aplica'],
+            ['313', 'Hospital Traumatológico (Concepción)', 'Biobío', 'Concepcion', 'Calle', '1580', 'San Martín', '412412003', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['314', 'Centro de Especialidades de Medicina Transfusional', 'Biobío', 'Concepción', 'Calle', '1111', 'Barros Arana', '422721950', 'NO', 'No Aplica', 'No Aplica'],
+            ['314', 'Centro de Especialidades de Medicina Transfusional', 'Biobío', 'Concepcion', 'Calle', '1111', 'Barros Arana', '422721950', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['315', 'Centro y Médico Dental VIII Zona de Carabineros (Del Bíobío)', 'Biobío', 'Concepción', 'Calle', '1224', 'Barros Arana', '412141480', 'NO', 'No Aplica', 'No Aplica'],
+            ['315', 'Centro y Médico Dental VIII Zona de Carabineros (Del Bíobío)', 'Biobío', 'Concepcion', 'Calle', '1224', 'Barros Arana', '412141480', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['316', 'Laboratorio Clínico Castellón', 'Biobío', 'Concepción', 'Avenida', '1448', 'Bernardo O´higgins', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['316', 'Laboratorio Clínico Castellón', 'Biobío', 'Concepcion', 'Avenida', '1448', 'Bernardo O´higgins', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['317', 'Vacunatorio Vaxsur SpA 1', 'Biobío', 'Concepción', 'Calle', '358', 'Lautaro', '9956604722', 'NO', 'No Aplica', 'No Aplica'],
+            ['317', 'Vacunatorio Vaxsur SpA 1', 'Biobío', 'Concepcion', 'Calle', '358', 'Lautaro', '9956604722', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -2233,91 +2233,91 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['319', 'Centro Médico COALIVI', 'Biobío', 'Concepción', 'Calle', '706', 'Las Heras (esquina Anival Pinto)', '412125342', 'NO', 'No Aplica', 'No Aplica'],
+            ['319', 'Centro Médico COALIVI', 'Biobío', 'Concepcion', 'Calle', '706', 'Las Heras (esquina Anival Pinto)', '412125342', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['320', 'MegaSalud S.A. Centro Médico y Dental Concepción', 'Biobío', 'Concepción', 'Calle', '1445', 'Freire', '412925000', 'NO', 'No Aplica', 'No Aplica'],
+            ['320', 'MegaSalud S.A. Centro Médico y Dental Concepción', 'Biobío', 'Concepcion', 'Calle', '1445', 'Freire', '412925000', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['321', 'Departamento de Salud Estudiantil Universidad del Bíobío Campus Concepción', 'Biobío', 'Concepción', 'Avenida', '1202', 'Collao', '412731297', 'NO', 'No Aplica', 'No Aplica'],
+            ['321', 'Departamento de Salud Estudiantil Universidad del Bíobío Campus Concepción', 'Biobío', 'Concepcion', 'Avenida', '1202', 'Collao', '412731297', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['322', 'Centro de Salud Familiar Víctor Manuel Fernández', 'Biobío', 'Concepción', 'Calle', '2120', 'Maipú', '412721350', 'NO', 'No Aplica', 'No Aplica'],
+            ['322', 'Centro de Salud Familiar Víctor Manuel Fernández', 'Biobío', 'Concepcion', 'Calle', '2120', 'Maipú', '412721350', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['323', 'Centro Clínico Militar Concepción', 'Biobío', 'Concepción', 'Calle', '210', 'General Novoa', '412311678', 'NO', 'No Aplica', 'No Aplica'],
+            ['323', 'Centro Clínico Militar Concepción', 'Biobío', 'Concepcion', 'Calle', '210', 'General Novoa', '412311678', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['324', 'SAR Víctor Manuel Fernández', 'Biobío', 'Concepción', 'Avenida', '406', 'Juan Bosco', '412724103', 'SI', 'Urgencia ambulatoria (SAR)', 'No Aplica'],
+            ['324', 'SAR Víctor Manuel Fernández', 'Biobío', 'Concepcion', 'Avenida', '406', 'Juan Bosco', '412724103', 'SI', 'Urgencia ambulatoria (SAR)', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['325', 'Hospital Clínico del Sur S.A.', 'Biobío', 'Concepción', 'Calle', '36', 'Cardenio Avello', '412128122', 'SI', 'Urgencia Hospitalaria (UEH)', 'No Aplica'],
+            ['325', 'Hospital Clínico del Sur S.A.', 'Biobío', 'Concepcion', 'Calle', '36', 'Cardenio Avello', '412128122', 'SI', 'Urgencia Hospitalaria (UEH)', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['326', 'Policlínico Agencia Concepción de la Asociación Chilena de Seguridad', 'Biobío', 'Concepción', 'Calle', '70', 'Cardenio Avello', '412448630', 'NO', 'No Aplica', 'No Aplica'],
+            ['326', 'Policlínico Agencia Concepción de la Asociación Chilena de Seguridad', 'Biobío', 'Concepcion', 'Calle', '70', 'Cardenio Avello', '412448630', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['327', 'SAR Tucapel', 'Biobío', 'Concepción', 'Calle', '1059', 'Ejército', '412449483', 'SI', 'Urgencia ambulatoria (SAR)', 'No Aplica'],
+            ['327', 'SAR Tucapel', 'Biobío', 'Concepcion', 'Calle', '1059', 'Ejército', '412449483', 'SI', 'Urgencia ambulatoria (SAR)', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['328', 'Centro de Salud Familiar Lorenzo Arenas', 'Biobío', 'Concepción', 'Calle', '50', 'Carlos Oliver', '800500810', 'NO', 'No Aplica', 'No Aplica'],
+            ['328', 'Centro de Salud Familiar Lorenzo Arenas', 'Biobío', 'Concepcion', 'Calle', '50', 'Carlos Oliver', '800500810', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['329', 'Centro de Salud Familiar Tucapel', 'Biobío', 'Concepción', 'Calle', '1060', 'Juan de Dios Rivera', '800500813', 'NO', 'No Aplica', 'No Aplica'],
+            ['329', 'Centro de Salud Familiar Tucapel', 'Biobío', 'Concepcion', 'Calle', '1060', 'Juan de Dios Rivera', '800500813', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['330', 'SAPU Lorenzo Arenas', 'Biobío', 'Concepción', 'Calle', '50', 'Carlos Oliver', '412449502', 'SI', 'Urgencia Ambulatoria (SAPU)', 'Corto'],
+            ['330', 'SAPU Lorenzo Arenas', 'Biobío', 'Concepcion', 'Calle', '50', 'Carlos Oliver', '412449502', 'SI', 'Urgencia Ambulatoria (SAPU)', 'Corto'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['331', 'Servicio Médico Legal Concepción', 'Biobío', 'Concepción', 'Calle', '4018', 'Camino a Penco, a un costado de la cárcel El Manzano', '(41)2290634', 'NO', 'No Aplica', 'No Aplica'],
+            ['331', 'Servicio Médico Legal Concepción', 'Biobío', 'Concepcion', 'Calle', '4018', 'Camino a Penco, a un costado de la cárcel El Manzano', '(41)2290634', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -2331,14 +2331,14 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['333', 'Hospital de Centro de Cumplimiento Penitenciario Biobío', 'Biobío', 'Concepción', 'Calle', '450', 'Camino a Penco', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['333', 'Hospital de Centro de Cumplimiento Penitenciario Biobío', 'Biobío', 'Concepcion', 'Calle', '450', 'Camino a Penco', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['334', 'Centro Penitenciario', 'Biobío', 'Concepción', 'Calle', '460', 'Camino a Penco', '412388610', 'NO', 'No Aplica', 'No Aplica'],
+            ['334', 'Centro Penitenciario', 'Biobío', 'Concepcion', 'Calle', '460', 'Camino a Penco', '412388610', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -2408,14 +2408,14 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['344', 'Centro de Salud Familiar Santa Sabina', 'Biobío', 'Concepción', 'Calle', '1948', 'Pedro Meriño', '412723790', 'NO', 'No Aplica', 'No Aplica'],
+            ['344', 'Centro de Salud Familiar Santa Sabina', 'Biobío', 'Concepcion', 'Calle', '1948', 'Pedro Meriño', '412723790', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['345', 'SAPU Santa Sabina', 'Biobío', 'Concepción', 'Calle', '1820', 'Carlos Henríquez', '412449816', 'SI', 'Urgencia Ambulatoria (SAPU)', 'Corto'],
+            ['345', 'SAPU Santa Sabina', 'Biobío', 'Concepcion', 'Calle', '1820', 'Carlos Henríquez', '412449816', 'SI', 'Urgencia Ambulatoria (SAPU)', 'Corto'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -2828,7 +2828,7 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['404', 'Unidad de Vacunación Móvil del BíoBío', 'Biobío', 'Concepción', 'No Aplica', 'No Aplica', 'No Aplica', 'No Aplica', 'NO', 'No Aplica', 'No Aplica'],
+            ['404', 'Unidad de Vacunación Móvil del BíoBío', 'Biobío', 'Concepcion', 'No Aplica', 'No Aplica', 'No Aplica', 'No Aplica', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -2842,7 +2842,7 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['406', 'Vacunatorio Lomas', 'Biobío', 'Concepción', 'Avenida', '956', 'San Sebastian', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
+            ['406', 'Vacunatorio Lomas', 'Biobío', 'Concepcion', 'Avenida', '956', 'San Sebastian', 'Pendiente', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -2877,7 +2877,7 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['411', 'CMT Salud Concepción', 'Biobío', 'Concepción', 'Calle', '390', 'Arturo Prat', '(+56) 41 277 5411', 'NO', 'No Aplica', 'No Aplica'],
+            ['411', 'CMT Salud Concepción', 'Biobío', 'Concepcion', 'Calle', '390', 'Arturo Prat', '(+56) 41 277 5411', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -2912,7 +2912,7 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['416', 'Vacunatorio Vaxsur Spa 2', 'Biobío', 'Concepción', 'Avenida', '77', 'OHiggins Poniente', '56978187549', 'NO', 'No Aplica', 'No Aplica'],
+            ['416', 'Vacunatorio Vaxsur Spa 2', 'Biobío', 'Concepcion', 'Avenida', '77', 'OHiggins Poniente', '56978187549', 'NO', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -2933,7 +2933,7 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['419', 'Vacunatorio BioBio', 'Biobío', 'Concepción', 'Avenida', '553', 'San Martín (OF. 1304 )', '56963205700', 'No', 'No Aplica', 'No Aplica'],
+            ['419', 'Vacunatorio BioBio', 'Biobío', 'Concepcion', 'Avenida', '553', 'San Martín (OF. 1304 )', '56963205700', 'No', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
@@ -2947,7 +2947,7 @@ export function InsertCentrosMedicos() {
 
         tx.executeSql(
             "INSERT OR IGNORE INTO centrosMedicos (id, NombreOficial, Region, Comuna, Via, Numero, Calle, Telefono, TieneServicioDeUrgencia, TipoDeUrgencia, TipoDeSAPU) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-            ['421', 'UNO SALUD DENTAL CONCEPCIÓN 3', 'Biobío', 'Concepción', 'Calle', '518', 'Angol', '', 'No', 'No Aplica', 'No Aplica'],
+            ['421', 'UNO SALUD DENTAL CONCEPCIÓN 3', 'Biobío', 'Concepcion', 'Calle', '518', 'Angol', '', 'No', 'No Aplica', 'No Aplica'],
             () => { },
             (_, error) => console.log('Error al insertar datos:', error)
         );
