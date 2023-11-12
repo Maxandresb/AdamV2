@@ -76,9 +76,9 @@ const HistorialChat = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity style={styles.redcoralButton}
+      <TouchableOpacity style={styles.rojoIntensoButton}
         onPress={DeleteHistorial}>
-        <Text style={styles.buttonText}>Eliminar todo el historial</Text>
+        <Text style={styles.celesteText}>Eliminar todo el historial</Text>
       </TouchableOpacity>
       <View style={styles.espacioContainer}></View>
       {historial.map(registro => (
@@ -97,9 +97,9 @@ const HistorialChat = () => {
           </View>
 
           <Text style={styles.msjContainer}>Fecha y hora: {registro.fecha_hora}</Text>
-          <TouchableOpacity style={styles.deleteButton}
+          <TouchableOpacity className="mt-5" style={styles.deleteButton}
             onPress={() => DeleteRegistro(registro.id)}>
-            <Text style={styles.azulText}>Eliminar registro</Text>
+            <Text style={styles.rojoIntensoText}>Eliminar registro</Text>
           </TouchableOpacity>
 
           <View style={styles.lineaContainer}></View>

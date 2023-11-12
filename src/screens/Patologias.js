@@ -79,18 +79,18 @@ const PatologiaCronica = ({ patologia, isEditing, handlePress, handleDelete }) =
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    style={styles.redcoralButton}
+                    style={styles.rojoIntensoButton}
                     onPress={() => handlePress(patologia.id, currentPatologia)}
                 >
-                    <Text style={styles.buttonText}>
+                    <Text style={styles.celesteText}>
                         {isEditing ? 'Guardar cambios' : 'Modificar Patología'}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.deleteButton}
+                    style={styles.celesteButton}
                     onPress={handleDeletePress}
                 >
-                    <Text style={styles.deleteButtonText}>
+                    <Text style={styles.rojoIntensoText}>
                         Eliminar Patología
                     </Text>
                 </TouchableOpacity>
@@ -195,10 +195,10 @@ const PatologiasCronicas = () => {
         <ScrollView style={styles.container}>
             <View>
                 <TouchableOpacity
-                    style={styles.redcoralButton}
+                    style={styles.rojoIntensoButton}
                     onPress={handleAgregarPatologiaPress}
                 >
-                    <Text style={styles.buttonText}>
+                    <Text style={styles.celesteText}>
                         Agregar una nueva patología
                     </Text>
                 </TouchableOpacity>
@@ -279,8 +279,8 @@ const PatologiasCronicas = () => {
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.damascoButton} className="w-32" onPress={() => {agregarPatologia();}}>
-                                <Text className="text-redcoral text-center font-bold">
+                            <TouchableOpacity style={styles.rojoIntensoButton} className="w-32" onPress={() => {agregarPatologia();}}>
+                                <Text style={styles.celesteText}>
                                     Agregar nueva patología
                                 </Text>
                             </TouchableOpacity>

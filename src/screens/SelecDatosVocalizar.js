@@ -12,10 +12,10 @@ import { obtenerRut } from "../api/sqlite"
 const db = SQLite.openDatabase('adamdb.db');
 const PatologiaCronica = ({ index, patologia, showPatologia, pressPatologia, patologias, pressSelectPatologia }) => {
   return (
-    <View>
+    <View className="bg-rojoIntenso">
       {showPatologia && (
         <>
-          <TouchableOpacity
+          <TouchableOpacity className='bg-rojoIntenso'
             style={patologia.Nombre_patologia.isSelected ? styles.selectedText : styles.unselectedText}
             onPress={() => pressSelectPatologia(index, 'Nombre_patologia')}
           >
@@ -668,21 +668,21 @@ export default function SelecDatosVocalizar({ navigation }) {
   console.log('--showLimitacion:', showLimitacion);*/
 
   return (
-    <ScrollView contentContainerStyle={styles.containerPerfil}>
+    <ScrollView style={styles.container}>
 
 
-      <View style={styles.container}>
-        <View style={styles.container3}>
+      <View className="bg-grisClaro p-10">
+        <View className="bg-celeste p-10 rounded-lg shadow-lg shadow-negro">
           {mostrarPrevios ? (
             <>
               {existenPrevios ? (
                 <>
-                  <Text style={[styles.tituloContainer]}>Datos Seleccionados previamente:</Text>
-                  <Text style={styles.textContainer}>{datosPrevios}</Text>
+                  <Text className="text-rojoIntenso font-semibold">Datos Seleccionados previamente:</Text>
+                  <Text className="text-negro mt-5">{datosPrevios}</Text>
                 </>
               ) : (
                 <>
-                  <Text style={[styles.tituloContainer]}>No existen datos previos</Text>
+                  <Text className="text-negro mt-5">No existen datos previos</Text>
                 </>
               )}
             </>
@@ -691,9 +691,9 @@ export default function SelecDatosVocalizar({ navigation }) {
               {datosUsuarioSeleccionados.current.length > 0 || patologiasSeleccionadas.current.length > 0 || medicamentosSeleccionados.current.length > 0 || alergiasSeleccionadas.current.length > 0 || limitacionesSeleccionadas.current.length > 0 ? (
                 <>
 
-                  <Text style={styles.tituloContainer}>En este orden se vera y leera tu informacion:</Text>
+                  <Text className="text-rojoIntenso font-semibold">En este orden se vera y leera tu informacion:</Text>
                   {datosUsuarioSeleccionados.current.map((dato, index) => (
-                    <View style={styles.textContainer} key={index}>
+                    <View className="text-negro font-semibold mt-5" key={index}>
                       {Object.entries(dato).map(([key, value]) => (
                         <Text key={index}>{`${transformKey(key)}: ${value}`}</Text>
                       ))}

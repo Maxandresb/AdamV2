@@ -221,21 +221,21 @@ export default function Emergencias ()  {
 
 
   return (
-    <ScrollView className="flex-1  p-5 space-y-5 bg-beige">
+    <ScrollView className="flex-1  p-5 space-y-5 bg-grisclaro">
       <View className="flex-row h-56 justify-around space-x-10 px-5">
-        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await llamada_centro()}>
-          <Text className="text-xl text-damasco text-center font-bold">Llamar a centro de salud</Text>
+        <TouchableOpacity className="bg-rojoIntenso rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await llamada_centro()}>
+          <Text className="text-xl text-celeste text-center font-bold">Llamar a centro de salud</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() =>  compartir_ubicacion()}>
-          <Text className="text-xl text-damasco text-center font-bold">Compartir ubicación </Text>
+        <TouchableOpacity className="bg-rojoIntenso rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() =>  compartir_ubicacion()}>
+          <Text className="text-xl text-celeste text-center font-bold">Compartir ubicación </Text>
         </TouchableOpacity>
 
         
       </View>
       <View className="flex-row h-56 justify-around space-x-10 px-5">
-        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await llamada_contacto()}>
-          <Text className="text-xl text-damasco text-center font-bold">Llamar contacto emergencia</Text>
+        <TouchableOpacity className="bg-rojoIntenso rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await llamada_contacto()}>
+          <Text className="text-xl text-celeste text-center font-bold">Llamar contacto emergencia</Text>
         </TouchableOpacity>
         <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await datos_medicos()}>
           <Text className="text-xl text-damasco text-center font-bold">Mostrar datos médicos</Text>
@@ -266,21 +266,14 @@ export default function Emergencias ()  {
                         centroMedSeleccionado.current = {};
 
                       }}
-                      style={[styles.damascoButton, {padding:'5%' , margin:'2%'}]} // Agrega los estilos que desees aquí
+                      style={styles.rojoIntensoButton} // Agrega los estilos que desees aquí
                     >
-                      <Text >{`Centro: ${centro.NombreOficial}`}</Text>
+                      <Text style={styles.celesteText}>{`Centro: ${centro.NombreOficial}`}</Text>
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
-                
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  
-                  onPress={() => {
-                    setModalNCMVisible(false);
-                  }}
-                >
-                  <Text style={styles.buttonText}>Cerrar</Text>
+                <TouchableOpacity style={styles.closeButton} onPress={() => {setModalNCMVisible(false);}}>
+                  <Text style={styles.rojoIntensoText}>Cerrar</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -319,10 +312,10 @@ export default function Emergencias ()  {
                       contactoEmSeleccionado.current = {};
 
                     }}
-                    style={[styles.damascoButton, {padding:'8%' , margin:'2%'}]} // Agrega los estilos que desees aquí
+                    style={[styles.rojoIntensoButton, {padding:'8%' , margin:'2%'}]} // Agrega los estilos que desees aquí
                   >
                    
-                   <Text>
+                   <Text className="text-celeste font-semibold">
                     {contacto.nombreCompleto !== null && `Contacto: ${contacto.nombreCompleto}`}
                     {contacto.nombreCompleto !== null && contacto.alias !== null && ' y '}
                     {contacto.alias !== null && `Alias: ${contacto.alias}`}
@@ -339,7 +332,7 @@ export default function Emergencias ()  {
                     setMensaje(false)
                   }}
                 >
-                  <Text style={styles.buttonText}>Cerrar</Text>
+                  <Text style={styles.rojoIntensoText}>Cerrar</Text>
                 </TouchableOpacity>
 
               </View>

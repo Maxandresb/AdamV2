@@ -37,14 +37,15 @@ const Tab = createBottomTabNavigator();
 function MyTabs(){
   return(
     <Tab.Navigator  initialRouteName="Principal" screenOptions={{headerShown:false, 
-      tabBarActiveColor: '#f9a79c',
-      tabBarLabelStyle: {color: '#fad9a0', fontWeight: 'bold', fontSize: 12, marginBottom: 5},
+      tabBarActiveBackgroundColor: '#a9a9a9',
+      tabBarActiveTintColor: '#000000',
+      tabBarLabelStyle: {color: '#ff3e45', fontWeight: 'bold', fontSize: 12, marginBottom: 5},
     tabBarStyle:{
-      backgroundColor: "#fa614f",  
+      backgroundColor: "#cceaf5",  
       height: "10%"}}}>
        <Tab.Screen name="Emergencias" component={Emergencias} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/sos.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} /> 
-      <Tab.Screen name="Principal" component={PrincipalScreen} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/conversation_icon.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
-      <Tab.Screen name="Recordatorios" component={Recordatorios} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/calendar_icon.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
+      <Tab.Screen name="Principal" component={PrincipalScreen} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/chat_icon_red.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
+      <Tab.Screen name="Recordatorios" component={Recordatorios} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/calendar_icon_red.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
       
     </Tab.Navigator>
   )
@@ -54,12 +55,12 @@ function PrincipalStack() {
   return (
     <Drawer.Navigator initialRouteName="ADAM" screenOptions={{
 
-      drawerActiveTintColor: '#fa614f',
-      drawerActiveBackgroundColor: '#fad9a0',
-      drawerInactiveTintColor: '#fad9a0',
+      drawerActiveTintColor: '#cceaf5',
+      drawerActiveBackgroundColor: '#ff3e45',
+      drawerInactiveTintColor: '#ff3e45',
 
       drawerStyle: {
-        backgroundColor:"#fa614f",
+        backgroundColor:"#cceaf5",
         },
       
       drawerItemStyle: {
@@ -68,8 +69,21 @@ function PrincipalStack() {
 
       drawerLabelStyle: {
         fontWeight: 'bold',
-        fontSize: 25
-      }
+        fontSize: 25,
+        
+      },
+
+      headerStyle: {
+        backgroundColor: '#ff3e45',
+        
+      },
+
+      headerTitleStyle: {
+        color: '#cceaf5'
+      },
+
+      
+
 
       }}>
       <Drawer.Screen name="ADAM" component={MyTabs} />
@@ -82,7 +96,15 @@ function PrincipalStack() {
 const PerfilNestedStack = createNativeStackNavigator();
 function PerfilNestedScreen() {
   return (
-    <PerfilNestedStack.Navigator>
+    <PerfilNestedStack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor: '#cceaf5'
+      },
+
+      headerTitleStyle: {
+        color: '#ff3e45'
+      }
+    }}>
       <PerfilNestedStack.Screen name="Perfil" component={Perfil} />
       <PerfilNestedStack.Screen name="Datos de usuario" component={DatosUsuario} />
       <PerfilNestedStack.Screen name="Alergias" component={Alergias} />

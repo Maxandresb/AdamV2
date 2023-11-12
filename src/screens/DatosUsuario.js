@@ -86,130 +86,130 @@ export default function DatosUsuario() {
   };
 
   return (
-    <ScrollView className="flex-1 p-5 bg-damasco">
+    <ScrollView className="flex-1 p-5 bg-grisClaro">
       {data.map((item, index) => (
         <View key={index}>
           <View className="flex-row self-center justify-center w-auto">
-            <TouchableOpacity className="bg-redcoral p-4 m-2 rounded-lg shadow-lg shadow-negro" onPress={() => { setShowMessage(true), handlePress() }}>
-              <Text className="self-center text-damasco font-bold text-lg">{isEditing ? 'Guardar cambios' : 'Modificar Datos Personales'}</Text>
+            <TouchableOpacity className="bg-rojoIntenso p-4 m-2 rounded-lg shadow-lg shadow-negro" onPress={() => { setShowMessage(true), handlePress() }}>
+              <Text className="self-center text-celeste font-bold text-lg">{isEditing ? 'Guardar cambios' : 'Modificar Datos Personales'}</Text>
             </TouchableOpacity>
           </View>
           {showMessage && isEditing && (
-            <View className="bg-azulnegro py-4 mb-4 rounded-full shadow-lg shadow-negro">
-              <Text className="text-azul font-bold text-sm text-center">Ahora puede tocar cada recuadro para modificar sus datos</Text>
+            <View className="bg-negro py-4 mb-4 rounded-full shadow-lg shadow-negro">
+              <Text className="text-celeste font-bold text-sm text-center">Ahora puede tocar cada recuadro para modificar sus datos</Text>
             </View>
           )}
           {isEditing ? (
             <>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Primer Nombre:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Primer Nombre:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setPnombre}
                 value={pnombre}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Segundo Nombre:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Segundo Nombre:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setSnombre}
                 value={snombre}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Primer Apellido:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Primer Apellido:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setPapellido}
                 value={papellido}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Segundo Apellido:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Segundo Apellido:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setSapellido}
                 value={sapellido}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Alias:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Alias:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setAlias}
                 value={alias}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Género:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Género:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setGenero}
                 value={genero}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Tipo de Sangre:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Tipo de Sangre:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setTipo_sangre}
                 value={tipo_sangre}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Fecha de Nacimiento:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Fecha de Nacimiento:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setFecha_nacimiento}
                 value={fecha_nacimiento}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Alergias:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Alergias:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setAlergias}
                 value={alergias}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Cronico:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Cronico:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setCronico}
                 value={cronico}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Donante:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Donante:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setDonante}
                 value={donante}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Limitación Física:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Limitación Física:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-3 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setLimitacion_fisica}
                 value={limitacion_fisica}
               />
-              <Text className="mb-3 text-redcoral text-lg font-bold">Toma Medicamentos:</Text>
+              <Text className="mb-3 text-gris text-lg font-bold">Toma Medicamentos:</Text>
               <TextInput
-                className="h-10 border-2 border-salmon mb-10 text-azulnegro pl-4 bg-beige shadow-md shadow-negro rounded-md placeholder:font-bold"
+                className="h-10 border-b-2 border-negro mb-10 text-gris pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
                 onChangeText={setToma_medicamentos}
                 value={toma_medicamentos}
               />
             </>
           ) : (
             <>
-              <Text className="mb-3 mt-5 text-redcoral text-lg font-bold">RUT:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.rut}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Primer Nombre:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.pnombre}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Segundo Nombre:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.snombre}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Primer Apellido:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.papellido}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Segundo Apellido:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.sapellido}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Alias:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.alias}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Género:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.genero}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Tipo de Sangre:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.tipo_sangre}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Fecha de Nacimiento:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.fecha_nacimiento}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Alergias:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.alergias}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Cronico:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.cronico}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Donante:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.donante}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Limitación Física:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.limitacion_fisica}</Text>
-              <Text className="mb-3 text-redcoral text-lg font-bold">Toma Medicamentos:</Text>
-              <Text className="mb-4 border-b border-dashed border-azulnegro pb-2 text-azulnegro font-semibold">{item.toma_medicamentos}</Text>
+              <Text className="mb-3 mt-5 text-rojoIntenso text-lg font-bold">RUT:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.rut}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Primer Nombre:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.pnombre}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Segundo Nombre:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.snombre}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Primer Apellido:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.papellido}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Segundo Apellido:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.sapellido}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Alias:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.alias}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Género:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.genero}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Tipo de Sangre:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.tipo_sangre}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Fecha de Nacimiento:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.fecha_nacimiento}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Alergias:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.alergias}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Cronico:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.cronico}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Donante:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.donante}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Limitación Física:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.limitacion_fisica}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Toma Medicamentos:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.toma_medicamentos}</Text>
               <View style={styles.espacioContainer}>
             </View>
             </>

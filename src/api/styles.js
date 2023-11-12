@@ -1,6 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
+import { StyleSheet } from 'react-native';
 
 /*
 import styles from '../api/styles';
@@ -12,10 +10,8 @@ import styles from '../api/styles';
 
 export default StyleSheet.create({
     msjContainer:{
-        backgroundColor: '#f5f1c4',
-        color: '#233050',
-        borderColor: '#f9a79c',
-        borderWidth: 1,
+        backgroundColor: '#a9a9a9',
+        color: '#cceaf5',
         padding: 10,
         borderRadius: 10,
         margin: 4,
@@ -27,7 +23,7 @@ export default StyleSheet.create({
     },
     encabezadoInput: {
         marginBottom: 5,
-        color: '#fa614f',
+        color: '#cceaf5',
         fontSize: 18,
         flex: 1,
         textAlign: 'left',
@@ -35,7 +31,7 @@ export default StyleSheet.create({
     },
     encabezadoOutput: {
         marginBottom: 5,
-        color: '#fa614f',
+        color: '#cceaf5',
         fontSize: 18,
         flex: 1,
         textAlign: 'right',
@@ -43,7 +39,7 @@ export default StyleSheet.create({
     },
     inputTexto: {
         marginBottom: 20,
-        color: '#233050',
+        color: '#efefef',
         paddingLeft: 18,
         paddingTop: 10,
         flex: 1,
@@ -51,7 +47,7 @@ export default StyleSheet.create({
     },
     outputTexto: {
         marginBottom: 20,
-        color: '#233050',
+        color: '#efefef',
         paddingRight: 18,
         paddingTop: 10,
         flex: 1,
@@ -68,14 +64,19 @@ export default StyleSheet.create({
     },
     input: {
         height: 45,
-        borderColor: '#f9a79c',
-        backgroundColor: '#f5f1c4',
-        borderWidth: 2,
+        borderBottomColor: '#000000',
+        backgroundColor: '#cceaf5',
+        borderBottomWidth: 2,
         borderRadius: 5,
         marginBottom: 10,
-        color: '#233050',
+        color: '#000000',
         fontWeight: 'bold',
         paddingLeft: 18,
+        shadowColor: '#000000',
+        shadowOffset: {width: -2, height: 2},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 8
     },
     encabezado: {
         marginTop: 0,
@@ -89,7 +90,7 @@ export default StyleSheet.create({
         height: 40,
         borderWidth: 0,
         marginBottom: 0,
-        color: '#233050',
+        color: '#000000',
         paddingLeft: 3,
         paddingTop: 10
     },
@@ -101,8 +102,8 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
     },
-    redcoralButton: {
-        backgroundColor: '#fa614f',
+    celesteButton: {
+        backgroundColor: '#cceaf5',
         padding: 18,
         borderRadius: 5,
         margin: 2.5,
@@ -113,9 +114,9 @@ export default StyleSheet.create({
         elevation: 5
     },
 
-    damascoButton: {
-        backgroundColor: '#fad9a0',
-        padding: 10,
+    rojoIntensoButton: {
+        backgroundColor: '#ff3e45',
+        padding: 18,
         borderRadius: 5,
         margin: 2.5,
         shadowColor: 'black',
@@ -126,58 +127,85 @@ export default StyleSheet.create({
     },
 
     buttonText: {
-        color: '#fad9a0',
+        color: '#cceaf5',
         fontWeight: 'bold',
         textAlign: 'center'
 
     },
     buttonText2: {
-        color: 'black',
+        color: '#ff3e45',
         fontWeight: 'bold',
         textAlign: 'center'
 
     },
     deleteButton: {
-        backgroundColor: '#233050',
+        backgroundColor: '#cceaf5',
         borderRadius: 5,
         padding: 18,
         margin: 2.5,
+        shadowColor: 'black',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5
 
     },
     lineaContainer3: {
-        borderBottomColor: 'black',
+        borderBottomColor: 'a9a9a9',
         borderBottomWidth: 1,
         marginTop: 10,
+        backgroundColor: '#a9a9a9'
+    },
+
+    content2: {
+        color: '#cceaf5',
+        backgroundColor: '#a9a9a9',
+        borderRadius: 15,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginVertical: 10,
+        shadowColor: 'black',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5
+
+    },
+
+    content3: {
+        color: '#ff3e45'
     },
 
     deleteButtonText: {
         color: '#96b9f3',
         fontWeight: 'bold',
-        textAlign: 'center'
+        textAlign: 'center',
+        
     },
 
     lineaContainer: {
-        borderBottomColor: '#233050',
+        borderBottomColor: '#a9a9a9',
         borderBottomWidth: 1,
         marginTop: 20,
         marginBottom: 20,
     },
     lineaContainer2: {
-        borderBottomColor: '#233050',
+        borderBottomColor: '#000000',
         borderBottomWidth: 1,
         margin: 10,
 
     },
     espacioContainer: {
-        borderBottomColor: '#233050',
+        borderBottomColor: '#a9a9a9', //gris
         borderBottomWidth: 1,
         marginTop: 10,
         paddingTop: 10,
+        marginBottom: 10
     },
     //-----------
     container: {
         flex: 1,
-        backgroundColor: '#fad9a0',
+        backgroundColor: '#efefef',
         padding: 20,
     },
     container2: {
@@ -187,6 +215,23 @@ export default StyleSheet.create({
         paddingBottom: 30,
 
     },
+
+    containerDatosSeleccionados: {
+        backgroundColor: '#a9a9a9'
+    },
+
+    scrollDatosVocalizar: {
+        height: '100%',
+        backgroundColor: '#efefef'
+    },
+
+    containerDatosVocalizar: {
+        flex: 1,
+        backgroundColor: '#efefef',
+        padding: 30,
+        height: '100%'
+    },
+
     buttoningresar: {
         backgroundColor: 'green',
         padding: 10,
@@ -200,16 +245,17 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         paddingVertical: '18%',
+        paddingVertical: 100
 
     },
     modalView: {
-        backgroundColor: '#fa614f',
+        backgroundColor: '#efefef',
         padding: 20,
         borderRadius: 10,
         width: '90%'
     },
     header: {
-        color: '#fad9a0',
+        color: '#ff3e45',
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10
@@ -223,7 +269,20 @@ export default StyleSheet.create({
     },
 
     closeButton: {
-        backgroundColor: '#233050',
+        backgroundColor: '#cceaf5',
+        margin: 2.5,
+        padding: 18,
+        justifyContent: 'center',
+        borderRadius: 5,
+        shadowColor: 'black',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5
+    },
+
+    grisButton: {
+        backgroundColor: '#a9a9a9',
         margin: 2.5,
         padding: 10,
         justifyContent: 'center',
@@ -234,15 +293,22 @@ export default StyleSheet.create({
         shadowRadius: 3,
         elevation: 5
     },
+
     //-----------
     inputPicker: {
         height: 45,
-        backgroundColor: '#f5f1c4',
-        borderColor: '#f9a79c',
+        backgroundColor: '#cceaf5',
+        borderBlockColor: '#000000',
         borderWidth: 2,
         borderRadius: 5,
         marginBottom: 20,
         justifyContent: 'center',
+        shadowColor: 'black',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5,
+        color: '#000000'
     },
 
     pickerItem: {
@@ -260,11 +326,11 @@ export default StyleSheet.create({
     },
     inputPicker2: {
         height: 40,
-        borderColor: 'black',
-        borderWidth: 1,
+        borderBlockEndColor: 'black',
+        borderBlockEndWidth: 1,
         marginBottom: 20,
-        color: 'gray',
-        alignItems: 'flex-start',
+        color: '#000000',
+        alignItems: 'center',
         textAlignments: 0,
         itemStyle: { paddingLeft: 0},
         paddingLeft: 0,
@@ -307,14 +373,20 @@ export default StyleSheet.create({
         backgroundColor: "#fa614f"
     },
 
-    redcoralText: {
-        color: '#fa614f',
+    rojoIntensoText: {
+        color: '#ff3e45',
         textAlign: 'center',
         fontWeight: 'bold'
     },
 
-    azulText: {
-        color: '#96b9f3',
+    celesteText: {
+        color: '#cceaf5',
+        textAlign: 'center',
+        fontWeight: 'bold'
+    },
+
+    negroText: {
+        color: '#000000',
         textAlign: 'center',
         fontWeight: 'bold'
     },
@@ -328,7 +400,7 @@ export default StyleSheet.create({
     },
 
     alertContainer: {
-        backgroundColor: '#fa614f',
+        backgroundColor: '#ff3e45',
         padding: 15,
         borderRadius: 15,
         shadowColor: 'black',
@@ -355,10 +427,11 @@ export default StyleSheet.create({
     },
 
     alertText: {
-        color: '#fad9a0',
+        color: '#cceaf5',
         marginBottom: 40,
         fontSize: 24,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        fontWeight: 'bold'
     },
 
     alertButtonText: {
@@ -367,176 +440,64 @@ export default StyleSheet.create({
         fontWeight: 'bold'
     },
 
+    recordatorioContainer: {
+        backgroundColor: "#fa614f"
+    },
 
-    //perfilUsuario
-    containerPerfil: {
-        backgroundColor: 'white',
-    },
-    rowPerfil: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    alingRowPerfil: {
-        width: '45%',
-        height: height * 0.25,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#DDDDDD',
-        padding: 10,
-        margin: 10
-    },
-    alingRowPerfilLeft: {
-        width: '40%',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        marginLeft:10
-
-    },
-    alingRowPerfilRight: {
-        width: '40%',
-        alignItems: 'flex-start',
-
-    },
-    iconPerfil: {
-        width: 20,
-        height: 20,
-        marginBottom: 10,
-    },
-    buttonPerfil: {
-        backgroundColor: 'white',
-        padding: 18,
-        borderRadius: 5,
-        margin: 2.5,
+    customSendChat: {
+        backgroundColor:'#000000',
+        width: 60,
+        height: 35,
+        alignSelf: 'center',
+        borderRadius: 8,
         shadowColor: 'black',
-        shadowRadius: 5,
-        shadowOpacity: 0.5,
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
         elevation: 5,
+        
+        
     },
-    buttonTextPerfil: {
-        color: 'green',
+
+    customSendButtonText: {
+        Color: '#ffffff',
         fontWeight: 'bold',
-        textAlign: 'center',
-        fontSize: 18,
+        alignSelf: 'center'
     },
 
-    content2: {
-        color: 'black',
-        marginStart: 18,
-    },
-    content3: {
-        color: 'black',
-        marginBottom: 5,
-    },
-    lineaVertical: {
-        width: 1,
-        borderBottomColor: 'black',
-        borderWidth: 0.8,
-        height: height * 0.05,
-
-    },
-    container3: {
-        flex: 1,
-        backgroundColor: 'white',
-        padding: 10,
-        shadowColor: 'black',
-        shadowRadius: 5,
-        shadowOpacity: 0.5,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 5,
-
-    },
-    lineaContainer3: {
-        borderBottomColor: 'gray',
-        borderBottomWidth: 1,
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 18,
-    },
-    lineaContainer4: {
-        borderBottomColor: 'green',
-        borderBottomWidth: 1,
-        marginTop: 10,
-        marginBottom: 10,
-
+    verticalButtonsContainer: {
+        width: '100%',
+        marginTop: 15,
     },
 
-    centeredText: {
-        justifyContent: 'center',
-        alignItems: 'center'
+    textContainer: {
+        backgroundColor: '#cceaf5' //celeste
     },
-    lineaVertical2: {
-        width: 1,
-        borderBottomColor: 'black',
-        borderWidth: 1,
-        height: height * 0.03,
-        marginLeft:15
-    },
-    espacioContainer2: {
-        borderBottomColor: '#fff',
-        borderBottomWidth: 1,
-        marginTop: height * 0.15,
-    },
-    espacioContainer3: {
-        borderBottomColor: '#fff',
-        borderBottomWidth: 1,
-        marginTop: height * 0.03,
-    },
-    centeredText2: {
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+
     rowPerfil2: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 10,
+        backgroundColor: '#ff3e45', //rojoIntenso
+        borderRadius: 10,
+        
+    },
 
+    buttonPerfil: {
+        backgroundColor: '#ff3e45',
+        borderRadius: 15,
+        height: 35,
+        shadowColor: 'black',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5,
+        justifyContent: 'center',
+        marginTop: 12
+        
     },
-    centeredText3: {
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-    },
-    alingRowPerfilRight2: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
-    alingRowPerfilLeft2: {
-        width:'80%',
-        justifyContent: 'flex-start'
-    },
-    //SelecDatosVocalizar
-    selectedText: {
-        backgroundColor: 'lightgreen',
-    },
-    unselectedText: {
-        backgroundColor: 'white',
-    },
-    tituloContainer:{
-        fontSize:16,
-        fontWeight:'bold',
-        marginBottom:10,
-        marginTop:10,
-        textAlign:'center'
-    },
-    textContainer:{
-        fontSize:14,
-        marginBottom:2,
-        marginTop:2,
-        marginLeft:10
-    },
-    espacioContainer4: {
-        borderBottomColor: '#fff',
-        borderBottomWidth: 1,
-        marginTop: height * 0.079,
-    },
-    espacioContainer5: {
-        borderBottomColor: '#fff',
-        borderBottomWidth: 1,
-        marginTop: height * 0.124,
-    },
-    espacioContainer6: {
-        borderBottomColor: '#fff',
-        borderBottomWidth: 1,
-        marginTop: height * 0.124,
-    },
+
+    buttonTextPerfil: {
+        color: '#cceaf5', //celeste
+        alignSelf: 'center',
+        
+    }
+
 })

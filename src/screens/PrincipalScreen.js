@@ -3,7 +3,7 @@
 import { Button, Modal, View, Text, Image, SafeAreaView, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import React, { useRef, useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { GiftedChat, InputToolbar } from 'react-native-gifted-chat'
+import { GiftedChat, InputToolbar, Day } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
 import * as Speech from 'expo-speech';
 
@@ -21,6 +21,8 @@ import * as FileSystem from 'expo-file-system';
 import { format } from 'date-fns';
 import { obtenerClima } from "../api/clima";
 import customtInputToolbar from '../api/customInputToolbar';
+import customSend from '../api/customSendMessage';
+import customChatMessage from '../api/customChatMessage';
 
 export default function PrincipalScreen() {
   const [inputUsuario, setinputUsuario] = useState('')
@@ -471,7 +473,7 @@ async function compartir_ubicacion(){
   // **********************************************************************************************************************************************************************************
   return (
     <SafeAreaView className="flex-1 justify-center bg-white">
-      <View className="flex-1 bg-damasco">
+      <View className="flex-1 bg-grisClaro">
         <View className="flex-row justify-center">
           {/*<Image 
       source={require('../../assets/images/iron-adam.png')}
@@ -480,10 +482,18 @@ async function compartir_ubicacion(){
         </View>
         {/*<View><Text className="text-center font-bold pt-0 -mt-4 mb-2 ">Chat ADAM</Text></View>*/}
         <View className="flex-1 flex-row justify-center">
-          <View className="rounded-3xl p-2 w-80 mt-2 bg-beige shadow-md shadow-negro">
+          <View className="rounded-3xl p-2 w-80 mt-2 bg-celeste shadow-md shadow-negro">
             <GiftedChat
               renderInputToolbar={props => customtInputToolbar(props)}
+              renderSend={props => customSend(props)}
+              renderMessage={props => customChatMessage(props)}
               messages={mensajes}
+              renderDay= {props => (
+                <Text style={{ color: '#ff3e45', fontSize: 12 }}>
+                    {props.currentMessage.createdAt.getDate()}
+                </Text>
+                
+              )}
               placeholder='Escriba su mensaje...'
               renderUsernameOnMessage={false}
               onSend={(input) => obtenerRespuesta(input)}
@@ -494,7 +504,7 @@ async function compartir_ubicacion(){
             <View>
               {respondiendo ? (
                 <>
-                  <Text className="bg-azulnegro text-celeste text-center rounded-full my-2 py-1 shadow-md shadow-negro">{mensajeProcesamiento}</Text>
+                  <Text className="bg-negro text-blanco text-center rounded-full my-2 py-1 shadow-md shadow-negro">{mensajeProcesamiento}</Text>
                 </>
               ) : (
                 <>
@@ -507,24 +517,24 @@ async function compartir_ubicacion(){
         <View className="flex justify-center items-center">
           {
             cargando ? (
-              <Image className="w-12 h-12 bg-azulnegro py-3 rounded-full my-3"
+              <Image className="w-12 h-12 bg-negro py-3 rounded-full my-3"
                 source={require('../../assets/images/processingQuestion.gif')}
               />
             ) :
               hablando ? (
-                <TouchableOpacity className="bg-salmon w-20 h-20 my-3 rounded-full justify-center shadow-lg shadow-negro" onPress={detenerGrabacion}>
+                <TouchableOpacity className="bg-rojoIntenso w-20 h-20 my-3 rounded-full justify-center shadow-lg shadow-negro" onPress={detenerGrabacion}>
                   {/* recording stop button */}
                   <Image
                     className="w-12 h-12 self-center"
-                    source={require('../../assets/images/micRecording.gif')}
+                    source={require('../../assets/images/micRecording_celeste.gif')}
                   />
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity className="bg-beige w-20 h-20 my-3 rounded-full justify-center shadow-lg shadow-negro" onPress={()=>{iniciarGrabacion().then(setTimeout(()=> detenerGrabacion, 1000));}} >
+                <TouchableOpacity className="bg-celeste w-20 h-20 my-3 rounded-full justify-center shadow-lg shadow-negro" onPress={()=>{iniciarGrabacion().then(setTimeout(()=> detenerGrabacion, 1000));}} >
                   {/* recording start button */}
                   <Image
                     className="w-10 h-10 self-center"
-                    source={require('../../assets/images/startRecord.png')}
+                    source={require('../../assets/images/record_red.png')}
                   />
                 </TouchableOpacity>
               )
@@ -643,9 +653,9 @@ async function compartir_ubicacion(){
             vozAdam && (
               <TouchableOpacity
                 onPress={detenerVoz}
-                className="bg-red-400 rounded-3xl p-2 absolute left-10"
+                className="bg-negro rounded-3xl p-3 absolute left-10 shadow-lg shadow-black"
               >
-                <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice-off" size={24} color="black" /></Text>
+                <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice-off" size={28} color="#ff3e45" /></Text>
               </TouchableOpacity>
             )
           }
