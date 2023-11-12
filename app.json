@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "AdamV2",
+    "name": "Adam",
     "slug": "AdamV2",
-    "version": "1.0.0",
+    "version": "0.1.1",
     "orientation": "portrait",
     "icon": "./assets/images/iconAdam.png",
     "userInterfaceStyle": "light",
@@ -33,19 +33,8 @@
         "WRITE_CONTACTS",
         "READ_PROFILE",
         "USE_FULL_SCREEN_INTENT"
-      ],
-      "notification": {
-        "channels": [
-          {
-            "name": "default",
-            "sound": true,
-            "priority": "max",
-            "autoDismiss": false, 
-            "expires": "never" 
-          }
-          
-        ]
-      }
+      ]
+      
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -57,17 +46,8 @@
     },
     "plugins": [
       [
-        "expo-notifications",
-        {
-
-          "icon": "./assets/images/bot.png",
-          "color": "#ffffff",
-          "sounds": [
-            "./assets/sounds/click.mp3"
-            
-          ],
-          "mode": "development"
-        }
+        "expo-notifications"
+        
       ]
     ]
   }

@@ -22,7 +22,7 @@ if (Platform.OS === 'android') {
   });
 }
 
-function calcularProximaFecha(dia, hora) {
+export function calcularProximaFecha(dia, hora) {
   if (dia.includes('Unico')) {
     // Obtén la fecha y hora actuales
     let ahora = new Date();
@@ -64,14 +64,14 @@ function calcularProximaFecha(dia, hora) {
     return proximaFecha;
   }
 }
-export { calcularProximaFecha };
+
 
 export async function MostrarNotificacionesGuardadas() {
   let scheduledNotifications = await Notifications.getAllScheduledNotificationsAsync();
   console.log('Notificaciones programadas: ', scheduledNotifications);
 }
 
-async function scheduleRecordatorioNotification(recordatorio) {
+export async function scheduleRecordatorioNotification(recordatorio) {
   console.log('recordatorio: ', recordatorio)
   // Verifica los permisos de notificación
   let permissions = await Notifications.getPermissionsAsync();
@@ -150,7 +150,7 @@ async function scheduleRecordatorioNotification(recordatorio) {
   }
 }
 
-export { scheduleRecordatorioNotification };
+
 
 
 // Añade un escuchador para las respuestas a las notificaciones

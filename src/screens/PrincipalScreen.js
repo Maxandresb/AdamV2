@@ -15,7 +15,7 @@ import { generarRespuesta, crearRespuesta, secondApiCall, firstApiCall, whisperC
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
 import { enviarMensaje, realizarLlamada } from "../api/llamada";
-import { scheduleRecordatorioNotification, MostrarNotificacionesGuardadas } from "../api/notificaciones";
+
 import styles from '../api/styles';
 import * as FileSystem from 'expo-file-system';
 import { format } from 'date-fns';
@@ -23,6 +23,7 @@ import { obtenerClima } from "../api/clima";
 import customtInputToolbar from '../api/customInputToolbar';
 import customSend from '../api/customSendMessage';
 import customChatMessage from '../api/customChatMessage';
+import { MostrarNotificacionesGuardadas, scheduleRecordatorioNotification } from "../api/notificaciones";
 
 export default function PrincipalScreen() {
   const [inputUsuario, setinputUsuario] = useState('')

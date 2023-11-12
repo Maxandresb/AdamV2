@@ -9,11 +9,12 @@ import { useIsFocused } from '@react-navigation/native'
 import styles from '../api/styles';
 import moment from 'moment';
 import 'moment/locale/es';
-import { scheduleRecordatorioNotification } from "../api/notificaciones";
+
 import * as Notifications from 'expo-notifications';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { CheckBoxRapido } from '../api/checkBoxRapido';
 import * as SQLite from 'expo-sqlite';
+import { scheduleRecordatorioNotification } from "../api/notificaciones";
 
 
 const db = SQLite.openDatabase('adamdb.db');
