@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { GiftedChat, InputToolbar, Day } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
 import * as Speech from 'expo-speech';
-
+import { useNavigation } from "@react-navigation/native";
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // Creaciones propias
@@ -51,6 +51,7 @@ export default function PrincipalScreen() {
 
   const [mensajeProcesamiento, setMensajeProcesamiento] = useState('');
   const [respondiendo, setRespondiendo] = useState(false);
+  const navigation = useNavigation();
 
   async function iniciarGrabacion() {
     try {
@@ -342,9 +343,9 @@ export default function PrincipalScreen() {
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
           
           }else if (function_name ==='Compartir_Ubicacion'){
-            compartir_ubicacion()
-
-
+            let answer = await compartir_ubicacion(prompt)
+            
+            respuesta = await generarRespuesta('Compartir_Ubicacion', answer, prompt)
           }else {
             console.log('FUNCION NO ENCONTRADA')
             function_name = "responder"
@@ -436,12 +437,17 @@ export default function PrincipalScreen() {
 /* funciones de emergencias */
 
 async function compartir_ubicacion(){
+  let answerOK = 'Serás redirigido para compartir ubicación'
+  let answerError = 'Por favor agrega contactos de emergencia para compartir tu ubicación'
+  let answerMultiple = 'Selecciona un contacto para compartir tu ubicación'
+
   contactosEmergencia.current = await obtenerContactosEmergencia();
-  
+
   if(contactosEmergencia.current.length == 1  ){
     let contacto= contactosEmergencia.current[0]
     let numero= contacto.numero.replace(/\D/g, '')
     enviarMensaje(numero)
+    return answerOK
   }
   else if (contactosEmergencia.current.length == 0 || contactosEmergencia.current.length == undefined){
     
@@ -459,12 +465,15 @@ async function compartir_ubicacion(){
           }
       ]
   );
+  return answerError;
   }
   else  {
     
     console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
+    
     setMensaje(true)
     setModalCEVisible(true);
+    return answerMultiple;
   }
 }
 
@@ -541,7 +550,7 @@ async function compartir_ubicacion(){
           }
          
 {/* Modal contactos emergencia */}
-          <Modal
+<Modal
             animationType="slide"
             transparent={true}
             visible={modalCEVisible}
@@ -572,10 +581,10 @@ async function compartir_ubicacion(){
                       contactoEmSeleccionado.current = {};
 
                     }}
-                    style={[styles.damascoButton, {padding:'8%' , margin:'2%'}]} // Agrega los estilos que desees aquí
+                    style={[styles.rojoIntensoButton, {padding:'8%' , margin:'2%'}]} // Agrega los estilos que desees aquí
                   >
                    
-                   <Text>
+                   <Text className="text-celeste font-semibold">
                     {contacto.nombreCompleto !== null && `Contacto: ${contacto.nombreCompleto}`}
                     {contacto.nombreCompleto !== null && contacto.alias !== null && ' y '}
                     {contacto.alias !== null && `Alias: ${contacto.alias}`}
@@ -592,7 +601,7 @@ async function compartir_ubicacion(){
                     setMensaje(false)
                   }}
                 >
-                  <Text style={styles.buttonText}>Cerrar</Text>
+                  <Text style={styles.rojoIntensoText}>Cerrar</Text>
                 </TouchableOpacity>
 
               </View>

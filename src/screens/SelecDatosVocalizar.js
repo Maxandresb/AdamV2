@@ -12,10 +12,10 @@ import { obtenerRut } from "../api/sqlite"
 const db = SQLite.openDatabase('adamdb.db');
 const PatologiaCronica = ({ index, patologia, showPatologia, pressPatologia, patologias, pressSelectPatologia }) => {
   return (
-    <View className="bg-rojoIntenso">
+    <View>
       {showPatologia && (
         <>
-          <TouchableOpacity className='bg-rojoIntenso'
+          <TouchableOpacity 
             style={patologia.Nombre_patologia.isSelected ? styles.selectedText : styles.unselectedText}
             onPress={() => pressSelectPatologia(index, 'Nombre_patologia')}
           >
@@ -775,8 +775,8 @@ export default function SelecDatosVocalizar({ navigation }) {
               {showUsuario && (
                 <>
                   <View style={styles.espacioContainer} ></View>
-                  <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Datos de usuario' }), setShowUsuario(!showUsuario) }}>
-                    <Text style={styles.buttonText}>Modificar datos</Text>
+                  <TouchableOpacity style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Datos de usuario' }), setShowUsuario(!showUsuario) }}>
+                    <Text style={styles.rojoIntensoText}>Modificar datos</Text>
                   </TouchableOpacity>
                 </>
               )}
@@ -835,8 +835,8 @@ export default function SelecDatosVocalizar({ navigation }) {
               {showPatologia && (
                 <>
                   <View style={styles.espacioContainer} ></View>
-                  <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}>
-                    <Text style={styles.buttonText}>Añadir o modificar enfermedades</Text>
+                  <TouchableOpacity style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}>
+                    <Text style={styles.rojoIntensoText}>Añadir o modificar enfermedades</Text>
                   </TouchableOpacity>
                 </>
               )}
@@ -900,8 +900,8 @@ export default function SelecDatosVocalizar({ navigation }) {
               {showMedicamento && (
                 <>
                   <View style={styles.espacioContainer} ></View>
-                  <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}>
-                    <Text style={styles.buttonText}>Añadir o modificar medicamentos</Text>
+                  <TouchableOpacity style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}>
+                    <Text style={styles.rojoIntensoText}>Añadir o modificar medicamentos</Text>
                   </TouchableOpacity>
                 </>
               )}
@@ -966,8 +966,8 @@ export default function SelecDatosVocalizar({ navigation }) {
               {showAlergia && (
                 <>
                   <View style={styles.espacioContainer} ></View>
-                  <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}>
-                    <Text style={styles.buttonText}>Añadir o modificar alergias</Text>
+                  <TouchableOpacity style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}>
+                    <Text style={styles.rojoIntensoText}>Añadir o modificar alergias</Text>
                   </TouchableOpacity>
                 </>
               )}
@@ -1031,8 +1031,8 @@ export default function SelecDatosVocalizar({ navigation }) {
               {showLimitacion && (
                 <>
                   <View style={styles.espacioContainer} ></View>
-                  <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}>
-                    <Text style={styles.buttonText}>Añadir o modificar limitaciones</Text>
+                  <TouchableOpacity style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}>
+                    <Text style={styles.rojoIntensoText}>Añadir o modificar limitaciones</Text>
                   </TouchableOpacity>
                 </>
               )}

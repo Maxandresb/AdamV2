@@ -498,6 +498,20 @@ export default StyleSheet.create({
         color: '#cceaf5', //celeste
         alignSelf: 'center',
         
-    }
+    },
+    selectedText: {
+        color: '#cceaf5',
+        backgroundColor: '#cceaf5',
+        borderRadius: 15,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginVertical: 10,
+        shadowColor: 'black',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5
+
+    },
 
 })
