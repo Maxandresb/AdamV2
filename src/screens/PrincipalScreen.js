@@ -443,7 +443,10 @@ export default function PrincipalScreen() {
               renderMessage={props => customChatMessage(props)}
               messages={mensajes}
               renderDay= {props => (
-                <Day {...props} textStyle={{color: '#ff3e45'}}/>
+                <Text style={{ color: '#ff3e45', fontSize: 12 }}>
+                    {props.currentMessage.createdAt.getDate()}
+                </Text>
+                
               )}
               placeholder='Escriba su mensaje...'
               renderUsernameOnMessage={false}

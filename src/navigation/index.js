@@ -38,6 +38,7 @@ function MyTabs(){
   return(
     <Tab.Navigator  initialRouteName="Principal" screenOptions={{headerShown:false, 
       tabBarActiveBackgroundColor: '#a9a9a9',
+      tabBarActiveTintColor: '#000000',
       tabBarLabelStyle: {color: '#ff3e45', fontWeight: 'bold', fontSize: 12, marginBottom: 5},
     tabBarStyle:{
       backgroundColor: "#cceaf5",  
@@ -68,8 +69,21 @@ function PrincipalStack() {
 
       drawerLabelStyle: {
         fontWeight: 'bold',
-        fontSize: 25
-      }
+        fontSize: 25,
+        
+      },
+
+      headerStyle: {
+        backgroundColor: '#ff3e45',
+        
+      },
+
+      headerTitleStyle: {
+        color: '#cceaf5'
+      },
+
+      
+
 
       }}>
       <Drawer.Screen name="ADAM" component={MyTabs} />
@@ -82,9 +96,13 @@ function PrincipalStack() {
 const PerfilNestedStack = createNativeStackNavigator();
 function PerfilNestedScreen() {
   return (
-    <PerfilNestedStack.Navigator options={{
-      tabBarStyle:{
-        backgroundColor: '#ff3e45'
+    <PerfilNestedStack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor: '#cceaf5'
+      },
+
+      headerTitleStyle: {
+        color: '#ff3e45'
       }
     }}>
       <PerfilNestedStack.Screen name="Perfil" component={Perfil} />
