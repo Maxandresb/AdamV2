@@ -1,7 +1,7 @@
 import { Audio } from "expo-av";
 import axios from 'axios';
 import * as SQLite from 'expo-sqlite';
-import { guardarHistoriarChats, obtenerRut } from "../api/sqlite";
+import { guardarHistoriarChats, obtenerContactosAlmacenados, obtenerRut } from "../api/sqlite";
 import { format } from 'date-fns';
 
 
@@ -49,7 +49,7 @@ let function_response;
 let promises = [];
 let FechaHoy = new Date()
 //console.log('Fecha Hoy: ' + FechaHoy)
-
+let contactos = obtenerContactosAlmacenados()
 const functions = [
     {
         "name": "hola",
@@ -132,7 +132,7 @@ const functions = [
     },
     {
         "name": "llamar_contacto",
-        "description": "el usuario solicita llamar a una persona, debes responder con el nombre de la persona a la cual llamara",
+        "description": `el usuario solicita llamar a una persona, debes responder con el nombre de la persona a la cual llamara , es obligatorio mencionar a un contacto para llamar los contactos actuales son  ${contactos}`,
         "parameters": {
             "type": "object",
             "properties": {
@@ -213,18 +213,21 @@ const functions = [
     },
     {
         "name": "clima",
-        "description": "el usuario solicita conocer el clima o informacion relacionada a este, infomracion que pueda entregrar openweathermap, de una zona tipo cuidad pais .Hoy ,mañana,ayer no son ubicaciones ",
+        "description": "el usuario solicita conocer el clima o informacion relacionada a este, infomracion que pueda entregrar openweathermap, de una zona tipo cuidad pais .Hoy ,mañana,ayer no son ubicaciones, 'Clima de hoy' significa el clima de hoydia no de la locacion hoy lo mismo con  'clima de mañana' o 'clima de ayer'",
         "parameters": {
             "type": "object",
             "properties": {
                 "Locacion": {
                     "type": "string",
                     "description": " responde solo en español, indica la ubicacion real  sobre la cual el usuario quiere conocer el clima, hoy ,mañana,ayer no son ubicaciones, solo ubicaciones nada mas ni dias ni tiempo ni otros parametros idealmente ubicaciones tipo (ciudad pais), a menos que exista explicito la locacion responde: No definido",
-                }}}},
-                {
+                }
+            }
+        }
+    },
+    {
         
-                    "name": "informacion_medica_del_usuario",
-        "description": "el usuario solicita obtener sus informacion medicos, debes reconocer frases como 'dimes mi informacion medica', 'dame la informacion de usuario', 'informacion de emergencia' o algo similar",
+        "name": "informacion_medica_del_usuario",
+        "description": "el usuario solicita obtener sus informacion medicos, debes reconocer frases como 'dimes mi informacion medica', 'dame la informacion de usuario', 'informacion de emergencia' , 'Vocaliza mi perfil medico' , 'di mis datos de emergencia' o algo similar",
         "parameters": {
             "type": "object",
             "properties": {
@@ -234,7 +237,34 @@ const functions = [
                 }
             }
         }
+    },
+    {
+        "name": "recomendacion_medica_general",
+        "description": "el usuario solicita obtener sus informacion sobre salud general como rutinas, consejos de salud, dietas, actividades recomendadas para adultos mayores, debes reconocer frases como 'que dieta me recomiendas', 'que actividades deberia realizar', 'como mejorar mi salud mental' , 'consejos sobre salud' , 'di mis datos de emergencia' o algo similar",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "frase rconocida": {
+                    "type": "string",
+                    "description": "indica la frase que reconociste del usuario, esta propiedad es oblogatoria",
+                }
+            }
+        }
+    },
+    {
+        "name": "Compartir_Ubicacion",
+        "description": `el usuario solicita compartir su ubicacion actual con un contacto , los contactos solo pueden ser los siguientes : [ ${contactos} ] solo puedes responder con uno de los contactos en el array o null, tiene que estar en el array para reconocerlo si no esta en el array no es un contacto valido, debes reconocer frases como 'Enviale mi ubicacion a', 'comparte mi ubicacion', 'manda mi ubicacion' , 'dile a x donde estoy'  o algo similar`,
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "Contacto": {
+                    "type": "string",
+                    "description": `Indica el contacto que reconociste, esta propiedad es oblogatoria , de no mencionarse explicitamente responde : NULL , los contactos solo pueden ser los siguientes : [ ${contactos} ] solo puedes responder con uno de los contactos en el array o null`,
+                }
+            }
+        }
     }
+
 
 ];
 
@@ -357,6 +387,8 @@ export async function firstApiCall(prompt) {
     var FechaHoy = new Date()
     console.log('Fecha Hoy: ' + FechaHoy)
     functions.find(func => func.name === 'recordatorio').description = `El usuario solicita crear un recordatorio, tu debes identificar las propiedades de la funcion en el prompt del usuario. Debes saber que el dia de hoy es: ${FechaHoy} ya que lo usaras mas adelante para indicar la fecha del recordatorio, siempre debes retornar la fecha. Tienes que analizar el prompt del usuario y devolver siempre los siguientes parámetros o propiedades obligatorios: Titulo, Fecha, Hora y Dias. Si no se menciona alguna debes seguir las descripciones de cada propiedad para saber como intrepretar el prompt del usuario, bajo niun punto pueden faltar alguna de estas 4 propiedades, siempre las debes encontrar.;`
+    functions.find(func => func.name === 'Compartir_Ubicacion').description = `el usuario solicita compartir su ubicacion actual con un contacto , los contactos actuales son ${contactos} , debes reconocer frases como 'Enviale mi ubicacion a', 'comparte mi ubicacion', 'manda mi ubicacion' , 'dile a x donde estoy'  o algo similar`;
+    functions.find(func => func.name === 'llamar_contacto').description =`el usuario solicita llamar a una persona, debes responder con el nombre de la persona a la cual llamara , es obligatorio mencionar a un contacto para llamar los contactos actuales son  ${contactos}`;
     let retries = 2;
     while (retries > 0) {
         try {

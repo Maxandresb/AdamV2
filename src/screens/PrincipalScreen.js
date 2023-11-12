@@ -10,11 +10,11 @@ import * as Speech from 'expo-speech';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // Creaciones propias
-import { obtenerDatosPreviosSelec, addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut } from "../api/sqlite"
+import { obtenerDatosPreviosSelec, addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut, obtenerDatosPreviosAnon, obtenerContactosEmergencia } from "../api/sqlite"
 import { generarRespuesta, crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
-import { realizarLlamada } from "../api/llamada";
+import { enviarMensaje, realizarLlamada } from "../api/llamada";
 import { scheduleRecordatorioNotification, MostrarNotificacionesGuardadas } from "../api/notificaciones";
 import styles from '../api/styles';
 import * as FileSystem from 'expo-file-system';
@@ -43,6 +43,9 @@ export default function PrincipalScreen() {
   const [nombreCentroMed, setNombreCentroMed] = useState('');
   const centrosMed = useRef([]);
   const centroMedSeleccionado = useRef([]);
+
+  const [llamada,setLlamada]= useState(false)
+  const [mensaje,setMensaje]= useState(false)
 
   const [mensajeProcesamiento, setMensajeProcesamiento] = useState('');
   const [respondiendo, setRespondiendo] = useState(false);
@@ -325,10 +328,22 @@ export default function PrincipalScreen() {
             clima = await obtenerClima('coordenadas',JSON.parse(args))
             jsonclima = JSON.stringify(clima)
             //console.log(jsonclima)
-            function_response= `${jsonclima} Este json contiene informacion del clima Convierte este json en informacion util  para un usuario que habla español, resumelo presicamente,  y terminologia basica, resume en no mas de 50 palabras `
+            function_response= `${jsonclima} Este json contiene informacion del clima Convierte este json en informacion util  para un usuario que habla español, resumelo presicamente, la temperatura que viene es en  Fahrenheit , convierte a celsius  y terminologia basica, resume en no mas de 50 palabras `
             //console.log(function_response)
            respuesta = await secondApiCall(prompt, message, function_name, function_response)
-          } else {
+          }else if (function_name === 'recomendacion_medica_general') {
+            let rut= await obtenerRut()
+            let perfilAnnon= await obtenerDatosPreviosAnon(rut)
+            console.log(perfilAnnon)
+            function_name = "responder_temas_de_salud"
+            function_response = `El usuario solicita que le respondas una recomendacion medica o de salud para eso puedes considerar que el perfil medico del usuario es  ${perfilAnnon}, intenta responder lo mejor que puedas, entendiendo que no eres medico, y agrega una pequeña frase al final, diciendole al usuario que siempre es recomendable consultar a un profesional, esta frase que sea lo mas corto posible `
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)
+          
+          }else if (function_name ==='Compartir_Ubicacion'){
+            compartir_ubicacion()
+
+
+          }else {
             console.log('FUNCION NO ENCONTRADA')
             function_name = "responder"
             function_response = "indica al usuario que esa funcion no esta dentro del catalogo de funciones disponibles, pero responde o trata de dar solucion a lo que te indiquen en base a tus conocimientos, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
@@ -416,9 +431,40 @@ export default function PrincipalScreen() {
 
 
 
+/* funciones de emergencias */
 
-
-
+async function compartir_ubicacion(){
+  contactosEmergencia.current = await obtenerContactosEmergencia();
+  
+  if(contactosEmergencia.current.length == 1  ){
+    let contacto= contactosEmergencia.current[0]
+    let numero= contacto.numero.replace(/\D/g, '')
+    enviarMensaje(numero)
+  }
+  else if (contactosEmergencia.current.length == 0 || contactosEmergencia.current.length == undefined){
+    
+    Alert.alert(
+      "¡No tienes contactos de emergencia!",
+      "¿Quieres que te dirija donde puedes agregarlo?",
+      [
+          {
+              text: "Cancelar",
+              style: "cancel"
+          },
+          {
+              text: "Aceptar",
+              onPress: () =>{navigation.navigate('ConfiguracionNested', { screen: 'Contactos de emergencia' })}
+          }
+      ]
+  );
+  }
+  else  {
+    
+    console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
+    setMensaje(true)
+    setModalCEVisible(true);
+  }
+}
 
   // **********************************************************************************************************************************************************************************
   // ***                                                         Vista de pantalla                                                                                                  ***
@@ -483,7 +529,8 @@ export default function PrincipalScreen() {
                 </TouchableOpacity>
               )
           }
-          {/*Modal mas de un contactos de emergencia */}
+         
+{/* Modal contactos emergencia */}
           <Modal
             animationType="slide"
             transparent={true}
@@ -492,7 +539,8 @@ export default function PrincipalScreen() {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.header}>Selecciona un contacto para llamar</Text>
+                <Text style={styles.header}>{llamada ==true && `Selecciona un contacto para llamar`} {mensaje ==true && `Selecciona un contacto para compartir ubicación`}</Text>
+                <ScrollView>
                 {contactosEmergencia.current.map((contacto, index) => (
                   <TouchableOpacity
                     key={index}
@@ -500,27 +548,48 @@ export default function PrincipalScreen() {
                       contactoEmSeleccionado.current = contacto;
                       console.log(contactoEmSeleccionado)
                       setModalCEVisible(false);
-                      realizarLlamada(contactoEmSeleccionado.current.numero)
+                      if(llamada ==true){
+                        realizarLlamada(contactoEmSeleccionado.current.numero.replace(/\D/g, ''))
+                        setLlamada(false)
+                      } else if (mensaje==true){
+                        enviarMensaje(contactoEmSeleccionado.current.numero.replace(/\D/g, ''))
+                        setMensaje(false)
+                      }
+                      
                       setNombreContactoEm(contactoEmSeleccionado.current.nombreCompleto);
                       setAliasContactoEm(contactoEmSeleccionado.current.alias);
                       contactosEmergencia.current = [];
                       contactoEmSeleccionado.current = {};
 
                     }}
-                    style={styles.button} // Agrega los estilos que desees aquí
+                    style={[styles.damascoButton, {padding:'8%' , margin:'2%'}]} // Agrega los estilos que desees aquí
                   >
-                    <Text>{`Contacto: ${contacto.nombreCompleto} y Alias: ${contacto.alias}`}</Text>
+                   
+                   <Text>
+                    {contacto.nombreCompleto !== null && `Contacto: ${contacto.nombreCompleto}`}
+                    {contacto.nombreCompleto !== null && contacto.alias !== null && ' y '}
+                    {contacto.alias !== null && `Alias: ${contacto.alias}`}
+                  </Text>
                   </TouchableOpacity>
                 ))}
-                <Button
-                  title="Cerrar"
+                </ScrollView>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  
                   onPress={() => {
                     setModalCEVisible(false);
+                    setLlamada(false)
+                    setMensaje(false)
                   }}
-                />
+                >
+                  <Text style={styles.buttonText}>Cerrar</Text>
+                </TouchableOpacity>
+
               </View>
             </View>
           </Modal>
+
+{/* Fin modal contactos emergencias */}
           {/*Modal mas de un numero d centros medicos */}
           <Modal
             animationType="slide"

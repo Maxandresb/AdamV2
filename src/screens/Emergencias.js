@@ -9,7 +9,7 @@ import * as Speech from 'expo-speech';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // Creaciones propias
-import { addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut, obtenerContactosEmergencia } from "../api/sqlite"
+import { addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut, obtenerContactosEmergencia, obtenerDatosPreviosAnon, obtenerDatosPreviosSelec } from "../api/sqlite"
 import { generarRespuesta, crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
@@ -48,7 +48,7 @@ export default function Emergencias ()  {
   const [nombreCentroMed, setNombreCentroMed] = useState('');
   const centrosMed = useRef([]);
   const centroMedSeleccionado = useRef([]);
-
+  const datosPerfilMed =useRef([]);
   const [mensajeProcesamiento, setMensajeProcesamiento] = useState('');
   const [respondiendo, setRespondiendo] = useState(false);
 
@@ -59,7 +59,34 @@ export default function Emergencias ()  {
 
 
   async function datos_medicos(){
+
+
+
+    let rut = await obtenerRut();
+    let datos = await obtenerDatosPreviosSelec(rut)
     
+    let arrayDeItems = datos.split('\n').filter(Boolean);
+    datosPerfilMed.current = arrayDeItems
+   if (datosPerfilMed.current.length >0){
+    setModalDMVisible(true);
+  }
+  else {
+    Alert.alert(
+      "¡No tienes datos de tu perfil seleccionados!",
+      "¿Quieres que te dirija donde puedes configurarlo? Es recomendado realizar este paso con un médico",
+      [
+          {
+              text: "Cancelar",
+              style: "cancel"
+          },
+          {
+              text: "Aceptar",
+              onPress: () =>{navigation.navigate('ConfiguracionNested', { screen: 'Seleccionar datos a vocalizar' })}
+          }
+      ]
+  );
+  }
+   
   }
 
   async function compartir_ubicacion(){
@@ -82,7 +109,7 @@ export default function Emergencias ()  {
             },
             {
                 text: "Aceptar",
-                onPress: () =>{navigation.navigate('PerfilNested', { screen: 'Contactos de emergencia' })}
+                onPress: () =>{navigation.navigate('ConfiguracionNested', { screen: 'Contactos de emergencia' })}
             }
         ]
     );
@@ -98,7 +125,9 @@ export default function Emergencias ()  {
        contactosEmergencia.current = await obtenerContactosEmergencia();
       if(contactosEmergencia.current.length == 1  ){
         let contacto= contactosEmergencia.current[0]
-        let numero= contacto.numero.replace(/\D/g, '')
+        
+        let numero= contacto.numero.replace(/[^\d+]/g, '')
+        
         realizarLlamada(numero)
       }
       else if (contactosEmergencia.current.length == 0 || contactosEmergencia.current.length === undefined){
@@ -156,6 +185,41 @@ export default function Emergencias ()  {
               }
             }console.log('ERROR: centrosMed no esxiste o no es un array')
     }
+
+    {/* Inicio Voz de respuesta de ADAM */ }
+
+  {/* voces hombres
+  voice:"es-es-x-eed-local" 
+  voice:"es-us-x-esf-local" 
+  voice:"es-es-x-eed-network" 
+  voice:"es-us-x-esd-network"
+*/}
+
+  const respuestaVoz = (texto) => {
+    //const saludo ='test de saludo';
+    setVozAdam(true)
+    const options = {
+      voice: "es-us-x-esd-network",
+      rate: 0.9,
+      pitch: 0.85,
+      onDone: () => setVozAdam(false)
+    };
+    Speech.speak(texto, options)
+    
+  };
+
+  const detenerVoz = () => {
+    Speech.stop()
+    setVozAdam(false)
+  }
+  {/* Fin Voz de respuesta de ADAM */ }
+
+
+
+
+
+
+
   return (
     <ScrollView className="flex-1  p-5 space-y-5 bg-beige">
       <View className="flex-row h-56 justify-around space-x-10 px-5">
@@ -173,8 +237,12 @@ export default function Emergencias ()  {
         <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await llamada_contacto()}>
           <Text className="text-xl text-damasco text-center font-bold">Llamar contacto emergencia</Text>
         </TouchableOpacity>
-
+        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await datos_medicos()}>
+          <Text className="text-xl text-damasco text-center font-bold">Mostrar datos médicos</Text>
+        </TouchableOpacity>
       </View>
+      
+{/* Modal de centros medicos */}
       <Modal
             animationType="slide"
             transparent={true}
@@ -194,25 +262,30 @@ export default function Emergencias ()  {
                         setModalNCMVisible(false);
                         realizarLlamada(centroMedSeleccionado.current.Telefono)
                         setNombreCentroMed(centroMedSeleccionado.current.NombreOficial);
-                        centrosMed.current._array = [];
+                        
                         centroMedSeleccionado.current = {};
 
                       }}
-                      style={styles.redcoralButton} // Agrega los estilos que desees aquí
+                      style={[styles.damascoButton, {padding:'5%' , margin:'2%'}]} // Agrega los estilos que desees aquí
                     >
-                      <Text>{`Centro: ${centro.NombreOficial}`}</Text>
+                      <Text >{`Centro: ${centro.NombreOficial}`}</Text>
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
-                <Button
-                  title="Cerrar"
+                
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  
                   onPress={() => {
                     setModalNCMVisible(false);
                   }}
-                />
+                >
+                  <Text style={styles.buttonText}>Cerrar</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </Modal>
+{/* Fin modal centros medicos */}
 
 {/* Modal contactos emergencia */}
           <Modal
@@ -272,12 +345,57 @@ export default function Emergencias ()  {
               </View>
             </View>
           </Modal>
+
+{/* Fin modal contactos emergencias */}
+
+
+
+          {/* Inicio modal datos medicos */}
           <Modal
              animationType="slide"
              transparent={true}
              visible={modalDMVisible}
-          
-          ></Modal>
+             onRequestClose={() => { setModalDMVisible(false); }}
+          >
+               <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+              {
+            vozAdam ?(
+              <TouchableOpacity
+                onPress={detenerVoz}
+                style={[{padding:'5%', marginLeft:'40%'}]}
+              >
+                <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice-off" size={24} color="black" /></Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {respuestaVoz(datosPerfilMed.current.join(','))}}
+                style={[{padding:'5%', marginLeft:'40%'}]}
+              >
+                <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice" size={24} color="black" /></Text>
+              </TouchableOpacity>
+            )
+          }
+                <ScrollView>
+                  {datosPerfilMed.current.map((campo,index)=>(
+                    <Text key={index} style={[styles.damascoButton, {padding:'4%' , margin:'2%'}]}> {campo}</Text>
+                  ))}
+                </ScrollView>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  
+                  onPress={() => {
+                    setModalDMVisible(false);
+                    
+                  }}
+                >
+                  <Text style={styles.buttonText}>Cerrar</Text>
+                </TouchableOpacity>
+              </View>
+              </View>
+
+                  
+          </Modal>
     </ScrollView>
   
   
