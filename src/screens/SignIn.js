@@ -659,7 +659,24 @@ const SignIn = ({ navigation }) => {
         </View>
         <TouchableOpacity
           className="bg-redcoral py-3 rounded-md mb-3"
-          onPress={guardarDatosUsuario} 
+          onPress={()=>{if (rut !=''){
+            guardarDatosUsuario()}
+          else{
+            Alert.alert(
+              "¡Datos claves faltantes!",
+              "Por favor ingresa tu rut, es un dato importante para el funcionamiento",
+              [
+                  {
+                      text: "Cancelar",
+                      style: "cancel"
+                  },
+                  {
+                      text: "Aceptar",
+                      style:"cancel"
+                  }
+              ]
+          );
+          }}} 
         >
           <Text className="text-damasco text-lg text-center font-bold">
           Guardar 

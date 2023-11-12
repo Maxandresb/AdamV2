@@ -237,8 +237,8 @@ export default function Emergencias ()  {
         <TouchableOpacity className="bg-rojoIntenso rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await llamada_contacto()}>
           <Text className="text-xl text-celeste text-center font-bold">Llamar contacto emergencia</Text>
         </TouchableOpacity>
-        <TouchableOpacity className="bg-redcoral rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await datos_medicos()}>
-          <Text className="text-xl text-damasco text-center font-bold">Mostrar datos médicos</Text>
+        <TouchableOpacity className="bg-rojoIntenso rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await datos_medicos()}>
+          <Text className="text-xl text-celeste text-center font-bold">Mostrar datos médicos</Text>
         </TouchableOpacity>
       </View>
       
@@ -352,26 +352,29 @@ export default function Emergencias ()  {
           >
                <View style={styles.centeredView}>
               <View style={styles.modalView}>
+              <Text style={styles.header}>Datos médicos </Text>
               {
             vozAdam ?(
               <TouchableOpacity
+              className=" bg-negro rounded-3xl flex-row flex-3 row-2 "
                 onPress={detenerVoz}
-                style={[{padding:'5%', marginLeft:'40%'}]}
+                style={[{padding:'5%', marginLeft:'38%', marginRight:'44%', justifyContent:'center'}]}
               >
-                <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice-off" size={24} color="black" /></Text>
+                <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice-off" size={24} color="white" /></Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
+                className=" bg-negro rounded-3xl flex-row flex-3 row-2 "
                 onPress={() => {respuestaVoz(datosPerfilMed.current.join(','))}}
-                style={[{padding:'5%', marginLeft:'40%'}]}
+                style={[{padding:'5%', marginLeft:'38%', marginRight:'44%', justifyContent:'center'}]}
               >
-                <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice" size={24} color="black" /></Text>
+                <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice" size={24} color="white" /></Text>
               </TouchableOpacity>
             )
           }
                 <ScrollView>
                   {datosPerfilMed.current.map((campo,index)=>(
-                    <Text key={index} style={[styles.damascoButton, {padding:'4%' , margin:'2%'}]}> {campo}</Text>
+                    <Text key={index} style={[styles.rojoIntensoButton, {padding:'4%' , margin:'2%'}]}> {campo}</Text>
                   ))}
                 </ScrollView>
                 <TouchableOpacity
@@ -382,7 +385,7 @@ export default function Emergencias ()  {
                     
                   }}
                 >
-                  <Text style={styles.buttonText}>Cerrar</Text>
+                  <Text style={styles.rojoIntensoText}>Cerrar</Text>
                 </TouchableOpacity>
               </View>
               </View>
