@@ -12,7 +12,7 @@ import { obtenerRut } from "../api/sqlite"
 
 const db = SQLite.openDatabase('adamdb.db');
 
-const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete }) => {
+const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete}) => {
     const [Contacto, setContacto] = useState(contacto);
     const handleChange = (key, val) => {
         setContacto(current => ({
@@ -20,6 +20,8 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
             [key]: val
         }));
     };
+
+
     const handleDeletePress = () => {
         Alert.alert(
             "Eliminar Contacto",
@@ -46,7 +48,7 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                         value={Contacto.nombreCompleto}
                         onChangeText={(val) => handleChange('nombreCompleto', val)}
                     />
-                    <Text style={styles.encabezadoInicial}>Alias:</Text>
+                    <Text style={styles.encabezado}>Alias:</Text>
                     <TextInput
                         style={styles.input}
                         value={Contacto.alias}
@@ -70,7 +72,7 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                     <View style={styles.lineaContainer}></View>
                     <Text style={styles.encabezado}>Nombre completo:</Text>
                     <Text style={styles.content}>{Contacto.nombreCompleto}</Text>
-                    <Text style={styles.encabezadoInicial}>Alias:</Text>
+                    <Text style={styles.encabezado}>Alias:</Text>
                     <Text style={styles.content}>{Contacto.alias}</Text>
                     <Text style={styles.encabezado}>Número:</Text>
                     <Text style={styles.content}>{Contacto.numero}</Text>
@@ -80,7 +82,7 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
             )}
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    style={styles.redcoralButton}
+                    style={styles.rojoIntensoButton}
                     onPress={() => handlePress(contacto.id, Contacto)}
                 >
                     <Text style={styles.buttonText}>
@@ -91,7 +93,7 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                     style={styles.deleteButton}
                     onPress={handleDeletePress}
                 >
-                    <Text style={styles.azulText}>
+                    <Text style={styles.rojoIntensoText}>
                         Eliminar Contacto
                     </Text>
                 </TouchableOpacity>
@@ -252,10 +254,10 @@ const Contactos = () => {
         <View style={styles.container}>
             <View>
                 <TouchableOpacity
-                    style={styles.redcoralButton}
+                    style={styles.rojoIntensoButton}
                     onPress={obtenerYGuardarContactos}
                 >
-                    <Text style={styles.buttonText}>Agregar contactos desde el telefono</Text>
+                    <Text style={styles.celesteText}>Agregar contactos desde el telefono</Text>
                 </TouchableOpacity>
             </View>
             <Modal
@@ -278,36 +280,37 @@ const Contactos = () => {
                                 />
                             ))}
                         </ScrollView>
-                        <View>
+                        <View style={styles.verticalButtonsContainer}>
                             <TouchableOpacity
-                                style={styles.damascoButton}
+                                style={styles.rojoIntensoButton}
                                 onPress={() => {
                                     guardarContactosSeleccionados();
                                     setModalCTVisible(false);
                                     setContactosSeleccionados([]);
                                 }}
                             >
-                                <Text style={styles.redcoralText}>Guardar contactos seleccionados</Text>
+                                <Text style={styles.celesteText}>Guardar contactos seleccionados</Text>
                             </TouchableOpacity>
-                        </View>
-                        <TouchableOpacity
-                            style={styles.deleteButton}
-                            onPress={() => {
-                                setModalCTVisible(false);
-                                setContactosSeleccionados([]);
-                            }}
-                        >
-                            <Text style={styles.azulText}>Cancelar</Text>
+                        
+                            <TouchableOpacity
+                                style={styles.closeButton}
+                                onPress={() => {
+                                    setModalCTVisible(false);
+                                    setContactosSeleccionados([]);
+                                }}
+                            >
+                            <Text style={styles.rojoIntensoText}>Cancelar</Text>
                         </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
             <View>
                 <TouchableOpacity
-                    style={styles.button}
+                    style={styles.rojoIntensoButton}
                     onPress={handleAgregarContactoPress}
                 >
-                    <Text style={styles.buttonText}>Agregar nuevo contacto</Text>
+                    <Text style={styles.celesteText}>Agregar nuevo contacto</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.espacioContainer}></View>
@@ -320,6 +323,7 @@ const Contactos = () => {
                         isEditing={ContactoId === contacto.id}
                         handlePress={handlePress}
                         handleDelete={handleDelete}
+                        
                     />
                 ))}
             </ScrollView>
@@ -367,13 +371,13 @@ const Contactos = () => {
                             value={relacion}
                         />
                         <View style={styles.buttonContainerCenter}>
-                            <TouchableOpacity clasName="w-32" style={styles.closeButton} onPress={() => {setModalVisibleContactos(false);}}>
-                                <Text>
+                            <TouchableOpacity style={styles.closeButton} onPress={() => {setModalVisibleContactos(false);}}>
+                                <Text style={styles.rojoIntensoText}>
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity clasName="w-32" style={styles.damascoButton} onPress={() => {agregarContacto();}}>
-                                <Text>
+                            <TouchableOpacity style={styles.rojoIntensoButton} onPress={() => {agregarContacto();}}>
+                                <Text style={styles.celesteText}>
                                     Agregar Nuevo Contacto
                                 </Text>
                             </TouchableOpacity>

@@ -4,13 +4,10 @@ module.exports = {
   theme: {
     extend: {},
     colors: {
-      'redcoral': '#fa614f',
-      'damasco': '#fad9a0',
-      'salmon': '#f9a79c',
-      'azul': '#96b9f3',
-      'celeste': '#add5f9',
-      'beige': '#f5f1c4',
-      'azulnegro': '#233050',
+      'rojoIntenso': '#ff3e45',
+      'celeste': '#cceaf5',
+      'gris': '#a9a9a9',
+      'grisClaro': '#efefef',
       'fondoOscurecido': 'rgba(0,0,0,0.5)',
       'negro': '#000000',
       'blanco': '#ffffff'

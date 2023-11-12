@@ -606,7 +606,7 @@ const Recordatorios = () => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={{ paddingBottom: 5, fontSize: 18 }}>Recordatorios futuros:</Text>
+              <Text className="text-rojoIntenso text-lg text-center font-bold">Recordatorios futuros:</Text>
               {recordatoriosFuturos.map((fecha) => {
                 let fechaMoment = moment(fecha);
                 return (
@@ -619,8 +619,8 @@ const Recordatorios = () => {
                 );
               })}
 
-              <TouchableOpacity style={styles.button} onPress={handleCloseModal}>
-                <Text style={styles.buttonText}>Cerrar</Text>
+              <TouchableOpacity className="mt-12" style={styles.celesteButton} onPress={handleCloseModal}>
+                <Text style={styles.rojoIntensoText}>Cerrar</Text>
               </TouchableOpacity>
             </View>
           </View>

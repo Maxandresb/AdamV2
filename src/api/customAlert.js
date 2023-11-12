@@ -8,8 +8,8 @@ const CustomAlert = ({ isVisible, onClose, message }) => (
             <View style={styles.alertContainer}>
                 <Text style={styles.alertText}>{message}</Text>
                 <TouchableOpacity onPress={onClose}>
-                <View style={styles.alertButton}>
-                    <Text style={styles.alertButtonText}>Cerrar</Text>
+                <View style={styles.celesteButton}>
+                    <Text style={styles.rojoIntensoText}>Cerrar</Text>
                 </View >
                 </TouchableOpacity>
             </View>

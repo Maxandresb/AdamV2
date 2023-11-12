@@ -79,7 +79,7 @@ const Limitacion = ({ limitacion, isEditing, handlePress, handleDelete }) => {
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    style={styles.redcoralButton}
+                    style={styles.rojoIntensoButton}
                     onPress={() => handlePress(limitacion.id, currentLimitacion)}
                 >
                     <Text style={styles.buttonText}>
@@ -90,7 +90,7 @@ const Limitacion = ({ limitacion, isEditing, handlePress, handleDelete }) => {
                     style={styles.deleteButton}
                     onPress={handleDeletePress} // Modificar esto
                 >
-                    <Text className="text-azul text-center font-bold">
+                    <Text className="text-rojoIntenso text-center font-bold">
                         Eliminar Limitacion
                     </Text>
                 </TouchableOpacity>
@@ -192,7 +192,7 @@ const Limitaciones = () => {
         <ScrollView style={styles.container}>
             <View>
                 <TouchableOpacity
-                    style={styles.redcoralButton}
+                    style={styles.rojoIntensoButton}
                     onPress={handleAgregarLimitacionPress} // Agregar esto
                 >
                     <Text style={styles.buttonText}>
@@ -268,12 +268,12 @@ const Limitaciones = () => {
                         />
                         <View style={styles.buttonContainerCenter}>
                             <TouchableOpacity className="w-32" style={styles.closeButton} onPress={() => {setModalVisibleLimitaciones(false)}}>
-                                <Text className="text-azul text-center font-bold">
+                                <Text className="text-rojoIntenso text-center font-bold">
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity className="w-32" style={styles.damascoButton} onPress={() => {agregarLimitacion();}}>
-                                <Text className="text-redcoral text-center font-bold">
+                            <TouchableOpacity className="w-32" style={styles.rojoIntensoButton} onPress={() => {agregarLimitacion();}}>
+                                <Text className="text-celeste text-center font-bold">
                                     Agregar Nueva Limitación
                                 </Text>
                             </TouchableOpacity>
