@@ -778,26 +778,26 @@ const Recordatorios = () => {
 
               <View>
                 <TouchableOpacity
-                  style={styles.button}
+                  style={styles.closeButton}
                   onPress={async () => { setIsEditing(!isEditing), await handleUpdateRecordatorio(recordatorioActual, scheduleRecordatorioNotification, db) }}
                 >
-                  <Text style={styles.buttonText}>
+                  <Text style={styles.rojoIntensoText}>
                     {isEditing ? 'Guardar recordatorio' : 'Modificar recordatorio'}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.deleteButton}
+                  style={styles.rojoIntensoButton}
                   onPress={() => handleDeletePress(recordatorioActual)}
                 >
-                  <Text style={styles.buttonText}>
+                  <Text style={[styles.rojoIntensoText ,{color:'white'}]}>
                     Eliminar recordatorio
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.button}
+                  style={styles.closeButton}
                   onPress={cerrarModal} // Modificar esto
                 >
-                  <Text style={styles.buttonText}>
+                  <Text style={styles.rojoIntensoText}>
                     Cerrar
                   </Text>
                 </TouchableOpacity>

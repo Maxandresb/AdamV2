@@ -141,7 +141,7 @@ export default function Emergencias ()  {
               },
               {
                   text: "Aceptar",
-                  onPress: () =>{navigation.navigate('PerfilNested', { screen: 'Contactos de emergencia' })}
+                  onPress: () =>{navigation.navigate('ConfiguracionNested', { screen: 'Contactos de emergencia' })}
               }
           ]
       );
@@ -156,10 +156,11 @@ export default function Emergencias ()  {
 
     async function llamada_centro (){
        // console.log('Entra')
+       setCargando(true);
         let { comuna, region } = await obtenerUbicacion('comuna');
             console.log('REGION: ', region, 'COMUNA: ', comuna)
             centrosMed.current = await buscarEnDB('Comuna', comuna)
-
+            setCargando(false);
             if (centrosMed.current && Array.isArray(centrosMed.current._array)) {
               console.log('CENTROS: ', centrosMed.current)
               // Filtrar los centros de salud que tienen un número telefónico disponible
@@ -183,7 +184,7 @@ export default function Emergencias ()  {
                 Alert.alert("Centro de salud cercano no encontrado. Por favor asegurate de tener internet");
                 centrosMed.current._array = [];
               }
-            }console.log('ERROR: centrosMed no esxiste o no es un array')
+            }//console.log('ERROR: centrosMed no esxiste o no es un array')
     }
 
     {/* Inicio Voz de respuesta de ADAM */ }
@@ -241,7 +242,24 @@ export default function Emergencias ()  {
           <Text className="text-xl text-celeste text-center font-bold">Mostrar datos médicos</Text>
         </TouchableOpacity>
       </View>
-      
+
+{/* MODAL DE CARGANDO */}
+    <Modal
+       animationType="slide"
+       transparent={true}
+       visible={cargando}
+       onRequestClose={() => { setCargando(false); }}
+    >
+
+      <View style={[styles.centeredView, {padding:'38%'}] }>
+        <View style={[styles.modalView]}>
+        <Image  className="w-12 h-12 bg-negro py-3 rounded-full my-3"
+                source={require('../../assets/images/processingQuestion.gif')}
+              />
+        </View>
+      </View>
+    </Modal>
+
 {/* Modal de centros medicos */}
       <Modal
             animationType="slide"
