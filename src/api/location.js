@@ -21,7 +21,7 @@ const obtenerUbicacion = async (opcion) => {
       console.log("La llamada fue exitosa, la ubicación es: ", location);
       console.log("Tiempo de ejecución: ", end - start, "ms");
     } catch (error) {
-    console.error("Ocurrió un error al obtener la ubicación: ", error);
+    console.log("Se tardo demasiado intentando con api google: ", error);
 
     // Si falla expo-location, intenta con Google Geolocation API
     console.log('INTENTANDO OBTENER UBICACION CON GOOGLE GEOLOCATION API')
