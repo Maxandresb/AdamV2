@@ -10,7 +10,7 @@ export const obtenerClima = async (opcion, args) => {
   console.log( 'locacion ' + locacion)  
     
   
-  if (locacion ===undefined || locacion =='hoy' || locacion =='ayer' || locacion =='mañana'){
+  if (locacion ===undefined || locacion =='hoy' || locacion =='ayer' || locacion =='mañana' || locacion =='No definido' || locacion =='NULL'){
     coordenadas= await obtenerUbicacion(opcion);
     console.log(coordenadas) 
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${coordenadas.lat}&lon=${coordenadas.lon}&appid=${apiKey_weather}`;

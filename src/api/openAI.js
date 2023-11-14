@@ -219,7 +219,7 @@ const functions = [
             "properties": {
                 "Locacion": {
                     "type": "string",
-                    "description": " responde solo en español, indica la ubicacion real  sobre la cual el usuario quiere conocer el clima, hoy ,mañana,ayer no son ubicaciones, solo ubicaciones nada mas ni dias ni tiempo ni otros parametros idealmente ubicaciones tipo (ciudad pais), a menos que exista explicito la locacion responde: No definido",
+                    "description": " responde solo en español, indica la ubicacion real  sobre la cual el usuario quiere conocer el clima, hoy ,mañana,ayer no son ubicaciones, solo ubicaciones nada mas ni dias ni tiempo ni otros parametros idealmente ubicaciones tipo (ciudad pais), a menos que exista explicito la locacion responde: NULL",
                 }
             }
         }
@@ -315,7 +315,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
                 setTimeout(async () => {
                     try {
                         const result = await client.post(chatgptUrl, {
-                            model: "gpt-3.5-turbo-0613",
+                            model: "gpt-4-1106-preview",
                             messages: [
                                 ...conversationHistory,
                                 message,
@@ -396,7 +396,7 @@ export async function firstApiCall(prompt) {
                 setTimeout(async () => {
                     try {
                         const result = await client.post(chatgptUrl, {
-                            model: "gpt-3.5-turbo-0613",
+                            model: "gpt-4-1106-preview",
                             messages: [
                                 {
                                     role: 'system',

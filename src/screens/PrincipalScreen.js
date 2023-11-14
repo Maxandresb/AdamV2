@@ -47,9 +47,9 @@ export default function PrincipalScreen() {
   const centrosMed = useRef([]);
   const centroMedSeleccionado = useRef([]);
 
-  const [llamada,setLlamada]= useState(false)
-  const [mensaje,setMensaje]= useState(false)
-
+  const [llamada,setLlamada]= useState(false);
+  const [mensaje,setMensaje]= useState(false);
+  const [mute,setMute]= useState(false);
   const [mensajeProcesamiento, setMensajeProcesamiento] = useState('');
   const [respondiendo, setRespondiendo] = useState(false);
   const navigation = useNavigation();
@@ -370,14 +370,20 @@ export default function PrincipalScreen() {
         if (respuesta) {
           //console.log(respuesta);
           setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
-          respuestaVoz(respuesta.text)
+          if(mute ==false){
+            respuestaVoz(respuesta.text)
+          }
+          
           setinputUsuario('');
           respuesta = null;
         } else {
           setMensajeProcesamiento('Procesando respuesta...');
           console.log('NO SE OBTUVO UNA RESPUETA A LA SEGUNDA LLAMADA')
           let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
-          respuestaVoz(answer)
+          if(mute ==false){
+            respuestaVoz(answer)
+          }
+          
           respuesta = await generarRespuesta('ERROR', answer, prompt)
           setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
           setinputUsuario('');
@@ -392,7 +398,9 @@ export default function PrincipalScreen() {
         setCargando(false);
         setRespondiendo(false)
         let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
-        respuestaVoz(answer)
+        if(mute ==false){
+          respuestaVoz(answer)
+        }
         respuesta = await generarRespuesta('ERROR', answer, prompt)
         setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
         setinputUsuario('');
@@ -660,12 +668,20 @@ async function compartir_ubicacion(){
             )
           } */}
           {
-            vozAdam && (
+            mute ? (
               <TouchableOpacity
-                onPress={detenerVoz}
+                onPress={()=> {setMute(false) }}
                 className="bg-negro rounded-3xl p-3 absolute left-10 shadow-lg shadow-black"
               >
                 <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice-off" size={28} color="#ff3e45" /></Text>
+              </TouchableOpacity>
+            ):
+            (
+              <TouchableOpacity
+                onPress={()=>{setMute(true); detenerVoz()}}
+                className="bg-negro rounded-3xl p-3 absolute left-10 shadow-lg shadow-black"
+              >
+                <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice" size={28} color="#ff3e45" /></Text>
               </TouchableOpacity>
             )
           }
