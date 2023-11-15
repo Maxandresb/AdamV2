@@ -111,6 +111,7 @@ function PerfilNestedScreen() {
       <PerfilNestedStack.Screen name="Medicamentos" component={Medicamentos} />
       <PerfilNestedStack.Screen name="Patologias" component={Patologias} />
       <PerfilNestedStack.Screen name="Limitacion fisica" component={LimitacionFisica} />
+      <PerfilNestedStack.Screen name="Contactos de emergencia" component={ContactosEmergencia} />
       
 
     </PerfilNestedStack.Navigator>

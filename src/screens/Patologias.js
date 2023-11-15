@@ -8,7 +8,7 @@ import { obtenerRut } from "../api/sqlite"
 
 const db = SQLite.openDatabase('adamdb.db');
 
-const PatologiaCronica = ({ patologia, isEditing, handlePress, handleDelete }) => {
+const PatologiaCronica = ({ patologia, isEditing, handlePress, handleDelete, setCurrentPatologiaId }) => {
     const [currentPatologia, setCurrentPatologia] = useState(patologia);
 
     const handleChange = (key, val) => {
@@ -39,17 +39,17 @@ const PatologiaCronica = ({ patologia, isEditing, handlePress, handleDelete }) =
         <View>
             {isEditing ? (
                 <>
-                    <Text style={styles.encabezadoInicial}>Tipo de Patología:</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={currentPatologia.tipo_patologia}
-                        onChangeText={(val) => handleChange('tipo_patologia', val)}
-                    />
                     <Text style={styles.encabezado}>Nombre de la Patología:</Text>
                     <TextInput
                         style={styles.input}
                         value={currentPatologia.nombre_patologia}
                         onChangeText={(val) => handleChange('nombre_patologia', val)}
+                    />
+                    <Text style={styles.encabezado}>Tipo de Patología:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={currentPatologia.tipo_patologia}
+                        onChangeText={(val) => handleChange('tipo_patologia', val)}
                     />
                     <Text style={styles.encabezado}>Transmisibilidad:</Text>
                     <TextInput
@@ -66,10 +66,10 @@ const PatologiaCronica = ({ patologia, isEditing, handlePress, handleDelete }) =
                 </>
             ) : (
                 <>
-                    <Text style={styles.encabezadoInicial}>Tipo de Patología:</Text>
-                    <Text style={styles.content}>{currentPatologia.tipo_patologia}</Text>
                     <Text style={styles.encabezado}>Nombre de la Patología:</Text>
                     <Text style={styles.content}>{currentPatologia.nombre_patologia}</Text>
+                    <Text style={styles.encabezado}>Tipo de Patología:</Text>
+                    <Text style={styles.content}>{currentPatologia.tipo_patologia}</Text>
                     <Text style={styles.encabezado}>Transmisibilidad:</Text>
                     <Text style={styles.content}>{currentPatologia.transmisibilidad}</Text>
                     <Text style={styles.encabezado}>Morbilidad e Intensidad:</Text>
@@ -95,6 +95,19 @@ const PatologiaCronica = ({ patologia, isEditing, handlePress, handleDelete }) =
                     </Text>
                 </TouchableOpacity>
             </View>
+            {isEditing ? (
+                <>
+                    <View style={styles.espacioContainer2}></View>
+                    <TouchableOpacity
+                        style={styles.celesteButton}
+                        onPress={() => setCurrentPatologiaId(null)}
+                    >
+                        <Text style={styles.rojoIntensoText}>
+                            Cancelar
+                        </Text>
+                    </TouchableOpacity>
+                </>
+            ) : null}
             <View style={styles.lineaContainer}>
             </View>
 
@@ -169,7 +182,7 @@ const PatologiasCronicas = () => {
     };
 
     const agregarPatologia = async () => {
-        let usuario_rut= await obtenerRut()
+        let usuario_rut = await obtenerRut()
         db.transaction(tx => {
             tx.executeSql(
                 'INSERT INTO PatologiasCronicas (tipo_patologia, nombre_patologia, transmisibilidad, morbilidad_intensidad, usuario_rut) VALUES (?, ?, ?, ?, ?)',
@@ -203,6 +216,7 @@ const PatologiasCronicas = () => {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <View style={styles.lineaContainer}></View>
             {patologias.map(patologia => (
                 <PatologiaCronica
                     key={patologia.id}
@@ -210,6 +224,7 @@ const PatologiasCronicas = () => {
                     isEditing={currentPatologiaId === patologia.id}
                     handlePress={handlePress}
                     handleDelete={handleDelete}
+                    setCurrentPatologiaId={setCurrentPatologiaId}
                 />
             ))}
             <Modal
@@ -274,12 +289,12 @@ const PatologiasCronicas = () => {
                             </Picker>
                         </View>
                         <View style={styles.buttonContainerCenter}>
-                            <TouchableOpacity style={styles.closeButton} className="w-28" onPress={() => {setModalVisiblePatologias(false);}}>
+                            <TouchableOpacity style={styles.closeButton} className="w-28" onPress={() => { setModalVisiblePatologias(false); }}>
                                 <Text className="text-azul text-center font-bold">
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.rojoIntensoButton} className="w-32" onPress={() => {agregarPatologia();}}>
+                            <TouchableOpacity style={styles.rojoIntensoButton} className="w-32" onPress={() => { agregarPatologia(); }}>
                                 <Text style={styles.celesteText}>
                                     Agregar nueva patología
                                 </Text>

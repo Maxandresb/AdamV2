@@ -127,7 +127,7 @@ export  function obtenerContactosEmergencia(){
 }
 
 
-export function obtenerContactosAlmacenados(){
+export async function obtenerContactosAlmacenados(){
     return new Promise((resolve,reject)=>{
         db.transaction(tx=> {
             tx.executeSql(
@@ -140,12 +140,12 @@ export function obtenerContactosAlmacenados(){
                         resolve(contacto);
                     } else {
                         console.log('No hay registros en la tabla Contacto.');
-                        resolve([]);
+                        resolve('No hay contactos ingresados');
                     }
                 },
                 (_, error) => {
                     console.log('Error al obtener eregistros en la tabla Contacto:', error);
-                    reject(error);
+                    reject('No hay contactos ingresados');
                 }
             );
         })

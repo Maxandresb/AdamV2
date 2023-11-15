@@ -8,7 +8,7 @@ import { obtenerRut } from "../api/sqlite"
 
 const db = SQLite.openDatabase('adamdb.db');
 
-const Limitacion = ({ limitacion, isEditing, handlePress, handleDelete }) => {
+const Limitacion = ({ limitacion, isEditing, handlePress, handleDelete, setCurrentLimitacionId }) => {
     const [currentLimitacion, setCurrentLimitacion] = useState(limitacion);
 
     const handleChange = (key, val) => {
@@ -95,8 +95,20 @@ const Limitacion = ({ limitacion, isEditing, handlePress, handleDelete }) => {
                     </Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.lineaContainer}>
-            </View>
+            {isEditing ? (
+                <>
+                    <View style={styles.espacioContainer2}></View>
+                    <TouchableOpacity
+                        style={styles.celesteButton}
+                        onPress={() => setCurrentLimitacionId(null)}
+                    >
+                        <Text style={styles.rojoIntensoText}>
+                            Cancelar
+                        </Text>
+                    </TouchableOpacity>
+                </>
+            ) : null}
+            <View style={styles.lineaContainer}></View>
 
         </View>
     );
@@ -166,7 +178,7 @@ const Limitaciones = () => {
         });
     };
     const agregarLimitacion = async () => {
-        let usuario_rut= await obtenerRut()
+        let usuario_rut = await obtenerRut()
         db.transaction(tx => {
             tx.executeSql(
                 'INSERT INTO Limitaciones (tipo_lim, severidad_lim, origen_lim, descripcion_lim, usuario_rut) VALUES (?, ?, ?, ?, ?)',
@@ -207,6 +219,7 @@ const Limitaciones = () => {
                     isEditing={currentLimitacionId === limitacion.id}
                     handlePress={handlePress}
                     handleDelete={handleDelete}
+                    setCurrentLimitacionId={setCurrentLimitacionId}
                 />
             ))}
             <Modal
@@ -220,6 +233,14 @@ const Limitaciones = () => {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
+                        <Text style={styles.header}>Nombra o describe tu limitacion:</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholderTextColor="gray"
+                            placeholder="ej: XXXXXX"
+                            onChangeText={text => setDescripcion(text)}
+                            value={descripcion}
+                        />
                         <Text style={styles.header}>Indica tu tipo de limitacion fisica:</Text>
                         <View style={styles.inputPicker}>
                             <Picker
@@ -258,21 +279,14 @@ const Limitaciones = () => {
                                 <Picker.Item label="Congénitas o de nacimiento" value="Congénitas o de nacimiento" />
                             </Picker>
                         </View>
-                        <Text style={styles.header}>Nombra o describe tu limitacion:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholderTextColor="gray"
-                            placeholder="ej: XXXXXX"
-                            onChangeText={text => setDescripcion(text)}
-                            value={descripcion}
-                        />
+
                         <View style={styles.buttonContainerCenter}>
-                            <TouchableOpacity className="w-32" style={styles.closeButton} onPress={() => {setModalVisibleLimitaciones(false)}}>
+                            <TouchableOpacity className="w-32" style={styles.closeButton} onPress={() => { setModalVisibleLimitaciones(false) }}>
                                 <Text className="text-rojoIntenso text-center font-bold">
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity className="w-32" style={styles.rojoIntensoButton} onPress={() => {agregarLimitacion();}}>
+                            <TouchableOpacity className="w-32" style={styles.rojoIntensoButton} onPress={() => { agregarLimitacion(); }}>
                                 <Text className="text-celeste text-center font-bold">
                                     Agregar Nueva Limitación
                                 </Text>

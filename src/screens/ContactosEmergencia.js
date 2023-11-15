@@ -12,7 +12,7 @@ import { obtenerRut } from "../api/sqlite"
 
 const db = SQLite.openDatabase('adamdb.db');
 
-const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete}) => {
+const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete, setContactoId}) => {
     const [Contacto, setContacto] = useState(contacto);
     const handleChange = (key, val) => {
         setContacto(current => ({
@@ -69,7 +69,6 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                 </>
             ) : (
                 <>
-                    <View style={styles.lineaContainer}></View>
                     <Text style={styles.encabezado}>Nombre completo:</Text>
                     <Text style={styles.content}>{Contacto.nombreCompleto}</Text>
                     <Text style={styles.encabezado}>Alias:</Text>
@@ -98,6 +97,20 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                     </Text>
                 </TouchableOpacity>
             </View>
+            {isEditing ? (
+                <>
+                    <View style={styles.espacioContainer2}></View>
+                    <TouchableOpacity
+                        style={styles.celesteButton}
+                        onPress={() => setContactoId(null)}
+                    >
+                        <Text style={styles.rojoIntensoText}>
+                            Cancelar
+                        </Text>
+                    </TouchableOpacity>
+                    <View style={styles.lineaContainer}></View>
+                    </>
+            ):null}
         </View>
     );
 };
@@ -323,6 +336,7 @@ const Contactos = () => {
                         isEditing={ContactoId === contacto.id}
                         handlePress={handlePress}
                         handleDelete={handleDelete}
+                        setContactoId={setContactoId}
                         
                     />
                 ))}

@@ -304,16 +304,15 @@ export default function Perfil({ navigation }) {
       {data.map((item, index) => (
         <View style={styles.container} key={index}>
           <View className="bg-blanco p-5 shadow-lg shadow-negro rounded-md">
-            
-            <Text style={styles.content3}>{'Nombre completo:'}</Text>
-            <Text style={styles.content2}>{item.pnombre}{' '}{item.snombre}{' '}{item.papellido}{' '}{item.sapellido} </Text>
-            
-            <TouchableOpacity className="bg-rojoIntenso h-10 mx-12 mt-5 rounded-lg justify-center shadow-lg shadow-negro" onPress={() => navigation.navigate('PerfilNested', { screen: 'Datos de usuario' })}>
+            <TouchableOpacity className="bg-rojoIntenso h-10  mt-5 rounded-lg justify-center shadow-lg shadow-negro" onPress={() => navigation.navigate('PerfilNested', { screen: 'Datos de usuario' })}>
               <Text className="text-celeste text-center font-bold py-3">Editar datos</Text>
             </TouchableOpacity>
-            
+            <View style={styles.espacioContainer2}></View>
+            <Text style={styles.content3}>{'Nombre completo:'}</Text>
+            <Text style={styles.content2}>{item.pnombre}{' '}{item.snombre}{' '}{item.papellido}{' '}{item.sapellido} </Text>
+
             <View style={styles.lineaContainer}></View>
-            <View style={styles.rowPerfil}>
+            <View >
               <View style={styles.alingRowPerfilLeft}>
                 <Text style={styles.content3}>{'Alias:'}</Text>
                 <Text style={styles.content2}>{item.alias} </Text>
@@ -325,7 +324,7 @@ export default function Perfil({ navigation }) {
               </View>
             </View>
             <View style={styles.lineaContainer}></View>
-            <View style={styles.rowPerfil}>
+            <View >
               <View style={styles.alingRowPerfilLeft}>
                 <Text style={styles.content3}>{'Fecha de nacimiento:'}</Text>
                 <Text style={styles.content2}>{item.fecha_nacimiento}</Text>
@@ -337,7 +336,7 @@ export default function Perfil({ navigation }) {
               </View>
             </View>
             <View style={styles.lineaContainer}></View>
-            <View style={styles.rowPerfil}>
+            <View >
               <View style={styles.alingRowPerfilLeft}>
                 <Text style={styles.content3}>{'Tipo de Sangre:'}</Text>
                 <Text style={styles.content2}>{item.tipo_sangre}</Text>
@@ -349,9 +348,9 @@ export default function Perfil({ navigation }) {
               </View>
             </View>
             <View style={styles.lineaContainer}></View>
-            
+
           </View>
-          
+
           <View style={styles.lineaContainer}></View>
           <View className="bg-blanco p-5 shadow-lg shadow-negro rounded-md">
             {patologias.length > 0 ? (
@@ -361,7 +360,7 @@ export default function Perfil({ navigation }) {
                     <TouchableOpacity className="mb-5" style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}>
                       <Text style={styles.rojoIntensoText}>Añadir o modificar enfermedades</Text>
                     </TouchableOpacity>
-                    
+
                   </>
                 )}
                 {patologias.map((patologia, index) => (
@@ -375,15 +374,22 @@ export default function Perfil({ navigation }) {
                 ))}
               </>
             ) : (
-              <View style={styles.rowPerfil}>
-                <View style={styles.alingRowPerfilLeft2}>
-                  <Text style={styles.content2}>{'No tienes enfermedades registradas'}</Text>
-                </View>
-                <View style={styles.lineaVertical2}></View>
-                <View style={[styles.alingRowPerfilRight2, styles.centeredText3]}>
-                  <Text onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}><FontAwesome5 name="plus" size={25} color={'green'} /></Text>
-                </View>
+              <View>
+                <TouchableOpacity
+                  className={'flex-row  justify-around w-full mt-3'}
+                  style={styles.content4}
+                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}
+                >
+                  <View>
+                    <Text style={styles.textCeleste}>{'No tienes enfermedades registradas'}</Text>
+                  </View>
+                  <View >
+                    <FontAwesome5 name="plus" size={25} color={'#ff3e45'} />
+                  </View>
+                </TouchableOpacity>
               </View>
+
+
             )}
             {patologias.length > 0 ? (
               <>
@@ -391,18 +397,18 @@ export default function Perfil({ navigation }) {
                   <>
                     {patologias.length > 1 ? (
                       <>
-                        
+
                         <Text style={styles.content2}>{`Tienes ${patologias.length} enfermedades registradas`}</Text>
-                        
+
                         <TouchableOpacity className="bg-rojoIntenso" onPress={() => pressPatologia()}>
                           <Text className="text-center text-rojoIntenso">{showPatologia ? 'Ocultar enfermedades' : 'Mostar enfermedades'}</Text>
                         </TouchableOpacity>
                       </>
                     ) : (
                       <>
-                        
+
                         <Text style={styles.content2}>{`Tienes una enfermedad registrada`}</Text>
-                        
+
                         <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressPatologia()}>
                           <Text style={styles.buttonTextPerfil}>{showPatologia ? 'Ocultar enfermedades' : 'Mostar enfermedades'}</Text>
                         </TouchableOpacity>
@@ -411,7 +417,7 @@ export default function Perfil({ navigation }) {
                   </>
                 ) : (
                   <>
-                    
+
                     <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressPatologia()}>
                       <Text style={styles.buttonTextPerfil}>{showPatologia ? 'Ocultar enfermedades' : 'Mostar enfermedades'}</Text>
                     </TouchableOpacity>
@@ -419,7 +425,7 @@ export default function Perfil({ navigation }) {
                 )}
               </>
             ) : null}
-            
+
           </View>
 
           <View style={styles.espacioContainer}></View>
@@ -431,7 +437,7 @@ export default function Perfil({ navigation }) {
                     <TouchableOpacity className="mb-5" style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}>
                       <Text style={styles.rojoIntensoText}>Añadir o modificar medicamentos</Text>
                     </TouchableOpacity>
-                    
+
                   </>
                 )}
                 {medicamentos.map((medicamento, index) => (
@@ -445,14 +451,18 @@ export default function Perfil({ navigation }) {
                 ))}
               </>
             ) : (
-              <View style={styles.rowPerfil}>
-                <View style={styles.alingRowPerfilLeft2}>
-                  <Text style={styles.content2}>{'No tienes medicamentos registrados'}</Text>
-                </View>
-                <View style={styles.lineaVertical2}></View>
-                <View style={[styles.alingRowPerfilRight2, styles.centeredText3]}>
-                  <Text onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}><FontAwesome5 name="plus" size={25} color={'green'} /></Text>
-                </View>
+              <View >
+                <TouchableOpacity
+                  className={'flex-row  justify-around w-full mt-3'}
+                  style={styles.content4}
+                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}                >
+                  <View>
+                    <Text style={styles.textCeleste}>{'No tienes medicamentos registrados'}</Text>
+                  </View>
+                  <View >
+                    <FontAwesome5 name="plus" size={25} color={'#ff3e45'} />
+                  </View>
+                </TouchableOpacity>
               </View>
             )}
             {medicamentos.length > 0 ? (
@@ -461,18 +471,18 @@ export default function Perfil({ navigation }) {
                   <>
                     {medicamentos.length > 1 ? (
                       <>
-                        
+
                         <Text style={styles.content2}>{`Tienes ${medicamentos.length} medicamentos registrados`}</Text>
-                        
+
                         <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressMedicamento()}>
                           <Text style={styles.buttonTextPerfil}>{showMedicamento ? 'Ocultar medicamentos' : 'Mostar medicamentos'}</Text>
                         </TouchableOpacity>
                       </>
                     ) : (
                       <>
-                        
+
                         <Text style={styles.content2}>{`Tienes un medicamento registrado`}</Text>
-                        
+
                         <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressMedicamento()}>
                           <Text style={styles.buttonTextPerfil}>{showMedicamento ? 'Ocultar medicamentos' : 'Mostar medicamentos'}</Text>
                         </TouchableOpacity>
@@ -481,7 +491,7 @@ export default function Perfil({ navigation }) {
                   </>
                 ) : (
                   <>
-                    
+
                     <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressMedicamento()}>
                       <Text style={styles.buttonTextPerfil}>{showMedicamento ? 'Ocultar medicamentos' : 'Mostar medicamentos'}</Text>
                     </TouchableOpacity>
@@ -489,7 +499,7 @@ export default function Perfil({ navigation }) {
                 )}
               </>
             ) : null}
-            
+
           </View>
 
           <View style={styles.espacioContainer}></View>
@@ -501,7 +511,7 @@ export default function Perfil({ navigation }) {
                     <TouchableOpacity className="mb-5" style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}>
                       <Text style={styles.rojoIntensoText}>Añadir o modificar alergias</Text>
                     </TouchableOpacity>
-                    
+
                   </>
                 )}
                 {alergias.map((alergia, index) => (
@@ -515,14 +525,19 @@ export default function Perfil({ navigation }) {
                 ))}
               </>
             ) : (
-              <View style={styles.rowPerfil}>
-                <View style={styles.alingRowPerfilLeft2}>
-                  <Text style={styles.content2}>{'No tienes alergias registradas'}</Text>
-                </View>
-                <View style={styles.lineaVertical2}></View>
-                <View style={[styles.alingRowPerfilRight2, styles.centeredText3]}>
-                  <Text onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}><FontAwesome5 name="plus" size={25} color={'green'} /></Text>
-                </View>
+              <View>
+                <TouchableOpacity
+                  className={'flex-row  justify-around w-full mt-3'}
+                  style={styles.content4}
+                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}
+                >
+                  <View>
+                    <Text style={styles.textCeleste}>{'No tienes alergias registradas'}</Text>
+                  </View>
+                  <View >
+                    <FontAwesome5 name="plus" size={25} color={'#ff3e45'} />
+                  </View>
+                </TouchableOpacity>
               </View>
             )}
             {alergias.length > 0 ? (
@@ -531,18 +546,18 @@ export default function Perfil({ navigation }) {
                   <>
                     {alergias.length > 1 ? (
                       <>
-                        
+
                         <Text style={styles.content2}>{`Tienes ${alergias.length} alergias registradas`}</Text>
-                        
+
                         <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressAlergia()}>
                           <Text style={styles.buttonTextPerfil}>{showAlergia ? 'Ocultar alergias' : 'Mostar alergias'}</Text>
                         </TouchableOpacity>
                       </>
                     ) : (
                       <>
-                        
+
                         <Text style={styles.content2}>{`Tienes una alergia registrada`}</Text>
-                        
+
                         <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressAlergia()}>
                           <Text style={styles.buttonTextPerfil}>{showAlergia ? 'Ocultar alergias' : 'Mostar alergias'}</Text>
                         </TouchableOpacity>
@@ -551,7 +566,7 @@ export default function Perfil({ navigation }) {
                   </>
                 ) : (
                   <>
-                    
+
                     <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressAlergia()}>
                       <Text style={styles.buttonTextPerfil}>{showAlergia ? 'Ocultar alergias' : 'Mostar alergias'}</Text>
                     </TouchableOpacity>
@@ -570,7 +585,7 @@ export default function Perfil({ navigation }) {
                     <TouchableOpacity className="mb-5" style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}>
                       <Text style={styles.rojoIntensoText}>Añadir o modificar limitaciones</Text>
                     </TouchableOpacity>
-                    
+
                   </>
                 )}
                 {limitaciones.map((limitacion, index) => (
@@ -584,18 +599,23 @@ export default function Perfil({ navigation }) {
                 ))}
               </>
             ) : (
-              
-              <View style={styles.rowPerfil}>
-                <View style={styles.alingRowPerfilLeft2}>
-                  <Text style={styles.content2}>{'No tienes limitaciones registradas'}</Text>
-                </View>
-                <View style={styles.lineaVertical2}></View>
-                <View style={[styles.alingRowPerfilRight2, styles.centeredText3]}>
-                  <Text onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}><FontAwesome5 name="plus" size={25} color={'green'} /></Text>
-                </View>
+
+              <View>
+                <TouchableOpacity
+                  className={'flex-row  justify-around w-full mt-3'}
+                  style={styles.content4}
+                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}
+                >
+                  <View>
+                    <Text style={styles.textCeleste}>{'No tienes limitaciones registradas'}</Text>
+                  </View>
+                  <View >
+                    <FontAwesome5 name="plus" size={25} color={'#ff3e45'} />
+                  </View>
+                </TouchableOpacity>
               </View>
             )}
-            
+
             {limitaciones.length > 0 ? (
               <>
                 {!showLimitacion ? (
@@ -604,16 +624,16 @@ export default function Perfil({ navigation }) {
                       <>
                         <View style={styles.espacioContainer}></View>
                         <Text style={styles.content2}>{`Tienes ${limitaciones.length} limitaciones registradas`}</Text>
-                        
+
                         <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressLimitacion()}>
                           <Text style={styles.buttonTextPerfil}>{showLimitacion ? 'Ocultar limitaciones' : 'Mostar limitaciones'}</Text>
                         </TouchableOpacity>
                       </>
                     ) : (
                       <>
-                        
+
                         <Text style={styles.content2}>{`Tiene una limitación registrada`}</Text>
-                        
+
                         <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressLimitacion()}>
                           <Text style={styles.buttonTextPerfil}>{showLimitacion ? 'Ocultar limitaciones' : 'Mostar limitaciones'}</Text>
                         </TouchableOpacity>
@@ -622,7 +642,7 @@ export default function Perfil({ navigation }) {
                   </>
                 ) : (
                   <>
-                    
+
                     <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressLimitacion()}>
                       <Text style={styles.buttonTextPerfil}>{showLimitacion ? 'Ocultar limitaciones' : 'Mostar limitaciones'}</Text>
                     </TouchableOpacity>
@@ -631,7 +651,7 @@ export default function Perfil({ navigation }) {
               </>
             ) : null}
           </View>
-          
+
           <TouchableOpacity className="mt-5" style={styles.rojoIntensoButton} onPress={() => navigation.navigate('PerfilNested', { screen: 'Contactos de emergencia' })}>
             <Text style={styles.celesteText}>Gestionar Contactos</Text>
           </TouchableOpacity>
