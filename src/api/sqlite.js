@@ -4,84 +4,84 @@ import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
 
-export async function obtenerDatosPreviosSelec (rutUsuario) {
+export async function obtenerDatosPreviosSelec(rutUsuario) {
     console.log('OBTENIENDO DATOS MEDICOS PREVIOS DEL RUT: ', rutUsuario);
     return new Promise((resolve, reject) => {
-      try {
-        db.transaction(tx => {
-          tx.executeSql(
-            'SELECT * FROM Configuracion WHERE usuario_rut = ?',
-            [rutUsuario],
-            (_, { rows: { _array } }) => {
-              if (_array.length > 0) {
-                const datosPreviosSelec = _array[0].DatosSeleccionados;
-                //console.log('Datos previos a vocalizar obtenidos:', datosPreviosSelec);
-                resolve(datosPreviosSelec)
+        try {
+            db.transaction(tx => {
+                tx.executeSql(
+                    'SELECT * FROM Configuracion WHERE usuario_rut = ?',
+                    [rutUsuario],
+                    (_, { rows: { _array } }) => {
+                        if (_array.length > 0) {
+                            const datosPreviosSelec = _array[0].DatosSeleccionados;
+                            //console.log('Datos previos a vocalizar obtenidos:', datosPreviosSelec);
+                            resolve(datosPreviosSelec)
 
-              } else {
-                console.log('No se encontraron datos previos a vocalizar');
-                resolve()
-              }
-            },
-            (_, error) => { reject(error), console.log('Error al obtener los datos al obtener datos previos a vocalizar:', error) }
-          );
-        });
-      } catch (error) {
-        console.log('Error al obtener los datos al obtener datos previos a vocalizar:', error)
-        reject(error)
+                        } else {
+                            console.log('No se encontraron datos previos a vocalizar');
+                            resolve()
+                        }
+                    },
+                    (_, error) => { reject(error), console.log('Error al obtener los datos al obtener datos previos a vocalizar:', error) }
+                );
+            });
+        } catch (error) {
+            console.log('Error al obtener los datos al obtener datos previos a vocalizar:', error)
+            reject(error)
 
-      }
+        }
     })
-  }
+}
 
 
-  export async function obtenerDatosPreviosAnon (rutUsuario) {
+export async function obtenerDatosPreviosAnon(rutUsuario) {
     console.log('OBTENIENDO DATOS MEDICOS PREVIOS ANONIMOS DEL RUT: ', rutUsuario);
     return new Promise((resolve, reject) => {
-      try {
-        db.transaction(tx => {
-          tx.executeSql(
-            'SELECT * FROM Configuracion WHERE usuario_rut = ?',
-            [rutUsuario],
-            (_, { rows: { _array } }) => {
-              if (_array.length > 0) {
-                let datosPreviosSelec = _array[0].DatosSeleccionados;
-                //console.log('Datos previos a vocalizar obtenidos:', datosPreviosSelec);
-                let patronesAEliminar = [
-                    /^Rut: .*/m,
-                    /^Primer nombre: .*/m,
-                    /^Segundo nombre: .*/m,
-                    /^Primer apellido: .*/m,
-                    /^Segundo apellido: .*/m,
-                    /^Alias: .*/m
-                  ];
-              
-                  // Aplicar los patrones
-                  for (let patron of patronesAEliminar) {
-                    datosPreviosSelec = datosPreviosSelec.replace(patron, '');
-                  }
-                  datosPreviosSelec = datosPreviosSelec.replace(/\s+/g, ' ');
-                  datosPreviosSelec = datosPreviosSelec.split('\n').filter(Boolean).join(', ');
-                  //console.log(datosPreviosSelec.trim());
+        try {
+            db.transaction(tx => {
+                tx.executeSql(
+                    'SELECT * FROM Configuracion WHERE usuario_rut = ?',
+                    [rutUsuario],
+                    (_, { rows: { _array } }) => {
+                        if (_array.length > 0) {
+                            let datosPreviosSelec = _array[0].DatosSeleccionados;
+                            //console.log('Datos previos a vocalizar obtenidos:', datosPreviosSelec);
+                            let patronesAEliminar = [
+                                /^Rut: .*/m,
+                                /^Primer nombre: .*/m,
+                                /^Segundo nombre: .*/m,
+                                /^Primer apellido: .*/m,
+                                /^Segundo apellido: .*/m,
+                                /^Alias: .*/m
+                            ];
+
+                            // Aplicar los patrones
+                            for (let patron of patronesAEliminar) {
+                                datosPreviosSelec = datosPreviosSelec.replace(patron, '');
+                            }
+                            datosPreviosSelec = datosPreviosSelec.replace(/\s+/g, ' ');
+                            datosPreviosSelec = datosPreviosSelec.split('\n').filter(Boolean).join(', ');
+                            //console.log(datosPreviosSelec.trim());
 
 
-                resolve(datosPreviosSelec.trim())
+                            resolve(datosPreviosSelec.trim())
 
-              } else {
-                console.log('No se encuentran datos seleccionados');
-                resolve()
-              }
-            },
-            (_, error) => { reject(error), console.log('Error al obtener los datos al obtener datos previos:', error) }
-          );
-        });
-      } catch (error) {
-        console.log('Error al obtener los datos al obtener datos previos :', error)
-        reject(error)
+                        } else {
+                            console.log('No se encuentran datos seleccionados');
+                            resolve()
+                        }
+                    },
+                    (_, error) => { reject(error), console.log('Error al obtener los datos al obtener datos previos:', error) }
+                );
+            });
+        } catch (error) {
+            console.log('Error al obtener los datos al obtener datos previos :', error)
+            reject(error)
 
-      }
+        }
     })
-  }
+}
 
 export async function addRecordatorio(recordatorio, idNotificacion) {
     let data = recordatorio
@@ -101,42 +101,42 @@ export async function addRecordatorio(recordatorio, idNotificacion) {
 
 // resto de la implementacion de la bd
 
-export  function obtenerContactosEmergencia(){
- return new Promise((resolve,reject)=>{
-    db.transaction(tx=> {
-        tx.executeSql(
-            `SELECT * FROM Contacto;`,
-            [],
-            (_, { rows: { _array } }) => {
-                if (_array.length > 0) {
-                    let contacto = _array;
-                    
-                    resolve(contacto);
-                } else {
-                    console.log('No hay registros en la tabla Contacto.');
-                    resolve([]);
+export function obtenerContactosEmergencia() {
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `SELECT * FROM Contacto;`,
+                [],
+                (_, { rows: { _array } }) => {
+                    if (_array.length > 0) {
+                        let contacto = _array;
+
+                        resolve(contacto);
+                    } else {
+                        console.log('No hay registros en la tabla Contacto.');
+                        resolve([]);
+                    }
+                },
+                (_, error) => {
+                    console.log('Error al obtener registros en la tabla Contacto:', error);
+                    reject(error);
                 }
-            },
-            (_, error) => {
-                console.log('Error al obtener registros en la tabla Contacto:', error);
-                reject(error);
-            }
-        );
-    })
- });
+            );
+        })
+    });
 }
 
 
-export async function obtenerContactosAlmacenados(){
-    return new Promise((resolve,reject)=>{
-        db.transaction(tx=> {
+export async function obtenerContactosAlmacenados() {
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
             tx.executeSql(
                 `SELECT nombreCompleto ,alias ,relacion FROM Contacto;`,
                 [],
                 (_, { rows: { _array } }) => {
                     if (_array.length > 0) {
                         let contacto = _array;
-                        
+
                         resolve(contacto);
                     } else {
                         console.log('No hay registros en la tabla Contacto.');
@@ -149,7 +149,7 @@ export async function obtenerContactosAlmacenados(){
                 }
             );
         })
-     });
+    });
 }
 
 
@@ -260,11 +260,30 @@ export function initDB() {
 
 
     // eliminar tabla
-    /*db.transaction(tx => {
-        tx.executeSql('DROP TABLE Recordatorios', [], (_, { rows }) => {
-            console.log('Tabla eliminada Usuario');
+    db.transaction(tx => {
+        tx.executeSql('DROP TABLE Contacto', [], (_, { rows }) => {
+            console.log('Tabla eliminada Contacto');
         });
-    });*/
+
+        
+        // Crear tabla Contacto
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS Contacto (
+          id INTEGER PRIMARY KEY NOT NULL,
+          nombreCompleto TEXT,
+          alias TEXT,
+          numero TEXT,
+          relacion TEXT,
+          estadoContacto TEXT,
+          usuario_rut TEXT,
+          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        );`,
+            [],
+            (_, { rows }) => { console.log('Tabla Contacto creada'); },
+            (_, error) => console.log('Error al crear la tabla Contacto:', error)
+        );
+
+    });
 
     //eliminar contenido de una tabla
     /*db.transaction(tx => {
@@ -412,21 +431,7 @@ export function initDB() {
             (_, error) => console.log('Error al crear la tabla Historial:', error)
         );
 
-        // Crear tabla Contacto
-        tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS Contacto (
-          id INTEGER PRIMARY KEY NOT NULL,
-          nombreCompleto TEXT,
-          alias TEXT,
-          numero TEXT,
-          relacion TEXT,
-          usuario_rut TEXT,
-          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-        );`,
-            [],
-            () => { },
-            (_, error) => console.log('Error al crear la tabla Contacto:', error)
-        );
+
 
         // Crear tabla centros medicos
         tx.executeSql(

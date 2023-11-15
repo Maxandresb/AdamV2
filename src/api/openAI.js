@@ -315,7 +315,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
                 setTimeout(async () => {
                     try {
                         const result = await client.post(chatgptUrl, {
-                            model: "gpt-4-1106-preview",
+                            model: "gpt-3.5-turbo-0613",
                             messages: [
                                 ...conversationHistory,
                                 message,
@@ -396,7 +396,7 @@ export async function firstApiCall(prompt) {
                 setTimeout(async () => {
                     try {
                         const result = await client.post(chatgptUrl, {
-                            model: "gpt-4-1106-preview",
+                            model: "gpt-3.5-turbo-0613",
                             messages: [
                                 {
                                     role: 'system',

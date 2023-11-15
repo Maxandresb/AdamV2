@@ -547,5 +547,39 @@ export default StyleSheet.create({
         marginLeft:20,
         marginRight:20
     },
+    c2:{
+        width:'70%',
+        marginLeft:0,
+        alignItems:'flex-start',
+        alignContent:'flex-start',
+        alignSelf:'flex-start'
+    },
+    containerDeslizable: {
+        width:'30%',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        borderWidth: 2,
+        borderColor: 'black',
+        height:30
+      },
+      switchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      switchOption: {
+        width: '50%',
+        height: 26.4,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      selectedOption: {
+        backgroundColor: '#ff3e45',
+      },
+      switchText: {
+        color: '#ff3e45',
+        fontWeight: 'bold',
+      },
+      
 
 })
