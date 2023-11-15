@@ -13,7 +13,7 @@ import { addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergen
 import { generarRespuesta, crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
-import { enviarMensaje, realizarLlamada } from "../api/llamada";
+import { enviarMensajeEmergencia, realizarLlamada } from "../api/llamada";
 
 import styles from '../api/styles';
 import * as FileSystem from 'expo-file-system';
@@ -95,7 +95,7 @@ export default function Emergencias ()  {
     if(contactosEmergencia.current.length == 1  ){
       let contacto= contactosEmergencia.current[0]
       let numero= contacto.numero.replace(/\D/g, '')
-      enviarMensaje(numero)
+      enviarMensajeEmergencia(numero)
     }
     else if (contactosEmergencia.current.length == 0 || contactosEmergencia.current.length == undefined){
       
@@ -320,7 +320,7 @@ export default function Emergencias ()  {
                         realizarLlamada(contactoEmSeleccionado.current.numero.replace(/\D/g, ''))
                         setLlamada(false)
                       } else if (mensaje==true){
-                        enviarMensaje(contactoEmSeleccionado.current.numero.replace(/\D/g, ''))
+                        enviarMensajeEmergencia(contactoEmSeleccionado.current.numero.replace(/\D/g, ''))
                         setMensaje(false)
                       }
                       

@@ -144,6 +144,23 @@ const functions = [
         }
     },
     {
+        "name": "enviar_mensaje_a_contacto",
+        "description": `El usuario solicita enviar un mensaje a una persona, debes responder con el nombre de la persona a la cual llamara , es obligatorio mencionar el contacto al cual enviar el mensaje. Los contactos disponibles son  ${contactos}`,
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "nombre_persona": {
+                    "type": "string",
+                    "description": "Este parametro es obligatorio. Indica el nombre de la persona a la cual se desea enviar el mensaje, puede ser un nombre como tal o un alias",
+                },
+                "mensaje": {
+                    "type": "string",
+                    "description": "Este parametro es obligatorio. Indica el mensaje que el usuario quiere enviar, no puedes modificar el mensaje que indique el usuario, debes indicar tal cual lo que dice ",
+                }
+            }, "required": ["nombre persona a enviar mensaje", "mensaje"]
+        }
+    },
+    {
         "name": "llamar_a_centro_salud",
         "description": "identifica que el usuario desea llamar a un centro de salud",
         "parameters": {
@@ -167,6 +184,19 @@ const functions = [
                     "description": "numero al cual se desea llamar",
                 }
             }, "required": ["numero a llamar"]
+        }
+    },
+    {
+        "name": "llamar_contacto_emergencia",
+        "description": "el usuario solicita llamar a su contacto de emergencia",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "contacto de emergencia": {
+                    "type": "string",
+                    "description": "el usuario indica en la oracion 'contacto de emergencia'",
+                }
+            }, 
         }
     },
     {
@@ -384,89 +414,84 @@ export async function secondApiCall(prompt, message, function_name, function_res
 }
 
 export async function firstApiCall(prompt) {
-    var FechaHoy = new Date()
-    console.log('Fecha Hoy: ' + FechaHoy)
-    functions.find(func => func.name === 'recordatorio').description = `El usuario solicita crear un recordatorio, tu debes identificar las propiedades de la funcion en el prompt del usuario. Debes saber que el dia de hoy es: ${FechaHoy} ya que lo usaras mas adelante para indicar la fecha del recordatorio, siempre debes retornar la fecha. Tienes que analizar el prompt del usuario y devolver siempre los siguientes parámetros o propiedades obligatorios: Titulo, Fecha, Hora y Dias. Si no se menciona alguna debes seguir las descripciones de cada propiedad para saber como intrepretar el prompt del usuario, bajo niun punto pueden faltar alguna de estas 4 propiedades, siempre las debes encontrar.;`
-    functions.find(func => func.name === 'Compartir_Ubicacion').description = `el usuario solicita compartir su ubicacion actual con un contacto , los contactos actuales son ${contactos} , debes reconocer frases como 'Enviale mi ubicacion a', 'comparte mi ubicacion', 'manda mi ubicacion' , 'dile a x donde estoy'  o algo similar`;
-    functions.find(func => func.name === 'llamar_contacto').description =`el usuario solicita llamar a una persona, debes responder con el nombre de la persona a la cual llamara , es obligatorio mencionar a un contacto para llamar los contactos actuales son  ${contactos}`;
-    let retries = 2;
-    while (retries > 0) {
-        try {
-            const res = await new Promise((resolve, reject) => {
-                setTimeout(async () => {
-                    try {
-                        const result = await client.post(chatgptUrl, {
-                            model: "gpt-3.5-turbo-0613",
-                            messages: [
-                                {
-                                    role: 'system',
-                                    content: "Eres un asistente, tus funciones son: responder preguntas especificas, conversar sobre diversos temas y realizar funciones solicitadas. "
-                                },
-                                {
-                                    role: "user",
-                                    content: prompt
-                                },
-                            ],
-                            functions: functions,
-                            function_call: "auto",
-                        });
+   console.log('START 1RA LLAMADA');
+   var FechaHoy = new Date()
+   console.log('Fecha Hoy: ' + FechaHoy)
+   functions.find(func => func.name === 'recordatorio').description = `El usuario solicita crear un recordatorio, tu debes identificar las propiedades de la funcion en el prompt del usuario. Debes saber que el dia de hoy es: ${FechaHoy} ya que lo usaras mas adelante para indicar la fecha del recordatorio, siempre debes retornar la fecha. Tienes que analizar el prompt del usuario y devolver siempre los siguientes parámetros o propiedades obligatorios: Titulo, Fecha, Hora y Dias. Si no se menciona alguna debes seguir las descripciones de cada propiedad para saber como intrepretar el prompt del usuario, bajo niun punto pueden faltar alguna de estas 4 propiedades, siempre las debes encontrar.;`
+   functions.find(func => func.name === 'Compartir_Ubicacion').description = `el usuario solicita compartir su ubicacion actual con un contacto , los contactos actuales son ${contactos} , debes reconocer frases como 'Enviale mi ubicacion a', 'comparte mi ubicacion', 'manda mi ubicacion' , 'dile a x donde estoy' o algo similar`;
+   functions.find(func => func.name === 'llamar_contacto').description =`el usuario solicita llamar a una persona, debes responder con el nombre de la persona a la cual llamara , es obligatorio mencionar a un contacto para llamar los contactos actuales son ${contactos}`;
+   let retries = 2;
+   let intento = 1;
+   while (retries > 0) {
+       try {
+           const res = await new Promise((resolve, reject) => {
+               setTimeout(async () => {
+                  try {
+                      const result = await client.post(chatgptUrl, {
+                          model: "gpt-3.5-turbo-0613",
+                          messages: [
+                              {
+                                 role: 'system',
+                                 content: "Eres un asistente, tus funciones son: responder preguntas especificas, conversar sobre diversos temas y realizar funciones solicitadas. "
+                              },
+                              {
+                                 role: "user",
+                                 content: prompt
+                              },
+                          ],
+                          functions: functions,
+                          function_call: "auto",
+                      });
 
-                        resolve(result);
-                    } catch (error) {
-                        reject(error);
-                    }
-                }, 5000); // Espera 5 segundos antes de hacer la llamada a la API
-            });
-            // Si la promesa se resuelve con éxito, procesa la respuesta y sale del bucle
-            // Procesa tu respuesta aquí...
-            promises.push(res);
-            let message, function_name, args;
-            if (res.data?.choices[0]?.message?.function_call?.name) {
-                const tex = JSON.stringify(res.data?.choices[0])
-                //console.log('CHOICES: '+tex)
-                //const tex2 = JSON.stringify(res.data?.choices[0]?.message)
-                //console.log('MENSAJE: ' + tex2)
-                message = res.data?.choices[0]?.message;
-                function_name = res.data?.choices[0]?.message?.function_call?.name;
-                //console.log('function_name: ' + function_name)
-                if (function_name === 'llamar_contacto') {
-                    let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
-                    let parsedArgs = JSON.parse(res_args);
-                    args = parsedArgs["persona a llamar"];
-                } else if (function_name === 'llamar_numero') {
-                    let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
-                    let parsedArgs = JSON.parse(res_args);
-                    args = parsedArgs["numero a llamar"];
-                } else {
-                    args = res.data?.choices[0]?.message?.function_call?.arguments;
-                }
-                //console.log('args: ' + args)
-            } else {
-                function_name = "funcion_extra"
-                message = { "role": "assistant", "content": null, "function_call": { "name": "funcion_extra", "arguments": "{}" } }
-                args = '{}'
-            }
+                      resolve(result);
+                  } catch (error) {
+                      reject(error);
+                  }
+               }, 5000); // Espera 5 segundos antes de hacer la llamada a la API
+           });
+           promises.push(res);
+           let message, function_name, args;
+           if (res.data?.choices[0]?.message?.function_call?.name) {
+               const tex = JSON.stringify(res.data?.choices[0])
+               message = res.data?.choices[0]?.message;
+               function_name = res.data?.choices[0]?.message?.function_call?.name;
+               if (function_name === 'llamar_contacto') {
+                  let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
+                  let parsedArgs = JSON.parse(res_args);
+                  args = parsedArgs["persona a llamar"];
+               } else if (function_name === 'llamar_numero') {
+                  let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
+                  let parsedArgs = JSON.parse(res_args);
+                  args = parsedArgs["numero a llamar"];
+               } else {
+                  args = res.data?.choices[0]?.message?.function_call?.arguments;
+               }
+           } else {
+               function_name = "funcion_extra"
+               message = { "role": "assistant", "content": null, "function_call": { "name": "funcion_extra", "arguments": "{}" } }
+               args = '{}'
+           }
 
-            return { function_name: function_name, args: args, message: message };
+           return { function_name: function_name, args: args, message: message };
 
-        } catch (error) {
-            if (retries === 0) throw error; // Si se han agotado los intentos, lanza el error
-            console.error('Error Message:', error.message);
-            if (error.response) {
-                console.error('Response:', {
-                    status: error.response.status,
-                    headers: error.response.headers,
-                    data: error.response.data
-                });
-            } else if (error.request) {
-                console.error('Request:', error.request);
-            } else {
-                console.error('Error:', error.message);
-            }
-            retries--;
-
-        }
-    }
+       } catch (error) {
+           if (retries === 0) throw error; // Si se han agotado los intentos, lanza el error
+           console.error(`Error en el intento ${intento}:`, error.message);
+           if (error.response) {
+               console.error('Respuesta:', {
+                  status: error.response.status,
+                  headers: error.response.headers,
+                  data: error.response.data
+               });
+           } else if (error.request) {
+               console.error('Solicitud:', error.request);
+           } else {
+               console.error('Error:', error.message);
+           }
+           retries--;
+           intento++;
+       }
+   }
 }
 
 

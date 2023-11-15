@@ -4,6 +4,32 @@ import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
 
+export const numContactoEmergencia = () => {
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `SELECT numero FROM Contacto WHERE estadoContacto = ?`,
+                ['sí'],
+                (_, { rows }) => {
+                    if (rows.length > 0) {
+                        let numero = rows.item(0).numero;
+                        console.log('Número del contacto con estado "sí":', numero);
+                        resolve(numero);
+                    } else {
+                        console.log('No se encontró ningún contacto de emergencia activo.');
+                        resolve('sin numero');
+                    }
+                },
+                (_, error) => {
+                    console.log('Error al buscar el contacto:', error);
+                    reject(error);
+                }
+            );
+        });
+    });
+};
+
+
 export async function obtenerDatosPreviosSelec(rutUsuario) {
     console.log('OBTENIENDO DATOS MEDICOS PREVIOS DEL RUT: ', rutUsuario);
     return new Promise((resolve, reject) => {
@@ -260,30 +286,11 @@ export function initDB() {
 
 
     // eliminar tabla
-    db.transaction(tx => {
+    /*db.transaction(tx => {
         tx.executeSql('DROP TABLE Contacto', [], (_, { rows }) => {
             console.log('Tabla eliminada Contacto');
         });
-
-        
-        // Crear tabla Contacto
-        tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS Contacto (
-          id INTEGER PRIMARY KEY NOT NULL,
-          nombreCompleto TEXT,
-          alias TEXT,
-          numero TEXT,
-          relacion TEXT,
-          estadoContacto TEXT,
-          usuario_rut TEXT,
-          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-        );`,
-            [],
-            (_, { rows }) => { console.log('Tabla Contacto creada'); },
-            (_, error) => console.log('Error al crear la tabla Contacto:', error)
-        );
-
-    });
+    });*/
 
     //eliminar contenido de una tabla
     /*db.transaction(tx => {
@@ -431,7 +438,22 @@ export function initDB() {
             (_, error) => console.log('Error al crear la tabla Historial:', error)
         );
 
-
+        // Crear tabla Contacto
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS Contacto (
+          id INTEGER PRIMARY KEY NOT NULL,
+          nombreCompleto TEXT,
+          alias TEXT,
+          numero TEXT,
+          relacion TEXT,
+          estadoContacto TEXT,
+          usuario_rut TEXT,
+          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        );`,
+            [],
+            (_, { rows }) => { console.log('Tabla Contacto creada'); },
+            (_, error) => console.log('Error al crear la tabla Contacto:', error)
+        );
 
         // Crear tabla centros medicos
         tx.executeSql(

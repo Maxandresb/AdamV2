@@ -206,7 +206,8 @@ const Contactos = () => {
                                 nombreCompleto: nombre,
                                 numero: numero,
                                 alias: '',
-                                relacion: ''
+                                relacion: '',
+                                estadoContacto: 'no'
                             }
                         ]);
 

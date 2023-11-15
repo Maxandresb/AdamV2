@@ -8,10 +8,7 @@ export function realizarLlamada(phoneNumber) {
 
 }
 
-
-
-
-export async function enviarMensaje(phoneNumber) {
+export async function enviarMensajeEmergencia(phoneNumber) {
   // Solicita permiso para acceder a la ubicación
   
 
@@ -27,6 +24,17 @@ export async function enviarMensaje(phoneNumber) {
   console.log(mapLink)
    //Abre whatsapp con el enlace de la ubicación
   let whatsappURL = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(`Esta es mi ubicacion actual, me encuentro en una emergencia: ${mapLink}`)}`;
+  console.log(whatsappURL)
+  Linking.openURL(whatsappURL).then((data) => {
+    console.log('Whatsapp abierto');
+  }).catch((err) => {
+    console.log(err);
+    alert('Asegúrate de que whatsapp esté instalado en tu dispositivo');
+  });
+}
+
+export async function enviarMensajeWSP(phoneNumber, mensaje) {
+  let whatsappURL = `whatsapp://send?phone=${phoneNumber}&text=${`${mensaje}`}`;
   console.log(whatsappURL)
   Linking.openURL(whatsappURL).then((data) => {
     console.log('Whatsapp abierto');
