@@ -164,13 +164,16 @@ export default function PrincipalScreen() {
           if (function_name === "hola") {
             function_response = "responder el saludo, presentarse indicando tu nombre el cual es ADAM"
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
+
           } else if (function_name === "explicar_algo") {
-            function_response = "explicar lo solicitado"
+            function_response = "explica lo solicitado, si no se indica nivel de detalle, debe ser una explicacion simple pero concisa"
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
+
           } else if (function_name === "ubicacion") {
             let ubicacion = await obtenerUbicacion('direccion');
             function_response = `La ubicación actual es: ${ubicacion}, informa al uauario que debe tener en cuenta que la ubicacion tiene un margen de error de aproximadamente 100 metros`;
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
+
           } else if (function_name === "centro_salud_cercano") {
             let { comuna, region } = await obtenerUbicacion('comuna');
             //let comuna = 'Hualqui'
@@ -185,6 +188,7 @@ export default function PrincipalScreen() {
             } else {
               console.log('No se encontraron centros')
             }
+
           } else if (function_name === "llamar_contacto") {
             console.log('PERSONA A LLAMAR: ', args)
             contactosEmergencia.current = await BuscarContactoEmergencia(args);
@@ -222,9 +226,6 @@ export default function PrincipalScreen() {
               //Alert.alert("Contacto no encontrado: ", function_response);
               contactosEmergencia.current = [];
             }
-            //function_response = "llama al contacto predeterminado"
-            //realizarLlamada('56953598945');
-            //respuesta = await secondApiCall(prompt, message, function_name, function_response)
 
           } else if (function_name === "llamar_a_centro_salud") {
             let { comuna, region } = await obtenerUbicacion('comuna');
@@ -261,17 +262,20 @@ export default function PrincipalScreen() {
                 centrosMed.current._array = [];
               }
             } console.log('ERROR: centrosMed no esxiste o no es un array')
+
           } else if (function_name === "llamar_numero") {
             console.log('NUMERO A LLAMAR: ', args)
             function_response = `Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.`
             realizarLlamada(args);
             respuesta = await generarRespuesta('Llamar a numero', function_response, prompt)
+
           } else if (function_name === "llamar_contacto_emergencia") {
             let numeroEmergencia = await numContactoEmergencia()
             console.log('numero de emergencia a llamar: ', numeroEmergencia);
             realizarLlamada(numeroEmergencia);
             let answer = `Se llamara al contacto de emergencia`
             respuesta = await generarRespuesta('llamar_contacto_emergencia', answer, prompt)
+
           } else if (function_name === "enviar_mensaje_a_contacto") {
             console.log('DATOS RECONOCIDOS: ', args)
             args = JSON.parse(args)
@@ -364,8 +368,13 @@ export default function PrincipalScreen() {
 
           } else if (function_name === 'Compartir_Ubicacion') {
             let answer = await compartir_ubicacion(prompt)
-
             respuesta = await generarRespuesta('Compartir_Ubicacion', answer, prompt)
+
+          } else if (function_name === 'explicar_funcion') {
+            console.log('ARGS: ', args)
+            function_response = 'Debes explicar paso a paso como navegar entre las pantallas de la aplicacion para realizar la funcioncion que el usuario solicita'
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)
+
           } else {
             console.log('FUNCION NO ENCONTRADA')
             function_name = "responder"
