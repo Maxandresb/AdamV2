@@ -320,13 +320,31 @@ export function initDB() {
     // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos   
 
 
-    // // eliminar tabla
-    // db.transaction(tx => {
-    //     tx.executeSql('DROP TABLE Configuracion', [], (_, { rows }) => {
-    //         console.log('Tabla eliminada Usuario');
-    //     });
-    // });
+    // eliminar tabla
+    db.transaction(tx => {
+        /*tx.executeSql('DROP TABLE Medicamentos', [], 
+        (_,) => {console.log('Tabla eliminada Medicamentos');},
+        (_, error) => console.log('Error al crear la tabla Medicamentos:', error)
+        );*/
 
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS Medicamentos (
+          id INTEGER PRIMARY KEY NOT NULL,
+          medicamento TEXT,
+          dosis TEXT,
+          periodicidad TEXT,
+          horarios TEXT,
+          estadoNotificacion TEXT,
+          idNotificacion TEXT,
+          usuario_rut TEXT,
+          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        );`,
+            [],
+            (_,) => { console.log('Tabla Medicamentos creada')},
+            (_, error) => console.log('Error al crear la tabla Medicamentos:', error)
+        );
+    });
+    // Crear tabla Medicamentos
     //eliminar contenido de una tabla
     /*db.transaction(tx => {
       tx.executeSql('DELETE FROM Usuario', [], (_, { rows }) => {
@@ -350,8 +368,8 @@ export function initDB() {
             
         );`,
             [],
-            (_, { rows }) => console.log('Tabla recordatorios creada:', rows),
-            (_, error) => console.log('Error al crear la tabla recordatorios:', error)
+            () => { },
+            (_, error) => console.log('Error al crear la tabla:', error)
         );
 
     });
@@ -441,22 +459,7 @@ export function initDB() {
             [],
             () => { },
             (_, error) => console.log('Error al crear la tabla Limitaciones:', error)
-        );
-
-        // Crear tabla Medicamentos
-        tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS Medicamentos (
-          id INTEGER PRIMARY KEY NOT NULL,
-          medicamento TEXT,
-          dosis TEXT,
-          periodicidad TEXT,
-          usuario_rut TEXT,
-          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-        );`,
-            [],
-            () => { },
-            (_, error) => console.log('Error al crear la tabla Medicamentos:', error)
-        );
+        );       
 
         // Crear tabla Historial
         tx.executeSql(

@@ -384,7 +384,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
 }
 
 export async function firstApiCall(prompt) {
-    var FechaHoy = new Date()
+    FechaHoy = new Date()
     console.log('Fecha Hoy: ' + FechaHoy)
     functions.find(func => func.name === 'recordatorio').description = `El usuario solicita crear un recordatorio, tu debes identificar las propiedades de la funcion en el prompt del usuario. Debes saber que el dia de hoy es: ${FechaHoy} ya que lo usaras mas adelante para indicar la fecha del recordatorio, siempre debes retornar la fecha. Tienes que analizar el prompt del usuario y devolver siempre los siguientes parámetros o propiedades obligatorios: Titulo, Fecha, Hora y Dias. Si no se menciona alguna debes seguir las descripciones de cada propiedad para saber como intrepretar el prompt del usuario, bajo niun punto pueden faltar alguna de estas 4 propiedades, siempre las debes encontrar.;`
     functions.find(func => func.name === 'Compartir_Ubicacion').description = `el usuario solicita compartir su ubicacion actual con un contacto , los contactos actuales son ${contactos} , debes reconocer frases como 'Enviale mi ubicacion a', 'comparte mi ubicacion', 'manda mi ubicacion' , 'dile a x donde estoy'  o algo similar`;

@@ -79,11 +79,13 @@ export default function PrincipalScreen() {
     let rut= await obtenerRut()
     let est= await obtenerMute(rut)
     //console.log(est[0].Mute)
-    if (est[0].Mute == 0 ){
-      setMute(false)
-    }
-    else if (est[0].Mute == 1 ){
-      setMute(true)
+    if( est !== null){
+      if (est[0].Mute == 0 ){
+        setMute(false)
+      }
+      else if (est[0].Mute == 1 ){
+        setMute(true)
+      }
     }
     }
     
