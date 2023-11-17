@@ -12,7 +12,7 @@ import * as Notifications from 'expo-notifications';
 
 const db = SQLite.openDatabase('adamdb.db');
 
-const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setMedicamentos }) => {
+const Medicamento = ({ medicamento, isEditing, handlePress, handleDelete, setCurrentMedicamentoId}) => {
     const [currentMedicamento, setCurrentMedicamento] = useState(medicamento);
     const [hora, setHora] = useState(new Date());
     const [mostrarHora, setMostrarHora] = useState(false);
@@ -393,7 +393,19 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setMedi
                     </Text>
                 </TouchableOpacity>
             </View>
-
+            {isEditing ? (
+                <>
+                    <View style={styles.espacioContainer2}></View>
+                    <TouchableOpacity
+                        style={styles.celesteButton}
+                        onPress={() => setCurrentMedicamentoId(null)}
+                    >
+                        <Text style={styles.rojoIntensoText}>
+                            Cancelar
+                        </Text>
+                    </TouchableOpacity>
+                    </>
+            ):null}
             <View style={styles.lineaContainer}>
             </View>
 
@@ -562,6 +574,7 @@ const Medicamentos = () => {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <View style={styles.lineaContainer}></View>
             {medicamentos.map(medicamento => (
                 <Medicamento
                     key={medicamento.id}
@@ -591,7 +604,7 @@ const Medicamentos = () => {
                             onChangeText={text => setNomMedicamento(text)}
                             value={nomMedicamento}
                         />
-                        <Text className="text-center text-damasco font-bold text-lg pb-3">Indica la dosis a ingerir:</Text>
+                        <Text className="text-center text-rojoIntenso font-bold text-lg pb-3">Indica la dosis a ingerir:</Text>
                         <TextInput
                             style={styles.input}
                             placeholderTextColor="gray"

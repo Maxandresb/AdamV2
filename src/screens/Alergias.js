@@ -9,7 +9,7 @@ import { obtenerRut } from "../api/sqlite"
 
 const db = SQLite.openDatabase('adamdb.db');
 
-const Alergia = ({ alergia, isEditing, handlePress, handleDelete }) => {
+const Alergia = ({ alergia, isEditing, handlePress, handleDelete, setCurrentAlergiaId }) => {
     const [currentAlergia, setCurrentAlergia] = useState(alergia);
 
     const handleChange = (key, val) => {
@@ -87,8 +87,20 @@ const Alergia = ({ alergia, isEditing, handlePress, handleDelete }) => {
                     </Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.lineaContainer}>
-            </View>
+            {isEditing ? (
+                <>
+                    <View style={styles.espacioContainer2}></View>
+                    <TouchableOpacity
+                        style={styles.celesteButton}
+                        onPress={() => setCurrentAlergiaId(null)}
+                    >
+                        <Text style={styles.rojoIntensoText}>
+                            Cancelar
+                        </Text>
+                    </TouchableOpacity>
+                    </>
+            ):null}
+                
 
         </View>
     );
@@ -152,8 +164,8 @@ const Alergias = () => {
             });
         });
     };
-    const agregarAlergia = async() => {
-        let usuario_rut= await obtenerRut()
+    const agregarAlergia = async () => {
+        let usuario_rut = await obtenerRut()
         db.transaction(tx => {
             tx.executeSql(
                 'INSERT INTO Alergias (tipo, alergeno, usuario_rut) VALUES (?, ?, ?)',
@@ -174,7 +186,7 @@ const Alergias = () => {
 
 
     return (
-        <ScrollView className="bg-damasco">
+        <ScrollView className="flex-1 bg-grisClaro px-5 pt-3">
             <View className="mt-5 mx-3 mb-5">
                 <TouchableOpacity
                     style={styles.rojoIntensoButton}
@@ -185,6 +197,7 @@ const Alergias = () => {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <View style={styles.lineaContainer}></View>
             {alergias.map((alergia) => (
                 <Alergia
                     key={alergia.id}
@@ -192,8 +205,11 @@ const Alergias = () => {
                     isEditing={currentAlergiaId === alergia.id}
                     handlePress={handlePress}
                     handleDelete={handleDelete}
+                    setCurrentAlergiaId={setCurrentAlergiaId}
                 />
             ))}
+                        <View style={styles.lineaContainer}></View>
+
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -227,18 +243,18 @@ const Alergias = () => {
                             value={alergeno}
                         />
                         <View className="flex-row w-4/5 justify-between self-center mt-5">
-                            <TouchableOpacity style={styles.celesteButton}  onPress={() => {setModalVisibleAlergias(false)}}>
+                            <TouchableOpacity style={styles.celesteButton} onPress={() => { setModalVisibleAlergias(false) }}>
                                 <Text style={styles.rojoIntensoText}>
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.rojoIntensoButton} onPress={() => {agregarAlergia()}}>
+                            <TouchableOpacity style={styles.rojoIntensoButton} onPress={() => { agregarAlergia() }}>
                                 <Text style={styles.celesteText}>
                                     Agregar nueva alergia
                                 </Text>
                             </TouchableOpacity>
                         </View>
-                        
+
                     </View>
                 </View>
             </Modal>

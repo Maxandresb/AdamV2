@@ -10,11 +10,12 @@ import { useNavigation } from "@react-navigation/native";
 import { useIsFocused } from '@react-navigation/native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // Creaciones propias
-import { obtenerDatosPreviosSelec, addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut, obtenerDatosPreviosAnon, obtenerContactosEmergencia, muteADAM, obtenerMute } from "../api/sqlite"
+import { numContactoEmergencia, obtenerDatosPreviosSelec, addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut, obtenerDatosPreviosAnon, obtenerContactosEmergencia, muteADAM, obtenerMute } from "../api/sqlite"
 import { generarRespuesta, crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
-import { enviarMensaje, realizarLlamada } from "../api/llamada";
+import { enviarMensajeWSP, enviarMensajeEmergencia, realizarLlamada } from "../api/llamada";
+import { seleccionarRespuestaRecordatorio } from "../api/respuestasPredeterminadas";
 
 import styles from '../api/styles';
 import * as FileSystem from 'expo-file-system';
@@ -47,9 +48,9 @@ export default function PrincipalScreen() {
   const centrosMed = useRef([]);
   const centroMedSeleccionado = useRef([]);
 
-  const [llamada,setLlamada]= useState(false);
-  const [mensaje,setMensaje]= useState(false);
-  const [mute,setMute]= useState(false);
+  const [llamada, setLlamada] = useState(false);
+  const [mensaje, setMensaje] = useState(false);
+  const [mute, setMute] = useState(false);
   const [mensajeProcesamiento, setMensajeProcesamiento] = useState('');
   const [respondiendo, setRespondiendo] = useState(false);
   const navigation = useNavigation();
@@ -139,22 +140,22 @@ export default function PrincipalScreen() {
         }
       }];
       console.log(newMensajes)
-      if (res.includes('Error')){
+      if (res.includes('Error')) {
         Alert.alert(
           'Ha ocurrido un error',
           'Lo siento ocurrio un problema con tu grabacion, intentalo nuevamente',
           [
             {
               text: 'Cerrar',
-             
+
             }
           ],
           { cancelable: false }
         );
-      }else{
+      } else {
         obtenerRespuesta(newMensajes)
       }
-      
+
     });
     //whisperCall(uri).then(res =>{
     //console.log('******respuesta api obtenida*****');
@@ -176,30 +177,6 @@ export default function PrincipalScreen() {
     setGrabaciones([])
   }
   {/* fin funciones de grabacion de voz de usuario  */ }
-  function seleccionarRespuestaRecordatorio(args) {
-    args = JSON.parse(args);
-    let partes = args.Fecha.split('-');
-    args.Fecha = `${partes[2]}-${partes[1]}-${partes[0]}`;
-    let respuestas = [];
-    if (args.Dias === 'Unico') {
-      respuestas = [
-        `¡Perfecto! He configurado un recordatorio para el ${args.Fecha} a las ${args.Hora} para que no olvides '${args.Titulo}'. Te avisaré mediante una notificación cuando llegue el momento.`,
-        `¡Hecho! No te preocupes, te recordaré '${args.Titulo}' el ${args.Fecha} a las ${args.Hora} mediante una notificación.`,
-        `¡Listo! Te recordaré '${args.Titulo}' el ${args.Fecha} a las ${args.Hora} con una notificación. ¡No te preocupes, estaré aquí para recordártelo!`,
-        `¡Genial! He programado un recordatorio para el ${args.Fecha} a las ${args.Hora}. Te recordaré '${args.Titulo}' mediante una notificación cuando llegue el momento.`,
-        `¡Está todo listo! Te recordaré '${args.Titulo}' el ${args.Fecha} a las ${args.Hora} con una notificación. ¡Puedes contar conmigo!`
-      ];
-    } else {
-      respuestas = [
-        `¡Perfecto! He configurado un recordatorio para que suene ${args.Dias} a las ${args.Hora} para que no olvides '${args.Titulo}'. Te avisaré cada vez mediante una notificación.`,
-        `¡Hecho! No te preocupes, te recordaré '${args.Titulo}' ${args.Dias} a las ${args.Hora} con una notificación.`,
-        `¡Listo! Te recordaré '${args.Titulo}' ${args.Dias} a las ${args.Hora} mediante una notificación. ¡No te preocupes, estaré aquí para recordártelo!`,
-        `¡Genial! He programado un recordatorio para ${args.Dias} a las ${args.Hora}. Te recordaré '${args.Titulo}' cada vez con una notificación.`,
-        `¡Está todo listo! Te recordaré '${args.Titulo}' ${args.Dias} a las ${args.Hora} mediante una notificación. ¡Puedes contar conmigo!`
-      ];
-    }
-    return respuestas[Math.floor(Math.random() * respuestas.length)];
-  }
 
   {/* Inicio funciones de obtencion de data de apis  */ }
   const obtenerRespuesta = async (input) => {
@@ -225,13 +202,16 @@ export default function PrincipalScreen() {
           if (function_name === "hola") {
             function_response = "responder el saludo, presentarse indicando tu nombre el cual es ADAM"
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
+
           } else if (function_name === "explicar_algo") {
-            function_response = "explicar lo solicitado"
+            function_response = "explica lo solicitado, si no se indica nivel de detalle, debe ser una explicacion simple pero concisa"
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
+
           } else if (function_name === "ubicacion") {
             let ubicacion = await obtenerUbicacion('direccion');
             function_response = `La ubicación actual es: ${ubicacion}, informa al uauario que debe tener en cuenta que la ubicacion tiene un margen de error de aproximadamente 100 metros`;
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
+
           } else if (function_name === "centro_salud_cercano") {
             let { comuna, region } = await obtenerUbicacion('comuna');
             //let comuna = 'Hualqui'
@@ -246,6 +226,7 @@ export default function PrincipalScreen() {
             } else {
               console.log('No se encontraron centros')
             }
+
           } else if (function_name === "llamar_contacto") {
             console.log('PERSONA A LLAMAR: ', args)
             contactosEmergencia.current = await BuscarContactoEmergencia(args);
@@ -283,9 +264,6 @@ export default function PrincipalScreen() {
               //Alert.alert("Contacto no encontrado: ", function_response);
               contactosEmergencia.current = [];
             }
-            //function_response = "llama al contacto predeterminado"
-            //realizarLlamada('56953598945');
-            //respuesta = await secondApiCall(prompt, message, function_name, function_response)
 
           } else if (function_name === "llamar_a_centro_salud") {
             let { comuna, region } = await obtenerUbicacion('comuna');
@@ -322,16 +300,61 @@ export default function PrincipalScreen() {
                 centrosMed.current._array = [];
               }
             } console.log('ERROR: centrosMed no esxiste o no es un array')
+
           } else if (function_name === "llamar_numero") {
             console.log('NUMERO A LLAMAR: ', args)
             function_response = `Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.`
             realizarLlamada(args);
             respuesta = await generarRespuesta('Llamar a numero', function_response, prompt)
+
+          } else if (function_name === "llamar_contacto_emergencia") {
+            let numeroEmergencia = await numContactoEmergencia()
+            console.log('numero de emergencia a llamar: ', numeroEmergencia);
+            realizarLlamada(numeroEmergencia);
+            let answer = `Se llamara al contacto de emergencia`
+            respuesta = await generarRespuesta('llamar_contacto_emergencia', answer, prompt)
+
+          } else if (function_name === "enviar_mensaje_a_contacto") {
+            console.log('DATOS RECONOCIDOS: ', args)
+            args = JSON.parse(args)
+            console.log('args: ', args);
+            let mensaje = args.mensaje
+            let nombre = args.nombre_persona
+            console.log('MENSAJE: ', mensaje)
+            console.log('NOMBRE: ', nombre)
+            contactosEmergencia.current = await BuscarContactoEmergencia(nombre);
+            if (contactosEmergencia.current !== null) {
+              console.log('CONTACTOS ENCONTRADOS: ', contactosEmergencia.current)
+              if (contactosEmergencia.current.length === 1) {
+                console.log('********* UN CONTACTO ENCONTRADO *********')
+                let numeroDeContacto = contactosEmergencia.current[0].numero;
+                let nombreContacto = contactosEmergencia.current[0].nombreCompleto
+                function_response = `Seras redigido a la aplicacion whatsapp para enviar un mensaje al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
+                console.log('numeroDeContacto', JSON.stringify(numeroDeContacto))
+                enviarMensajeWSP(numeroDeContacto, mensaje)
+                respuesta = await generarRespuesta('enviar_mensaje_a_contacto', function_response, prompt)
+                contactosEmergencia.current = [];
+              } else if (contactosEmergencia.current.length > 1) {
+                console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
+                setModalCEVisible(true);
+                if (!modalCEVisible) {
+                  function_response = `Seras redigido a la aplicacion whatsapp para enviar un mensaje al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
+                  respuesta = await generarRespuesta('enviar_mensaje_a_contacto', function_response, prompt)
+                  setAliasContactoEm('')
+                  setNombreContactoEm('')
+                }
+              } else{
+                function_response = `No posees algun contacto de nombre o alias ${nombre}.`
+                respuesta = await generarRespuesta('enviar_mensaje_a_contacto', function_response, prompt)
+                //Alert.alert("Contacto no encontrado: ", function_response);
+                contactosEmergencia.current = [];
+              }
+            }
           } else if (function_name === "informacion_medica_del_usuario") {
             console.log('FRASE RECONOCIDA: ', args)
             let rut = await obtenerRut();
             let infMedica = await obtenerDatosPreviosSelec(rut)
-            if(infMedica){
+            if (infMedica) {
               console.log('INFORMACION MEDICA: ', infMedica)
               let answer = `Esta es la informacion medica del usuario: \n\ ${infMedica}`
               respuesta = await generarRespuesta('informacion_medica_del_usuario', answer, prompt)
@@ -353,7 +376,7 @@ export default function PrincipalScreen() {
             await MostrarNotificacionesGuardadas()
             //mostarDB('centrosMedicos');
             respuesta = await generarRespuesta('Mostrar base de datos', 'La base de datos se mostrara en la consola.', prompt)
-  
+
           } else if (function_name === "recordatorio") {
             //let args={"Descripcion": "", "Dias": "Unico", "Fecha": "2026-07-13", "Hora": "19:43", "Titulo": "Llamar a sax"}
             respuestaRecordatorio = seleccionarRespuestaRecordatorio(args)
@@ -361,31 +384,36 @@ export default function PrincipalScreen() {
             addRecordatorio(JSON.parse(args), idNotificacion)
             respuesta = await generarRespuesta(function_name, respuestaRecordatorio, prompt)
 
-          
-          
-          
-          
-          }else if (function_name === "clima") {
-            
-            clima = await obtenerClima('coordenadas',JSON.parse(args))
+
+
+
+
+          } else if (function_name === "clima") {
+
+            clima = await obtenerClima('coordenadas', JSON.parse(args))
             jsonclima = JSON.stringify(clima)
             //console.log(jsonclima)
-            function_response= `${jsonclima} Este json contiene informacion del clima Convierte este json en informacion util  para un usuario que habla español, resumelo presicamente, la temperatura que viene es en  Fahrenheit , convierte a celsius  y terminologia basica, resume en no mas de 50 palabras `
+            function_response = `${jsonclima} Este json contiene informacion del clima Convierte este json en informacion util  para un usuario que habla español, resumelo presicamente, la temperatura que viene es en  Fahrenheit , convierte a celsius  y terminologia basica, resume en no mas de 50 palabras `
             //console.log(function_response)
-           respuesta = await secondApiCall(prompt, message, function_name, function_response)
-          }else if (function_name === 'recomendacion_medica_general') {
-            let rut= await obtenerRut()
-            let perfilAnnon= await obtenerDatosPreviosAnon(rut)
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)
+          } else if (function_name === 'recomendacion_medica_general') {
+            let rut = await obtenerRut()
+            let perfilAnnon = await obtenerDatosPreviosAnon(rut)
             console.log(perfilAnnon)
             function_name = "responder_temas_de_salud"
             function_response = `El usuario solicita que le respondas una recomendacion medica o de salud para eso puedes considerar que el perfil medico del usuario es  ${perfilAnnon}, intenta responder lo mejor que puedas, entendiendo que no eres medico, y agrega una pequeña frase al final, diciendole al usuario que siempre es recomendable consultar a un profesional, esta frase que sea lo mas corto posible `
             respuesta = await secondApiCall(prompt, message, function_name, function_response)
-          
-          }else if (function_name ==='Compartir_Ubicacion'){
+
+          } else if (function_name === 'Compartir_Ubicacion') {
             let answer = await compartir_ubicacion(prompt)
-            
             respuesta = await generarRespuesta('Compartir_Ubicacion', answer, prompt)
-          }else {
+
+          } else if (function_name === 'explicar_funcion') {
+            console.log('ARGS: ', args)
+            function_response = 'Debes explicar paso a paso como navegar entre las pantallas de la aplicacion para realizar la funcioncion que el usuario solicita'
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)
+
+          } else {
             console.log('FUNCION NO ENCONTRADA')
             function_name = "responder"
             function_response = "indica al usuario que esa funcion no esta dentro del catalogo de funciones disponibles, pero responde o trata de dar solucion a lo que te indiquen en base a tus conocimientos, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
@@ -397,10 +425,10 @@ export default function PrincipalScreen() {
           function_response = "indica al usuario que esa funcion no esta dentro del catalogo de funciones disponibles, pero responde o trata de dar solucion a lo que te indiquen en base a tus conocimientos, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
           respuesta = await secondApiCall(prompt, message, function_name, function_response)
         }
-        
-      
-        
-        
+
+
+
+
         console.log('******respuesta api obtenida*****');
         setCargando(false);
         setRespondiendo(false)
@@ -408,20 +436,20 @@ export default function PrincipalScreen() {
         if (respuesta) {
           //console.log(respuesta);
           setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
-          if(mute ==false){
+          if (mute == false) {
             respuestaVoz(respuesta.text)
           }
-          
+
           setinputUsuario('');
           respuesta = null;
         } else {
           setMensajeProcesamiento('Procesando respuesta...');
           console.log('NO SE OBTUVO UNA RESPUETA A LA SEGUNDA LLAMADA')
           let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
-          if(mute ==false){
+          if (mute == false) {
             respuestaVoz(answer)
           }
-          
+
           respuesta = await generarRespuesta('ERROR', answer, prompt)
           setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
           setinputUsuario('');
@@ -436,7 +464,7 @@ export default function PrincipalScreen() {
         setCargando(false);
         setRespondiendo(false)
         let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
-        if(mute ==false){
+        if (mute == false) {
           respuestaVoz(answer)
         }
         respuesta = await generarRespuesta('ERROR', answer, prompt)
@@ -481,48 +509,48 @@ export default function PrincipalScreen() {
 
 
 
-/* funciones de emergencias */
+  /* funciones de emergencias */
 
-async function compartir_ubicacion(){
-  let answerOK = 'Serás redirigido para compartir ubicación'
-  let answerError = 'Por favor agrega contactos de emergencia para compartir tu ubicación'
-  let answerMultiple = 'Selecciona un contacto para compartir tu ubicación'
+  async function compartir_ubicacion() {
+    let answerOK = 'Serás redirigido para compartir ubicación'
+    let answerError = 'Por favor agrega contactos de emergencia para compartir tu ubicación'
+    let answerMultiple = 'Selecciona un contacto para compartir tu ubicación'
 
-  contactosEmergencia.current = await obtenerContactosEmergencia();
+    contactosEmergencia.current = await obtenerContactosEmergencia();
 
-  if(contactosEmergencia.current.length == 1  ){
-    let contacto= contactosEmergencia.current[0]
-    let numero= contacto.numero.replace(/\D/g, '')
-    enviarMensaje(numero)
-    return answerOK
-  }
-  else if (contactosEmergencia.current.length == 0 || contactosEmergencia.current.length == undefined){
-    
-    Alert.alert(
-      "¡No tienes contactos de emergencia!",
-      "¿Quieres que te dirija donde puedes agregarlo?",
-      [
+    if (contactosEmergencia.current.length == 1) {
+      let contacto = contactosEmergencia.current[0]
+      let numero = contacto.numero.replace(/\D/g, '')
+      enviarMensajeEmergencia(numero)
+      return answerOK
+    }
+    else if (contactosEmergencia.current.length == 0 || contactosEmergencia.current.length == undefined) {
+
+      Alert.alert(
+        "¡No tienes contactos de emergencia!",
+        "¿Quieres que te dirija donde puedes agregarlo?",
+        [
           {
-              text: "Cancelar",
-              style: "cancel"
+            text: "Cancelar",
+            style: "cancel"
           },
           {
-              text: "Aceptar",
-              onPress: () =>{navigation.navigate('ConfiguracionNested', { screen: 'Contactos de emergencia' })}
+            text: "Aceptar",
+            onPress: () => { navigation.navigate('ConfiguracionNested', { screen: 'Contactos de emergencia' }) }
           }
-      ]
-  );
-  return answerError;
+        ]
+      );
+      return answerError;
+    }
+    else {
+
+      console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
+
+      setMensaje(true)
+      setModalCEVisible(true);
+      return answerMultiple;
+    }
   }
-  else  {
-    
-    console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
-    
-    setMensaje(true)
-    setModalCEVisible(true);
-    return answerMultiple;
-  }
-}
 
   // **********************************************************************************************************************************************************************************
   // ***                                                         Vista de pantalla                                                                                                  ***
@@ -544,19 +572,19 @@ async function compartir_ubicacion(){
               renderSend={props => customSend(props)}
               renderMessage={props => customChatMessage(props)}
               messages={mensajes}
-              renderDay= {props => (
+              renderDay={props => (
                 <Text style={{ color: '#ff3e45', fontSize: 12 }}>
-                    {props.currentMessage.createdAt.getDate()}
+                  {props.currentMessage.createdAt.getDate()}
                 </Text>
-                
+
               )}
               placeholder='Escriba su mensaje...'
               renderUsernameOnMessage={false}
               onSend={(input) => obtenerRespuesta(input)}
-              user={{ _id: 1 }}                         
-              
+              user={{ _id: 1 }}
+
             />
-            
+
             <View>
               {respondiendo ? (
                 <>
@@ -586,7 +614,7 @@ async function compartir_ubicacion(){
                   />
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity className="bg-celeste w-20 h-20 my-3 rounded-full justify-center shadow-lg shadow-negro" onPress={()=>{iniciarGrabacion().then(setTimeout(()=> detenerGrabacion, 1000));}} >
+                <TouchableOpacity className="bg-celeste w-20 h-20 my-3 rounded-full justify-center shadow-lg shadow-negro" onPress={() => { iniciarGrabacion().then(setTimeout(() => detenerGrabacion, 1000)); }} >
                   {/* recording start button */}
                   <Image
                     className="w-10 h-10 self-center"
@@ -595,9 +623,9 @@ async function compartir_ubicacion(){
                 </TouchableOpacity>
               )
           }
-         
-{/* Modal contactos emergencia */}
-<Modal
+
+          {/* Modal contactos emergencia */}
+          <Modal
             animationType="slide"
             transparent={true}
             visible={modalCEVisible}
@@ -605,43 +633,43 @@ async function compartir_ubicacion(){
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.header}>{llamada ==true && `Selecciona un contacto para llamar`} {mensaje ==true && `Selecciona un contacto para compartir ubicación`}</Text>
+                <Text style={styles.header}>{llamada == true && `Selecciona un contacto para llamar`} {mensaje == true && `Selecciona un contacto para compartir ubicación`}</Text>
                 <ScrollView>
-                {contactosEmergencia.current.map((contacto, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => {
-                      contactoEmSeleccionado.current = contacto;
-                      console.log(contactoEmSeleccionado)
-                      setModalCEVisible(false);
-                      if(llamada ==true){
-                        realizarLlamada(contactoEmSeleccionado.current.numero.replace(/\D/g, ''))
-                        setLlamada(false)
-                      } else if (mensaje==true){
-                        enviarMensaje(contactoEmSeleccionado.current.numero.replace(/\D/g, ''))
-                        setMensaje(false)
-                      }
-                      
-                      setNombreContactoEm(contactoEmSeleccionado.current.nombreCompleto);
-                      setAliasContactoEm(contactoEmSeleccionado.current.alias);
-                      contactosEmergencia.current = [];
-                      contactoEmSeleccionado.current = {};
+                  {contactosEmergencia.current.map((contacto, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => {
+                        contactoEmSeleccionado.current = contacto;
+                        console.log(contactoEmSeleccionado)
+                        setModalCEVisible(false);
+                        if (llamada == true) {
+                          realizarLlamada(contactoEmSeleccionado.current.numero.replace(/\D/g, ''))
+                          setLlamada(false)
+                        } else if (mensaje == true) {
+                          enviarMensajeEmergencia(contactoEmSeleccionado.current.numero.replace(/\D/g, ''))
+                          setMensaje(false)
+                        }
 
-                    }}
-                    style={[styles.rojoIntensoButton, {padding:'8%' , margin:'2%'}]} // Agrega los estilos que desees aquí
-                  >
-                   
-                   <Text className="text-celeste font-semibold">
-                    {contacto.nombreCompleto !== null && `Contacto: ${contacto.nombreCompleto}`}
-                    {contacto.nombreCompleto !== null && contacto.alias !== null && ' y '}
-                    {contacto.alias !== null && `Alias: ${contacto.alias}`}
-                  </Text>
-                  </TouchableOpacity>
-                ))}
+                        setNombreContactoEm(contactoEmSeleccionado.current.nombreCompleto);
+                        setAliasContactoEm(contactoEmSeleccionado.current.alias);
+                        contactosEmergencia.current = [];
+                        contactoEmSeleccionado.current = {};
+
+                      }}
+                      style={[styles.rojoIntensoButton, { padding: '8%', margin: '2%' }]} // Agrega los estilos que desees aquí
+                    >
+
+                      <Text className="text-celeste font-semibold">
+                        {contacto.nombreCompleto !== null && `Contacto: ${contacto.nombreCompleto}`}
+                        {contacto.nombreCompleto !== null && contacto.alias !== null && ' y '}
+                        {contacto.alias !== null && `Alias: ${contacto.alias}`}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
                 </ScrollView>
                 <TouchableOpacity
                   style={styles.closeButton}
-                  
+
                   onPress={() => {
                     setModalCEVisible(false);
                     setLlamada(false)
@@ -655,7 +683,7 @@ async function compartir_ubicacion(){
             </View>
           </Modal>
 
-{/* Fin modal contactos emergencias */}
+          {/* Fin modal contactos emergencias */}
           {/*Modal mas de un numero d centros medicos */}
           <Modal
             animationType="slide"
@@ -667,24 +695,24 @@ async function compartir_ubicacion(){
               <View style={styles.modalView}>
                 <Text style={styles.header}>Selecciona un centro de salud a llamar </Text>
                 <ScrollView>
-                {centrosMed.current && Array.isArray(centrosMed.current._array)
-                  && centrosMed.current._array.map((centro, index) => (
-                    <TouchableOpacity 
-                      key={index}
-                      onPress={() => {
-                        centroMedSeleccionado.current = centro;
-                        setModalNCMVisible(false);
-                        realizarLlamada(centroMedSeleccionado.current.Telefono)
-                        setNombreCentroMed(centroMedSeleccionado.current.NombreOficial);
-                        centrosMed.current._array = [];
-                        centroMedSeleccionado.current = {};
+                  {centrosMed.current && Array.isArray(centrosMed.current._array)
+                    && centrosMed.current._array.map((centro, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => {
+                          centroMedSeleccionado.current = centro;
+                          setModalNCMVisible(false);
+                          realizarLlamada(centroMedSeleccionado.current.Telefono)
+                          setNombreCentroMed(centroMedSeleccionado.current.NombreOficial);
+                          centrosMed.current._array = [];
+                          centroMedSeleccionado.current = {};
 
-                      }}
-                      style={styles.redcoralButton} // Agrega los estilos que desees aquí
-                    >
-                      <Text>{`Centro: ${centro.NombreOficial}`}</Text>
-                    </TouchableOpacity>
-                  ))}
+                        }}
+                        style={styles.redcoralButton} // Agrega los estilos que desees aquí
+                      >
+                        <Text>{`Centro: ${centro.NombreOficial}`}</Text>
+                      </TouchableOpacity>
+                    ))}
                 </ScrollView>
                 <Button
                   title="Cerrar"

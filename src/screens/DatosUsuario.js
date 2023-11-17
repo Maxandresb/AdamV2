@@ -89,11 +89,6 @@ export default function DatosUsuario() {
     <ScrollView className="flex-1 p-5 bg-grisClaro">
       {data.map((item, index) => (
         <View key={index}>
-          <View className="flex-row self-center justify-center w-auto">
-            <TouchableOpacity className="bg-rojoIntenso p-4 m-2 rounded-lg shadow-lg shadow-negro" onPress={() => { setShowMessage(true), handlePress() }}>
-              <Text className="self-center text-celeste font-bold text-lg">{isEditing ? 'Guardar cambios' : 'Modificar Datos Personales'}</Text>
-            </TouchableOpacity>
-          </View>
           {showMessage && isEditing && (
             <View className="bg-negro py-4 mb-4 rounded-full shadow-lg shadow-negro">
               <Text className="text-celeste font-bold text-sm text-center">Ahora puede tocar cada recuadro para modificar sus datos</Text>
@@ -179,9 +174,31 @@ export default function DatosUsuario() {
                 onChangeText={setToma_medicamentos}
                 value={toma_medicamentos}
               />
+                
+                <TouchableOpacity
+                  style={styles.rojoIntensoButton}
+                  onPress={() => { handlePress(), setShowMessage(false), setIsEditing(!isEditing) }}>
+                  <Text style={styles.celesteText}>{'Guardar cambios'}</Text>
+                </TouchableOpacity>
+                <View style={styles.espacioContainer2}></View>
+                <TouchableOpacity
+                style={styles.celesteButton}
+                  onPress={() => {setIsEditing(!isEditing), setShowMessage(false)}}
+                >
+                  <Text style={styles.rojoIntensoText}>
+                    Cancelar
+                  </Text>
+                </TouchableOpacity>
+              <View style={styles.lineaContainer}></View>
+
             </>
           ) : (
             <>
+              <View className="flex-row self-center justify-center w-auto">
+                <TouchableOpacity className="bg-rojoIntenso p-4 m-2 rounded-lg shadow-lg shadow-negro" onPress={() => { setShowMessage(true), setIsEditing(!isEditing) }}>
+                  <Text className="self-center text-celeste font-bold text-lg">{'Modificar Datos Personales'}</Text>
+                </TouchableOpacity>
+              </View>
               <Text className="mb-3 mt-5 text-rojoIntenso text-lg font-bold">RUT:</Text>
               <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.rut}</Text>
               <Text className="mb-3 text-rojoIntenso text-lg font-bold">Primer Nombre:</Text>
@@ -211,7 +228,7 @@ export default function DatosUsuario() {
               <Text className="mb-3 text-rojoIntenso text-lg font-bold">Toma Medicamentos:</Text>
               <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.toma_medicamentos}</Text>
               <View style={styles.espacioContainer}>
-            </View>
+              </View>
             </>
           )}
         </View>

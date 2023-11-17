@@ -9,14 +9,14 @@ import styles from '../api/styles';
 */
 
 export default StyleSheet.create({
-    msjContainer:{
+    msjContainer: {
         backgroundColor: '#a9a9a9',
         color: '#cceaf5',
         padding: 10,
         borderRadius: 10,
         margin: 4,
         shadowColor: '#000000',
-        shadowOffset: {width: -2, height: 2},
+        shadowOffset: { width: -2, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 8
@@ -73,7 +73,7 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         paddingLeft: 18,
         shadowColor: '#000000',
-        shadowOffset: {width: -2, height: 2},
+        shadowOffset: { width: -2, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 8
@@ -108,7 +108,7 @@ export default StyleSheet.create({
         borderRadius: 5,
         margin: 2.5,
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5
@@ -120,7 +120,7 @@ export default StyleSheet.create({
         borderRadius: 5,
         margin: 2.5,
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5
@@ -144,7 +144,7 @@ export default StyleSheet.create({
         padding: 18,
         margin: 2.5,
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5
@@ -159,17 +159,34 @@ export default StyleSheet.create({
 
     content2: {
         color: '#cceaf5',
-        backgroundColor: '#a9a9a9',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
         borderRadius: 15,
         paddingHorizontal: 10,
         paddingVertical: 5,
         marginVertical: 10,
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5
 
+    },
+
+    content4: {
+        backgroundColor: 'black',
+        borderRadius: 15,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginVertical: 10,
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5,
+        alignItems:'center'
+    },
+    textCeleste:{
+        color:'#cceaf5',
     },
 
     content3: {
@@ -180,7 +197,7 @@ export default StyleSheet.create({
         color: '#96b9f3',
         fontWeight: 'bold',
         textAlign: 'center',
-        
+
     },
 
     lineaContainer: {
@@ -275,7 +292,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 5,
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5
@@ -288,7 +305,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 5,
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5
@@ -304,7 +321,7 @@ export default StyleSheet.create({
         marginBottom: 20,
         justifyContent: 'center',
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5,
@@ -332,7 +349,7 @@ export default StyleSheet.create({
         color: '#000000',
         alignItems: 'center',
         textAlignments: 0,
-        itemStyle: { paddingLeft: 0},
+        itemStyle: { paddingLeft: 0 },
         paddingLeft: 0,
     },
     buttonCInsert: {
@@ -404,7 +421,7 @@ export default StyleSheet.create({
         padding: 15,
         borderRadius: 15,
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5,
@@ -417,7 +434,7 @@ export default StyleSheet.create({
         marginTop: 10,
         backgroundColor: '#f5f1c4',
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5,
@@ -445,18 +462,18 @@ export default StyleSheet.create({
     },
 
     customSendChat: {
-        backgroundColor:'#000000',
+        backgroundColor: '#000000',
         width: 60,
         height: 35,
         alignSelf: 'center',
         borderRadius: 8,
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5,
-        
-        
+
+
     },
 
     customSendButtonText: {
@@ -477,7 +494,7 @@ export default StyleSheet.create({
     rowPerfil2: {
         backgroundColor: '#ff3e45', //rojoIntenso
         borderRadius: 10,
-        
+
     },
 
     buttonPerfil: {
@@ -485,19 +502,19 @@ export default StyleSheet.create({
         borderRadius: 15,
         height: 35,
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5,
         justifyContent: 'center',
         marginTop: 12
-        
+
     },
 
     buttonTextPerfil: {
         color: '#cceaf5', //celeste
         alignSelf: 'center',
-        
+
     },
     selectedText: {
         color: '#cceaf5',
@@ -507,11 +524,62 @@ export default StyleSheet.create({
         paddingVertical: 5,
         marginVertical: 10,
         shadowColor: 'black',
-        shadowOffset: {width: -2, height: 4},
+        shadowOffset: { width: -2, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 5
 
     },
+    espacioContainer2: {
+        marginTop: 10,
+        paddingTop: 10,
+    },
+    celesteButton2: {
+        backgroundColor: '#cceaf5',
+        padding: 18,
+        borderRadius: 5,
+        margin: 2.5,
+        shadowColor: 'black',
+        shadowOffset: { width: -2, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 5,
+        marginLeft:20,
+        marginRight:20
+    },
+    c2:{
+        width:'70%',
+        marginLeft:0,
+        alignItems:'flex-start',
+        alignContent:'flex-start',
+        alignSelf:'flex-start'
+    },
+    containerDeslizable: {
+        width:'30%',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        borderWidth: 2,
+        borderColor: 'black',
+        height:30
+      },
+      switchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      switchOption: {
+        width: '50%',
+        height: 26.4,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      selectedOption: {
+        backgroundColor: '#ff3e45',
+      },
+      switchText: {
+        color: '#ff3e45',
+        fontWeight: 'bold',
+      },
+      
 
 })

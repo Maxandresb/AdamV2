@@ -7,12 +7,14 @@ import CustomAlert from '../api/customAlert';
 import * as Contacts from 'expo-contacts';
 import { CheckBoxRapido } from '../api/checkBoxRapido';
 import { obtenerRut } from "../api/sqlite"
+import { Slider } from 'react-native-elements';
+
 
 
 
 const db = SQLite.openDatabase('adamdb.db');
 
-const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete}) => {
+const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete, setContactoId, estadoContactoEmergencia }) => {
     const [Contacto, setContacto] = useState(contacto);
     const handleChange = (key, val) => {
         setContacto(current => ({
@@ -42,6 +44,7 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
         <View>
             {isEditing ? (
                 <>
+
                     <Text style={styles.encabezado}>Nombre completo:</Text>
                     <TextInput
                         style={styles.input}
@@ -69,7 +72,25 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                 </>
             ) : (
                 <>
-                    <View style={styles.lineaContainer}></View>
+                    <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+                        <View style={[styles.c2, { alignItems: 'flex-start' }]}>
+                            <Text style={styles.encabezado}>Contacto de emergencia:</Text>
+                        </View>
+                        <TouchableOpacity
+                            style={[styles.containerDeslizable, { alignItems: 'flex-end' }]}
+                            onPress={() => estadoContactoEmergencia(contacto.id, contacto.estadoContacto === 'no' ? 'sí' : 'no')}
+                        >
+                            <View style={styles.switchContainer}>
+                                <View style={[styles.switchOption, contacto.estadoContacto === 'sí' && styles.selectedOption]}>
+                                    <Text style={styles.switchText}>No</Text>
+                                </View>
+                                <View style={[styles.switchOption, contacto.estadoContacto === 'no' && styles.selectedOption]}>
+                                    <Text style={styles.switchText}>Sí</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.espacioContainer2}></View>
                     <Text style={styles.encabezado}>Nombre completo:</Text>
                     <Text style={styles.content}>{Contacto.nombreCompleto}</Text>
                     <Text style={styles.encabezado}>Alias:</Text>
@@ -98,7 +119,24 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                     </Text>
                 </TouchableOpacity>
             </View>
-        </View>
+            {
+                isEditing ? (
+                    <>
+                        <View style={styles.espacioContainer2}></View>
+                        <TouchableOpacity
+                            style={styles.celesteButton}
+                            onPress={() => setContactoId(null)}
+                        >
+                            <Text style={styles.rojoIntensoText}>
+                                Cancelar
+                            </Text>
+                        </TouchableOpacity>
+                        <View style={styles.lineaContainer}></View>
+                    </>
+                ) : null
+            }
+            <View style={styles.espacioContainer}></View>
+        </View >
     );
 };
 const Contactos = () => {
@@ -151,7 +189,7 @@ const Contactos = () => {
     };
 
     const guardarContactosSeleccionados = async () => {
-        let usuario_rut= await obtenerRut()
+        let usuario_rut = await obtenerRut()
         let contador = 0;
         for (let contacto of contactosSeleccionados) {
             const nombre = contacto.name;
@@ -168,7 +206,8 @@ const Contactos = () => {
                                 nombreCompleto: nombre,
                                 numero: numero,
                                 alias: '',
-                                relacion: ''
+                                relacion: '',
+                                estadoContacto: 'no'
                             }
                         ]);
 
@@ -224,30 +263,108 @@ const Contactos = () => {
         });
     };
     const agregarContacto = async () => {
-        let usuario_rut= await obtenerRut()
-        db.transaction(tx => {
-            tx.executeSql(
-                'INSERT INTO Contacto ( nombreCompleto, alias, numero, relacion, usuario_rut) VALUES (?, ?, ?, ?, ?)',
-                [nombreCompleto, alias, numero, relacion, usuario_rut],
-                (_, { insertId }) => {
-                    setContactos(prevContactos => [
-                        ...prevContactos,
-                        {
-                            id: insertId,
-                            nombreCompleto,
-                            alias,
-                            numero,
-                            relacion
-                        }
-                    ]);
-                    setNombreCompleto('');
-                    setAlias('');
-                    setNumero('');
-                    setRelacion('');
+        try {
+            let usuario_rut = await obtenerRut();
+            return new Promise((resolve, reject) => {
+                db.transaction(
+                    tx => {
+                        tx.executeSql(
+                            'INSERT INTO Contacto (nombreCompleto, alias, numero, relacion, estadoContacto, usuario_rut) VALUES (?, ?, ?, ?, ?, ?)',
+                            [nombreCompleto, alias, numero, relacion, 'no', usuario_rut],
+                            (_, { insertId }) => {
+                                setContactos(prevContactos => [
+                                    ...prevContactos,
+                                    {
+                                        id: insertId,
+                                        nombreCompleto,
+                                        alias,
+                                        numero,
+                                        relacion,
+                                        estadoContacto: 'no'
+                                    }
+                                ]);
+                                setNombreCompleto('');
+                                setAlias('');
+                                setNumero('');
+                                setRelacion('');
+                                resolve(insertId);
+                            },
+                            (_, error) => {
+                                console.log('Error al ejecutar el SQL:', error);
+                                reject(error);
+                            }
+                        );
+                    },
+                    error => {
+                        console.log('Error en la transacción de la base de datos:', error);
+                        reject(error);
+                    }
+                );
+            });
+        } catch (error) {
+            console.log('Error al obtener el RUT del usuario:', error);
+            throw error;
+        }
+    };
+
+    const estadoContactoEmergencia = (id, valor) => {
+        return new Promise((resolve, reject) => {
+            try {
+                // Si el nuevo valor es 'no', solo actualiza el contacto actual
+                if (valor === 'no') {
+                    db.transaction(tx => {
+                        tx.executeSql(
+                            'UPDATE Contacto SET estadoContacto = "no" WHERE id = ?',
+                            [id],
+                            () => {
+                                setContactos(prevContactos =>
+                                    prevContactos.map(c =>
+                                        c.id === id ? { ...c, estadoContacto: 'no' } : c
+                                    )
+                                );
+                                resolve();
+                            },
+                            (error) => {
+                                reject(error);
+                            }
+                        );
+                    });
                 }
-            );
+                // Si el nuevo valor es 'sí', actualiza todos los contactos
+                else {
+                    db.transaction(tx => {
+                        tx.executeSql(
+                            'UPDATE Contacto SET estadoContacto = "no"',
+                            [],
+                            () => {
+                                tx.executeSql(
+                                    'UPDATE Contacto SET estadoContacto = "sí" WHERE id = ?',
+                                    [id],
+                                    () => {
+                                        setContactos(prevContactos =>
+                                            prevContactos.map(c =>
+                                                c.id === id ? { ...c, estadoContacto: 'sí' } : { ...c, estadoContacto: 'no' }
+                                            )
+                                        );
+                                        resolve();
+                                    },
+                                    (error) => {
+                                        reject(error);
+                                    }
+                                );
+                            },
+                            (error) => {
+                                reject(error);
+                            }
+                        );
+                    });
+                }
+            } catch (error) {
+                reject(error);
+            }
         });
     };
+
 
 
     return (
@@ -291,7 +408,7 @@ const Contactos = () => {
                             >
                                 <Text style={styles.celesteText}>Guardar contactos seleccionados</Text>
                             </TouchableOpacity>
-                        
+
                             <TouchableOpacity
                                 style={styles.closeButton}
                                 onPress={() => {
@@ -299,8 +416,8 @@ const Contactos = () => {
                                     setContactosSeleccionados([]);
                                 }}
                             >
-                            <Text style={styles.rojoIntensoText}>Cancelar</Text>
-                        </TouchableOpacity>
+                                <Text style={styles.rojoIntensoText}>Cancelar</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
@@ -323,7 +440,9 @@ const Contactos = () => {
                         isEditing={ContactoId === contacto.id}
                         handlePress={handlePress}
                         handleDelete={handleDelete}
-                        
+                        setContactoId={setContactoId}
+                        estadoContactoEmergencia={estadoContactoEmergencia}
+
                     />
                 ))}
             </ScrollView>
@@ -371,12 +490,12 @@ const Contactos = () => {
                             value={relacion}
                         />
                         <View style={styles.buttonContainerCenter}>
-                            <TouchableOpacity style={styles.closeButton} onPress={() => {setModalVisibleContactos(false);}}>
+                            <TouchableOpacity style={styles.closeButton} onPress={() => { setModalVisibleContactos(false); }}>
                                 <Text style={styles.rojoIntensoText}>
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.rojoIntensoButton} onPress={() => {agregarContacto();}}>
+                            <TouchableOpacity style={styles.rojoIntensoButton} onPress={() => { agregarContacto(); }}>
                                 <Text style={styles.celesteText}>
                                     Agregar Nuevo Contacto
                                 </Text>
