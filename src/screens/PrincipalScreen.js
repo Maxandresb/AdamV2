@@ -7,10 +7,10 @@ import { GiftedChat, InputToolbar, Day } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
 import * as Speech from 'expo-speech';
 import { useNavigation } from "@react-navigation/native";
-
+import { useIsFocused } from '@react-navigation/native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // Creaciones propias
-import { obtenerDatosPreviosSelec, addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut, obtenerDatosPreviosAnon, obtenerContactosEmergencia } from "../api/sqlite"
+import { obtenerDatosPreviosSelec, addRecordatorio, guardarHistoriarChats, mostarDB, BuscarContactoEmergencia, obtenerRut, obtenerDatosPreviosAnon, obtenerContactosEmergencia, muteADAM, obtenerMute } from "../api/sqlite"
 import { generarRespuesta, crearRespuesta, secondApiCall, firstApiCall, whisperCall } from "../api/openAI";
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
@@ -53,6 +53,42 @@ export default function PrincipalScreen() {
   const [mensajeProcesamiento, setMensajeProcesamiento] = useState('');
   const [respondiendo, setRespondiendo] = useState(false);
   const navigation = useNavigation();
+
+
+  // Obtiene el estado de enfoque de la pantalla
+  const isFocused = useIsFocused();
+
+
+  async function cambiarMute(estado){
+    let rut = await obtenerRut()
+     muteADAM(rut,estado)
+    
+    if (estado == '1'){
+      setMute(true)
+      
+    }else if (estado == '0' ){
+      setMute(false)
+      
+    }
+    
+    
+  }
+  
+  useEffect(  ()=>{
+    async function estadoMUTE(){
+    let rut= await obtenerRut()
+    let est= await obtenerMute(rut)
+    //console.log(est[0].Mute)
+    if (est[0].Mute == 0 ){
+      setMute(false)
+    }
+    else if (est[0].Mute == 1 ){
+      setMute(true)
+    }
+    }
+    
+    estadoMUTE()
+  },[isFocused]);
 
   async function iniciarGrabacion() {
     try {
@@ -670,7 +706,7 @@ async function compartir_ubicacion(){
           {
             mute ? (
               <TouchableOpacity
-                onPress={()=> {setMute(false) }}
+                onPress={()=> {cambiarMute('0') }}
                 className="bg-negro rounded-3xl p-3 absolute left-10 shadow-lg shadow-black"
               >
                 <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice-off" size={28} color="#ff3e45" /></Text>
@@ -678,7 +714,7 @@ async function compartir_ubicacion(){
             ):
             (
               <TouchableOpacity
-                onPress={()=>{setMute(true); detenerVoz()}}
+                onPress={()=>{cambiarMute('1'); detenerVoz()}}
                 className="bg-negro rounded-3xl p-3 absolute left-10 shadow-lg shadow-black"
               >
                 <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice" size={28} color="#ff3e45" /></Text>

@@ -247,8 +247,69 @@ export function mostarDB(tabla) {
     )
 };
 
+export function obtenerMute(rut){
+    
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `SELECT Mute FROM Configuracion WHERE usuario_rut =?;`,
+                [rut],
+                (_, { rows: { _array } }) => {
+                    
+                    if (_array.length > 0) {
+                        //let Mute = _array[0].Mute;
 
+                        const Mute = _array.map(mute => ({
+                            ...mute,
+                            Mute:  mute.Mute ,
+                           
+                          }));
+                        
+                        resolve(Mute);
+                    } else {
+                        console.log('No hay rut en la tabla Configuracion.');
+                        resolve(null);
+                    }
+                },
+                (_, error) => {
+                    console.log('Error al obtener el rut:', error);
+                    reject(error);
+                }
+            );
+        });
+    });
+}
 
+export  function muteADAM(usuario_rut,estado){
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                'SELECT * FROM Configuracion WHERE usuario_rut = ?',
+                [usuario_rut],
+                (_, { rows: { _array } }) => {
+                  if (_array.length > 0) {
+                    // Si ya existe un registro para el usuario, actualiza los datos
+                    tx.executeSql(
+                      'UPDATE Configuracion SET Mute = ? WHERE usuario_rut = ?',
+                      [estado, usuario_rut],
+                      () => console.log('Mute estado '+ estado),
+                      (_, error) => { reject(error), console.log('Error al actualizar los datos:', error) }
+                    );
+                  } else {
+                    // Si no existe un registro para el usuario, inserta los datos
+                    tx.executeSql(
+                      'INSERT INTO Configuracion (Mute, usuario_rut) VALUES (?, ?)',
+                      [estado, usuario_rut],
+                      () => console.log('Datos a vocalizar insertados correctamente'),
+                      (_, error) => { reject(error), console.log('Error al insertar los datos a vocalizar:', error) }
+                    );
+                  }
+                },
+                (_, error) => { reject(error), console.log('Error al obtener los datos a vocalizar :', error) }
+              );
+        });
+    });
+}
 
 
 
@@ -259,12 +320,12 @@ export function initDB() {
     // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos   
 
 
-    // eliminar tabla
-    /*db.transaction(tx => {
-        tx.executeSql('DROP TABLE Recordatorios', [], (_, { rows }) => {
-            console.log('Tabla eliminada Usuario');
-        });
-    });*/
+    // // eliminar tabla
+    // db.transaction(tx => {
+    //     tx.executeSql('DROP TABLE Configuracion', [], (_, { rows }) => {
+    //         console.log('Tabla eliminada Usuario');
+    //     });
+    // });
 
     //eliminar contenido de una tabla
     /*db.transaction(tx => {
@@ -300,7 +361,8 @@ export function initDB() {
             `CREATE TABLE IF NOT EXISTS Configuracion (
                 id INTEGER PRIMARY KEY AUTOINCREMENT, 
                 DatosSeleccionados TEXT,
-                EstadoLlamadaDS TEXT, 
+                EstadoLlamadaDS TEXT,
+                Mute TEXT, 
                 usuario_rut TEXT,
                 FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
             );`,
