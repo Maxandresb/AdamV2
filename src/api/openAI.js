@@ -3,6 +3,7 @@ import axios from 'axios';
 import * as SQLite from 'expo-sqlite';
 import { guardarHistoriarChats, obtenerContactosAlmacenados, obtenerRut } from "../api/sqlite";
 import { format } from 'date-fns';
+import { ObtenerCancelToken } from '../api/detenerProceso';
 
 
 
@@ -265,7 +266,7 @@ const functions = [
     },
     {
         "name": "explicar_funcion",
-        "description": `el usuario solicita una explicacion de una funcion de la aplicacion, debes reconocer frases como 'explicame como cambiar los datos seleccionados desde configuracion' o 'como elimino un recordatorio' o 'como modifico mis datos personales'. ademas debes responder en base a la informacion que se te ha proporcionado de en que parte de la aplicacion se encuentra cada una de las funciones`,
+        "description": `el usuario solicita una explicacion de una funcion de la aplicacion, debes reconocer frases como 'explicame como cambiar los datos seleccionados desde configuracion', 'enseñame como generar un recordatorio', 'como elimino un recordatorio' o 'como modifico mis datos personales', si la frase comienza con 'como' y seguido viene el nombre de una funcion, debes realizar esta funcion. Ademas debes responder en base a la informacion que se te ha proporcionado de en que parte de la aplicacion se encuentra cada una de las funciones`,
         "parameters": {
             "type": "object",
             "properties": {
@@ -372,6 +373,8 @@ export async function secondApiCall(prompt, message, function_name, function_res
 
     let retries = 2;
     let intento = 1;
+    let cancelado = false
+
     while (retries > 0) {
         console.log('START 2DA LLAMADA INTENTO: ', intento);
         try {
@@ -390,49 +393,60 @@ export async function secondApiCall(prompt, message, function_name, function_res
                                         content: function_response,
                                     },
                                 ]
+                            }, {
+                                cancelToken: ObtenerCancelToken()
+                            }).catch(function (thrown) {
+                                if (axios.isCancel(thrown)) {
+                                    console.log('Segunda llamada cancelada: ', thrown.message);
+                                    cancelado = true
+                                } else {
+                                }
                             });
                             resolve(result);
                         } catch (error) {
                             reject(error);
                         }
-                    }, 3000); // Espera 5 segundos antes de hacer la llamada a la API
+                    }, 3000); // Espera 3 segundos antes de hacer la llamada a la API
                 }),
-                timeout(60000) // Agrega un tiempo de espera de 5 segundos
+                timeout(60000) 
             ]);
+            if (cancelado) {
+                return;
+            } else {
 
-            promises.push(finalres);
-            console.log("TERMINO 2DA LLAMADA API OPENAI")
-            // Añade la respuesta del asistente al historial de la conversación
-            conversationHistory.push(finalres.data?.choices[0]?.message);
-            //console.log(conversationHistory)
-            //console.log(finalres.data?.choices[0]?.message?.content)
-            let answer = finalres.data?.choices[0]?.message?.content;
-            promises.push(finalres);
-            let respuesta = await crearRespuesta(answer);
-            console.log("FINAL DE LA CREACION DE LA RESPUESTA")
-            promises.push(respuesta);
-            const tex3 = JSON.stringify(respuesta)
-            //console.log('RESPUESTA CREADA: '+tex3)
-            //console.log("PRINT INTENTO: " + respuesta)
-            let id = respuesta._id.toString();
-            let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
-            let name_func = function_name.toString();
-            let consulta = prompt.toString();
-            let contestacion = respuesta.text.toString();
-            let rut = await obtenerRut()
+                promises.push(finalres);
+                console.log("TERMINO 2DA LLAMADA API OPENAI")
+                // Añade la respuesta del asistente al historial de la conversación
+                conversationHistory.push(finalres.data?.choices[0]?.message);
+                //console.log(conversationHistory)
+                //console.log(finalres.data?.choices[0]?.message?.content)
+                let answer = finalres.data?.choices[0]?.message?.content;
+                promises.push(finalres);
+                let respuesta = await crearRespuesta(answer);
+                console.log("FINAL DE LA CREACION DE LA RESPUESTA")
+                promises.push(respuesta);
+                const tex3 = JSON.stringify(respuesta)
+                //console.log('RESPUESTA CREADA: '+tex3)
+                //console.log("PRINT INTENTO: " + respuesta)
+                let id = respuesta._id.toString();
+                let fec_hor = format(new Date(respuesta.createdAt), 'dd/MM/yyyy - HH:mm');
+                let name_func = function_name.toString();
+                let consulta = prompt.toString();
+                let contestacion = respuesta.text.toString();
+                let rut = await obtenerRut()
 
 
-            //console.log('id: ', id, 'fec_hor: ', fec_hor, )
-            if (respuesta) {
-                //console.log('********************************************************************')
-                //console.log('id: ', id, 'fec_hor: ', fec_hor, 'function name: ',name_func, 'prompt: ', consulta, 'respuesta: ', contestacion, 'rut: ', rut)
-                guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
-                //console.log('********************************************************************')
+                //console.log('id: ', id, 'fec_hor: ', fec_hor, )
+                if (respuesta) {
+                    //console.log('********************************************************************')
+                    //console.log('id: ', id, 'fec_hor: ', fec_hor, 'function name: ',name_func, 'prompt: ', consulta, 'respuesta: ', contestacion, 'rut: ', rut)
+                    guardarHistoriarChats(id, fec_hor, name_func, consulta, contestacion, rut)
+                    //console.log('********************************************************************')
+                }
+                return respuesta;
             }
-            return respuesta;
-
         } catch (error) {
-            if (retries === 0) throw error; // Si se han agotado los intentos, lanza el error
+            if (retries === 0) throw error; 
             console.error('Error Message:', error);
             if (error.response) {
                 console.error('Response:', {
@@ -443,14 +457,13 @@ export async function secondApiCall(prompt, message, function_name, function_res
             } else if (error.request) {
                 console.error('Request:', error.request);
             } else {
-                console.error('Error:', error.message);
+                console.error('Error');
             }
             retries--;
             intento++;
         }
     }
 }
-
 
 export async function firstApiCall(prompt) {
     let FechaHoy = new Date()
@@ -470,7 +483,8 @@ export async function firstApiCall(prompt) {
 
     let retries = 2;
     let intento = 1;
-    
+    let cancelado = false
+
     while (retries > 0) {
         console.log('START 1RA LLAMADA INTENTO: ', intento);
         try {
@@ -492,43 +506,54 @@ export async function firstApiCall(prompt) {
                                 ],
                                 functions: functions,
                                 function_call: "auto",
+                            }, {
+                                cancelToken: ObtenerCancelToken()
+                            }).catch(function (thrown) {
+                                if (axios.isCancel(thrown)) {
+                                    console.log('Primera llamada  cancelada: ', thrown.message);
+                                    cancelado = true
+                                } else {
+                                    // manejar error
+                                }
                             });
                             resolve(result);
                         } catch (error) {
                             reject(error);
                         }
-                    }, 3000); // Espera 5 segundos antes de hacer la llamada a la API
+                    }, 3000); // Espera 3 segundos antes de hacer la llamada a la API
                 }),
-                timeout(15000) // Agrega un tiempo de espera de 5 segundos
+                timeout(15000) 
             ]);
-
-            promises.push(res);
-            let message, function_name, args;
-            if (res.data?.choices[0]?.message?.function_call?.name) {
-                const tex = JSON.stringify(res.data?.choices[0])
-                message = res.data?.choices[0]?.message;
-                function_name = res.data?.choices[0]?.message?.function_call?.name;
-                if (function_name === 'llamar_contacto') {
-                    let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
-                    let parsedArgs = JSON.parse(res_args);
-                    args = parsedArgs["persona a llamar"];
-                } else if (function_name === 'llamar_numero') {
-                    let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
-                    let parsedArgs = JSON.parse(res_args);
-                    args = parsedArgs["numero a llamar"];
-                } else {
-                    args = res.data?.choices[0]?.message?.function_call?.arguments;
-                }
+            if (cancelado) {
+                return;
             } else {
-                function_name = "explicar_algo"
-                message = { "role": "assistant", "content": null, "function_call": { "name": "explicar_algo", "arguments": "{}" } }
-                args = '{}'
+                promises.push(res);
+                let message, function_name, args;
+                if (res.data?.choices[0]?.message?.function_call?.name) {
+                    const tex = JSON.stringify(res.data?.choices[0])
+                    message = res.data?.choices[0]?.message;
+                    function_name = res.data?.choices[0]?.message?.function_call?.name;
+                    if (function_name === 'llamar_contacto') {
+                        let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
+                        let parsedArgs = JSON.parse(res_args);
+                        args = parsedArgs["persona a llamar"];
+                    } else if (function_name === 'llamar_numero') {
+                        let res_args = res.data?.choices[0]?.message?.function_call?.arguments;
+                        let parsedArgs = JSON.parse(res_args);
+                        args = parsedArgs["numero a llamar"];
+                    } else {
+                        args = res.data?.choices[0]?.message?.function_call?.arguments;
+                    }
+                } else {
+                    function_name = "explicar_algo"
+                    message = { "role": "assistant", "content": null, "function_call": { "name": "explicar_algo", "arguments": "{}" } }
+                    args = '{}'
+                }
+
+                return { function_name: function_name, args: args, message: message };
             }
-
-            return { function_name: function_name, args: args, message: message };
-
         } catch (error) {
-            if (retries === 0) throw error; // Si se han agotado los intentos, lanza el error
+            if (retries === 0) throw error; 
             console.error(`Error en el intento ${intento}:`, error);
             if (error.response) {
                 console.error('Respuesta:', {
@@ -539,7 +564,7 @@ export async function firstApiCall(prompt) {
             } else if (error.request) {
                 console.error('Solicitud:', error.request);
             } else {
-                console.error('Error:', error.message);
+                console.error('Error');
             }
             retries--;
             intento++;
