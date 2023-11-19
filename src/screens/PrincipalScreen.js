@@ -26,7 +26,7 @@ import customtInputToolbar from '../api/customInputToolbar';
 import customSend from '../api/customSendMessage';
 import customChatMessage from '../api/customChatMessage';
 import { MostrarNotificacionesGuardadas, scheduleRecordatorioNotification } from "../api/notificaciones";
-import { CancelarProceso } from '../api/detenerProceso';
+import { CancelarLlamada } from '../api/detenerProceso';
 
 export default function PrincipalScreen() {
   const [inputUsuario, setinputUsuario] = useState('')
@@ -59,8 +59,14 @@ export default function PrincipalScreen() {
 
   const [MostrarDetenerProceso, setMostrarDetenerProceso] = useState(false)
   const [detenerProceso, setDetenerProceso] = useState(false)
+  const estadoDetener = useRef(false)
 
   async function iniciarGrabacion() {
+    try {
+      setDetenerProceso(false)
+    } catch (error) {
+      console.log('Error al cambiar estado de detener proceso en iniciar grabacion', error)
+    }
     try {
       const permisos = await Audio.requestPermissionsAsync();
       setHablando(true)
@@ -145,13 +151,408 @@ export default function PrincipalScreen() {
   }
   {/* fin funciones de grabacion de voz de usuario  */ }
 
+  let respuesta;
+
+  async function elegirFuncion(function_name, args, message, prompt) {
+    console.log('LOGICA DE SELECCION')
+    try {
+      if (function_name === "explicar_algo") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en explicar algo');
+          return;
+        } else {
+          function_response = "explica lo solicitado, si no se indica nivel de detalle, debe ser una explicacion simple pero concisa"
+          respuesta = await secondApiCall(prompt, message, function_name, function_response)
+        }
+      } else if (function_name === "ubicacion") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en ubicacion');
+          return;
+        } else {
+          let ubicacion = await obtenerUbicacion('direccion');
+          function_response = `La ubicación actual es: ${ubicacion}, informa al uauario que debe tener en cuenta que la ubicacion tiene un margen de error de aproximadamente 100 metros`;
+          respuesta = await secondApiCall(prompt, message, function_name, function_response)
+        }
+      } else if (function_name === "centro_salud_cercano") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en centro salud cercano');
+          return;
+        } else {
+          let { comuna, region } = await obtenerUbicacion('comuna');
+          //let comuna = 'Hualqui'
+          //let region = 'Biobío Region'
+          if (detenerProceso) {
+            return;
+          } else {
+            console.log('REGION: ', region, 'COMUNA: ', comuna)
+            centros = await buscarEnDB('Comuna', comuna)
+            if (centros) {
+              if (detenerProceso) {
+                return;
+              } else {
+                console.log('CENTROS: ', centros)
+                function_response = `ubicacion del usuario: ${comuna} \n\ centros de salud encontrados en la base de datos, segun la ubicacion del usuario:\n\ ${JSON.stringify(centros)} \n\ esta informacion es real y fidedigna, no debes modificarla bajo ningun punto. la informacion viene con el siguiente formato: \n\ {"_array": [{"Comuna": "ejcomuna", "Calle": "ejcalle", "NombreOficial": "ejnombreoficial", "Numero": "ejnumero", "Region": "ejregion", "Telefono": "ejtelefono", "TieneServicioDeUrgencia": "SI/NO", "TipoDeSAPU": "ejtiposapu", "TipoDeUrgencia": "ejtipourgencia", "Via": "ejvia", "id": 1}], "length": cantidad_de_centros_de_salud_identificados} \n\ para generar una respuesta con esta informacion debes dar un formato a la informacion como el siguiente: \n\ ejnombreoficial, ejcalle ejnumero, ejcomuna, ejtelefono `;
+                console.log('FUNCION RESPONSE: \n\ ', function_response)
+                respuesta = await secondApiCall(prompt, message, function_name, function_response)
+              }
+            } else {
+              console.log('No se encontraron centros')
+            }
+          }
+        }
+      } else if (function_name === "llamar_contacto") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en llamar contacto');
+          return;
+        } else {
+          console.log('PERSONA A LLAMAR: ', args)
+          contactosEmergencia.current = await BuscarContactoEmergencia(args);
+
+          if (contactosEmergencia.current) {
+            console.log('CONTACTOS ENCONTRADOS: ', contactosEmergencia.current)
+
+            if (contactosEmergencia.current.length === 1) {
+              console.log('********* UN CONTACTO ENCONTRADO *********')
+              let numeroDeContacto = contactosEmergencia.current[0].numero;
+              let nombreContacto = contactosEmergencia.current[0].nombreCompleto
+              function_response = `Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
+              console.log('numeroDeContacto', JSON.stringify(numeroDeContacto))
+              realizarLlamada(numeroDeContacto);
+              respuesta = await generarRespuesta('Llamar a contacto', function_response, prompt)
+              contactosEmergencia.current = [];
+            } else if (contactosEmergencia.current.length > 1) {
+              if (detenerProceso) {
+                console.log('Proceso detenido en llamar contacto > 1');
+                return;
+              } else {
+                console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
+                setModalCEVisible(true);
+                if (!modalCEVisible) {
+                  function_response = `Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
+                  respuesta = await generarRespuesta('Llamar a contacto', function_response, prompt)
+                  setAliasContactoEm('')
+                  setNombreContactoEm('')
+                }
+              }
+            } else {
+              if (detenerProceso) {
+                console.log('Proceso detenido en llamar contacto 0');
+                return;
+              } else {
+                function_response = `No posees algun contacto de nombre o alias ${JSON.stringify(args)}.`
+                respuesta = await generarRespuesta('Llamar a contacto', function_response, prompt)
+                //Alert.alert("Contacto no encontrado: ", function_response);
+                contactosEmergencia.current = [];
+              }
+            }
+          } else {
+            if (detenerProceso) {
+              console.log('Proceso detenido en llamar contacto null');
+              return;
+            } else {
+              function_response = `No se encontraron contactos de emergencia guardados en la aplicacion.`
+              respuesta = await generarRespuesta('ERROR', function_response, prompt)
+              //Alert.alert("Contacto no encontrado: ", function_response);
+              contactosEmergencia.current = [];
+            }
+          }
+        }
+      } else if (function_name === "llamar_a_centro_salud") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en llamar centro salud');
+          return;
+        } else {
+          let { comuna, region } = await obtenerUbicacion('comuna');
+          console.log('REGION: ', region, 'COMUNA: ', comuna)
+          centrosMed.current = await buscarEnDB('Comuna', comuna)
+
+          if (centrosMed.current && Array.isArray(centrosMed.current._array)) {
+            console.log('CENTROS: ', centrosMed.current)
+            // Filtrar los centros de salud que tienen un número telefónico disponible
+            centrosMed.current._array = centrosMed.current._array.filter(centro => /\d/.test(centro.Telefono));
+            console.log('CENTROS: ', centrosMed.current._array)
+
+            if (centrosMed.current._array.length === 1) {
+              console.log('********* UN CENTRO ENCONTRADO *********')
+              let numeroDeCentro = centrosMed.current._array[0].Telefono;
+              let nombreCentro = centrosMed.current._array[0].NombreOficial
+              function_response = `Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
+              console.log('numeroDeCentro', JSON.stringify(numeroDeCentro))
+              realizarLlamada(numeroDeCentro);
+              respuesta = await generarRespuesta('Llamar a centro de salud', function_response, prompt)
+              centrosMed.current._array = [];
+            } else if (centrosMed.current._array.length > 1) {
+              if (detenerProceso) {
+                console.log('Proceso detenido en llamar centro salud > 1');
+                return;
+              } else {
+                console.log('********* MAS DE UN CENTRO ENCONTRADO *********')
+                setModalNCMVisible(true);
+                if (!modalNCMVisible) {
+                  function_response = `Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
+                  respuesta = await generarRespuesta('Llamar a centro de salud', function_response, prompt)
+                  setNombreCentroMed('')
+                }
+              }
+            } else {
+              function_response = `No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}.`
+              respuesta = await generarRespuesta('Llamar a centro de salud', function_response, prompt)
+              //Alert.alert("Centro de salud no encontrado: ", function_response);
+              centrosMed.current._array = [];
+            }
+          } console.log('ERROR: centrosMed no esxiste o no es un array')
+        }
+      } else if (function_name === "llamar_numero") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en llamar num');
+          return;
+        } else {
+          console.log('NUMERO A LLAMAR: ', args)
+          function_response = `Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.`
+          realizarLlamada(args);
+          respuesta = await generarRespuesta('Llamar a numero', function_response, prompt)
+        }
+      } else if (function_name === "llamar_contacto_emergencia") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en llamar contacto emergencia');
+          return;
+        } else {
+          let numeroEmergencia = await numContactoEmergencia()
+          console.log('numero de emergencia a llamar: ', numeroEmergencia);
+          realizarLlamada(numeroEmergencia);
+          let answer = `Se llamara al contacto de emergencia`
+          respuesta = await generarRespuesta('llamar_contacto_emergencia', answer, prompt)
+        }
+      } else if (function_name === "enviar_mensaje_a_contacto") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en enviar mensaje');
+          return;
+        } else {
+          console.log('DATOS RECONOCIDOS: ', args)
+          args = JSON.parse(args)
+          console.log('args: ', args);
+          let mensaje = args.mensaje
+          let nombre = args.nombre_persona
+          console.log('MENSAJE: ', mensaje)
+          console.log('NOMBRE: ', nombre)
+          contactosEmergencia.current = await BuscarContactoEmergencia(nombre);
+          if (contactosEmergencia.current !== null) {
+            console.log('CONTACTOS ENCONTRADOS: ', contactosEmergencia.current)
+            if (contactosEmergencia.current.length === 1) {
+              console.log('********* UN CONTACTO ENCONTRADO *********')
+              let numeroDeContacto = contactosEmergencia.current[0].numero;
+              let nombreContacto = contactosEmergencia.current[0].nombreCompleto
+              function_response = `Seras redigido a la aplicacion whatsapp para enviar un mensaje al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
+              console.log('numeroDeContacto', JSON.stringify(numeroDeContacto))
+              enviarMensajeWSP(numeroDeContacto, mensaje)
+              respuesta = await generarRespuesta('enviar_mensaje_a_contacto', function_response, prompt)
+              contactosEmergencia.current = [];
+            } else if (contactosEmergencia.current.length > 1) {
+              if (detenerProceso) {
+                console.log('Proceso detenido en enviar mensaje > 1');
+                return;
+              } else {
+                console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
+                //generar modal seleccion de persona a enviar msj
+              }
+            } else {
+              if (detenerProceso) {
+                console.log('Proceso detenido en enviar mensaje 0');
+                return;
+              } else {
+                function_response = `No posees algun contacto de nombre o alias ${nombre}.`
+                respuesta = await generarRespuesta('enviar_mensaje_a_contacto', function_response, prompt)
+                //Alert.alert("Contacto no encontrado: ", function_response);
+                contactosEmergencia.current = [];
+              }
+            }
+          }
+        }
+      } else if (function_name === "informacion_medica_del_usuario") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en informacion medica del usuario');
+          return;
+        } else {
+          console.log('FRASE RECONOCIDA: ', args)
+          let rut = await obtenerRut();
+          if (detenerProceso) {
+            console.log('Proceso detenido en informacion medica del usuario');
+            return;
+          } else {
+            let infMedica = await obtenerDatosPreviosSelec(rut)
+            if (infMedica) {
+              if (detenerProceso) {
+                console.log('Proceso detenido en informacion medica del usuario');
+                return;
+              } else {
+                console.log('INFORMACION MEDICA: ', infMedica)
+                let answer = `Esta es la informacion medica del usuario: \n\ ${infMedica}`
+                respuesta = await generarRespuesta('informacion_medica_del_usuario', answer, prompt)
+              }
+            } else {
+              if (detenerProceso) {
+                console.log('Proceso detenido en else informacion medica del usuario');
+                return;
+              } else {
+                let answer = `No se han configurado datos medicos a mostrar.`
+                respuesta = await generarRespuesta('informacion_medica_del_usuario', answer, prompt)
+              }
+            }
+          }
+        }
+      } else if (function_name === "mostrar_base_de_datos") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en mostrar base de datos');
+          return;
+        } else {
+          // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
+          console.log('MOSTRANDO BD')
+          mostarDB('Usuario');
+          mostarDB('Alergias');
+          mostarDB('Medicamentos');
+          mostarDB('Limitaciones');
+          mostarDB('PatologiasCronicas');
+          mostarDB('Contacto');
+          mostarDB('recordatorios');
+          mostarDB('Configuracion');
+          await MostrarNotificacionesGuardadas()
+          //mostarDB('centrosMedicos');
+          respuesta = await generarRespuesta('Mostrar base de datos', 'La base de datos se mostrara en la consola.', prompt)
+        }
+      } else if (function_name === "recordatorio") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en recordatorio');
+          return;
+        } else {
+          //let args={"Descripcion": "", "Dias": "Unico", "Fecha": "2026-07-13", "Hora": "19:43", "Titulo": "Llamar a sax"}
+          respuestaRecordatorio = seleccionarRespuestaRecordatorio(args)
+          if (detenerProceso) {
+            console.log('Proceso detenido en scheduleRecordatorioNotification');
+            return;
+          } else {
+            let idNotificacion = await scheduleRecordatorioNotification(JSON.parse(args))
+            if (detenerProceso) {
+              console.log('Proceso detenido en addRecordatorio');
+              return;
+            } else {
+              addRecordatorio(JSON.parse(args), idNotificacion)
+              if (detenerProceso) {
+                console.log('Proceso detenido en generarRespuesta recordatorio');
+                return;
+              } else {
+                respuesta = await generarRespuesta(function_name, respuestaRecordatorio, prompt)
+              }
+            }
+          }
+        }
+      } else if (function_name === "clima") {
+        if (detenerProceso) {
+          console.log('Proceso detenido en clima');
+          return;
+        } else {
+          clima = await obtenerClima('coordenadas', JSON.parse(args))
+          jsonclima = JSON.stringify(clima)
+          //console.log(jsonclima)
+          function_response = `${jsonclima} Este json contiene informacion del clima Convierte este json en informacion util  para un usuario que habla español, resumelo presicamente, la temperatura que viene es en  Fahrenheit , convierte a celsius  y terminologia basica, resume en no mas de 50 palabras `
+          //console.log(function_response)
+          if (detenerProceso) {
+            console.log('Proceso detenido en generarRespuesta clima');
+            return;
+          } else {
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)
+          }
+        }
+      } else if (function_name === 'recomendacion_medica_general') {
+        if (detenerProceso) {
+          console.log('Proceso detenido en recomendacion medica general');
+          return;
+        } else {
+          let rut = await obtenerRut()
+          if (detenerProceso) {
+            console.log('Proceso detenido en recomendacion medica general');
+            return;
+          } else {
+            if (detenerProceso) {
+              console.log('Proceso detenido en recomendacion medica general');
+              return;
+            } else {
+              let perfilAnnon = await obtenerDatosPreviosAnon(rut)
+              console.log(perfilAnnon)
+              function_name = "responder_temas_de_salud"
+              function_response = `El usuario solicita que le respondas una recomendacion medica o de salud para eso puedes considerar que el perfil medico del usuario es  ${perfilAnnon}, intenta responder lo mejor que puedas, entendiendo que no eres medico, y agrega una pequeña frase al final, diciendole al usuario que siempre es recomendable consultar a un profesional, esta frase que sea lo mas corto posible `
+              if (detenerProceso) {
+                console.log('Proceso detenido en generarRespuesta recomendacion medica general');
+                return;
+              } else {
+                respuesta = await secondApiCall(prompt, message, function_name, function_response)
+              }
+            }
+          }
+        }
+      } else if (function_name === 'Compartir_Ubicacion') {
+        if (detenerProceso) {
+          console.log('Proceso detenido en compartir ubicacion');
+          return;
+        } else {
+          let answer = await compartir_ubicacion(prompt)
+          if (detenerProceso) {
+            console.log('Proceso detenido en compartir ubicacion');
+            return;
+          } else {
+            respuesta = await generarRespuesta('Compartir_Ubicacion', answer, prompt)
+          }
+        }
+      } else if (function_name === 'explicar_funcion') {
+        if (detenerProceso) {
+          console.log('Proceso detenido en explicar funcion');
+          return;
+        } else {
+          console.log('ARGS: ', args)
+          function_response = 'Debes explicar paso a paso como navegar entre las pantallas de la aplicacion para realizar la funcioncion que el usuario solicita'
+          if (detenerProceso) {
+            console.log('Proceso detenido en explicar funcion');
+            return;
+          } else {
+            respuesta = await secondApiCall(prompt, message, function_name, function_response)
+          }
+        }
+      } else {
+        if (detenerProceso) {
+          console.log('Proceso detenido en else');
+          return;
+        } else {
+          console.log('FUNCION NO ENCONTRADA')
+          function_name = "responder"
+          function_response = "indica al usuario que esa funcion no esta dentro del catalogo de funciones disponibles, pero responde o trata de dar solucion a lo que te indiquen en base a tus conocimientos, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
+          respuesta = await secondApiCall(prompt, message, function_name, function_response)
+        }
+      }
+      return respuesta;
+
+    } catch (error) {
+      console.log('error en elegir funcion', error);
+      if (detenerProceso) {
+        respuesta = `respuesta cancelada`
+        return respuesta;
+      }
+
+    }
+  }
+
   {/* Inicio funciones de obtencion de data de apis  */ }
   const obtenerRespuesta = async (input) => {
+    if (detenerProceso) {
+      console.log('Proceso detenido antes de fac');
+      return;
+    }
     setMostrarDetenerProceso(true)
     setDetenerProceso(false)
-    let respuesta = null;
     setinputUsuario(input);
     const mensajeUsuario = input[0];
+    if (detenerProceso) {
+      console.log('Proceso detenido antes de fac');
+      return;
+    }
     if (mensajeUsuario.text === null) {
       mensajeUsuario.text = '...'
     } else if (mensajeUsuario.text === ' ') {
@@ -160,427 +561,90 @@ export default function PrincipalScreen() {
       mensajeUsuario.text = '...'
     } else if (typeof mensajeUsuario.text === 'undefined') {
       mensajeUsuario.text = '...'
+    } else if (mensajeUsuario.text === undefined) {
+      mensajeUsuario.text = '...'
+    }
+    if (detenerProceso) {
+      console.log('Proceso detenido antes de fac');
+      return;
     }
     setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, mensajeUsuario))
     if (input[0].text.length > 0) {
+      if (detenerProceso) {
+        console.log('Proceso detenido antes de fac');
+        return;
+      }
       console.log("************* PROCESO DE RESPUESTA *********************")
       setCargando(true);
       let prompt = mensajeUsuario.text;
       console.log(prompt)
       setRespondiendo(true)
       setMensajeProcesamiento('Procesando pregunta...');
+      setDetenerProceso(false)
       try {
-        let { function_name, args, message } = await firstApiCall(prompt);
-        //let function_name='recordatorio'
         if (detenerProceso) {
-          console.log('Proceso detenido en antes del if function_name');
+          console.log('Proceso detenido antes de fac');
           return;
-        } else if (function_name) {
-          setMensajeProcesamiento('Procesando respuesta...');
-          console.log('FUNCION SELECCIONADA: ', function_name)
-          console.log('LOGICA DE SELECCION')
+        }
+        let result = await firstApiCall(prompt);
+        let function_name, args, message;
+        if (result !== undefined) {
+          ({ function_name, args, message } = result);
 
-          if (function_name === "explicar_algo") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en explicar algo');
-              return;
-            } else {
-              function_response = "explica lo solicitado, si no se indica nivel de detalle, debe ser una explicacion simple pero concisa"
-              respuesta = await secondApiCall(prompt, message, function_name, function_response)
-            }
-          } else if (function_name === "ubicacion") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en ubicacion');
-              return;
-            } else {
-              let ubicacion = await obtenerUbicacion('direccion');
-              function_response = `La ubicación actual es: ${ubicacion}, informa al uauario que debe tener en cuenta que la ubicacion tiene un margen de error de aproximadamente 100 metros`;
-              respuesta = await secondApiCall(prompt, message, function_name, function_response)
-            }
-          } else if (function_name === "centro_salud_cercano") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en centro salud cercano');
-              return;
-            } else {
-              let { comuna, region } = await obtenerUbicacion('comuna');
-              //let comuna = 'Hualqui'
-              //let region = 'Biobío Region'
-              if (detenerProceso) {
-                return;
-              } else {
-                console.log('REGION: ', region, 'COMUNA: ', comuna)
-                centros = await buscarEnDB('Comuna', comuna)
-                if (centros) {
-                  if (detenerProceso) {
-                    return;
-                  } else {
-                    console.log('CENTROS: ', centros)
-                    function_response = `ubicacion del usuario: ${comuna} \n\ centros de salud encontrados en la base de datos, segun la ubicacion del usuario:\n\ ${JSON.stringify(centros)} \n\ esta informacion es real y fidedigna, no debes modificarla bajo ningun punto. la informacion viene con el siguiente formato: \n\ {"_array": [{"Comuna": "ejcomuna", "Calle": "ejcalle", "NombreOficial": "ejnombreoficial", "Numero": "ejnumero", "Region": "ejregion", "Telefono": "ejtelefono", "TieneServicioDeUrgencia": "SI/NO", "TipoDeSAPU": "ejtiposapu", "TipoDeUrgencia": "ejtipourgencia", "Via": "ejvia", "id": 1}], "length": cantidad_de_centros_de_salud_identificados} \n\ para generar una respuesta con esta informacion debes dar un formato a la informacion como el siguiente: \n\ ejnombreoficial, ejcalle ejnumero, ejcomuna, ejtelefono `;
-                    console.log('FUNCION RESPONSE: \n\ ', function_response)
-                    respuesta = await secondApiCall(prompt, message, function_name, function_response)
-                  }
-                } else {
-                  console.log('No se encontraron centros')
-                }
-              }
-            }
-          } else if (function_name === "llamar_contacto") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en llamar contacto');
-              return;
-            } else {
-              console.log('PERSONA A LLAMAR: ', args)
-              contactosEmergencia.current = await BuscarContactoEmergencia(args);
+          if (detenerProceso) {
+            console.log('Proceso detenido en antes del if function_name');
+            return;
+          }
+          if (function_name) {
+            setMensajeProcesamiento('Procesando respuesta...');
+            console.log('FUNCION SELECCIONADA: ', function_name)
 
-              if (contactosEmergencia.current) {
-                console.log('CONTACTOS ENCONTRADOS: ', contactosEmergencia.current)
 
-                if (contactosEmergencia.current.length === 1) {
-                  console.log('********* UN CONTACTO ENCONTRADO *********')
-                  let numeroDeContacto = contactosEmergencia.current[0].numero;
-                  let nombreContacto = contactosEmergencia.current[0].nombreCompleto
-                  function_response = `Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
-                  console.log('numeroDeContacto', JSON.stringify(numeroDeContacto))
-                  realizarLlamada(numeroDeContacto);
-                  respuesta = await generarRespuesta('Llamar a contacto', function_response, prompt)
-                  contactosEmergencia.current = [];
-                } else if (contactosEmergencia.current.length > 1) {
-                  if (detenerProceso) {
-                    console.log('Proceso detenido en llamar contacto > 1');
-                    return;
-                  } else {
-                    console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
-                    setModalCEVisible(true);
-                    if (!modalCEVisible) {
-                      function_response = `Seras redigido a la aplicacion telefono para llamar al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
-                      respuesta = await generarRespuesta('Llamar a contacto', function_response, prompt)
-                      setAliasContactoEm('')
-                      setNombreContactoEm('')
-                    }
-                  }
-                } else {
-                  if (detenerProceso) {
-                    console.log('Proceso detenido en llamar contacto 0');
-                    return;
-                  } else {
-                    function_response = `No posees algun contacto de nombre o alias ${JSON.stringify(args)}.`
-                    respuesta = await generarRespuesta('Llamar a contacto', function_response, prompt)
-                    //Alert.alert("Contacto no encontrado: ", function_response);
-                    contactosEmergencia.current = [];
-                  }
-                }
-              } else {
-                if (detenerProceso) {
-                  console.log('Proceso detenido en llamar contacto null');
-                  return;
-                } else {
-                  function_response = `No se encontraron contactos de emergencia guardados en la aplicacion.`
-                  respuesta = await generarRespuesta('ERROR', function_response, prompt)
-                  //Alert.alert("Contacto no encontrado: ", function_response);
-                  contactosEmergencia.current = [];
-                }
-              }
-            }
-          } else if (function_name === "llamar_a_centro_salud") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en llamar centro salud');
-              return;
-            } else {
-              let { comuna, region } = await obtenerUbicacion('comuna');
-              console.log('REGION: ', region, 'COMUNA: ', comuna)
-              centrosMed.current = await buscarEnDB('Comuna', comuna)
+            respuesta = await elegirFuncion(function_name, args, message, prompt)
 
-              if (centrosMed.current && Array.isArray(centrosMed.current._array)) {
-                console.log('CENTROS: ', centrosMed.current)
-                // Filtrar los centros de salud que tienen un número telefónico disponible
-                centrosMed.current._array = centrosMed.current._array.filter(centro => /\d/.test(centro.Telefono));
-                console.log('CENTROS: ', centrosMed.current._array)
-
-                if (centrosMed.current._array.length === 1) {
-                  console.log('********* UN CENTRO ENCONTRADO *********')
-                  let numeroDeCentro = centrosMed.current._array[0].Telefono;
-                  let nombreCentro = centrosMed.current._array[0].NombreOficial
-                  function_response = `Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
-                  console.log('numeroDeCentro', JSON.stringify(numeroDeCentro))
-                  realizarLlamada(numeroDeCentro);
-                  respuesta = await generarRespuesta('Llamar a centro de salud', function_response, prompt)
-                  centrosMed.current._array = [];
-                } else if (centrosMed.current._array.length > 1) {
-                  if (detenerProceso) {
-                    console.log('Proceso detenido en llamar centro salud > 1');
-                    return;
-                  } else {
-                    console.log('********* MAS DE UN CENTRO ENCONTRADO *********')
-                    setModalNCMVisible(true);
-                    if (!modalNCMVisible) {
-                      function_response = `Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
-                      respuesta = await generarRespuesta('Llamar a centro de salud', function_response, prompt)
-                      setNombreCentroMed('')
-                    }
-                  }
-                } else {
-                  function_response = `No existe algun centro de salud disponible para llamar en la comuna ${JSON.stringify(comuna)}.`
-                  respuesta = await generarRespuesta('Llamar a centro de salud', function_response, prompt)
-                  //Alert.alert("Centro de salud no encontrado: ", function_response);
-                  centrosMed.current._array = [];
-                }
-              } console.log('ERROR: centrosMed no esxiste o no es un array')
-            }
-          } else if (function_name === "llamar_numero") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en llamar num');
-              return;
-            } else {
-              console.log('NUMERO A LLAMAR: ', args)
-              function_response = `Seras redigido a la aplicacion telefono para llamar al numero ${JSON.stringify(args)}.`
-              realizarLlamada(args);
-              respuesta = await generarRespuesta('Llamar a numero', function_response, prompt)
-            }
-          } else if (function_name === "llamar_contacto_emergencia") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en llamar contacto emergencia');
-              return;
-            } else {
-              let numeroEmergencia = await numContactoEmergencia()
-              console.log('numero de emergencia a llamar: ', numeroEmergencia);
-              realizarLlamada(numeroEmergencia);
-              let answer = `Se llamara al contacto de emergencia`
-              respuesta = await generarRespuesta('llamar_contacto_emergencia', answer, prompt)
-            }
-          } else if (function_name === "enviar_mensaje_a_contacto") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en enviar mensaje');
-              return;
-            } else {
-              console.log('DATOS RECONOCIDOS: ', args)
-              args = JSON.parse(args)
-              console.log('args: ', args);
-              let mensaje = args.mensaje
-              let nombre = args.nombre_persona
-              console.log('MENSAJE: ', mensaje)
-              console.log('NOMBRE: ', nombre)
-              contactosEmergencia.current = await BuscarContactoEmergencia(nombre);
-              if (contactosEmergencia.current !== null) {
-                console.log('CONTACTOS ENCONTRADOS: ', contactosEmergencia.current)
-                if (contactosEmergencia.current.length === 1) {
-                  console.log('********* UN CONTACTO ENCONTRADO *********')
-                  let numeroDeContacto = contactosEmergencia.current[0].numero;
-                  let nombreContacto = contactosEmergencia.current[0].nombreCompleto
-                  function_response = `Seras redigido a la aplicacion whatsapp para enviar un mensaje al contacto de nombre o alias ${JSON.stringify(nombreContacto)}.`
-                  console.log('numeroDeContacto', JSON.stringify(numeroDeContacto))
-                  enviarMensajeWSP(numeroDeContacto, mensaje)
-                  respuesta = await generarRespuesta('enviar_mensaje_a_contacto', function_response, prompt)
-                  contactosEmergencia.current = [];
-                } else if (contactosEmergencia.current.length > 1) {
-                  if (detenerProceso) {
-                    console.log('Proceso detenido en enviar mensaje > 1');
-                    return;
-                  } else {
-                    console.log('********* MAS DE UN CONTACTO ENCONTRADO *********')
-                    //generar modal seleccion de persona a enviar msj
-                  }
-                } else {
-                  if (detenerProceso) {
-                    console.log('Proceso detenido en enviar mensaje 0');
-                    return;
-                  } else {
-                    function_response = `No posees algun contacto de nombre o alias ${nombre}.`
-                    respuesta = await generarRespuesta('enviar_mensaje_a_contacto', function_response, prompt)
-                    //Alert.alert("Contacto no encontrado: ", function_response);
-                    contactosEmergencia.current = [];
-                  }
-                }
-              }
-            }
-          } else if (function_name === "informacion_medica_del_usuario") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en informacion medica del usuario');
-              return;
-            } else {
-              console.log('FRASE RECONOCIDA: ', args)
-              let rut = await obtenerRut();
-              if (detenerProceso) {
-                console.log('Proceso detenido en informacion medica del usuario');
-                return;
-              } else {
-                let infMedica = await obtenerDatosPreviosSelec(rut)
-                if (infMedica) {
-                  if (detenerProceso) {
-                    console.log('Proceso detenido en informacion medica del usuario');
-                    return;
-                  } else {
-                    console.log('INFORMACION MEDICA: ', infMedica)
-                    let answer = `Esta es la informacion medica del usuario: \n\ ${infMedica}`
-                    respuesta = await generarRespuesta('informacion_medica_del_usuario', answer, prompt)
-                  }
-                } else {
-                  if (detenerProceso) {
-                    console.log('Proceso detenido en else informacion medica del usuario');
-                    return;
-                  } else {
-                    let answer = `No se han configurado datos medicos a mostrar.`
-                    respuesta = await generarRespuesta('informacion_medica_del_usuario', answer, prompt)
-                  }
-                }
-              }
-            }
-          } else if (function_name === "mostrar_base_de_datos") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en mostrar base de datos');
-              return;
-            } else {
-              // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
-              console.log('MOSTRANDO BD')
-              mostarDB('Usuario');
-              mostarDB('Alergias');
-              mostarDB('Medicamentos');
-              mostarDB('Limitaciones');
-              mostarDB('PatologiasCronicas');
-              mostarDB('Contacto');
-              mostarDB('recordatorios');
-              mostarDB('Configuracion');
-              await MostrarNotificacionesGuardadas()
-              //mostarDB('centrosMedicos');
-              respuesta = await generarRespuesta('Mostrar base de datos', 'La base de datos se mostrara en la consola.', prompt)
-            }
-          } else if (function_name === "recordatorio") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en recordatorio');
-              return;
-            } else {
-              //let args={"Descripcion": "", "Dias": "Unico", "Fecha": "2026-07-13", "Hora": "19:43", "Titulo": "Llamar a sax"}
-              respuestaRecordatorio = seleccionarRespuestaRecordatorio(args)
-              if (detenerProceso) {
-                console.log('Proceso detenido en scheduleRecordatorioNotification');
-                return;
-              } else {
-                let idNotificacion = await scheduleRecordatorioNotification(JSON.parse(args))
-                if (detenerProceso) {
-                  console.log('Proceso detenido en addRecordatorio');
-                  return;
-                } else {
-                  addRecordatorio(JSON.parse(args), idNotificacion)
-                  if (detenerProceso) {
-                    console.log('Proceso detenido en generarRespuesta recordatorio');
-                    return;
-                  } else {
-                    respuesta = await generarRespuesta(function_name, respuestaRecordatorio, prompt)
-                  }
-                }
-              }
-            }
-          } else if (function_name === "clima") {
-            if (detenerProceso) {
-              console.log('Proceso detenido en clima');
-              return;
-            } else {
-              clima = await obtenerClima('coordenadas', JSON.parse(args))
-              jsonclima = JSON.stringify(clima)
-              //console.log(jsonclima)
-              function_response = `${jsonclima} Este json contiene informacion del clima Convierte este json en informacion util  para un usuario que habla español, resumelo presicamente, la temperatura que viene es en  Fahrenheit , convierte a celsius  y terminologia basica, resume en no mas de 50 palabras `
-              //console.log(function_response)
-              if (detenerProceso) {
-                console.log('Proceso detenido en generarRespuesta clima');
-                return;
-              } else {
-                respuesta = await secondApiCall(prompt, message, function_name, function_response)
-              }
-            }
-          } else if (function_name === 'recomendacion_medica_general') {
-            if (detenerProceso) {
-              console.log('Proceso detenido en recomendacion medica general');
-              return;
-            } else {
-              let rut = await obtenerRut()
-              if (detenerProceso) {
-                console.log('Proceso detenido en recomendacion medica general');
-                return;
-              } else {
-                if (detenerProceso) {
-                  console.log('Proceso detenido en recomendacion medica general');
-                  return;
-                } else {
-                  let perfilAnnon = await obtenerDatosPreviosAnon(rut)
-                  console.log(perfilAnnon)
-                  function_name = "responder_temas_de_salud"
-                  function_response = `El usuario solicita que le respondas una recomendacion medica o de salud para eso puedes considerar que el perfil medico del usuario es  ${perfilAnnon}, intenta responder lo mejor que puedas, entendiendo que no eres medico, y agrega una pequeña frase al final, diciendole al usuario que siempre es recomendable consultar a un profesional, esta frase que sea lo mas corto posible `
-                  if (detenerProceso) {
-                    console.log('Proceso detenido en generarRespuesta recomendacion medica general');
-                    return;
-                  } else {
-                    respuesta = await secondApiCall(prompt, message, function_name, function_response)
-                  }
-                }
-              }
-            }
-          } else if (function_name === 'Compartir_Ubicacion') {
-            if (detenerProceso) {
-              console.log('Proceso detenido en compartir ubicacion');
-              return;
-            } else {
-              let answer = await compartir_ubicacion(prompt)
-              if (detenerProceso) {
-                console.log('Proceso detenido en compartir ubicacion');
-                return;
-              } else {
-                respuesta = await generarRespuesta('Compartir_Ubicacion', answer, prompt)
-              }
-            }
-          } else if (function_name === 'explicar_funcion') {
-            if (detenerProceso) {
-              console.log('Proceso detenido en explicar funcion');
-              return;
-            } else {
-              console.log('ARGS: ', args)
-              function_response = 'Debes explicar paso a paso como navegar entre las pantallas de la aplicacion para realizar la funcioncion que el usuario solicita'
-              if (detenerProceso) {
-                console.log('Proceso detenido en explicar funcion');
-                return;
-              } else {
-                respuesta = await secondApiCall(prompt, message, function_name, function_response)
-              }
-            }
           } else {
             if (detenerProceso) {
               console.log('Proceso detenido en else');
               return;
             } else {
-              console.log('FUNCION NO ENCONTRADA')
-              function_name = "responder"
-              function_response = "indica al usuario que esa funcion no esta dentro del catalogo de funciones disponibles, pero responde o trata de dar solucion a lo que te indiquen en base a tus conocimientos, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
-              respuesta = await secondApiCall(prompt, message, function_name, function_response)
+              //siempre se encuentra una funcion por lo que si no se obtiene el nombre de una funcion es por que entremedio se detuvo el proceso, pq en caso de error lanza el catch
+              respuesta = `respuesta cancelada`
             }
           }
+        } else if (result === `respuesta cancelada`) {
+          respuesta = `respuesta cancelada`
+        } else if (result === 'tiempo de espera agotado') {
+          respuesta = 'tiempo de espera agotado'
         } else {
-          if (detenerProceso) {
-            console.log('Proceso detenido en else');
-            return;
-          } else {
-            console.log('FUNCION NO ENCONTRADA')
-            function_name = "responder"
-            function_response = "indica al usuario que esa funcion no esta dentro del catalogo de funciones disponibles, pero responde o trata de dar solucion a lo que te indiquen en base a tus conocimientos, utiliza el contexto de la conversacion para dar una respuesta mas exacta"
-            respuesta = await secondApiCall(prompt, message, function_name, function_response)
-          }
+          console.log('ERROR NO IDENTIFICADO EN PRIMERA LLAMADA')
         }
 
 
 
 
         console.log('******respuesta api obtenida*****');
-        setMostrarDetenerProceso(false)
         setCargando(false);
         setRespondiendo(false)
         setMensajeProcesamiento('');
+        console.log('RESPUESTA: ', respuesta)
         if (respuesta) {
-          //console.log(respuesta);
+          // si existe respuesta se verifica que el tiempo de espera no se haya agotado en la segunda llamada o se haya cancelado alguna de las llamadas, si es el caso, se genera respuesta acorde
+          if (respuesta === 'tiempo de espera agotado') {
+            let answer = `Tiempo de espera agotado, revisa tu conexion a internet`
+            respuesta = await generarRespuesta('tiempo_agotado_sac', answer, prompt)
+          } else if (respuesta === `respuesta cancelada`) {
+            let answer = 'Haz detenido el proceso, esperare tu siguiente mensaje'
+            respuesta = await generarRespuesta('respuesta cancelada', answer, prompt)
+          }
+          //si todo dale bien se muestra respuesta en pantalla
           setMensajes((mensajesPrevios) => GiftedChat.append(mensajesPrevios, respuesta))
           if (mute == false) {
             respuestaVoz(respuesta.text)
           }
-
           setinputUsuario('');
           respuesta = null;
         } else {
+          // si no existe, se verifica si se detuvo el proceso y se genera respuesta acorde
           if (detenerProceso) {
             let answer = 'Haz detenido el proceso, esperare tu siguiente mensaje'
             if (mute == false) {
@@ -591,7 +655,7 @@ export default function PrincipalScreen() {
           } else {
             setMensajeProcesamiento('Procesando respuesta...');
             console.log('NO SE OBTUVO UNA RESPUETA A LA SEGUNDA LLAMADA')
-            let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
+            let answer = 'Ocurrio un error con la respuesta, intentalo nuevamente'
             if (mute == false) {
               respuestaVoz(answer)
             }
@@ -604,10 +668,10 @@ export default function PrincipalScreen() {
           setMensajeProcesamiento('');
 
         }
+        setMostrarDetenerProceso(false)
 
       } catch (error) {
-        console.log('DETENCION O ERROR: --------------------');
-        setMostrarDetenerProceso(false)
+        console.log('DETENCION O ERROR: -------------------->');
         setMensajeProcesamiento('Procesando respuesta...');
         console.log('ERROR: ', error)
         setCargando(false);
@@ -629,7 +693,7 @@ export default function PrincipalScreen() {
         } else {
           setMensajeProcesamiento('Procesando respuesta...');
           console.log('NO SE OBTUVO UNA RESPUETA A LA SEGUNDA LLAMADA')
-          let answer = 'Catch: No se obtuvo respuesta, revisa tu conexion a internet'
+          let answer = 'No se obtuvo respuesta, revisa tu conexion a internet'
           if (mute == false) {
             respuestaVoz(answer)
           }
@@ -640,6 +704,7 @@ export default function PrincipalScreen() {
         setinputUsuario('');
         respuesta = null;
         setMensajeProcesamiento('');
+        setMostrarDetenerProceso(false)
       }
     }
   };
@@ -720,25 +785,29 @@ export default function PrincipalScreen() {
     }
   }
 
-  //detener proceso
-  const pressDetenerProceso = () => {
-    console.log('Estado detener pre: ', detenerProceso);
+  const cancelarProceso = () => {
     try {
       setDetenerProceso(true)
     } catch (error) {
       console.log("ERROR SET DETENER PROCESO")
     }
     try {
-      CancelarProceso('Operación cancelada por el usuario');
+      CancelarLlamada('Operación cancelada por el usuario');
     } catch (error) {
       console.log("ERROR AL CANCELAR PROCESO")
     }
-    try {
+    /*try {
       setMostrarDetenerProceso(false)
     } catch (error) {
       console.log("ERROR SET MOSTRAR DETENER PROCESO")
+    }*/
+  }
+  //detener proceso
+  const pressDetenerProceso = () => {
+    for (let i = 0; i < 2; i++) {
+      setTimeout(cancelarProceso, 1000)
     }
-    console.log('Estado detener post: ', detenerProceso);
+
   }
 
   // **********************************************************************************************************************************************************************************
@@ -813,13 +882,16 @@ export default function PrincipalScreen() {
               )
           }
 
-          <TouchableOpacity
-            className="bg-negro rounded-3xl p-4 absolute right-7 shadow-lg shadow-black"
-            onPress={() => { pressDetenerProceso() }}>
-            <Text style={{ color: '#ff3e45' }}>{'Detener '} <FontAwesome5 name="stop" size={10} color={'#ff3e45'} /></Text>
-            {/*<FontAwesome5 name="stop" size={25} color={'#ff3e45'} />*/}
-          </TouchableOpacity>
-
+          {
+            MostrarDetenerProceso ? (
+              <TouchableOpacity
+                className="bg-negro rounded-3xl p-4 absolute right-7 shadow-lg shadow-black"
+                onPress={() => { pressDetenerProceso() }}>
+                <Text style={{ color: '#ff3e45' }}>{'Detener '} <FontAwesome5 name="stop" size={10} color={'#ff3e45'} /></Text>
+                {/*<FontAwesome5 name="stop" size={25} color={'#ff3e45'} />*/}
+              </TouchableOpacity>
+            ) : null
+          }
 
           {/* Modal contactos emergencia */}
           <Modal

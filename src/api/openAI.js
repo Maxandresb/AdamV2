@@ -408,23 +408,20 @@ export async function secondApiCall(prompt, message, function_name, function_res
                         }
                     }, 3000); // Espera 3 segundos antes de hacer la llamada a la API
                 }),
-                timeout(60000) 
+                timeout(60000)
             ]);
             if (cancelado) {
-                return;
+                let respuesta = `respuesta cancelada`
+                return respuesta;
             } else {
-
-                promises.push(finalres);
                 console.log("TERMINO 2DA LLAMADA API OPENAI")
                 // Añade la respuesta del asistente al historial de la conversación
                 conversationHistory.push(finalres.data?.choices[0]?.message);
                 //console.log(conversationHistory)
                 //console.log(finalres.data?.choices[0]?.message?.content)
                 let answer = finalres.data?.choices[0]?.message?.content;
-                promises.push(finalres);
                 let respuesta = await crearRespuesta(answer);
                 console.log("FINAL DE LA CREACION DE LA RESPUESTA")
-                promises.push(respuesta);
                 const tex3 = JSON.stringify(respuesta)
                 //console.log('RESPUESTA CREADA: '+tex3)
                 //console.log("PRINT INTENTO: " + respuesta)
@@ -446,9 +443,10 @@ export async function secondApiCall(prompt, message, function_name, function_res
                 return respuesta;
             }
         } catch (error) {
-            if (retries === 0) throw error; 
-            console.error('Error Message:', error);
-            if (error.response) {
+            if (retries === 0) {
+                console.error(`Error en el intento ${intento}:`, error);
+            }
+            /*if (error.response) {
                 console.error('Response:', {
                     status: error.response.status,
                     headers: error.response.headers,
@@ -458,9 +456,15 @@ export async function secondApiCall(prompt, message, function_name, function_res
                 console.error('Request:', error.request);
             } else {
                 console.error('Error');
-            }
+            }*/
             retries--;
+            console.log('Termino intento: ', intento);
             intento++;
+            if (intento === 2) {
+                let respuesta = 'tiempo de espera agotado'
+                return respuesta;
+            }
+
         }
     }
 }
@@ -522,10 +526,11 @@ export async function firstApiCall(prompt) {
                         }
                     }, 3000); // Espera 3 segundos antes de hacer la llamada a la API
                 }),
-                timeout(15000) 
+                timeout(15000)
             ]);
             if (cancelado) {
-                return;
+                let respuesta = `respuesta cancelada`
+                return respuesta;
             } else {
                 promises.push(res);
                 let message, function_name, args;
@@ -553,9 +558,10 @@ export async function firstApiCall(prompt) {
                 return { function_name: function_name, args: args, message: message };
             }
         } catch (error) {
-            if (retries === 0) throw error; 
-            console.error(`Error en el intento ${intento}:`, error);
-            if (error.response) {
+            if (retries === 0) {
+                console.error(`Error en el intento ${intento}:`, error);
+            }
+            /*if (error.response) {
                 console.error('Respuesta:', {
                     status: error.response.status,
                     headers: error.response.headers,
@@ -565,9 +571,14 @@ export async function firstApiCall(prompt) {
                 console.error('Solicitud:', error.request);
             } else {
                 console.error('Error');
-            }
+            }*/
             retries--;
+            console.log('Termino intento: ', intento);
             intento++;
+            if (intento === 2) {
+                let respuesta = 'tiempo de espera agotado'
+                return respuesta;
+            }
         }
     }
 }
