@@ -165,13 +165,13 @@ export async function obtenerContactosAlmacenados() {
 
                         resolve(contacto);
                     } else {
-                        console.log('No hay registros en la tabla Contacto.');
+                        //console.log('No hay registros en la tabla Contacto.');
                         resolve('No hay contactos ingresados');
                     }
                 },
                 (_, error) => {
-                    console.log('Error al obtener eregistros en la tabla Contacto:', error);
-                    reject('No hay contactos ingresados');
+                    //console.log('Error al obtener eregistros en la tabla Contacto:', error);
+                    reject('No hay contactos ingresados, error capturado');
                 }
             );
         })
@@ -342,35 +342,19 @@ export  function muteADAM(usuario_rut,estado){
 
 
 export function initDB() {
-    console.log('CREANDO BASE DE DATOS SQLITE')
+    //console.log('CREANDO BASE DE DATOS SQLITE')
     // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos   
 
 
     // eliminar tabla
-    db.transaction(tx => {
+    //db.transaction(tx => {
         /*tx.executeSql('DROP TABLE Medicamentos', [], 
         (_,) => {console.log('Tabla eliminada Medicamentos');},
         (_, error) => console.log('Error al crear la tabla Medicamentos:', error)
         );*/
 
-        tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS Medicamentos (
-          id INTEGER PRIMARY KEY NOT NULL,
-          medicamento TEXT,
-          dosis TEXT,
-          periodicidad TEXT,
-          horarios TEXT,
-          estadoNotificacion TEXT,
-          idNotificacion TEXT,
-          usuario_rut TEXT,
-          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-        );`,
-            [],
-            (_,) => { console.log('Tabla Medicamentos creada')},
-            (_, error) => console.log('Error al crear la tabla Medicamentos:', error)
-        );
-    });
-    // Crear tabla Medicamentos
+        
+    //});
     //eliminar contenido de una tabla
     /*db.transaction(tx => {
       tx.executeSql('DELETE FROM Usuario', [], (_, { rows }) => {
@@ -401,22 +385,6 @@ export function initDB() {
     });
 
     db.transaction(tx => {
-        tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS Configuracion (
-                id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                DatosSeleccionados TEXT,
-                EstadoLlamadaDS TEXT,
-                Mute TEXT, 
-                usuario_rut TEXT,
-                FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-            );`,
-            [],
-            (_, { rows }) => console.log('Tabla Configuracion creada:', rows),
-            (_, error) => console.log('Error al crear la tabla Configuracion:', error)
-        )
-    });
-
-    db.transaction(tx => {
         // Crear tabla Usuario
         tx.executeSql(
             `CREATE TABLE IF NOT EXISTS Usuario (
@@ -439,6 +407,39 @@ export function initDB() {
             [],
             () => { },
             (_, error) => console.log('Error al crear la tabla Usuario:', error)
+        );
+
+        // Crear tabla Configuracion
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS Configuracion (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                DatosSeleccionados TEXT,
+                EstadoLlamadaDS TEXT,
+                Mute TEXT, 
+                usuario_rut TEXT,
+                FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+            );`,
+            [],
+            () => { },
+            (_, error) => console.log('Error al crear la tabla Configuracion:', error)
+        )
+
+        // Crear tabla Medicamentos
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS Medicamentos (
+          id INTEGER PRIMARY KEY NOT NULL,
+          medicamento TEXT,
+          dosis TEXT,
+          periodicidad TEXT,
+          horarios TEXT,
+          estadoNotificacion TEXT,
+          idNotificacion TEXT,
+          usuario_rut TEXT,
+          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        );`,
+            [],
+            () => { },
+            (_, error) => console.log('Error al crear la tabla Medicamentos:', error)
         );
 
         // Crear tabla Alergias
@@ -516,7 +517,7 @@ export function initDB() {
           FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
         );`,
             [],
-            (_, { rows }) => { console.log('Tabla Contacto creada'); },
+            () => { },
             (_, error) => console.log('Error al crear la tabla Contacto:', error)
         );
 
