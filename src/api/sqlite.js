@@ -154,28 +154,29 @@ export function obtenerContactosEmergencia() {
 
 
 export async function obtenerContactosAlmacenados() {
-    return new Promise((resolve, reject) => {
-        db.transaction(tx => {
-            tx.executeSql(
-                `SELECT nombreCompleto ,alias ,relacion FROM Contacto;`,
-                [],
-                (_, { rows: { _array } }) => {
-                    if (_array.length > 0) {
-                        let contacto = _array;
-
-                        resolve(contacto);
-                    } else {
-                        console.log('No hay registros en la tabla Contacto.');
-                        resolve('No hay contactos ingresados');
+    try {
+        return new Promise((resolve, reject) => {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `SELECT nombreCompleto ,alias ,relacion FROM Contacto;`,
+                    [],
+                    (_, { rows: { _array } }) => {
+                        if (_array.length > 0) {
+                            let contacto = _array;
+                            resolve(contacto);
+                        } else {
+                            resolve('No hay contactos ingresados');
+                        }
+                    },
+                    (_, error) => {
+                        reject();
                     }
-                },
-                (_, error) => {
-                    console.log('Error al obtener eregistros en la tabla Contacto:', error);
-                    reject('No hay contactos ingresados');
-                }
-            );
-        })
-    });
+                );
+            })
+        });
+    } catch (error) {
+        console.log('No hay contactos ingresados, error capturado');
+    }
 }
 
 
