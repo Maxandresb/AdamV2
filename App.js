@@ -95,7 +95,7 @@ export default function App() {
       // Learn more about projectId:
       // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
       token = (await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig.extra.eas.projectId })).data;
-      console.log(token);
+      //console.log(token);
     } else {
       alert('Must use physical device for Push Notifications');
     }
