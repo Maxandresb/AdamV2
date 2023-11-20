@@ -350,9 +350,9 @@ export function initDB() {
 
     // eliminar tabla
     /*db.transaction(tx => {
-        tx.executeSql('DROP TABLE Usuario', [], 
-        (_,) => {console.log('Tabla eliminada Usuario');},
-        (_, error) => console.log('Error al crear la tabla Usuario:', error)
+        tx.executeSql('DROP TABLE DolenciasSintomas', [], 
+        (_,) => {console.log('Tabla eliminada DolenciasSintomas');},
+        (_, error) => console.log('Error al crear la tabla DolenciasSintomas:', error)
         );
 
         
@@ -391,10 +391,27 @@ export function initDB() {
             () => { },
             (_, error) => console.log('Error al crear la tabla Usuario:', error)
         );
+        //crar tabla DolenciasSintomas con id, dolencia o sintoma, fecha, hora, descripcion, parte del cuerpo afectada, tiempo desde que aparecio dolencia
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS DolenciasSintomas (
+          id INTEGER PRIMARY KEY NOT NULL,
+          dolenciaSintoma TEXT,
+          fechaHora TEXT,
+          descripcion TEXT,
+          parteCuerpoAfectada TEXT,
+          tiempoDesdeAparicion TEXT,
+          usuario_rut TEXT,
+          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        );`,
+            [],
+            () => { },
+            (_, error) => console.log('Error al crear la tabla DolenciasSintomas:', error)
+        );
+
+
         //Crear tabla recordatorios
-        db.transaction(tx => {
-            tx.executeSql(
-                `CREATE TABLE IF NOT EXISTS recordatorios (
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS recordatorios (
                 id INTEGER PRIMARY KEY AUTOINCREMENT, 
                 Titulo TEXT, 
                 Fecha TEXT, 
@@ -407,12 +424,10 @@ export function initDB() {
                 FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
                 
             );`,
-                [],
-                () => { },
-                (_, error) => console.log('Error al crear la tabla:', error)
-            );
-
-        });
+            [],
+            () => { },
+            (_, error) => console.log('Error al crear la tabla:', error)
+        );
 
         // Crear tabla Configuracion
         tx.executeSql(
