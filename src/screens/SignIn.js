@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Button, TextInput, View, Text, ScrollView, TouchableOpacity, TouchableHighlight, Modal, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
 import { useTailwind } from 'tailwind-rn';
-
+import SelectorRueda from '../api/selectorRueda';
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -45,6 +45,10 @@ const SignIn = ({ navigation }) => {
   const [periodicidad, setPeriodicidad] = useState('');
   const [medicamentos, setMedicamentos] = useState([]);
 
+  const [altura, setAltura] = useState('');
+  const [peso, setPeso] = useState('');
+  const [imc, setImc] = useState('');
+
   const [isAlertVisible, setAlertVisible] = useState(false);
 
   const [initialAlert, setInitialAlert] = useState(true);
@@ -53,11 +57,11 @@ const SignIn = ({ navigation }) => {
 
   const guardarDatosUsuario = () => {
     db.transaction(tx => {
-      console.log('Valores a insertar:', rut, pnombre, snombre, papellido, sapellido, alias, genero, tipo_sangre, fecha_nacimiento, tieneAlergias, cronico, donante, limitacion_fisica, toma_medicamentos);
+      console.log('Valores a insertar:', rut, pnombre, snombre, papellido, sapellido, alias, genero, altura, peso, imc, tipo_sangre, fecha_nacimiento, tieneAlergias, cronico, donante, limitacion_fisica, toma_medicamentos);
       tx.executeSql(
-        'INSERT INTO Usuario (rut, pnombre, snombre, papellido, sapellido, alias, genero, tipo_sangre, fecha_nacimiento, alergias, cronico, donante, limitacion_fisica, toma_medicamentos) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [rut, pnombre, snombre, papellido, sapellido, alias, genero, tipo_sangre, fecha_nacimiento, tieneAlergias, cronico, donante, limitacion_fisica, toma_medicamentos],
-        (result) => { console.log('Insert exitoso!'); },
+        'INSERT INTO Usuario (rut, pnombre, snombre, papellido, sapellido, alias, genero, altura, peso, imc, tipo_sangre, fecha_nacimiento, alergias, cronico, donante, limitacion_fisica, toma_medicamentos) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [rut, pnombre, snombre, papellido, sapellido, alias, genero, altura, peso, imc, tipo_sangre, fecha_nacimiento, tieneAlergias, cronico, donante, limitacion_fisica, toma_medicamentos],
+        (result) => { console.log('Insert usuario exitoso'); },
         (_, error) => {
           console.log('Error en insert:', error);
 
@@ -118,7 +122,7 @@ const SignIn = ({ navigation }) => {
     console.log('DATOS DEL USUARIO Y ALERGIAS INGRESADOS CORRECTAMENTE')
     // Mostrar alerta al guardar
     setSaveAlert(true);
-    
+
   }
   //datepicker para fec_nac
   const [date, setDate] = useState(new Date());
@@ -187,6 +191,31 @@ const SignIn = ({ navigation }) => {
     setPeriodicidad('');
   };
 
+  // rangos de peso y altura
+  const rangoTalla = Array.from({ length: 151 }, (_, i) => i + 150);
+  const rangoPeso = Array.from({ length: 151 }, (_, i) => i + 30);
+
+  // Calcula el IMC
+  useEffect(() => {
+    if (altura === '' && peso === '') {
+      let msj = 'Debes seleccionar altura y peso primero'
+      setImc(msj);
+    } else if(altura === ''){
+      let msj = 'Debes seleccionar altura primero'
+      setImc(msj);
+    } else if(peso === ''){
+      let msj = 'Debes seleccionar peso primero'
+      setImc(msj);
+    } else if (altura && peso) {
+      let imc = (peso / ((altura / 100) * (altura / 100))).toFixed(2);
+      setImc(imc);
+    } else {
+      console.log('Error al calcular imc');
+    }
+  }, [altura, peso]);
+
+  
+
 
   /**///////////////////////////////////////////////////////////////////PANTALLA//////////////////////////////////////////////////////////////////////////////*/
   return (
@@ -198,9 +227,10 @@ const SignIn = ({ navigation }) => {
       />
       <CustomAlert
         isVisible={saveAlert}
-        onClose={() => 
-          {setSaveAlert(false)
-          navigation.navigate('Principal');}
+        onClose={() => {
+          setSaveAlert(false)
+          navigation.navigate('Principal');
+        }
         }
         message='Contactos guardados exitosamente'
       />
@@ -253,13 +283,27 @@ const SignIn = ({ navigation }) => {
             selectedValue={genero}
             onValueChange={(itemValue) => setGenero(itemValue)}
           >
-            <Picker.Item label="Toca aqui para seleccionar una opción" value=""/>
+            <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
             <Picker.Item label="Hombre" value="Hombre" />
             <Picker.Item label="Mujer" value="Mujer" />
             <Picker.Item label="No Binario" value="No Binario" />
             <Picker.Item label="Prefiero no decirlo" value="Prefiero no decirlo" />
           </Picker>
         </View>
+        <Text className="text-lg font-bold text-redcoral mb-2">Selecciona tu altura: </Text>
+        <SelectorRueda rango={rangoTalla} titulo="Altura (cm)" onValueChange={setAltura} metrica='cm' />
+
+        <Text className="text-lg font-bold text-redcoral mb-2">Selecciona tu peso: </Text>
+        <SelectorRueda rango={rangoPeso} titulo="Peso (kg)" onValueChange={setPeso} metrica='kg' />
+
+        <Text className="text-lg font-bold text-redcoral mb-2">Tu IMC es: </Text>
+        <TextInput
+          className="bg-beige h-10 pl-4 mb-5 rounded-md border-2 border-solid border-salmon"
+          editable={false}
+          value={imc}
+        />
+
+
         <Text className="text-lg font-bold text-redcoral mb-2">Selecciona tu tipo de sangre: </Text>
         <View className="bg-beige h-10 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
           <Picker
@@ -287,16 +331,18 @@ const SignIn = ({ navigation }) => {
             editable={false}
           />
         </TouchableOpacity>
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={'date'}
-            is24Hour={true}
-            display="spinner"
-            onChange={onChange}
-          />
-        )}
+        {
+          show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={'date'}
+              is24Hour={true}
+              display="spinner"
+              onChange={onChange}
+            />
+          )
+        }
         <Text className="text-lg font-bold text-redcoral mb-2">Indica si posees o no alergias: </Text>
         <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
           <Picker
@@ -659,39 +705,42 @@ const SignIn = ({ navigation }) => {
         </View>
         <TouchableOpacity
           className="bg-redcoral py-3 rounded-md mb-3"
-          onPress={()=>{if (rut !=''){
-            guardarDatosUsuario()}
-          else{
-            Alert.alert(
-              "¡Datos claves faltantes!",
-              "Por favor ingresa tu rut, es un dato importante para el funcionamiento",
-              [
+          onPress={() => {
+            if (rut != '') {
+              guardarDatosUsuario()
+            }
+            else {
+              Alert.alert(
+                "¡Datos claves faltantes!",
+                "Por favor ingresa tu rut, es un dato importante para el funcionamiento",
+                [
                   {
-                      text: "Cancelar",
-                      style: "cancel"
+                    text: "Cancelar",
+                    style: "cancel"
                   },
                   {
-                      text: "Aceptar",
-                      style:"cancel"
+                    text: "Aceptar",
+                    style: "cancel"
                   }
-              ]
-          );
-          }}} 
+                ]
+              );
+            }
+          }}
         >
           <Text className="text-damasco text-lg text-center font-bold">
-          Guardar 
+            Guardar
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           className="bg-azulnegro py-3 rounded-md"
-          onPress={() => navigation.navigate('Saludo')} 
+          onPress={() => navigation.navigate('Saludo')}
         >
           <Text className="text-azul text-lg text-center font-bold">
             Cancelar
           </Text>
         </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </View >
+    </ScrollView >
   );
 }
 export default SignIn;

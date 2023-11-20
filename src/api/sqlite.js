@@ -275,27 +275,27 @@ export function mostarDB(tabla) {
     )
 };
 
-export function obtenerMute(rut){
-    
+export function obtenerMute(rut) {
+
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
                 `SELECT Mute FROM Configuracion WHERE usuario_rut =?;`,
                 [rut],
                 (_, { rows: { _array } }) => {
-                    
+
                     if (_array.length > 0) {
                         //let Mute = _array[0].Mute;
 
                         const Mute = _array.map(mute => ({
                             ...mute,
-                            Mute:  mute.Mute ,
-                           
-                          }));
-                        
+                            Mute: mute.Mute,
+
+                        }));
+
                         resolve(Mute);
                     } else {
-                        console.log('No hay rut en la tabla Configuracion.');
+                        //console.log('No hay rut en la tabla Configuracion.');
                         resolve(null);
                     }
                 },
@@ -308,33 +308,33 @@ export function obtenerMute(rut){
     });
 }
 
-export  function muteADAM(usuario_rut,estado){
+export function muteADAM(usuario_rut, estado) {
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
                 'SELECT * FROM Configuracion WHERE usuario_rut = ?',
                 [usuario_rut],
                 (_, { rows: { _array } }) => {
-                  if (_array.length > 0) {
-                    // Si ya existe un registro para el usuario, actualiza los datos
-                    tx.executeSql(
-                      'UPDATE Configuracion SET Mute = ? WHERE usuario_rut = ?',
-                      [estado, usuario_rut],
-                      () => console.log('Mute estado '+ estado),
-                      (_, error) => { reject(error), console.log('Error al actualizar los datos:', error) }
-                    );
-                  } else {
-                    // Si no existe un registro para el usuario, inserta los datos
-                    tx.executeSql(
-                      'INSERT INTO Configuracion (Mute, usuario_rut) VALUES (?, ?)',
-                      [estado, usuario_rut],
-                      () => console.log('Datos a vocalizar insertados correctamente'),
-                      (_, error) => { reject(error), console.log('Error al insertar los datos a vocalizar:', error) }
-                    );
-                  }
+                    if (_array.length > 0) {
+                        // Si ya existe un registro para el usuario, actualiza los datos
+                        tx.executeSql(
+                            'UPDATE Configuracion SET Mute = ? WHERE usuario_rut = ?',
+                            [estado, usuario_rut],
+                            () => console.log('Mute estado ' + estado),
+                            (_, error) => { reject(error), console.log('Error al actualizar los datos:', error) }
+                        );
+                    } else {
+                        // Si no existe un registro para el usuario, inserta los datos
+                        tx.executeSql(
+                            'INSERT INTO Configuracion (Mute, usuario_rut) VALUES (?, ?)',
+                            [estado, usuario_rut],
+                            () => console.log('Datos a vocalizar insertados correctamente'),
+                            (_, error) => { reject(error), console.log('Error al insertar los datos a vocalizar:', error) }
+                        );
+                    }
                 },
                 (_, error) => { reject(error), console.log('Error al obtener los datos a vocalizar :', error) }
-              );
+            );
         });
     });
 }
@@ -349,42 +349,20 @@ export function initDB() {
 
 
     // eliminar tabla
-    //db.transaction(tx => {
-        /*tx.executeSql('DROP TABLE Medicamentos', [], 
-        (_,) => {console.log('Tabla eliminada Medicamentos');},
-        (_, error) => console.log('Error al crear la tabla Medicamentos:', error)
-        );*/
+    /*db.transaction(tx => {
+        tx.executeSql('DROP TABLE Usuario', [], 
+        (_,) => {console.log('Tabla eliminada Usuario');},
+        (_, error) => console.log('Error al crear la tabla Usuario:', error)
+        );
 
         
-    //});
+    });*/
     //eliminar contenido de una tabla
     /*db.transaction(tx => {
       tx.executeSql('DELETE FROM Usuario', [], (_, { rows }) => {
         console.log('Registros eliminados');
       });
     });*/
-
-    db.transaction(tx => {
-        tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS recordatorios (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            Titulo TEXT, 
-            Fecha TEXT, 
-            Hora TEXT, 
-            Descripcion TEXT, 
-            Estado TEXT,
-            Dias TEXT,
-            idNotificacion TEXT,
-            usuario_rut TEXT,
-            FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-            
-        );`,
-            [],
-            () => { },
-            (_, error) => console.log('Error al crear la tabla:', error)
-        );
-
-    });
 
     db.transaction(tx => {
         // Crear tabla Usuario
@@ -397,6 +375,9 @@ export function initDB() {
           sapellido TEXT,
           alias TEXT,
           genero TEXT,
+          altura TEXT,
+          peso TEXT,
+          imc TEXT,
           tipo_sangre TEXT,
           fecha_nacimiento TEXT,
           alergias TEXT,
@@ -410,6 +391,28 @@ export function initDB() {
             () => { },
             (_, error) => console.log('Error al crear la tabla Usuario:', error)
         );
+        //Crear tabla recordatorios
+        db.transaction(tx => {
+            tx.executeSql(
+                `CREATE TABLE IF NOT EXISTS recordatorios (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                Titulo TEXT, 
+                Fecha TEXT, 
+                Hora TEXT, 
+                Descripcion TEXT, 
+                Estado TEXT,
+                Dias TEXT,
+                idNotificacion TEXT,
+                usuario_rut TEXT,
+                FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+                
+            );`,
+                [],
+                () => { },
+                (_, error) => console.log('Error al crear la tabla:', error)
+            );
+
+        });
 
         // Crear tabla Configuracion
         tx.executeSql(
@@ -488,7 +491,7 @@ export function initDB() {
             [],
             () => { },
             (_, error) => console.log('Error al crear la tabla Limitaciones:', error)
-        );       
+        );
 
         // Crear tabla Historial
         tx.executeSql(

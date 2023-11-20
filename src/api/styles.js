@@ -212,6 +212,13 @@ export default StyleSheet.create({
         margin: 10,
 
     },
+    lineaContainer4: {
+        borderBottomColor: '#000000',
+        borderBottomWidth: 1,
+        marginLeft: 10,
+        marginRight: 10,
+
+    },
     espacioContainer: {
         borderBottomColor: '#a9a9a9', //gris
         borderBottomWidth: 1,
