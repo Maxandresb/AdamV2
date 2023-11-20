@@ -3,6 +3,8 @@ import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 
 import * as SQLite from 'expo-sqlite';
 import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
+import SelectorRueda from '../api/selectorRueda';
+
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -25,6 +27,10 @@ export default function DatosUsuario() {
   const [toma_medicamentos, setToma_medicamentos] = useState('');
   const [isEditing, setIsEditing] = useState(false);
 
+  const [altura, setAltura] = useState('');
+  const [peso, setPeso] = useState('');
+  const [imc, setImc] = useState('');
+
   const [isAlertVisible, setAlertVisible] = useState(false);
 
   const loadUserData = () => {
@@ -44,6 +50,9 @@ export default function DatosUsuario() {
             setSapellido(user.sapellido);
             setAlias(user.alias);
             setGenero(user.genero);
+            setAltura(user.altura);
+            setPeso(user.peso);
+            setImc(user.imc);
             setTipo_sangre(user.tipo_sangre);
             setFecha_nacimiento(user.fecha_nacimiento);
             setAlergias(user.alergias);
@@ -66,8 +75,8 @@ export default function DatosUsuario() {
       // Actualizar la base de datos
       db.transaction(tx => {
         tx.executeSql(
-          'UPDATE Usuario SET pnombre = ?, snombre = ?, papellido = ?, sapellido = ?, alias = ?, genero = ?, tipo_sangre = ?, fecha_nacimiento = ?, alergias = ?, cronico = ?, donante = ?, limitacion_fisica = ?, toma_medicamentos = ? WHERE rut = ?',
-          [pnombre, snombre, papellido, sapellido, alias, genero, tipo_sangre, fecha_nacimiento, alergias, cronico, donante, limitacion_fisica, toma_medicamentos, rut],
+          'UPDATE Usuario SET pnombre = ?, snombre = ?, papellido = ?, sapellido = ?, alias = ?, genero = ?, altura = ?, peso = ?, imc = ?, tipo_sangre = ?, fecha_nacimiento = ?, alergias = ?, cronico = ?, donante = ?, limitacion_fisica = ?, toma_medicamentos = ? WHERE rut = ?',
+          [pnombre, snombre, papellido, sapellido, alias, genero, altura, peso, imc, tipo_sangre, fecha_nacimiento, alergias, cronico, donante, limitacion_fisica, toma_medicamentos, rut],
           (_, resultSet) => {
             console.log("Actualización exitosa!");
             loadUserData(); // Vuelve a cargar los datos del usuario después de actualizar
@@ -85,6 +94,29 @@ export default function DatosUsuario() {
     setIsEditing(!isEditing);
   };
 
+  // rangos de peso y altura
+  const rangoTalla = Array.from({ length: 151 }, (_, i) => i + 150);
+  const rangoPeso = Array.from({ length: 151 }, (_, i) => i + 30);
+
+  // Calcula el IMC
+  useEffect(() => {
+    if (altura === '' && peso === '') {
+      let msj = 'Debes seleccionar altura y peso primero'
+      setImc(msj);
+    } else if(altura === ''){
+      let msj = 'Debes seleccionar altura primero'
+      setImc(msj);
+    } else if(peso === ''){
+      let msj = 'Debes seleccionar peso primero'
+      setImc(msj);
+    } else if (altura && peso) {
+      let imc = (peso / ((altura / 100) * (altura / 100))).toFixed(2);
+      setImc(imc);
+    } else {
+      console.log('Error al calcular imc');
+    }
+  }, [altura, peso]);
+  
   return (
     <ScrollView className="flex-1 p-5 bg-grisClaro">
       {data.map((item, index) => (
@@ -132,6 +164,16 @@ export default function DatosUsuario() {
                 onChangeText={setGenero}
                 value={genero}
               />
+              <Text className="text-lg font-bold text-redcoral mb-2">Selecciona tu altura: </Text>
+              <SelectorRueda rango={rangoTalla} titulo="Altura (cm)" onValueChange={setAltura} metrica='cm' />
+              <Text className="text-lg font-bold text-redcoral mb-2">Selecciona tu peso: </Text>
+              <SelectorRueda rango={rangoPeso} titulo="Peso (kg)" onValueChange={setPeso} metrica='kg' />
+              <Text className="text-lg font-bold text-redcoral mb-2">Tu IMC es: </Text>
+              <TextInput
+                className="bg-beige h-10 pl-4 mb-5 rounded-md border-2 border-solid border-salmon"
+                editable={false}
+                value={imc}
+              />
               <Text className="mb-3 text-gris text-lg font-bold">Tipo de Sangre:</Text>
               <TextInput
                 className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
@@ -174,21 +216,21 @@ export default function DatosUsuario() {
                 onChangeText={setToma_medicamentos}
                 value={toma_medicamentos}
               />
-                
-                <TouchableOpacity
-                  style={styles.rojoIntensoButton}
-                  onPress={() => { handlePress(), setShowMessage(false), setIsEditing(!isEditing) }}>
-                  <Text style={styles.celesteText}>{'Guardar cambios'}</Text>
-                </TouchableOpacity>
-                <View style={styles.espacioContainer2}></View>
-                <TouchableOpacity
+
+              <TouchableOpacity
+                style={styles.rojoIntensoButton}
+                onPress={() => { handlePress(), setShowMessage(false), setIsEditing(!isEditing) }}>
+                <Text style={styles.celesteText}>{'Guardar cambios'}</Text>
+              </TouchableOpacity>
+              <View style={styles.espacioContainer2}></View>
+              <TouchableOpacity
                 style={styles.celesteButton}
-                  onPress={() => {setIsEditing(!isEditing), setShowMessage(false)}}
-                >
-                  <Text style={styles.rojoIntensoText}>
-                    Cancelar
-                  </Text>
-                </TouchableOpacity>
+                onPress={() => { setIsEditing(!isEditing), setShowMessage(false) }}
+              >
+                <Text style={styles.rojoIntensoText}>
+                  Cancelar
+                </Text>
+              </TouchableOpacity>
               <View style={styles.lineaContainer}></View>
 
             </>
@@ -213,6 +255,12 @@ export default function DatosUsuario() {
               <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.alias}</Text>
               <Text className="mb-3 text-rojoIntenso text-lg font-bold">Género:</Text>
               <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.genero}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Altura:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.altura}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Peso:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.peso}</Text>
+              <Text className="mb-3 text-rojoIntenso text-lg font-bold">IMC:</Text>
+              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.imc}</Text>
               <Text className="mb-3 text-rojoIntenso text-lg font-bold">Tipo de Sangre:</Text>
               <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.tipo_sangre}</Text>
               <Text className="mb-3 text-rojoIntenso text-lg font-bold">Fecha de Nacimiento:</Text>
