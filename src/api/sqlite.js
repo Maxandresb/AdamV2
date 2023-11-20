@@ -247,8 +247,41 @@ export function mostarDB(tabla) {
     )
 };
 
-
-
+//export function obtenerTemaSeleccionado() {
+//    let rut_usuario = obtenerRut()
+//    db.transaction((tx) => {
+//        tx.executeSql(
+//            'SELECT temaSeleccionado FROM Configuracion WHERE usuario_rut = ?', 
+//            [rut_usuario],
+//            (tx, results) => {
+//                const themeFromDB = results.rows.item(4)?.theme;
+//                console.log('tema en bd desde funcion: ' + themeFromDB);
+//                return themeFromDB;
+//            },
+//            (error) => {
+//                console.error('Error cargando tema seleccionado:', error);
+//            }
+//        )
+//    })
+//};
+//
+//export function almacenarTemaSeleccionado(selectedTheme) {
+//    let rut_usuario = obtenerRut()
+//    db.transaction((tx) => {
+//        tx.executeSql(
+//            'UPDATE Configuracion SET temaSeleccionado = ? WHERE usuario_rut = ?',
+//            [selectedTheme, rut_usuario],
+//            (tx, results) => {
+//                console.log('Tema seleccionado guardado exitosamente', results + '------' + selectedTheme);
+//            },
+//            (error) => {
+//                console.log('Error al guardar tema seleccionado', error);
+//            }
+//            
+//        )
+//    })
+//};
+//
 
 
 
@@ -302,6 +335,7 @@ export function initDB() {
                 DatosSeleccionados TEXT,
                 EstadoLlamadaDS TEXT, 
                 usuario_rut TEXT,
+                temaSeleccionado TEXT,
                 FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
             );`,
             [],

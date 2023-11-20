@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, Button, TextInput, View, Text, ScrollView, TouchableOpacity, TouchableHighlight, Modal, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -6,7 +6,9 @@ import * as SQLite from 'expo-sqlite';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
-import { useTailwind } from 'tailwind-rn';
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 
 const db = SQLite.openDatabase('adamdb.db');
@@ -49,6 +51,8 @@ const SignIn = ({ navigation }) => {
 
   const [initialAlert, setInitialAlert] = useState(true);
   const [saveAlert, setSaveAlert] = useState(false);
+  const {theme} = useContext(ThemeContext);
+  const styles = getStyles(theme)
 
 
   const guardarDatosUsuario = () => {
@@ -204,51 +208,51 @@ const SignIn = ({ navigation }) => {
         }
         message='Contactos guardados exitosamente'
       />
-      <View className="container px-5 py-9 bg-damasco">
-        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu Rut: </Text>
+      <View style={styles.container} className='mt-5'>
+        <Text style={styles.header}>Ingresa tu Rut: </Text>
         <TextInput
-          className="bg-beige h-10 pl-4 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
+          style={styles.input}
           placeholder="ej: 12345678-9"
           onChangeText={text => setRut(text)}
           value={rut}
         />
-        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu primer nombre: </Text>
+        <Text style={styles.header}>Ingresa tu primer nombre: </Text>
         <TextInput
-          className="bg-beige h-10 pl-4 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
+          style={styles.input}
           placeholder="Primer nombre"
           onChangeText={text => setPNombre(text)}
           value={pnombre}
         />
-        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu segundo nombre: </Text>
+        <Text style={styles.header}>Ingresa tu segundo nombre: </Text>
         <TextInput
-          className="bg-beige h-10 pl-4 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
+          style={styles.input}
           placeholder="Segundo nombre"
           onChangeText={text => setSNombre(text)}
           value={snombre}
         />
-        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu  primer apellido: </Text>
+        <Text style={styles.header}>Ingresa tu primer apellido: </Text>
         <TextInput
-          className="bg-beige h-10 pl-4 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
+          style={styles.input}
           placeholder="Primer apellido"
           onChangeText={text => setPApellido(text)}
           value={papellido}
         />
-        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu segundo apellido: </Text>
+        <Text style={styles.header}>Ingresa tu segundo apellido: </Text>
         <TextInput
-          className="bg-beige h-10 pl-4 mb-5 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
+          style={styles.input}
           placeholder="Segundo apellido"
           onChangeText={text => setSApellido(text)}
           value={sapellido}
         />
-        <Text className="text-lg font-bold text-redcoral mb-2">Ingresa tu  Alias: </Text>
+        <Text style={styles.header}>Ingresa tu  Alias: </Text>
         <TextInput
-          className="bg-beige h-10 pl-4 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
+          style={styles.input}
           placeholder="Alias"
           onChangeText={text => setAlias(text)}
           value={alias}
         />
-        <Text className="text-lg font-bold text-redcoral mb-2">Indica tu genero: </Text>
-        <View className="bg-beige h-10 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
+        <Text style={styles.header}>Indica tu genero: </Text>
+        <View  style={styles.inputPicker}>
           <Picker
             selectedValue={genero}
             onValueChange={(itemValue) => setGenero(itemValue)}
@@ -260,12 +264,12 @@ const SignIn = ({ navigation }) => {
             <Picker.Item label="Prefiero no decirlo" value="Prefiero no decirlo" />
           </Picker>
         </View>
-        <Text className="text-lg font-bold text-redcoral mb-2">Selecciona tu tipo de sangre: </Text>
-        <View className="bg-beige h-10 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
+        <Text style={styles.header}>Selecciona tu tipo de sangre: </Text>
+        <View style={styles.inputPicker}>
           <Picker
             selectedValue={tipo_sangre}
             onValueChange={(itemValue) => setTipoSangre(itemValue)}
-            style={styles.inputPicker2}
+            
           >
             <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
             <Picker.Item label="O Positivo" value="O Positivo" />
@@ -278,10 +282,10 @@ const SignIn = ({ navigation }) => {
             <Picker.Item label="AB Negativo" value="AB Negativo" />
           </Picker>
         </View>
-        <Text className="text-lg font-bold text-redcoral mb-2">Selecciona tu fecha de nacimiento: </Text>
+        <Text style={styles.header}>Selecciona tu fecha de nacimiento: </Text>
         <TouchableOpacity onPress={() => setShow(true)}>
           <TextInput
-            className="bg-beige h-10 pl-4 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold"
+            style={styles.input}
             placeholder="Fecha de nacimiento"
             value={date.toLocaleDateString()}
             editable={false}
@@ -297,12 +301,12 @@ const SignIn = ({ navigation }) => {
             onChange={onChange}
           />
         )}
-        <Text className="text-lg font-bold text-redcoral mb-2">Indica si posees o no alergias: </Text>
-        <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
+        <Text style={styles.header}>Indica si posees o no alergias: </Text>
+        <View style={styles.inputPicker}>
           <Picker
             selectedValue={tieneAlergias}
             onValueChange={handleAlergiasChange}
-            style={styles.inputPicker2}
+            
           >
             <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
             <Picker.Item label="Sí" value="Sí" />
@@ -324,7 +328,7 @@ const SignIn = ({ navigation }) => {
                   <Picker
                     selectedValue={tipoAlergia}
                     onValueChange={(itemValue) => setTipoAlergia(itemValue)}
-                    style={styles.inputPicker2}
+                    
                   >
                     <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                     <Picker.Item label="Alergenos" value="Alergenos" />
@@ -341,24 +345,14 @@ const SignIn = ({ navigation }) => {
                   value={alergeno}
                 />
                 <View style={styles.buttonContainerCenter}>
-                  <Button
-                    title="Agregar Nueva alergia"
-                    color="green"
-                    onPress={() => {
-                      agregarAlergia();
-                    }}
-                  />
+                  <TouchableOpacity style={styles.alertButton} onPress={() => {agregarAlergia();}}>
+                    <Text style={styles.alertButtonText}>Agregar nueva alergia</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.alertCloseButton} onPress={() => {setModalVisibleAlergias(false); agregarAlergia();}}>
+                    <Text style={styles.alertCloseButtonText}>Listo</Text>
+                  </TouchableOpacity>
                 </View>
-                <View style={styles.buttonContainerCenter}>
-                  <Button
-                    title="Listo"
-                    color="green"
-                    onPress={() => {
-                      setModalVisibleAlergias(false);
-                      agregarAlergia();
-                    }}
-                  />
-                </View>
+                
               </View>
             </View>
           </Modal>
@@ -368,12 +362,12 @@ const SignIn = ({ navigation }) => {
             message='No haz ingresado tus alergias.'
           />
         </View>
-        <Text className="text-lg font-bold text-redcoral mb-2">Indica si posees o no patologias cronicas: </Text>
-        <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
+        <Text style={styles.header}>Indica si posees o no patologias cronicas: </Text>
+        <View style={styles.inputPicker}>
           <Picker
             selectedValue={cronico}
             onValueChange={handlePatologiaChange}
-            style={styles.inputPicker2}
+            
           >
             <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
             <Picker.Item label="Sí" value="Sí" />
@@ -391,11 +385,11 @@ const SignIn = ({ navigation }) => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.header}>Ingresa tu tipo de patologia:</Text>
-                <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
+                <View style={styles.inputPicker}>
                   <Picker
                     selectedValue={tipoPatologia}
                     onValueChange={(itemValue) => setTipoPatologia(itemValue)}
-                    style={styles.inputPicker2}
+                    
                   >
                     <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                     <Picker.Item label="Patologías crónicas cardiovasculares" value="Patologías crónicas cardiovasculares" />
@@ -417,11 +411,11 @@ const SignIn = ({ navigation }) => {
                   value={nombre_patologia}
                 />
                 <Text style={styles.header}>Indica la transmisibilidad de tu patologia:</Text>
-                <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
+                <View style={styles.inputPicker}>
                   <Picker
                     selectedValue={transmisibilidad}
                     onValueChange={(itemValue) => setTransmisibilidad(itemValue)}
-                    style={styles.inputPicker2}
+                    
                   >
                     <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                     <Picker.Item label="Patología crónica no transmisible" value="Patología crónica no transmisible" />
@@ -433,7 +427,7 @@ const SignIn = ({ navigation }) => {
                   <Picker
                     selectedValue={morbilidad_intensidad}
                     onValueChange={(itemValue) => setMorbilidadIntensidad(itemValue)}
-                    style={styles.inputPicker2}
+                    
                   >
                     <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                     <Picker.Item label="Patología crónica de alto consumo" value="Patología crónica de alto consumo" />
@@ -441,23 +435,12 @@ const SignIn = ({ navigation }) => {
                   </Picker>
                 </View>
                 <View style={styles.buttonContainerCenter}>
-                  <Button
-                    title="Agregar Nueva Patología"
-                    color="green"
-                    onPress={() => {
-                      agregarPatologia();
-                    }}
-                  />
-                </View>
-                <View style={styles.buttonContainerCenter}>
-                  <Button
-                    title="Listo"
-                    color="green"
-                    onPress={() => {
-                      setModalVisiblePatologias(false);
-                      agregarPatologia();
-                    }}
-                  />
+                  <TouchableOpacity style={styles.alertButton} onPress={() => {agregarPatologia();}}>
+                    <Text style={styles.alertButtonText}>Agregar Nueva Patología</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.alertCloseButton} onPress={() => {setModalVisiblePatologias(false); agregarPatologia();}}>
+                    <Text style={styles.alertCloseButtonText}>Listo</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -468,24 +451,24 @@ const SignIn = ({ navigation }) => {
             message='No haz ingresado tus patologias.'
           />
         </View>
-        <Text className="text-lg font-bold text-redcoral mb-2">Indica si eres o no donante: </Text>
-        <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
+        <Text style={styles.header}>Indica si eres o no donante: </Text>
+        <View style={styles.inputPicker}>
           <Picker
             selectedValue={donante}
             onValueChange={(itemValue) => setDonante(itemValue)}
-            style={styles.inputPicker2}
+            
           >
             <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
             <Picker.Item label="Sí" value="Sí" />
             <Picker.Item label="No" value="No" />
           </Picker>
         </View>
-        <Text className="text-lg font-bold text-redcoral mb-2">Indica si posees o no limitaciones fisicas: </Text>
-        <View className="bg-beige h-10 pl-4 pb-12 mb-3 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
+        <Text style={styles.header}>Indica si posees o no limitaciones fisicas: </Text>
+        <View style={styles.inputPicker}>
           <Picker
             selectedValue={limitacion_fisica}
             onValueChange={handleLimitacionesChange}
-            style={styles.inputPicker2}
+            
           >
             <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
             <Picker.Item label="Sí" value="Sí" />
@@ -507,7 +490,7 @@ const SignIn = ({ navigation }) => {
                   <Picker
                     selectedValue={tipoLimitacion}
                     onValueChange={(itemValue) => setTipoLimitacion(itemValue)}
-                    style={styles.inputPicker2}
+                    
                   >
                     <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                     <Picker.Item label="Motricidad" value="Motricidad" />
@@ -520,7 +503,7 @@ const SignIn = ({ navigation }) => {
                   <Picker
                     selectedValue={severidad}
                     onValueChange={(itemValue) => setSeveridad(itemValue)}
-                    style={styles.inputPicker2}
+                    
                   >
                     <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                     <Picker.Item label="Grave" value="Grave" />
@@ -533,7 +516,7 @@ const SignIn = ({ navigation }) => {
                   <Picker
                     selectedValue={origen_lim}
                     onValueChange={(itemValue) => setOrigenLim(itemValue)}
-                    style={styles.inputPicker2}
+                    
                   >
                     <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                     <Picker.Item label="Adquirida" value="Adquirida" />
@@ -549,23 +532,12 @@ const SignIn = ({ navigation }) => {
                   value={descripcion}
                 />
                 <View style={styles.buttonContainerCenter}>
-                  <Button
-                    title="Agregar Nueva Limitacion"
-                    color="green"
-                    onPress={() => {
-                      agregarLimitacion();
-                    }}
-                  />
-                </View>
-                <View style={styles.buttonContainerCenter}>
-                  <Button
-                    title="Listo"
-                    color="green"
-                    onPress={() => {
-                      setModalVisibleLimitaciones(false);
-                      agregarLimitacion();
-                    }}
-                  />
+                  <TouchableOpacity style={styles.alertButton} onPress={() => {agregarLimitacion();}}>
+                    <Text style={styles.alertButtonText}>Agregar Nueva Limitación</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.alertCloseButton} onPress={() => {setModalVisibleLimitaciones(false); agregarLimitacion();}}>
+                    <Text style={styles.alertCloseButtonText}>Listo</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -576,12 +548,12 @@ const SignIn = ({ navigation }) => {
             message='No haz ingresado tus Limitaciones.'
           />
         </View>
-        <Text className="text-lg font-bold text-redcoral mb-2">Indica si tomas o no medicamentos: </Text>
-        <View className="bg-beige h-10 pl-4 pb-12 mb-6 rounded-md border-2 border-solid border-salmon placeholder:text-azulnegro font-bold">
+        <Text style={styles.header}>Indica si tomas o no medicamentos: </Text>
+        <View style={styles.inputPicker}>
           <Picker
             selectedValue={toma_medicamentos}
             onValueChange={handleMedicamentosChange}
-            style={styles.inputPicker2}
+            
           >
             <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
             <Picker.Item label="Sí" value="Sí" />
@@ -597,7 +569,7 @@ const SignIn = ({ navigation }) => {
             }}
           >
             <View style={styles.centeredView}>
-              <View style={styles.modalView}>
+              <View className="px-4" style={styles.modalView}>
                 <Text style={styles.header}>Indica el nombre del medicamento:</Text>
                 <TextInput
                   style={styles.input}
@@ -619,7 +591,7 @@ const SignIn = ({ navigation }) => {
                   <Picker
                     selectedValue={periodicidad}
                     onValueChange={(itemValue) => setPeriodicidad(itemValue)}
-                    style={styles.inputPicker2}
+                    
                   >
                     <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                     <Picker.Item label="Cada 24 hrs (Una vez al dia)" value="Cada 24 hrs (Una vez al dia)" />
@@ -630,23 +602,12 @@ const SignIn = ({ navigation }) => {
                   </Picker>
                 </View>
                 <View style={styles.buttonContainerCenter}>
-                  <Button
-                    title="Agregar Nuevo Medicamento"
-                    color="green"
-                    onPress={() => {
-                      agregarMedicamento();
-                    }}
-                  />
-                </View>
-                <View style={styles.buttonContainerCenter}>
-                  <Button
-                    title="Listo"
-                    color="green"
-                    onPress={() => {
-                      setModalVisibleMedicamentos(false);
-                      agregarMedicamento();
-                    }}
-                  />
+                  <TouchableOpacity style={styles.alertButton} onPress={() => {agregarMedicamento();}}>
+                    <Text style={styles.alertButtonText}>Agregar Nuevo Medicamento</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.alertCloseButton} onPress={() => {setModalVisibleMedicamentos(false); agregarMedicamento();}}>
+                    <Text style={styles.alertCloseButtonText}>Listo</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -658,7 +619,7 @@ const SignIn = ({ navigation }) => {
           />
         </View>
         <TouchableOpacity
-          className="bg-redcoral py-3 rounded-md mb-3"
+          style={styles.primaryButton}
           onPress={()=>{if (rut !=''){
             guardarDatosUsuario()}
           else{
@@ -678,15 +639,16 @@ const SignIn = ({ navigation }) => {
           );
           }}} 
         >
-          <Text className="text-damasco text-lg text-center font-bold">
+          <Text style={styles.secondaryText}>
           Guardar 
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          className="bg-azulnegro py-3 rounded-md"
+        <TouchableOpacity 
+          className="mt-3"
+          style={styles.closeButton}
           onPress={() => navigation.navigate('Saludo')} 
         >
-          <Text className="text-azul text-lg text-center font-bold">
+          <Text style={styles.primaryText}>
             Cancelar
           </Text>
         </TouchableOpacity>

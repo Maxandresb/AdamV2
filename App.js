@@ -7,11 +7,16 @@ import { initDB } from "./src/api/sqlite"
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
+import { ThemeContext } from './src/api/themeContext';
 
 import { InsertCentrosMedicos } from "./src/api/insertCentrosMedicos"
 import {TailwindProvider} from 'tailwind-rn';
 import utilities from './tailwind.json';
 import { calcularProximaFecha, scheduleRecordatorioNotification } from "./src/api/notificaciones";
+import { storeData, getData } from './src/api/asyncStorage';
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -29,6 +34,34 @@ export default function App() {
   const notificationListener = useRef();
   const responseListener = useRef();
   const [expoPushToken, setExpoPushToken] = useState('');
+  const [theme, setTheme] = useState({mode: 'default'})
+
+  const updateTheme = (newTheme) => {
+    if (!newTheme) {
+      mode = theme.mode === 'default' ? 'tropicalSunrise':'default';
+      newTheme = {mode};
+    }
+    setTheme(newTheme);
+    storeData("appTheme", newTheme);
+  };
+
+  const fetchStoredTheme = async () => {
+    try {
+      const themeData = await getData("appTheme")
+
+      if (themeData) {
+        updateTheme(themeData);
+      }
+    } catch ({message}) {
+      alert(message)
+    } finally {
+      SplashScreen.hideAsync();
+    }
+  }
+
+  useEffect(() => {
+    fetchStoredTheme();
+  }, []);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -63,7 +96,10 @@ export default function App() {
 
   initDB();
   return (
-    <AppNavigation />
+    <ThemeContext.Provider value={{theme, updateTheme}}>
+        <AppNavigation />
+    </ThemeContext.Provider>
+    
   )
 
 

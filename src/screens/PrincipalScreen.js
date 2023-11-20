@@ -1,7 +1,7 @@
 
 //Modulos instalados
 import { Button, Modal, View, Text, Image, SafeAreaView, TouchableOpacity, Alert, ScrollView } from 'react-native'
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useContext } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { GiftedChat, InputToolbar, Day } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
@@ -15,8 +15,10 @@ import { generarRespuesta, crearRespuesta, secondApiCall, firstApiCall, whisperC
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
 import { enviarMensaje, realizarLlamada } from "../api/llamada";
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
-import styles from '../api/styles';
 import * as FileSystem from 'expo-file-system';
 import { format } from 'date-fns';
 import { obtenerClima } from "../api/clima";
@@ -53,6 +55,10 @@ export default function PrincipalScreen() {
   const [mensajeProcesamiento, setMensajeProcesamiento] = useState('');
   const [respondiendo, setRespondiendo] = useState(false);
   const navigation = useNavigation();
+
+  const {theme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
 
   async function iniciarGrabacion() {
     try {
@@ -491,7 +497,7 @@ async function compartir_ubicacion(){
   // **********************************************************************************************************************************************************************************
   return (
     <SafeAreaView className="flex-1 justify-center bg-white">
-      <View className="flex-1 bg-grisClaro">
+      <View style={styles.container}>
         <View className="flex-row justify-center">
           {/*<Image 
       source={require('../../assets/images/iron-adam.png')}
@@ -500,18 +506,12 @@ async function compartir_ubicacion(){
         </View>
         {/*<View><Text className="text-center font-bold pt-0 -mt-4 mb-2 ">Chat ADAM</Text></View>*/}
         <View className="flex-1 flex-row justify-center">
-          <View className="rounded-3xl p-2 w-80 mt-2 bg-celeste shadow-md shadow-negro">
+          <View /*className="rounded-3xl p-2 w-80 mt-2 bg-celeste shadow-md shadow-negro"*/ style={styles.msjContainer}>
             <GiftedChat
               renderInputToolbar={props => customtInputToolbar(props)}
-              renderSend={props => customSend(props)}
-              renderMessage={props => customChatMessage(props)}
+              renderSend={props => customSend(props, theme)}
+              renderMessage={props => customChatMessage(props, theme)}
               messages={mensajes}
-              renderDay= {props => (
-                <Text style={{ color: '#ff3e45', fontSize: 12 }}>
-                    {props.currentMessage.createdAt.getDate()}
-                </Text>
-                
-              )}
               placeholder='Escriba su mensaje...'
               renderUsernameOnMessage={false}
               onSend={(input) => obtenerRespuesta(input)}
@@ -522,7 +522,7 @@ async function compartir_ubicacion(){
             <View>
               {respondiendo ? (
                 <>
-                  <Text className="bg-negro text-blanco text-center rounded-full my-2 py-1 shadow-md shadow-negro">{mensajeProcesamiento}</Text>
+                  <Text style={styles.mensajeProcesamiento}>{mensajeProcesamiento}</Text>
                 </>
               ) : (
                 <>
@@ -535,12 +535,12 @@ async function compartir_ubicacion(){
         <View className="flex justify-center items-center">
           {
             cargando ? (
-              <Image className="w-12 h-12 bg-negro py-3 rounded-full my-3"
+              <Image className="w-12 h-12 py-3 rounded-full my-3" style={{backgroundColor: activeColors.quinary}}
                 source={require('../../assets/images/processingQuestion.gif')}
               />
             ) :
               hablando ? (
-                <TouchableOpacity className="bg-rojoIntenso w-20 h-20 my-3 rounded-full justify-center shadow-lg shadow-negro" onPress={detenerGrabacion}>
+                <TouchableOpacity style={styles.detenerGrabacionButton} onPress={detenerGrabacion}>
                   {/* recording stop button */}
                   <Image
                     className="w-12 h-12 self-center"
@@ -548,7 +548,7 @@ async function compartir_ubicacion(){
                   />
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity className="bg-celeste w-20 h-20 my-3 rounded-full justify-center shadow-lg shadow-negro" onPress={()=>{iniciarGrabacion().then(setTimeout(()=> detenerGrabacion, 1000));}} >
+                <TouchableOpacity style={styles.iniciarGrabacionButton} onPress={()=>{iniciarGrabacion().then(setTimeout(()=> detenerGrabacion, 1000));}} >
                   {/* recording start button */}
                   <Image
                     className="w-10 h-10 self-center"
