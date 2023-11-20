@@ -131,6 +131,10 @@ export default function Perfil({ navigation }) {
   const [limitacion_fisica, setLimitacion_fisica] = useState('');
   const [toma_medicamentos, setToma_medicamentos] = useState('');
 
+  const [altura, setAltura] = useState('');
+  const [peso, setPeso] = useState('');
+  const [imc, setImc] = useState('');
+
   const obtenerDatosUsuario = async () => {
     return new Promise((resolve, reject) => {
       try {
@@ -150,6 +154,9 @@ export default function Perfil({ navigation }) {
                 setSapellido(user.sapellido);
                 setAlias(user.alias);
                 setGenero(user.genero);
+                setAltura(user.altura);
+                setPeso(user.peso);
+                setImc(user.imc);
                 setTipo_sangre(user.tipo_sangre);
                 setFecha_nacimiento(user.fecha_nacimiento);
                 setTieneAlergias(user.alergias);
@@ -305,48 +312,38 @@ export default function Perfil({ navigation }) {
         <View style={styles.container} key={index}>
           <View className="bg-blanco p-5 shadow-lg shadow-negro rounded-md">
             <TouchableOpacity className="bg-rojoIntenso h-10  mt-5 rounded-lg justify-center shadow-lg shadow-negro" onPress={() => navigation.navigate('PerfilNested', { screen: 'Datos de usuario' })}>
-              <Text className="text-celeste text-center font-bold py-3">Editar datos</Text>
+              <Text className="text-celeste text-center font-bold py-3">Modificar datos</Text>
             </TouchableOpacity>
             <View style={styles.espacioContainer2}></View>
             <Text style={styles.content3}>{'Nombre completo:'}</Text>
             <Text style={styles.content2}>{item.pnombre}{' '}{item.snombre}{' '}{item.papellido}{' '}{item.sapellido} </Text>
 
             <View style={styles.lineaContainer}></View>
-            <View >
-              <View style={styles.alingRowPerfilLeft}>
-                <Text style={styles.content3}>{'Alias:'}</Text>
-                <Text style={styles.content2}>{item.alias} </Text>
-              </View>
-              <View style={styles.lineaVertical}></View>
-              <View style={styles.alingRowPerfilRight}>
-                <Text style={styles.content3}>{'Genero:'}</Text>
-                <Text style={styles.content2}>{item.genero}</Text>
-              </View>
-            </View>
+            <Text style={styles.content3}>{'Alias:'}</Text>
+            <Text style={styles.content2}>{item.alias} </Text>
+            <Text style={styles.content3}>{'Genero:'}</Text>
+            <Text style={styles.content2}>{item.genero}</Text>
+
             <View style={styles.lineaContainer}></View>
-            <View >
-              <View style={styles.alingRowPerfilLeft}>
-                <Text style={styles.content3}>{'Fecha de nacimiento:'}</Text>
-                <Text style={styles.content2}>{item.fecha_nacimiento}</Text>
-              </View>
-              <View style={styles.lineaVertical}></View>
-              <View style={styles.alingRowPerfilRight}>
-                <Text style={styles.content3}>{'Edad:'}</Text>
-                <Text style={styles.content2}>{edad}</Text>
-              </View>
-            </View>
+            <Text style={styles.content3}>{'Altura:'}</Text>
+            <Text style={styles.content2}>{altura + ' cm'}</Text>
+            <Text style={styles.content3}>{'Peso:'}</Text>
+            <Text style={styles.content2}>{peso + ' kg'}</Text>
+            <Text style={styles.content3}>{'IMC:'}</Text>
+            <Text style={styles.content2}>{imc}</Text>
+
             <View style={styles.lineaContainer}></View>
-            <View >
-              <View style={styles.alingRowPerfilLeft}>
-                <Text style={styles.content3}>{'Tipo de Sangre:'}</Text>
-                <Text style={styles.content2}>{item.tipo_sangre}</Text>
-              </View>
-              <View style={styles.lineaVertical}></View>
-              <View style={styles.alingRowPerfilRight}>
-                <Text style={styles.content3}>{'Donante de organos:'}</Text>
-                <Text style={styles.content2}>{item.donante}</Text>
-              </View>
-            </View>
+            <Text style={styles.content3}>{'Fecha de nacimiento:'}</Text>
+            <Text style={styles.content2}>{item.fecha_nacimiento}</Text>
+            <Text style={styles.content3}>{'Edad:'}</Text>
+            <Text style={styles.content2}>{edad}</Text>
+
+            <View style={styles.lineaContainer}></View>
+            <Text style={styles.content3}>{'Tipo de Sangre:'}</Text>
+            <Text style={styles.content2}>{item.tipo_sangre}</Text>
+            <Text style={styles.content3}>{'Donante de organos:'}</Text>
+            <Text style={styles.content2}>{item.donante}</Text>
+
             <View style={styles.lineaContainer}></View>
 
           </View>
