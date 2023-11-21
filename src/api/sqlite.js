@@ -400,6 +400,9 @@ export function initDB() {
           descripcion TEXT,
           parteCuerpoAfectada TEXT,
           tiempoDesdeAparicion TEXT,
+          nivelDolor TEXT,
+          medicamentosUtilizados  TEXT,
+          dosisUtilizada  TEXT,
           usuario_rut TEXT,
           FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
         );`,
@@ -435,7 +438,8 @@ export function initDB() {
                 id INTEGER PRIMARY KEY AUTOINCREMENT, 
                 DatosSeleccionados TEXT,
                 EstadoLlamadaDS TEXT,
-                Mute TEXT, 
+                Mute TEXT,
+                SeguimientoDolencias TEXT, 
                 usuario_rut TEXT,
                 FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
             );`,
