@@ -4,6 +4,32 @@ import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
 
+//funcion insertar configuracion inicial
+function InsertarConfiguracionInicial() {
+    return new Promise((resolve, reject) => {
+        try {
+            db.transaction(tx => {
+                // Insertar datos de configuración por defecto
+                tx.executeSql(
+                    `INSERT OR IGNORE INTO Configuracion (id, EstadoLlamadaDS, Mute, SeguimientoDolencias, SeguimientoNocturno) VALUES (?, ?, ?, ?, ?)`,
+                    ['1', '0', '1', '0', '1'],
+                    (_, result) => {
+                        //console.log('configuracion inicial insertada con exito: ', result);
+                        resolve(result);
+                    },
+                    (_, error) => {
+                        console.log('error al insertar configuracion inicial:', error);
+                        reject(error);
+                    }
+                );
+            });
+        } catch (error) {
+            console.error('Unexpected error:', error);
+            reject(error);
+        }
+    });
+}
+
 export const numContactoEmergencia = () => {
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
@@ -364,7 +390,7 @@ export function initDB() {
       });
     });*/
 
-    db.transaction(tx => {
+    db.transaction(async (tx) => {
         // Crear tabla Usuario
         tx.executeSql(
             `CREATE TABLE IF NOT EXISTS Usuario (
@@ -440,6 +466,9 @@ export function initDB() {
                 EstadoLlamadaDS TEXT,
                 Mute TEXT,
                 SeguimientoDolencias TEXT, 
+                SeguimientoNocturno TEXT,
+                SNHoraInicio TEXT,
+                SNHoraFin TEXT,
                 usuario_rut TEXT,
                 FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
             );`,
@@ -568,6 +597,7 @@ export function initDB() {
         );
 
         InsertCentrosMedicos()
+        InsertarConfiguracionInicial()
 
 
     })

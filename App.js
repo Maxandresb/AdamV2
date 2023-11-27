@@ -9,9 +9,12 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 
 import { InsertCentrosMedicos } from "./src/api/insertCentrosMedicos"
-import {TailwindProvider} from 'tailwind-rn';
+import { TailwindProvider } from 'tailwind-rn';
 import utilities from './tailwind.json';
 import { calcularProximaFecha, scheduleRecordatorioNotification } from "./src/api/notificaciones";
+
+import { EstadoSeguimiento } from "./src/api/ayudaNocturna";
+
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -21,9 +24,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-
-
-
 export default function App() {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
@@ -31,6 +31,8 @@ export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
 
   useEffect(() => {
+    EstadoSeguimiento();
+
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
@@ -54,11 +56,11 @@ export default function App() {
         scheduleRecordatorioNotification(data);
       }
     });
-
     return () => {
       Notifications.removeNotificationSubscription(notificationListener.current);
       Notifications.removeNotificationSubscription(responseListener.current);
     };
+
   }, []);
 
   initDB();

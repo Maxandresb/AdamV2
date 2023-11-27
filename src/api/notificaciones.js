@@ -2,7 +2,38 @@
 import * as Notifications from 'expo-notifications';
 import { useEffect, useState } from "react";
 import { Platform } from 'react-native';
-//****************************** NOTIFICACIONES DE MEDICAMENTOS************************
+//****************************** NOTIFICACIONES DE AGENDA DE DOLENCIAS ************************
+
+async function programarNotifDolenciasDiarias() {
+  console.log('=> medicamento en programarNotificacionMedica: ', medicamento)
+  // Verifica los permisos de notificación
+  console.log(`\n\ ***** \n\ `);
+  let permissions = await Notifications.getPermissionsAsync();
+  console.log('Permisos de notificación: ', permissions);
+  // Solicita permisos de notificación si aún no se han concedido
+  if (!permissions.granted) {
+    await Notifications.requestPermissionsAsync();
+  }
+  console.log(`\n\ ***** \n\ `);
+
+  const content = {
+    sound: 'default',
+    title: '¿Tienes una nueva dolencia o malestar?',
+    body: 'Toca aquí si deseas registrarla, esto ayuda a los profesionales de la salud a entender tu caso conocer tu evolucion',
+    data: { screen: 'Agenda de dolencias' }, // Aquí es donde especificas el nombre de la pantalla
+  };
+
+  await Notifications.scheduleNotificationAsync({
+    content: content,
+    trigger: null,
+  });
+}
+
+export default programarNotifDolenciasDiarias;
+
+
+
+//****************************** NOTIFICACIONES DE MEDICAMENTOS ************************
 // Función para programar las notificaciones de los medicamentos
 function convertirAFormato24Horas(horarios) {
   console.log('horarios en convertirAFormato24Horas: ', horarios)

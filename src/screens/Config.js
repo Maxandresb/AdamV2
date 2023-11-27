@@ -13,6 +13,11 @@ export default function Config({ navigation }) {
         <Text className="text-xl text-celeste text-center font-bold">Contactos de Emergencia</Text>
       </TouchableOpacity>
     </View>
+    <View className="flex-row h-56 justify-around space-x-10 px-5">
+      <TouchableOpacity className="bg-rojoIntenso rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() => navigation.navigate('ConfiguracionNested', { screen: 'Configuración seguimiento nocturno' })}>
+        <Text className="text-xl text-celeste text-center font-bold">Seguimiento nocturno </Text>
+      </TouchableOpacity>
+    </View>
     </ScrollView>
   )
 }

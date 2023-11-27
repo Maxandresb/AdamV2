@@ -5,6 +5,7 @@
     "version": "0.1.1",
     "orientation": "portrait",
     "icon": "./assets/images/iconAdam.png",
+    "scheme": "adam",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/Adam-splash.png",
@@ -24,6 +25,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.maxan.AdamV2",
+      "googleServicesFile": "./google-services.json",
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION", 
@@ -32,8 +34,12 @@
         "READ_CONTACTS",
         "WRITE_CONTACTS",
         "READ_PROFILE",
-        "USE_FULL_SCREEN_INTENT"
+        "USE_FULL_SCREEN_INTENT",
+        "ACTIVITY_RECOGNITION",
+        "VIBRATE",
+        "FOREGROUND_SERVICE"
       ]
+      
       
     },
     "web": {
