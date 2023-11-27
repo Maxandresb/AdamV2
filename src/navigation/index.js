@@ -51,17 +51,17 @@ function MyTabs(){
     tabBarStyle:{
       backgroundColor: activeColors.secondary,  
       height: "10%"}}}>
-
-      <Tab.Screen name="Emergencias" component={Emergencias} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/sos_default.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} /> 
-      <Tab.Screen name="Principal" component={PrincipalScreen} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/chat_default.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
-      <Tab.Screen name="Recordatorios" component={Recordatorios} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/calendar_dafault.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
+      
+      <Tab.Screen name="Emergencias" component={Emergencias} options={{tabBarIcon:({focused}) => <Image source={activeColors.sosImage} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} /> 
+      <Tab.Screen name="Principal" component={PrincipalScreen} options={{tabBarIcon:({focused}) => <Image source={activeColors.chatImage} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
+      <Tab.Screen name="Recordatorios" component={Recordatorios} options={{tabBarIcon:({focused}) => <Image source={activeColors.calendarImage} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
       
     </Tab.Navigator>
   )
 }
 
 function PrincipalStack() {
-  const {theme, updateTheme} = useContext(ThemeContext);
+  const {theme} = useContext(ThemeContext);
   let activeColors = colors[theme.mode];
   return (
     <Drawer.Navigator initialRouteName="ADAM" screenOptions={{

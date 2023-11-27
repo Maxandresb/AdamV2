@@ -8,49 +8,48 @@ export const colors = {
         quinary: "#000000",
         senary: "#ffffff",
         sosImage: require('../../assets/images/sos_default.png'),
-        chatImage: '../../assets/images/chat_default.png',
-        calendarImage: '../../assets/images/calendar_dafault.png',
+        chatImage: require('../../assets/images/chat_default.png'),
+        calendarImage: require('../../assets/images/calendar_dafault.png'),
+        micImage: require('../../assets/images/record_red.png'),
+        micRecordingImage: require('../../assets/images/micRecording_celeste.gif')
+
     },
 
-    tropicalSunrise: {
-        label: 'Amanecer Tropical',
-        primary: "#ee596f", //e4e34c
-        secondary: "#e4e34c", //ee596f
-        tertiary: "#4bc5c0", //4bc5c0
-        quaternary: "#fcc29b", //fcc29b
-        quinary: "#000000",
-        senary: "#ffffff",
-        sosImage: '../../assets/images/sos_tropicalSunrise.png',
-        chatImage: '../../assets/images/chat_tropicalSunrise.png',
-        calendarImage: '../../assets/images/calendar_tropicalSunrise.png',
-    },
-
-    sereneSunset: {
-        label: 'Puesta de sol',
-        primary: "#fa614f",
-        secondary: "#f5f1c4", 
-        tertiary: "#f9a79c",
-        quaternary: "#fad9a0", 
-        quinary: "#000000", 
-        senary: "#ffffff",
-        sosImage: '../../assets/images/sos_sereneSunset.png',
-        chatImage: '../../assets/images/chat_sereneSunset.png',
-        calendarImage: '../../assets/images/calendar_sereneSunset.png',
-    },
 
     sweetHarmony: {
         label: 'Dulce Armonía',
         primary: '#00617d', //00617d
         secondary: '#b0ddf1', //b0ddf1
         tertiary: '#a63c52', //a63c52
-        quaternary: '#ffa7a1', //ffa7a1
+        quaternary: '#ffffff', //ffa7a1
         quinary: '#000000', //000000
         senary: '#ffffff',
-        sosImage: '../../assets/images/sos_sweetHarmony.png',
-        chatImage: '../../assets/images/chat_sweetHarmony.png',
-        calendarImage: '../../assets/images/calendar_sweetHarmony',
+        sosImage: require('../../assets/images/sos_sweetHarmony.png'),
+        chatImage: require('../../assets/images/chat_sweetHarmony.png'),
+        calendarImage: require('../../assets/images/calendar_sweetHarmony.png'),
+        micImage: require('../../assets/images/mic_sweetHarmony.png'),
+        micRecordingImage: require('../../assets/images/micRecording_sweetHarmony.gif')
 
+    },
+
+    soft: {
+        label: 'Suave',
+        primary: '#ef7181', //ef7181
+        secondary: '#82d5d1', //82d5d1
+        tertiary: '#04617c', //04617c
+        quaternary: '#ecf2e7', //ecf2e7
+        quinary: '#000000', //000000
+        senary: '#ffffff',
+        sosImage: require('../../assets/images/sos_soft.png'),
+        chatImage: require('../../assets/images/chat_soft.png'),
+        calendarImage: require('../../assets/images/calendar_soft.png'),
+        micImage: require('../../assets/images/mic_soft.png'),
+        micRecordingImage: require('../../assets/images/micRecording_soft.gif')
     }
 
+
+}
+
+export const textSize = {
 
 }

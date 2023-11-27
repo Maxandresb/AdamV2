@@ -544,7 +544,7 @@ async function compartir_ubicacion(){
                   {/* recording stop button */}
                   <Image
                     className="w-12 h-12 self-center"
-                    source={require('../../assets/images/micRecording_celeste.gif')}
+                    source={activeColors.micRecordingImage}
                   />
                 </TouchableOpacity>
               ) : (
@@ -552,7 +552,7 @@ async function compartir_ubicacion(){
                   {/* recording start button */}
                   <Image
                     className="w-10 h-10 self-center"
-                    source={require('../../assets/images/record_red.png')}
+                    source={activeColors.micImage}
                   />
                 </TouchableOpacity>
               )

@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import {colors} from './theme';
 import { useContext } from 'react';
 import { ThemeContext } from './themeContext';
+
 /*
 import styles from '../api/styles';
 
@@ -48,12 +49,13 @@ const getStyles = (theme) => {
             paddingBottom: 5,
         },
         inputTexto: {
-            marginBottom: 20,
-            color: '#efefef',
+            color: activeColors.quinary,
+            backgroundColor: activeColors.secondary,
             paddingLeft: 18,
             paddingTop: 10,
-            flex: 1,
             textAlign: 'left',
+            fontWeight: 'bold',
+            flex: 1
         },
         outputTexto: {
             marginBottom: 20,
@@ -86,7 +88,8 @@ const getStyles = (theme) => {
             shadowOffset: {width: -2, height: 2},
             shadowOpacity: 0.2,
             shadowRadius: 3,
-            elevation: 8
+            elevation: 8,
+            
         },
         encabezado: {
             marginTop: 0,
@@ -311,7 +314,7 @@ const getStyles = (theme) => {
             borderBlockColor: activeColors.quinary,
             borderWidth: 2,
             borderRadius: 5,
-            marginBottom: 20,
+            marginBottom: 10,
             justifyContent: 'center',
             shadowColor: 'black',
             shadowOffset: {width: -2, height: 4},
@@ -327,22 +330,29 @@ const getStyles = (theme) => {
         },
     
         inputfecha: {
-            height: 40,
-            borderColor: 'black',
-            borderWidth: 1,
-            marginBottom: 20,
-            color: 'gray',
+            height: 45,
+            backgroundColor: activeColors.secondary,
+            borderEndColor: activeColors.quinary,
+            borderWidth: 2,
+            borderRadius: 5,
+            marginBottom: 10,
+            color: activeColors.quinary,
             paddingLeft: 18,
+            shadowColor: 'black',
+            shadowOffset: {width: -2, height: 4},
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            elevation: 5,
         },
         inputPicker2: {
-            height: 40,
+            height: 20,
             borderBlockEndColor: 'black',
             borderBlockEndWidth: 1,
             marginBottom: 20,
             color: '#000000',
             alignItems: 'center',
             textAlignments: 0,
-            itemStyle: { paddingLeft: 0},
+            itemStyle: { height: 10},
             paddingLeft: 0,
         },
         buttonCInsert: {
@@ -678,6 +688,13 @@ const getStyles = (theme) => {
             shadowOpacity: 0.2,
             shadowRadius: 3,
             elevation: 5
+        },
+
+        formErrorText: {
+            color: 'red',
+            textAlign: 'left',
+            fontSize: 14,
+            marginBottom: 20
         }
     
     })
