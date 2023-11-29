@@ -4,6 +4,30 @@ import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
 
+export const obtenerConfig = () => {
+    try {
+        return new Promise((resolve, reject) => {
+            db.transaction((tx) => {
+                tx.executeSql('SELECT SNHoraInicio, SNHoraFin, SNTiempoEspera FROM Configuracion WHERE id = ?', [1], (tx, results) => {
+                    let config = results.rows.length > 0 ? results.rows.item(0) : null;
+                    if (config) {
+                        //console.log("Configuraciones obtenidas: ", config);
+                        resolve(config)
+                    }
+                }, (error) => {
+                    console.log('Error al obtener la configuración: ', error);
+                    reject(error)
+                });
+            }, (error) => {
+                console.log('Error al obtener la configuración: ', error);
+                reject(error)
+            });
+        })
+    } catch (error) {
+        console.log('Error al obtener la configuración: ', error);
+    }
+}
+
 //funcion insertar configuracion inicial
 function InsertarConfiguracionInicial() {
     return new Promise((resolve, reject) => {
@@ -11,8 +35,8 @@ function InsertarConfiguracionInicial() {
             db.transaction(tx => {
                 // Insertar datos de configuración por defecto
                 tx.executeSql(
-                    `INSERT OR IGNORE INTO Configuracion (id, EstadoLlamadaDS, Mute, SeguimientoDolencias, SeguimientoNocturno) VALUES (?, ?, ?, ?, ?)`,
-                    ['1', '0', '1', '0', '1'],
+                    `INSERT OR IGNORE INTO Configuracion (id, EstadoLlamadaDS, Mute, SeguimientoDolencias, SeguimientoNocturno, SNHoraInicio, SNHoraFin, SNTiempoEspera) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                    ['1', '0', '1', '0', '1', '11 p.m.', '8 a.m.', '5'],
                     (_, result) => {
                         //console.log('configuracion inicial insertada con exito: ', result);
                         resolve(result);
@@ -29,7 +53,58 @@ function InsertarConfiguracionInicial() {
         }
     });
 }
-
+export const nombreUsuario = () => {
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `SELECT pnombre, snombre FROM Usuario ORDER BY rut LIMIT 1;`,
+                [],
+                (_, { rows }) => {
+                    if (rows.length > 0) {
+                        let nombre = rows.item(0).pnombre;
+                        let segundoNombre = rows.item(0).snombre;
+                        let primerApellido = rows.item(0).papellido;
+                        let segundoApellido = rows.item(0).sapellido;
+                        let nombreCompleto = nombre + ' ' + segundoNombre + ' ' + primerApellido + ' ' + segundoApellido;
+                        //console.log('Nombre del usuario:', nombreCompleto);
+                        resolve(nombreCompleto);
+                    } else {
+                        console.log('No hay registros en la tabla Usuario.');
+                        resolve(null);
+                    }
+                },
+                (_, error) => {
+                    console.log('Error al obtener el nombre del usuario:', error);
+                    reject(error);
+                }
+            );
+        });
+    });
+};
+export const nombreContactoEmergencia = () => {
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                `SELECT nombreCompleto FROM Contacto WHERE estadoContacto = ?`,
+                ['sí'],
+                (_, { rows }) => {
+                    if (rows.length > 0) {
+                        let nombre = rows.item(0).nombreCompleto;
+                        //console.log('Nombre del contacto con estado "sí":', nombre);
+                        resolve(nombre);
+                    } else {
+                        console.log('No se encontró ningún contacto de emergencia activo.');
+                        resolve('sin nombre');
+                    }
+                },
+                (_, error) => {
+                    console.log('Error al buscar el contacto:', error);
+                    reject(error);
+                }
+            );
+        });
+    });
+}
 export const numContactoEmergencia = () => {
     return new Promise((resolve, reject) => {
         db.transaction(tx => {
@@ -469,6 +544,7 @@ export function initDB() {
                 SeguimientoNocturno TEXT,
                 SNHoraInicio TEXT,
                 SNHoraFin TEXT,
+                SNTiempoEspera TEXT,
                 usuario_rut TEXT,
                 FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
             );`,

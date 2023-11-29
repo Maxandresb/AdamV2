@@ -445,6 +445,7 @@ export default function PrincipalScreen() {
         } else {
           // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
           console.log('MOSTRANDO BD')
+          await MostrarNotificacionesGuardadas()
           /*mostarDB('Usuario');
           mostarDB('Alergias');
           mostarDB('Medicamentos');
@@ -453,8 +454,8 @@ export default function PrincipalScreen() {
           mostarDB('Contacto');
           mostarDB('recordatorios');
           mostarDB('Configuracion');
-          await MostrarNotificacionesGuardadas()*/
-          mostarDB('DolenciasSintomas');
+          */
+          //mostarDB('DolenciasSintomas');
           //mostarDB('centrosMedicos');
           respuesta = await generarRespuesta('Mostrar base de datos', 'La base de datos se mostrara en la consola.', prompt)
         }

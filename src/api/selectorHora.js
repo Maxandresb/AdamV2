@@ -1,16 +1,23 @@
+// SelectorHora.js
 import React, { useState, useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Modal, Button } from 'react-native';
 
-const numbers = Array.from({ length: 60 }, (_, i) => i + 1);
-const numbersData = [...numbers, ...numbers, ...numbers];
+const numbers = Array.from({ length: 12 }, (_, i) => i + 1);
+const amPmOptions = ['a.m.', 'p.m.'];
 
-const SelectorMinutos = ({ onConfirm, selectedViewStyle }) => {
+// Duplica los datos para lograr el efecto de desplazamiento infinito
+const numbersData = [...numbers, ...numbers, ...numbers];
+const amPmOptionsData = [...amPmOptions, ...amPmOptions, ...amPmOptions, ...amPmOptions];
+
+const SelectorHora = ({ onConfirm }) => {
     const [selectedNumber, setSelectedNumber] = useState(1);
+    const [selectedAmPm, setSelectedAmPm] = useState('a.m.');
     const [modalVisible, setModalVisible] = useState(false);
     const [estadoSeleccion, setEstadoSeleccion] = useState(false);
 
-
+    // Referencias a los ScrollView para ajustar el desplazamiento inicial
     const numberScrollRef = useRef();
+    const amPmScrollRef = useRef();
 
     return (
         <>
@@ -27,6 +34,7 @@ const SelectorMinutos = ({ onConfirm, selectedViewStyle }) => {
                                     // Ajusta el desplazamiento inicial para comenzar en el medio
                                     setTimeout(() => {
                                         numberScrollRef.current.scrollTo({ y: 40 * numbers.length });
+                                        amPmScrollRef.current.scrollTo({ y: 40 * amPmOptions.length });
                                     }, 0);
                             }}
                         >
@@ -34,13 +42,14 @@ const SelectorMinutos = ({ onConfirm, selectedViewStyle }) => {
                     </View>
                 ) : (
                     <View
+                        style={styles.selectedValueContainer}
                         onPress={() => { setEstadoSeleccion(false), setModalVisible(true) }}
                     >
                         <Text
-                            style={[selectedViewStyle]}
+                            style={styles.textInput}
                             onPress={() => { setEstadoSeleccion(false), setModalVisible(true) }}
                         >
-                            {selectedNumber} Minutos</Text>
+                            {selectedNumber}{' '}{selectedAmPm}</Text>
                     </View>
                 )
             }
@@ -59,7 +68,7 @@ const SelectorMinutos = ({ onConfirm, selectedViewStyle }) => {
                             ref={numberScrollRef}
                             style={styles.column}
                             showsVerticalScrollIndicator={false}
-                            snapToInterval={40}
+                            snapToInterval={40} // Ajusta el desplazamiento para que siempre se detenga en un elemento
                             onMomentumScrollEnd={event => {
                                 const index = Math.round((event.nativeEvent.contentOffset.y + 20) / 40) % numbers.length;
                                 setSelectedNumber(numbers[index]);
@@ -71,14 +80,31 @@ const SelectorMinutos = ({ onConfirm, selectedViewStyle }) => {
                                 </TouchableOpacity>
                             ))}
                         </ScrollView>
+
+                        <ScrollView
+                            ref={amPmScrollRef}
+                            style={styles.column}
+                            showsVerticalScrollIndicator={false}
+                            snapToInterval={40} // Ajusta el desplazamiento para que siempre se detenga en un elemento
+                            onMomentumScrollEnd={event => {
+                                const index = Math.round((event.nativeEvent.contentOffset.y + 20) / 40) % amPmOptions.length;
+                                setSelectedAmPm(amPmOptions[index]);
+                            }}
+                        >
+                            {amPmOptionsData.map((option, index) => (
+                                <TouchableOpacity key={index} style={option === selectedAmPm ? styles.selectedRow : styles.row}>
+                                    <Text style={styles.text}>{option}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </ScrollView>
                         <TouchableOpacity
                             style={{ marginLeft: 10, marginRight: -25, backgroundColor: '#ff3e45', padding: 10 }}
                             onPress={() => {
                                 setModalVisible(false);
                                 setEstadoSeleccion(true);
-                                onConfirm(selectedNumber);
+                                onConfirm(selectedNumber, selectedAmPm);
                             }} >
-                            <Text style={{ fontSize: 17, color: 'white' }} >{"Seleccionar"}</Text>
+                            <Text style={{fontSize: 17, color:'white'}} >{"Seleccionar"}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -92,7 +118,7 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 16,
         paddingLeft: 10,
-        paddingRight:10
+        paddingRight: 10
     },
     selectedValueContainer: {
         backgroundColor: '#efefef',
@@ -152,4 +178,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SelectorMinutos;
+export default SelectorHora;
