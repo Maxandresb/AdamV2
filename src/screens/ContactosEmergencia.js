@@ -1,16 +1,29 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
-import styles from '../api/styles';
+import getStyles from '../api/styles';
 import CustomAlert from '../api/customAlert';
 import * as Contacts from 'expo-contacts';
 import { CheckBoxRapido } from '../api/checkBoxRapido';
-import { obtenerRut } from "../api/sqlite"
-
+import { obtenerRut } from "../api/sqlite";
+import { ThemeContext } from '../api/themeContext';
+import * as Yup from 'yup';
+import { Formik } from 'formik';
 
 
 const db = SQLite.openDatabase('adamdb.db');
+
+const ContactoSchema = Yup.object().shape({
+    nombreCompleto: Yup.string()
+    .required('Este campo es obligatorio'),
+    alias: Yup.string()
+    .required('Este campo es obligatorio'),
+    numero: Yup.string()
+    .required('Este campo es obligatorio'),
+    relacion: Yup.string()
+    .required('Este campo es obligatorio')
+})
 
 const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete}) => {
     const [Contacto, setContacto] = useState(contacto);
@@ -20,7 +33,6 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
             [key]: val
         }));
     };
-
 
     const handleDeletePress = () => {
         Alert.alert(
@@ -82,7 +94,7 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
             )}
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.primaryButton}
                     onPress={() => handlePress(contacto.id, Contacto)}
                 >
                     <Text style={styles.buttonText}>
@@ -110,6 +122,7 @@ const Contactos = () => {
     const [nombreCompleto, setNombreCompleto] = useState('');
     const [relacion, setRelacion] = useState('');
     const [isAlertVisible, setAlertVisible] = useState(false);
+    const [invalidFormAlert, setInvalidFormAlert] = useState(false);
     //Contactos del telefono
     const [contactosTelefono, setContactosTelefono] = useState([]);
     const [contactosSeleccionados, setContactosSeleccionados] = useState([]);
@@ -249,15 +262,17 @@ const Contactos = () => {
         });
     };
 
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme)
 
     return (
         <View style={styles.container}>
             <View>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.secondaryButton}
                     onPress={obtenerYGuardarContactos}
                 >
-                    <Text style={styles.celesteText}>Agregar contactos desde el telefono</Text>
+                    <Text style={styles.primaryText}>Agregar contactos desde el telefono</Text>
                 </TouchableOpacity>
             </View>
             <Modal
@@ -282,24 +297,24 @@ const Contactos = () => {
                         </ScrollView>
                         <View style={styles.verticalButtonsContainer}>
                             <TouchableOpacity
-                                style={styles.rojoIntensoButton}
+                                style={styles.primaryButton}
                                 onPress={() => {
                                     guardarContactosSeleccionados();
                                     setModalCTVisible(false);
                                     setContactosSeleccionados([]);
                                 }}
                             >
-                                <Text style={styles.celesteText}>Guardar contactos seleccionados</Text>
+                                <Text style={styles.secondaryText}>Guardar contactos seleccionados</Text>
                             </TouchableOpacity>
                         
                             <TouchableOpacity
-                                style={styles.closeButton}
+                                style={styles.secondaryButton}
                                 onPress={() => {
                                     setModalCTVisible(false);
                                     setContactosSeleccionados([]);
                                 }}
                             >
-                            <Text style={styles.rojoIntensoText}>Cancelar</Text>
+                            <Text style={styles.primaryText}>Cancelar</Text>
                         </TouchableOpacity>
                         </View>
                     </View>
@@ -307,10 +322,10 @@ const Contactos = () => {
             </Modal>
             <View>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.secondaryButton}
                     onPress={handleAgregarContactoPress}
                 >
-                    <Text style={styles.celesteText}>Agregar nuevo contacto</Text>
+                    <Text style={styles.primaryText}>Agregar nuevo contacto</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.espacioContainer}></View>
@@ -336,54 +351,104 @@ const Contactos = () => {
                     setModalVisibleContactos(false);
                 }}
             >
-                <View style={styles.centeredView}>
+                <Formik
+                initialValues={{
+                    nombreCompleto: '',
+                    alias: '',
+                    numero: '',
+                    relacion: ''
+                }}
+
+                validationSchema={ContactoSchema}
+                onSubmit={(values) => {
+                    console.log(values);
+                }}
+                
+                >
+                {(contactoFormikProps) => (
+                    <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.header}>Nombre completo:</Text>
                         <TextInput
-                            style={styles.input}
+                            style={[styles.input, {borderBottomColor: contactoFormikProps.touched.nombreCompleto && contactoFormikProps.errors.nombreCompleto ? 'red' : contactoFormikProps.touched.nombreCompleto && contactoFormikProps.values.nombreCompleto ? '#23a55a' : 'black'}]}
                             placeholderTextColor="gray"
                             placeholder="ej: XXXXXX"
-                            onChangeText={text => setNombreCompleto(text)}
-                            value={nombreCompleto}
+                            onChangeText={contactoFormikProps.handleChange('nombreCompleto')}
+                            value={contactoFormikProps.values.nombreCompleto}
+                            onBlur={contactoFormikProps.handleBlur('nombreCompleto')}
                         />
+
+                        <Text style={styles.formErrorText}>{contactoFormikProps.touched.nombreCompleto && contactoFormikProps.errors.nombreCompleto}</Text>
+
                         <Text style={styles.header}>Alias:</Text>
                         <TextInput
-                            style={styles.input}
+                            style={[styles.input, {borderBottomColor: contactoFormikProps.touched.alias && contactoFormikProps.errors.alias ? 'red' : contactoFormikProps.touched.alias && contactoFormikProps.values.alias ? '#23a55a' : 'black'}]}
                             placeholderTextColor="gray"
                             placeholder="ej: XXXXXX"
-                            onChangeText={text => setAlias(text)}
-                            value={alias}
+                            onChangeText={contactoFormikProps.handleChange('alias')}
+                            value={contactoFormikProps.values.alias}
+                            onBlur={contactoFormikProps.handleBlur('alias')}
                         />
+
+                        <Text style={styles.formErrorText}>{contactoFormikProps.touched.alias && contactoFormikProps.errors.alias}</Text>
+
                         <Text style={styles.header}>Número:</Text>
                         <TextInput
-                            style={styles.input}
+                            style={[styles.input, {borderBottomColor: contactoFormikProps.touched.numero && contactoFormikProps.errors.numero ? 'red' : contactoFormikProps.touched.numero && contactoFormikProps.values.numero ? '#23a55a' : 'black'}]}
                             placeholderTextColor="gray"
                             placeholder="ej: XXXXXX"
-                            onChangeText={text => setNumero(text)}
-                            value={numero}
+                            onChangeText={contactoFormikProps.handleChange('numero')}
+                            value={contactoFormikProps.values.numero}
+                            onBlur={contactoFormikProps.handleBlur('numero')}
                         />
+
+                        <Text style={styles.formErrorText}>{contactoFormikProps.touched.numero && contactoFormikProps.errors.numero}</Text>
+
                         <Text style={styles.header}>Indica la relación con el contacto:</Text>
                         <TextInput
-                            style={styles.input}
+                            style={[styles.input, {borderBottomColor: contactoFormikProps.touched.relacion && contactoFormikProps.errors.relacion ? 'red' : contactoFormikProps.touched.relacion && contactoFormikProps.values.relacion ? '#23a55a' : 'black'}]}
                             placeholderTextColor="gray"
                             placeholder="ej: XXXXXX"
-                            onChangeText={text => setRelacion(text)}
-                            value={relacion}
+                            onChangeText={contactoFormikProps.handleChange('relacion')}
+                            value={contactoFormikProps.values.relacion}
+                            onBlur={contactoFormikProps.handleBlur('relacion')}
                         />
+
+                        <CustomAlert
+                            isVisible={invalidFormAlert}
+                            onClose={() => setInvalidFormAlert(false)}
+                            message='Existen errores o datos por completar en el formulario, por favor completelo correctamente'
+                        />
+
+                        <Text style={styles.formErrorText}>{contactoFormikProps.touched.relacion && contactoFormikProps.errors.relacion}</Text>
+
                         <View style={styles.buttonContainerCenter}>
                             <TouchableOpacity style={styles.closeButton} onPress={() => {setModalVisibleContactos(false);}}>
-                                <Text style={styles.rojoIntensoText}>
+                                <Text style={styles.primaryText}>
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.rojoIntensoButton} onPress={() => {agregarContacto();}}>
-                                <Text style={styles.celesteText}>
+                            <TouchableOpacity style={styles.primaryButton} onPress={() => {
+                                contactoFormikProps.validateForm().then((errors) => {
+                                    if (Object.keys(errors).length === 0) {
+                                        contactoFormikProps.handleSubmit();
+                                    } else {
+                                        setInvalidFormAlert(true);
+                                        contactoFormikProps.submitForm();
+                                    }
+                                })
+                            }}>
+                                <Text style={styles.secondaryText}>
                                     Agregar Nuevo Contacto
                                 </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
+                )}
+                
+                </Formik>
+                
             </Modal>
             <CustomAlert
                 isVisible={isAlertVisible}

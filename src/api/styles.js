@@ -22,7 +22,7 @@ const getStyles = (theme) => {
         msjContainer:{
             width: 320,
             backgroundColor: activeColors.secondary,
-            color: '#cceaf5',
+            color: activeColors.primary,
             padding: 10,
             borderRadius: 10,
             margin: 4,
@@ -34,7 +34,7 @@ const getStyles = (theme) => {
         },
         encabezadoInput: {
             marginBottom: 5,
-            color: '#cceaf5',
+            color: activeColors.tertiary,
             fontSize: 18,
             flex: 1,
             textAlign: 'left',
@@ -42,14 +42,14 @@ const getStyles = (theme) => {
         },
         encabezadoOutput: {
             marginBottom: 5,
-            color: '#cceaf5',
+            color: activeColors.tertiary,
             fontSize: 18,
             flex: 1,
             textAlign: 'right',
             paddingBottom: 5,
         },
         inputTexto: {
-            color: activeColors.quinary,
+            color: activeColors.primary,
             backgroundColor: activeColors.secondary,
             paddingLeft: 18,
             paddingTop: 10,
@@ -59,7 +59,7 @@ const getStyles = (theme) => {
         },
         outputTexto: {
             marginBottom: 20,
-            color: '#efefef',
+            color: activeColors.primary,
             paddingRight: 18,
             paddingTop: 10,
             flex: 1,
@@ -115,8 +115,8 @@ const getStyles = (theme) => {
             justifyContent: 'space-between',
             width: '100%',
         },
-        celesteButton: {
-            backgroundColor: '#cceaf5',
+        secondaryButton: {
+            backgroundColor: activeColors.secondary,
             padding: 18,
             borderRadius: 5,
             margin: 2.5,
@@ -152,7 +152,7 @@ const getStyles = (theme) => {
     
         },
         deleteButton: {
-            backgroundColor: '#cceaf5',
+            backgroundColor: activeColors.secondary,
             borderRadius: 5,
             padding: 18,
             margin: 2.5,
@@ -190,7 +190,7 @@ const getStyles = (theme) => {
         },
     
         deleteButtonText: {
-            color: '#96b9f3',
+            color: activeColors.primary,
             fontWeight: 'bold',
             textAlign: 'center',
             
@@ -209,7 +209,7 @@ const getStyles = (theme) => {
     
         },
         espacioContainer: {
-            borderBottomColor: '#a9a9a9', //gris
+            borderBottomColor: activeColors.tertiary, //gris
             borderBottomWidth: 1,
             marginTop: 10,
             paddingTop: 10,
@@ -695,6 +695,31 @@ const getStyles = (theme) => {
             textAlign: 'left',
             fontSize: 14,
             marginBottom: 20
+        },
+
+        chatTopButtonsContainer: {
+            flexDirection: 'row',
+            justifyContent: 'space-around'
+
+        },
+
+        chatTopButton: {
+            backgroundColor: activeColors.tertiary,
+            height: 50,
+            width: 140,
+            borderRadius: 8,
+            shadowColor: 'black',
+            shadowOffset: {width: -2, height: 4},
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            elevation: 5,
+            justifyContent: 'center'
+        },
+
+        chatTopButtonText: {
+            color: activeColors.senary,
+            fontWeight: 'bold',
+            textAlign: 'center',
         }
     
     })

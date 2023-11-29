@@ -67,7 +67,7 @@ const SignIn = ({ navigation }) => {
   
   const UserSchema = Yup.object().shape({
     rut: Yup.string()
-    .max(9, 'El Rut debe presentar un máximo de 9 carácteres')
+    .max(10, 'El Rut debe presentar un máximo de 10 carácteres')
     .min(9, 'El Rut debe presentar un mínimo de 9 carácteres')
     .matches(/^\d{7,8}-[0-9kK]$/, 'El Rut debe tener el formato xxxxxxxx-x')
     //.matches(/^[0-9]+[kK]?$/, 'El Rut debe contener solo números y la letra K (mayúscula o minúscula)')

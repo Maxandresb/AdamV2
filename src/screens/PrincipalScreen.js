@@ -507,6 +507,14 @@ async function compartir_ubicacion(){
         {/*<View><Text className="text-center font-bold pt-0 -mt-4 mb-2 ">Chat ADAM</Text></View>*/}
         <View className="flex-1 flex-row justify-center">
           <View /*className="rounded-3xl p-2 w-80 mt-2 bg-celeste shadow-md shadow-negro"*/ style={styles.msjContainer}>
+            <View style={styles.chatTopButtonsContainer}>
+              <TouchableOpacity style={styles.chatTopButton}>
+                <Text style={styles.chatTopButtonText}>Informacón médica</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.chatTopButton}>
+                <Text style={styles.chatTopButtonText}>Nuevas noticias</Text>
+              </TouchableOpacity>
+            </View>
             <GiftedChat
               renderInputToolbar={props => customtInputToolbar(props)}
               renderSend={props => customSend(props, theme)}

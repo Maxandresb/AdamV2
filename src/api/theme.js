@@ -51,5 +51,20 @@ export const colors = {
 }
 
 export const textSize = {
+    XS: {
+        fontSize: 12
+    },
+    S: {
+        fontSize: 14
+    },
+    M: {
+        fontSize: 16
+    },
+    L: {
+        fontSize: 18
+    },
+    XL: {
+        fontSize: 20
+    },
 
 }
