@@ -549,27 +549,3 @@ export function initDB() {
     })
 };
 
-export function obtenerContactosAlmacenados(){
-    return new Promise((resolve,reject)=>{
-        db.transaction(tx=> {
-            tx.executeSql(
-                `SELECT nombreCompleto ,alias ,relacion FROM Contacto;`,
-                [],
-                (_, { rows: { _array } }) => {
-                    if (_array.length > 0) {
-                        let contacto = _array;
-                        
-                        resolve(contacto);
-                    } else {
-                        console.log('No hay registros en la tabla Contacto.');
-                        resolve([]);
-                    }
-                },
-                (_, error) => {
-                    console.log('Error al obtener registros en la tabla Contacto:', error);
-                    reject(error);
-                }
-            );
-        })
-     });
-}
