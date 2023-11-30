@@ -12,17 +12,18 @@ import * as Notifications from 'expo-notifications';
 
 const db = SQLite.openDatabase('adamdb.db');
 
-const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurrentMedicamentoId}) => {
+const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurrentMedicamentoId, setMedicamentos}) => {
     const [currentMedicamento, setCurrentMedicamento] = useState(medicamento);
     const [hora, setHora] = useState(new Date());
     const [mostrarHora, setMostrarHora] = useState(false);
     const [periodicidad2, setPeriodicidad2] = useState(medicamento.periodicidad);
     const [horarios, setHorarios] = useState([]);
-    const [medicamentos, setMedicamentos] = useState([]);
+    
 
     // ********** MANEJO DE CHECK ***********
     const ESTADO_INACTIVO = '0';
     const ESTADO_ACTIVO = '1';
+    let estadoActualizar;
 
     const actualizarMedicamento = async (id, campos) => {
         console.log('ACTUALIZANDO MEDICAMENTO =>')
@@ -97,7 +98,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
         //eliminar el idnotificacion y cambiar estado de la notificacion
         if(estado==='eliminar'){
             console.log('NOTIFICACION CANCELADA');
-        } else{ 
+   
             try {
                 let newidNotificacion = await actualizarMedicamento(medicamento.id, { estadoNotificacion: estado, idNotificacion: null });
                 console.log('2-idNotificacion-cancelada: ', newidNotificacion)
@@ -136,7 +137,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     const manejarNotificaciones = async (medicamento) => {
         console.log('*****************************************************************')
         console.log('MANEJANDO NOTIFICACIONES')
-        let estadoActualizar;
+        
         try {
             console.log('medicamento en manejo de notificaciones: ', medicamento)
             if (medicamento.estadoNotificacion === ESTADO_ACTIVO) {
@@ -145,6 +146,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                 console.log('estado notificacion antes de pasar a funcion cancelar: ', medicamento.estadoNotificacion);
                 estadoActualizar = ESTADO_INACTIVO;
                 await cancelarNotificacion(medicamento, ESTADO_INACTIVO)
+                
             } else {
                 console.log(`\n\ ***** \n\ `);
                 console.log('PROGRAMANDO NOTIFICACION =>')
@@ -379,6 +381,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                     onPress={async() => {
                         pressUpdate(medicamento.id, { ...currentMedicamento, horarios: horarios.join("  ") }),
                         await cancelarNotificacion(currentMedicamento, ESTADO_INACTIVO)
+                        
                     }}
                 >
                     <Text style={styles.celesteText}>
@@ -583,6 +586,7 @@ const Medicamentos = () => {
                     isEditing={currentMedicamentoId === medicamento.id}
                     pressUpdate={pressUpdate}
                     pressDelete={pressDelete}
+                    setCurrentMedicamentoId={setCurrentMedicamentoId}
                     setMedicamentos={setMedicamentos}
                 />
             ))}

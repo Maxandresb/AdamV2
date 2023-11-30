@@ -90,6 +90,7 @@ function calcularSegundosHastaProximoHorario(horaCompleta) {
 
 async function programarNotificacionMedica(medicamento) {
   console.log('=> medicamento en programarNotificacionMedica: ', medicamento)
+ 
 
   // Verifica los permisos de notificación
   console.log(`\n\ ***** \n\ `);
@@ -111,9 +112,9 @@ async function programarNotificacionMedica(medicamento) {
     // Configura el contenido de la notificación
     let content = {
       sound: true,
-      title: `Recuerda tomar el medicamento ${medicamento.medicamento}`,
-      body: `La dosis es ${medicamento.dosis} \n\ Los horarios en los que debes tomar este medicamento son: ${medicamento.horarios}`,
-      data: { data: 'aun en trabajo' },
+      title: `Recuerda tomar el medicamento ${medicamento.medicamento.medicamento}`,
+      body: `La dosis es ${medicamento.medicamento.dosis} \n\ Los horarios en los que debes tomar este medicamento son: ${medicamento.medicamento.horarios}`,
+      
     };
     //obtener hora local actual, hora del horario, seg a minutos
     let segundos = calcularSegundosHastaProximoHorario(horario)
@@ -262,7 +263,7 @@ export async function scheduleRecordatorioNotification(recordatorio) {
       
       title: Titulo,
       body: Descripcion,
-      data: { data: 'aun en trabajo' },
+      
     };
 
     
@@ -306,7 +307,7 @@ Notifications.addNotificationResponseReceivedListener(async response => {
         sound: 'default',
         title: data.Titulo,
         body: 'programada para el miercoles ',//data.Descripcion,
-        data: { data: 'aun en trabajo' },
+        
       },
       trigger: proximaFecha,
     });
