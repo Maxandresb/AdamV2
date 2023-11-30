@@ -408,7 +408,6 @@ export function initDB() {
                 EstadoLlamadaDS TEXT,
                 Mute TEXT, 
                 usuario_rut TEXT,
-                temaSeleccionado TEXT,
                 FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
             );`,
             [],
@@ -548,4 +547,3 @@ export function initDB() {
 
     })
 };
-

@@ -1,17 +1,14 @@
-import React, { useEffect, useState, useCallback, useContext } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import getStyles from '../api/styles';
-import { ThemeContext } from '../api/themeContext';
+import styles from '../api/styles';
 
 const db = SQLite.openDatabase('adamdb.db');
 
 const HistorialChat = () => {
 
   const [historial, setHistorial] = useState([]);
-  const {theme, updateTheme} = useContext(ThemeContext);
-  const styles = getStyles(theme);
 
   const loadData = () => {
     db.transaction(tx => {
@@ -79,9 +76,9 @@ const HistorialChat = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity style={styles.primaryButton}
+      <TouchableOpacity style={styles.rojoIntensoButton}
         onPress={DeleteHistorial}>
-        <Text style={styles.secondaryText}>Eliminar todo el historial</Text>
+        <Text style={styles.celesteText}>Eliminar todo el historial</Text>
       </TouchableOpacity>
       <View style={styles.espacioContainer}></View>
       {historial.map(registro => (
@@ -102,13 +99,13 @@ const HistorialChat = () => {
           <Text style={styles.msjContainer}>Fecha y hora: {registro.fecha_hora}</Text>
           <TouchableOpacity className="mt-5" style={styles.deleteButton}
             onPress={() => DeleteRegistro(registro.id)}>
-            <Text style={styles.deleteButtonText}>Eliminar registro</Text>
+            <Text style={styles.rojoIntensoText}>Eliminar registro</Text>
           </TouchableOpacity>
 
           <View style={styles.lineaContainer}></View>
         </View>
       ))}
-      
+      <View style={styles.espacioContainer}></View>
     </ScrollView>
   );
 }

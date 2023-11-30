@@ -1,25 +1,14 @@
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
-import {colors} from '../api/theme';
 
-
-
-
-const useTheme = (theme) => {
-  return colors[theme.mode];
-}
-
-
-const customChatMessage = (props, theme) => {
-  let activeColors = useTheme(theme);
+const customChatMessage = props => {
   return (
     <Bubble
       {...props}
       wrapperStyle={{
         right: {
-          minWidth: 100,
           marginBottom: 15,
           marginHorizontal: 10,
-          backgroundColor: activeColors.primary,
+          backgroundColor: '#ff3e45',
           shadowColor: 'black',
           shadowOffset: {width: -2, height: 4},
           shadowOpacity: 0.2,
@@ -28,10 +17,9 @@ const customChatMessage = (props, theme) => {
 
         },
         left: {
-          minWidth: 100,
           marginBottom: 20,
           marginHorizontal: 10,
-          backgroundColor: activeColors.quaternary,
+          backgroundColor: '#efefef',
           shadowColor: 'black',
           shadowOffset: {width: -2, height: 4},
           shadowOpacity: 0.2,
@@ -41,24 +29,24 @@ const customChatMessage = (props, theme) => {
       }}
       textStyle={{
         right: {
-          color: activeColors.senary,
+          color: '#ffffff',
           fontSize: 17
         },
         left: {
-          color: activeColors.quinary,
+          color: '#000000',
           fontSize: 17
         },
       }}
 
       timeTextStyle={{
         right: {
-            color: activeColors.senary,
+            color: '#ffffff',
             fontWeight: 'bold',
             fontSize: 13,
             marginTop: 12
           },
         left: {
-            color: activeColors.quinary,
+            color: '#000000',
             fontWeight: 'bold',
             fontSize: 13,
             marginTop: 12

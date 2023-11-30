@@ -1,28 +1,21 @@
 import React from 'react';
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
-import getStyles from '../api/styles';
-import { useContext } from 'react';
-import { ThemeContext } from '../api/themeContext';
+import styles from '../api/styles';
 
-const CustomAlert = ({ isVisible, onClose, message }) => {
-    const {theme} = useContext(ThemeContext);
-    let styles = getStyles(theme)
-
-    return (
-        <Modal transparent={true} visible={isVisible} onRequestClose={onClose}>
-            <View style={styles.alertFondo}>
-                <View style={styles.alertContainer}>
-                    <Text style={styles.alertText}>{message}</Text>
-                    <TouchableOpacity onPress={onClose}>
-                    <View style={styles.closeButton}>
-                        <Text style={styles.primaryText}>Cerrar</Text>
-                    </View >
-                    </TouchableOpacity>
-                </View>
+const CustomAlert = ({ isVisible, onClose, message }) => (
+    <Modal transparent={true} visible={isVisible} onRequestClose={onClose}>
+        <View style={styles.alertFondo}>
+            <View style={styles.alertContainer}>
+                <Text style={styles.alertText}>{message}</Text>
+                <TouchableOpacity onPress={onClose}>
+                <View style={styles.celesteButton}>
+                    <Text style={styles.rojoIntensoText}>Cerrar</Text>
+                </View >
+                </TouchableOpacity>
             </View>
-        </Modal>
-    );
-}
+        </View>
+    </Modal>
+);
 
 export default CustomAlert;
 
