@@ -48,9 +48,18 @@ let function_name;
 let args;
 let function_response;
 let promises = [];
-let FechaHoy = new Date()
-//console.log('Fecha Hoy: ' + FechaHoy)
-let contactos = obtenerContactosAlmacenados()
+let FechaHoy;
+let contactos;
+obtenerContactosAlmacenados()
+    .then(contactosObtenidos => {
+        contactos = contactosObtenidos
+
+    })
+    .catch(error => {
+        // Maneja el error aquí
+        console.log('No hay contactos ingresados, error capturado');
+    });
+
 const functions = [
     {
         "name": "explicar_algo",

@@ -15,7 +15,7 @@ const PatologiaCronica = ({ index, patologia, showPatologia, pressPatologia, pat
     <View>
       {showPatologia && (
         <>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={patologia.Nombre_patologia.isSelected ? styles.selectedText : styles.unselectedText}
             onPress={() => pressSelectPatologia(index, 'Nombre_patologia')}
           >
@@ -237,6 +237,30 @@ const Usuario = ({ index, usuario, showUsuario, pressUsuario, pressSelectUsuario
           </TouchableOpacity>
           <View style={styles.lineaContainer3}></View>
           <TouchableOpacity
+            style={usuario.Altura.isSelected ? styles.selectedText : styles.unselectedText}
+            onPress={() => pressSelectUsuario(index, 'Altura')}
+          >
+            <Text style={styles.content3}>{'Altura:'}</Text>
+            <Text style={styles.content2}>{usuario.Altura.valor}</Text>
+          </TouchableOpacity>
+          <View style={styles.lineaContainer3}></View>
+          <TouchableOpacity
+            style={usuario.Peso.isSelected ? styles.selectedText : styles.unselectedText}
+            onPress={() => pressSelectUsuario(index, 'Peso')}
+          >
+            <Text style={styles.content3}>{'Peso:'}</Text>
+            <Text style={styles.content2}>{usuario.Peso.valor}</Text>
+          </TouchableOpacity>
+          <View style={styles.lineaContainer3}></View>
+          <TouchableOpacity
+            style={usuario.IMC.isSelected ? styles.selectedText : styles.unselectedText}
+            onPress={() => pressSelectUsuario(index, 'IMC')}
+          >
+            <Text style={styles.content3}>{'IMC:'}</Text>
+            <Text style={styles.content2}>{usuario.IMC.valor}</Text>
+          </TouchableOpacity>
+          <View style={styles.lineaContainer3}></View>
+          <TouchableOpacity
             style={usuario.Tipo_de_sangre.isSelected ? styles.selectedText : styles.unselectedText}
             onPress={() => pressSelectUsuario(index, 'Tipo_de_sangre')}
           >
@@ -315,6 +339,9 @@ export default function SelecDatosVocalizar({ navigation }) {
                 Segundo_apellido: { valor: usuario.sapellido, isSelected: false },
                 Alias: { valor: usuario.alias, isSelected: false },
                 Genero: { valor: usuario.genero, isSelected: false },
+                Altura: { valor: usuario.altura, isSelected: false },
+                Peso: { valor: usuario.peso, isSelected: false },
+                IMC: { valor: usuario.imc, isSelected: false },
                 Tipo_de_sangre: { valor: usuario.tipo_sangre, isSelected: false },
                 Fecha_de_nacimiento: { valor: usuario.fecha_nacimiento, isSelected: false },
                 Edad: { valor: edadUsuario, isSelected: false },
@@ -629,7 +656,7 @@ export default function SelecDatosVocalizar({ navigation }) {
 
 
   const obtenerDatosPreviosSelec = (rutUsuario) => {
-    console.log('OBTENIENDO DATOS MEDICOS PREVIOS DEL RUT: ', rutUsuario);
+    //console.log('OBTENIENDO DATOS MEDICOS PREVIOS DEL RUT: ', rutUsuario);
     return new Promise((resolve, reject) => {
       try {
         db.transaction(tx => {

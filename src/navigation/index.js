@@ -13,8 +13,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import PrincipalScreen from '../screens/PrincipalScreen';
 import SaludoScreen from '../screens/SaludoScreen';
 import Perfil from '../screens/Perfil';
-import Config from '../screens/Config';
+import DolenciasSintomas from '../screens/DolenciasSintomas';
 import HistorialChats from '../screens/HistorialChats';
+import Config from '../screens/Config';
 // Pantallas formularios
 import SignIn from '../screens/SignIn';
 import DatosUsuario from '../screens/DatosUsuario';
@@ -88,6 +89,7 @@ function PrincipalStack() {
       }}>
       <Drawer.Screen name="ADAM" component={MyTabs} />
       <Drawer.Screen name="Perfil" component={Perfil} />
+      <Drawer.Screen name="Agenda de dolencias " component={DolenciasSintomas} />
       <Drawer.Screen name="Historial de chats" component={HistorialChats} />
       <Drawer.Screen name="Configuración" component={Config} />
     </Drawer.Navigator>
