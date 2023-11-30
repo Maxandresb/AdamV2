@@ -12,12 +12,13 @@ import * as Notifications from 'expo-notifications';
 
 const db = SQLite.openDatabase('adamdb.db');
 
-const Medicamento = ({ medicamento, isEditing, handlePress, handleDelete, setCurrentMedicamentoId}) => {
+const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurrentMedicamentoId}) => {
     const [currentMedicamento, setCurrentMedicamento] = useState(medicamento);
     const [hora, setHora] = useState(new Date());
     const [mostrarHora, setMostrarHora] = useState(false);
     const [periodicidad2, setPeriodicidad2] = useState(medicamento.periodicidad);
     const [horarios, setHorarios] = useState([]);
+    const [medicamentos, setMedicamentos] = useState([]);
 
     // ********** MANEJO DE CHECK ***********
     const ESTADO_INACTIVO = '0';
