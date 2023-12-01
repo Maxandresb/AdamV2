@@ -144,6 +144,7 @@ const linking = {
     screens: {
       'seguimiento-nocturno': 'seguimiento-nocturno',
       'medicamento': 'medicamento',
+      'agenda-dolencias': 'agenda-dolencias',
     },
   },
 };
@@ -160,6 +161,7 @@ export default function AppNavigation() {
         <Stack.Screen name="ConfiguracionNested" component={ConfiguracionNestedScreen} />
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="medicamentos" component={Medicamentos} />
+        <Stack.Screen name="agenda-dolencias" component={DolenciasSintomas} />
       </Stack.Navigator>
       <NotificationHandler />
     </NavigationContainer>

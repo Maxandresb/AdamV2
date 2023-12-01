@@ -3,6 +3,238 @@ import * as SQLite from 'expo-sqlite';
 import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
+//funcion para obtener idsNotificacionesSD
+export async function obtenerIdsNotificacionesSD() {
+    return new Promise((resolve, reject) => {
+        try {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `SELECT idsNotificacionesSD FROM Configuracion;`,
+                    [],
+                    (_, { rows: { _array } }) => {
+                        if (_array.length > 0) {
+                            let idsNotificacionesSD = _array[0].idsNotificacionesSD;
+                            //console.log('idsNotificacionesSD obtenido con la funcion:', idsNotificacionesSD);
+                            resolve(idsNotificacionesSD);
+                        } else {
+                            console.log('No hay idsNotificacionesSD en la tabla Configuracion.');
+                            resolve(null);
+                        }
+                    },
+                    (_, error) => {
+                        console.log('Error al obtener los idsNotificacionesSD:', error);
+                        reject(error);
+                    }
+                );
+            });
+        } catch (error) {
+            console.log('Error al obtener los idsNotificacionesSD:', error);
+            reject(error);
+        }
+    });
+}
+export async function guardarIdsNotificacionesSD(nuevosIds) {
+    console.log('guardar ids SD');
+    const stringIds = nuevosIds.join(',');
+    //console.log('stringIds: ', stringIds);
+    return new Promise((resolve, reject) => {
+        try {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `SELECT * FROM Configuracion WHERE id = ?`,
+                    [1],
+                    (_, { rows: { _array } }) => {
+                        if (_array.length > 0) {
+                            console.log('actualizando ids');
+                            // Si existe un registro con id = 1, realiza una operación UPDATE
+                            tx.executeSql(
+                                `UPDATE Configuracion SET idsNotificacionesSD = ? WHERE id = ?`,
+                                [stringIds, 1],
+                                (_, resultSet) => {
+                                    // Verifica si el valor se cambió
+                                    tx.executeSql(
+                                        `SELECT idsNotificacionesSD FROM Configuracion WHERE id = ?`,
+                                        [1],
+                                        (_, result) => {
+                                            if (result.rows.item(0).idsNotificacionesSD) {
+                                                let idsNotificacionesSD = result.rows.item(0).idsNotificacionesSD;
+                                                if (idsNotificacionesSD === stringIds) {
+                                                    console.log('idsNotificacionesSD actualizados correctamente');
+                                                    console.log(`ids antes del cambio: ${idsNotificacionesSD} || ids antes del cambio: ${stringIds}`);
+                                                    mostarDB('Configuracion')
+                                                } else {
+                                                    console.log('idsNotificacionesSD no actualizados');
+                                                    console.log(`ids antes del cambio: ${idsNotificacionesSD} || ids antes del cambio: ${stringIds}`);
+                                                    mostarDB('Configuracion')
+                                                }
+                                                resolve('ok');
+                                            } else {
+                                                console.log('No hay idsNotificacionesSD en la tabla Configuracion.');
+                                                resolve(null);
+                                            }
+                                        },
+                                        (_, error) => {
+                                            console.log('Error al obtener los idsNotificacionesSD:', error);
+                                            reject(error);
+                                        }
+                                    );
+                                },
+                                (_, error) => {
+                                    console.log('Error en la consulta UPDATE', error);
+                                    reject(error);
+                                }
+                            );
+                        } else {
+                            console.log('insertando ids');
+                            // Si no existe un registro con id = 1, realiza una operación INSERT
+                            tx.executeSql(
+                                `INSERT INTO Configuracion (id, idsNotificacionesSD) VALUES (?, ?)`,
+                                [1, stringIds],
+                                (_, resultSet) => {
+                                    // Verifica si el valor se cambió
+                                    tx.executeSql(
+                                        `SELECT idsNotificacionesSD FROM Configuracion WHERE id = ?`,
+                                        [1],
+                                        (_, result) => {
+                                            if (result.rows.item(0).idsNotificacionesSD) {
+                                                let idsNotificacionesSD = result.rows.item(0).idsNotificacionesSD;
+                                                if (idsNotificacionesSD === stringIds) {
+                                                    console.log('idsNotificacionesSD actualizados correctamente');
+                                                    console.log(`ids antes del cambio: ${idsNotificacionesSD} || ids antes del cambio: ${stringIds}`);
+                                                    mostarDB('Configuracion')
+                                                } else {
+                                                    console.log('idsNotificacionesSD no actualizados');
+                                                    console.log(`ids antes del cambio: ${idsNotificacionesSD} || ids antes del cambio: ${stringIds}`);
+                                                    mostarDB('Configuracion')
+                                                }
+                                                resolve(idsNotificacionesSD);
+                                            } else {
+                                                console.log('No hay idsNotificacionesSD en la tabla Configuracion.');
+                                                resolve(null);
+                                            }
+                                        },
+                                        (_, error) => {
+                                            console.log('Error al obtener los idsNotificacionesSD:', error);
+                                            reject(error);
+                                        }
+                                    );
+                                    resolve(resultSet);
+                                },
+                                (_, error) => {
+                                    console.log('Error en la consulta INSERT', error);
+                                    reject(error);
+                                }
+                            );
+                        }
+                    },
+                    (_, error) => {
+                        console.log('Error en la consulta SELECT', error);
+                        reject(error);
+                    }
+                );
+            },
+                error => {
+                    console.log('Error en la transacción guardar ids SD', error);
+                    reject(error);
+                },
+                () => {
+                    console.log('Transacción completa guardar ids SD');
+                    resolve();
+                }
+            );
+        } catch (error) {
+            console.error('Se produjo un error guardar ids SD', error);
+            reject(error);
+        }
+    });
+}
+
+export async function obtenerFechaSD() {
+    return new Promise((resolve, reject) => {
+        try {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `SELECT fechaSD FROM Configuracion;`,
+                    [],
+                    (_, { rows: { _array } }) => {
+                        if (_array.length > 0) {
+                            let fechaSD = _array[0].fechaSD;
+                            //console.log('fechaSD obtenido con la funcion:', fechaSD);
+                            resolve(fechaSD);
+                        } else {
+                            console.log('No hay fechaSD en la tabla Configuracion.');
+                            resolve(null);
+                        }
+                    },
+                    (_, error) => {
+                        console.log('Error al obtener la fechaSD:', error);
+                        reject(error);
+                    }
+                );
+            });
+        } catch (error) {
+            console.log('Error al obtener la fechaSD:', error);
+            reject(error);
+        }
+    });
+}
+export async function guardarFechaSD(nuevaFecha) {
+    console.log('iniciando guardarFechaSD');
+    return new Promise((resolve, reject) => {
+        try {
+            let fechaString;
+
+            // Verifica si nuevaFecha es una cadena
+            if (typeof nuevaFecha === 'string') {
+                // Intenta analizar la cadena como fecha
+                if (isNaN(Date.parse(nuevaFecha))) {
+                    reject(new Error('Formato de fecha inválido'));
+                } else {
+                    fechaString = nuevaFecha;
+                }
+            }
+            // Verifica si nuevaFecha es un objeto Date
+            else if (nuevaFecha instanceof Date) {
+                // Convierte la fecha a una cadena en formato ISO
+                fechaString = nuevaFecha.toISOString();
+            }
+
+            // Inicia transacción en la base de datos
+            console.log('iniciando transaccion guardar ids SD');
+            db.transaction(
+                tx => {
+                    // Ejecuta la consulta SQL
+                    tx.executeSql(
+                        `INSERT OR REPLACE INTO Configuracion (id, fechaSD) VALUES (?, ?)`,
+                        [1, fechaString],
+                        (_, resultSet) => {
+                            console.log('Inserción o actualización exitosa');
+                            resolve('ok');
+                        },
+                        (_, error) => {
+                            console.log('Error en la consulta', error);
+                            reject(error);
+                        }
+                    );
+                },
+                error => {
+                    console.log('Error en la transacción', error);
+                    reject(error);
+                },
+                () => {
+                    console.log('Transacción completa');
+                    resolve();
+                }
+            );
+        } catch (error) {
+            console.error('Se produjo un error', error);
+            reject(error);
+        }
+    });
+}
+
+
+
 
 //crea una funcion para obtener los idNotifications a de la tabla medicamentos segun el id
 export async function obtenerIdNotificacion(id) {
@@ -65,9 +297,9 @@ const updateMedicamentos = async (idNotificacion, id) => {
                             'SELECT * FROM Medicamentos WHERE id = ?',
                             [id],
                             (_, result) => {
-                                if(idNotificacion===result.rows.item(0).idNotificacion){
+                                if (idNotificacion === result.rows.item(0).idNotificacion) {
                                     console.log('idNotificacion actualizado correctamente');
-                                }else{
+                                } else {
                                     console.log('idNotificacion no actualizado');
                                     console.log(`ids antes del cambio: ${idNotificacion} || ids antes del cambio: ${result.rows.item(0).idNotificacion}`);
                                 }
@@ -550,6 +782,8 @@ export function initDB() {
                 EstadoLlamadaDS TEXT,
                 Mute TEXT,
                 SeguimientoDolencias TEXT, 
+                fechaSD TEXT,
+                idsNotificacionesSD TEXT,
                 usuario_rut TEXT,
                 FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
             );`,

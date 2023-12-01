@@ -48,6 +48,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
         if (campos.idNotificacion) {
             const cadena = campos.idNotificacion.join(',');
             campos.idNotificacion = cadena
+            console.log('cadena: ', cadena)
         }
         return new Promise((resolve, reject) => {
             db.transaction(tx => {

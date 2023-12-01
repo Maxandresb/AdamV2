@@ -9,6 +9,9 @@ import { format } from 'date-fns';
 import SelecTiempoAtras from '../api/selecTiempoAtras';
 import EVA from "../api/escalaEVA";
 import { FontAwesome5 } from '@expo/vector-icons';
+import { obtenerIdsNotificacionesSD, guardarFechaSD, obtenerFechaSD, guardarIdsNotificacionesSD } from "../api/sqlite";
+import { generarNotificacionDolencias } from '../api/notificaciones';
+
 
 
 const db = SQLite.openDatabase('adamdb.db');
@@ -290,7 +293,7 @@ const DolenciasSintomas = () => {
     const [estadoSeguimiento, setEstadoSeguimiento] = useState(ESTADO_INACTIVO);
 
     const ESTADO_ACTIVO = '1'
-    const ESTADO_INACTIVO= '0'
+    const ESTADO_INACTIVO = '0'
     const estado_actual = useRef(null)
 
     const obtenerEstSeguimiento = () => {
@@ -313,16 +316,16 @@ const DolenciasSintomas = () => {
             );
         });
     }
-    
+
     //useEffect
     useEffect(() => {
         obtenerEstSeguimiento()
     }, [])
 
-    const cambiarEstadoSeguimiento = () => {
+    const cambiarEstadoSeguimiento = async () => {
         // Determinar el nuevo estado
         const nuevoEstado = estadoSeguimiento === ESTADO_ACTIVO ? ESTADO_INACTIVO : ESTADO_ACTIVO;
-    
+
         // Actualizar la base de datos SQLite
         db.transaction((tx) => {
             tx.executeSql(
@@ -339,8 +342,95 @@ const DolenciasSintomas = () => {
             );
         });
     }
-    
-    
+
+    async function cancelarNotificaciones() {
+        try {
+            // Obtiene los IDs de las notificaciones de la base de datos
+            let idsNotificacionesString = await obtenerIdsNotificacionesSD();
+
+            // Convierte el string JSON de vuelta a un array
+            const idsNotificaciones = JSON.parse(idsNotificacionesString);
+
+            try {
+                // Recorre el array y cancela cada notificación
+                for (let i = 0; i < idsNotificaciones.length; i++) {
+                    await Notifications.cancelScheduledNotificationAsync(idsNotificaciones[i]);
+                }
+            } catch (error) {
+                console.log('Error al cancelar las notificaciones: ', error);
+            }
+
+
+        } catch (error) {
+            console.log('Error al obtener los IDs de las notificaciones: ', error);
+        }
+    }
+    async function programarNotificacionDolencias() {
+        let fechaGuardada;
+        let idsNotificaciones;
+        try {
+
+            try {
+                // Si no hay una fecha guardada, programa las notificaciones
+                idsNotificaciones = await generarNotificacionDolencias();
+            } catch (error) {
+                console.log('Error al generar notificacion de dolencias: ', error)
+            }
+
+            try {
+                let result = await guardarIdsNotificacionesSD(idsNotificaciones)
+                console.log('>> Resultado de guardar idsNotificaciones en el storage: ', result);
+            } catch (error) {
+                console.log('Error al guardar idsNotificaciones en el storage: ', error)
+            }
+            // Guarda la fecha actual como la última vez que se programaron las notificaciones
+            const now = new Date();
+            try {
+                let result = await guardarFechaSD(now);
+                console.log('>> Resultado de guardar fecha en el storage: ', result);
+            } catch (error) {
+                console.log('Error al guardar fecha en el storage: ', error)
+            }
+
+
+        } catch (error) {
+            console.log('Error al obtener la fecha: ', error);
+        }
+    }
+    // manejar check
+    const manejarCheck = async () => {
+        if (estadoSeguimiento === ESTADO_ACTIVO) {
+            try {
+                await cancelarNotificaciones()
+            } catch (error) {
+                console.log('Error al cancelar las notificaciones: ', error);
+            }
+            try {
+                await guardarFechaSD(null);
+            } catch (error) {
+                console.log('Error al borrar la fecha: ', error);
+            }
+            try {
+                await cambiarEstadoSeguimiento()
+            } catch (error) {
+                console.log('Error al cambiar el estado de seguimiento: ' + error.message);
+            }
+        } else {
+            try {
+                await programarNotificacionDolencias();
+            } catch (error) {
+                console.log('Error al programar las notificaciones: ', error);
+            }
+            try {
+                await cambiarEstadoSeguimiento()
+            } catch (error) {
+                console.log('Error al cambiar el estado de seguimiento: ' + error.message);
+            }
+
+        }
+
+    }
+
 
     return (
         <ScrollView className="flex-1 bg-grisClaro px-5 pt-3">
@@ -355,12 +445,12 @@ const DolenciasSintomas = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.lineaContainer}></View>
-            <View className="flex-row " style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop:-10, marginBottom:-20}}>
+            <View className="flex-row " style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: -10, marginBottom: -20 }}>
                 <View>
                     <Text className="text-redcoral text-lg font-bold mb-3 pl-5">{'Seguimiento diario de \n\dolencias o sintomas: '}</Text>
                 </View>
-                <TouchableOpacity style={{ paddingRight: 15 }} onPress={() => {cambiarEstadoSeguimiento()}}>
-                    <Text><FontAwesome5 name="check" size={25} color={ estadoSeguimiento === '0' ? 'black' : 'green'} /></Text>
+                <TouchableOpacity style={{ paddingRight: 15 }} onPress={async () => { await manejarCheck() }}>
+                    <Text><FontAwesome5 name="check" size={25} color={estadoSeguimiento === '0' ? 'black' : 'green'} /></Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.lineaContainer}></View>

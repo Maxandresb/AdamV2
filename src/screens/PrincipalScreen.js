@@ -451,10 +451,10 @@ export default function PrincipalScreen() {
           mostarDB('Limitaciones');
           mostarDB('PatologiasCronicas');
           mostarDB('Contacto');
-          mostarDB('recordatorios');
+          mostarDB('recordatorios');*/
           mostarDB('Configuracion');
-          await MostrarNotificacionesGuardadas()*/
-          mostarDB('DolenciasSintomas');
+          // await MostrarNotificacionesGuardadas()
+          // mostarDB('DolenciasSintomas');
           //mostarDB('centrosMedicos');
           respuesta = await generarRespuesta('Mostrar base de datos', 'La base de datos se mostrara en la consola.', prompt)
         }
