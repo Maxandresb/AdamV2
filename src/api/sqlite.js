@@ -4,6 +4,116 @@ import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
 
+//crea una funcion para obtener los idNotifications a de la tabla medicamentos segun el id
+export async function obtenerIdNotificacion(id) {
+    if (id === undefined || id === null) {
+        console.log('El id es undefined o null');
+        return;
+    }
+
+    let idString = id.toString();
+    try {
+        const idNotificacion = await new Promise((resolve, reject) => {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `SELECT idNotificacion FROM Medicamentos WHERE id = ?`,
+                    [idString],
+                    (_, { rows: { _array } }) => {
+                        if (_array.length > 0) {
+                            resolve(_array[0].idNotificacion);
+                        } else {
+                            reject(new Error('No se encontró ningún idNotificacion para el id proporcionado.'));
+                        }
+                    },
+                    (_, error) => {
+                        reject(new Error(`Error interno en la consulta al obtener el idNotificacion: ${error}`));
+                    }
+                );
+            }, (error) => {
+                reject(new Error(`Error al ejecutar la consulta al obtener el idNotificacion: ${error}`));
+            });
+        });
+        console.log('idNotificacion obtenido:', idNotificacion);
+        return idNotificacion;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+const updateMedicamentos = async (idNotificacion, id) => {
+    console.log('> ejecutando updateMedicamentos');
+    if (id === undefined || id === null || idNotificacion === undefined || idNotificacion === null) {
+        console.log('El id o idNotificacion son undefined o null');
+        return;
+    }
+    try {
+        const result = await new Promise((resolve, reject) => {
+            console.log('=> dentro de la promesa');
+            mostarDB('Medicamentos')
+            console.log('id del medicamento en updateMedicamentos: ', String(id));
+            db.transaction(tx => {
+                tx.executeSql(
+                    "UPDATE Medicamentos SET idNotificacion = ? WHERE id = ?",
+                    [idNotificacion, String(id)],
+                    (_, result) => {
+                        // log result
+                        console.log('result:', result);
+                        console.log('idNotificacion actualizado:', idNotificacion);
+                        resolve('Actualización exitosa');
+                        tx.executeSql(
+                            'SELECT * FROM Medicamentos WHERE id = ?',
+                            [id],
+                            (_, result) => {
+                                if(idNotificacion===result.rows.item(0).idNotificacion){
+                                    console.log('idNotificacion actualizado correctamente');
+                                }else{
+                                    console.log('idNotificacion no actualizado');
+                                    console.log(`ids antes del cambio: ${idNotificacion} || ids antes del cambio: ${result.rows.item(0).idNotificacion}`);
+                                }
+                                resolve()
+                            },
+                            (_, error) => {
+                                console.log('Error al obtener los ids dsps de actualizarlos:', error);
+                                reject(new Error(`Error al ejecutar la consulta SQL: ${error}`));
+                            }
+                        );
+                    },
+                    (_, error) => {
+                        reject(new Error(`Error al ejecutar la consulta SQL: ${error}`));
+                    }
+                );
+            }, (error) => {
+                reject(new Error(`Error al iniciar la transacción: ${error}`));
+            });
+        });
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export async function addIdNotification(id, idNotificacion) {
+    try {
+        // Obtener la notificación previa
+        const notifPrevia = await obtenerIdNotificacion(id);
+
+        // Crear la nueva cadena de IDs de notificación
+        const notificacionIds = notifPrevia ? `${notifPrevia} ${idNotificacion}` : idNotificacion;
+
+        // Actualizar la base de datos
+        const result = await updateMedicamentos(notificacionIds, id);
+
+        console.log('Actualización exitosa:', result);
+        return result;
+    } catch (error) {
+        console.error('Error al agregar la ID de notificación:', error);
+        throw error;
+    }
+}
+
+
 export const numContactoEmergencia = () => {
     return new Promise((resolve, reject) => {
         db.transaction(tx => {

@@ -169,55 +169,62 @@ function NotificationHandler() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    try {
-      Notifications.addNotificationResponseReceivedListener(response => {
-        try {
-          console.log(response);
-          if (!response) {
-            return;
-          }
-          if (response.notification.request.content.data) {
-            const navigateTo = response.notification.request.content.data.navigateTo;
-            console.log('content: ', response.notification.request.content);
-            console.log('navigate to: ', navigateTo);
-            try {
-              if (navigateTo && typeof navigateTo === 'string') {
-                navigation.navigate(navigateTo);
-              }
-            } catch (error) {
-              console.log('Error al navegar: ', error);
-            }
-            try {
-              if (response.notification.request.content.data.tipoNotificacion === 'medicamento') {
-                let horario = response.notification.request.content.data.horarioMedicamento
-                let segundos = calcularSegundosHastaProximoHorario(horario)
-                let id = response.notification.request.content.data.idMedicamento
-                
-                let notificacion = Notifications.scheduleNotificationAsync({
-                  content: {
-                    title: response.notification.request.content.title,
-                    body: response.notification.request.content.body,
-                    data: response.notification.request.content.data
-                  },
-                  trigger: {
-                    seconds: segundos 
-                  },
-                });
-                //addIdNotification(id, notificacion)
-              }
-            } catch (error) {
-              
-            }
-
-          }
-        } catch (error) {
-          console.log('Error al manejar la notificación: ', error);
+    const subscription = Notifications.addNotificationResponseReceivedListener(async response => {
+      try {
+        console.log(response);
+        if (!response) {
+          return;
         }
-      });
-    } catch (error) {
-      console.log('Error al añadir el listener de notificaciones: ', error);
-    }
+        if (response.notification.request.content.data) {
+          const navigateTo = response.notification.request.content.data.navigateTo;
+          console.log('content: ', response.notification.request.content);
+          console.log('navigate to: ', navigateTo);
+          try {
+            if (navigateTo && typeof navigateTo === 'string') {
+              navigation.navigate(navigateTo);
+            }
+          } catch (error) {
+            console.log('Error al navegar: ', error);
+          }
+          if (response.notification.request.content.data.tipoNotificacion === 'medicamento') {
+            let horario = response.notification.request.content.data.horarioMedicamento
+            let segundos = await calcularSegundosHastaProximoHorario(horario)
+            let id = response.notification.request.content.data.idMedicamento
+            let notificacion;
+            try {
+              notificacion = await Notifications.scheduleNotificationAsync({
+                content: {
+                  title: response.notification.request.content.title,
+                  body: response.notification.request.content.body,
+                  data: response.notification.request.content.data
+                },
+                trigger: {
+                  seconds: segundos
+                },
+              });
+              console.log('>> Nueva notificacion: ', notificacion);
+            } catch (error) {
+              console.log('Error al crear la notificación: ', error);
+            }
+            try {
+              if (notificacion) {
+                console.log('>> Id de la notificacion: ', id);
+                await addIdNotification(id, notificacion)
+              }
+            } catch (error) {
+              console.log('Error al manejar la notificación: ', error);
+            }
+          }
+        }
+      } catch (error) {
+        console.log('Error al manejar condiciones del addlistener: ', error);
+      }
+    });
 
+    // Efecto de limpieza
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
 
