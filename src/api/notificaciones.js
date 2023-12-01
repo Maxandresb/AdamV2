@@ -63,7 +63,7 @@ function convertirAFormato24Horas(horarios) {
   }
 }
 
-function calcularSegundosHastaProximoHorario(horaCompleta) {
+export function calcularSegundosHastaProximoHorario(horaCompleta) {
   let timezoneOffset = new Date().getTimezoneOffset();
   let ahora = new Date()
   ahora.setMinutes(ahora.getMinutes() - timezoneOffset);
@@ -91,7 +91,6 @@ function calcularSegundosHastaProximoHorario(horaCompleta) {
 async function programarNotificacionMedica(medicamento) {
   console.log('=> medicamento en programarNotificacionMedica: ', medicamento)
  
-
   // Verifica los permisos de notificación
   console.log(`\n\ ***** \n\ `);
   let permissions = await Notifications.getPermissionsAsync();
@@ -114,13 +113,18 @@ async function programarNotificacionMedica(medicamento) {
       sound: true,
       title: `Recuerda tomar el medicamento ${medicamento.medicamento.medicamento}`,
       body: `La dosis es ${medicamento.medicamento.dosis} \n\ Los horarios en los que debes tomar este medicamento son: ${medicamento.medicamento.horarios}`,
-      
+      data: {
+        navigateTo: 'medicamentos',
+        tipoNotificacion: 'medicamento',
+        horarioMedicamento: horario,
+        idMedicamento: medicamento.medicamento.id
+      }
     };
     //obtener hora local actual, hora del horario, seg a minutos
     let segundos = calcularSegundosHastaProximoHorario(horario)
     let trigger = {
       seconds: segundos,
-      repeats: true
+      //repeats: true
     };
     try {
       // Programa la notificación para esta fecha

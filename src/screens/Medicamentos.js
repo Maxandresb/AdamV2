@@ -12,18 +12,32 @@ import * as Notifications from 'expo-notifications';
 
 const db = SQLite.openDatabase('adamdb.db');
 
-const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurrentMedicamentoId, setMedicamentos}) => {
+const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurrentMedicamentoId, setMedicamentos, medicamentos, obtenerMedicamentosDeDB }) => {
     const [currentMedicamento, setCurrentMedicamento] = useState(medicamento);
     const [hora, setHora] = useState(new Date());
     const [mostrarHora, setMostrarHora] = useState(false);
     const [periodicidad2, setPeriodicidad2] = useState(medicamento.periodicidad);
     const [horarios, setHorarios] = useState([]);
-    
 
     // ********** MANEJO DE CHECK ***********
     const ESTADO_INACTIVO = '0';
     const ESTADO_ACTIVO = '1';
     let estadoActualizar;
+
+    useEffect(() => {
+        try {
+            let estadoActualizar = medicamento.estadoNotificacion
+            setMedicamentos(prevMedicamentos =>
+                prevMedicamentos.map(med =>
+                    med.id === medicamento.id ? { ...med, estadoNotificacion: estadoActualizar } : med
+                )
+            );
+        } catch (error) {
+            console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
+
+        }
+
+    }, []);
 
     const actualizarMedicamento = async (id, campos) => {
         console.log('ACTUALIZANDO MEDICAMENTO =>')
@@ -42,9 +56,10 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                         console.log('=> MEDICAMENTO ACTUALIZADO')
                         // Realiza una operación de lectura para obtener el idNotificacion actualizado
                         tx.executeSql(
-                            'SELECT idNotificacion FROM Medicamentos WHERE id = ?',
+                            'SELECT * FROM Medicamentos WHERE id = ?',
                             [id],
                             (_, result) => {
+                                console.log('medicamento dsps de actualizar idNotif y estadoNotif: ', result.rows.item(0));
                                 // Resuelve la promesa con el idNotificacion actualizado
                                 resolve(result.rows.item(0).idNotificacion);
                             },
@@ -59,56 +74,72 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
         });
     };
 
-    const cancelarNotificacion = async (medicamento, estado) => {
-        console.log('=> CANCELANDO NOTIFICACION CON IDNOTIFICACION:', medicamento.idNotificacion)
-        if(medicamento.idNotificacion===null){
-            console.log('NOTIFICACION AUN NO CREADA');
-        } else{
-            //cancelar notificaciones
-        const ids = medicamento.idNotificacion.split(',');
-        const cantidad = ids.length;
-        console.log("Cantidad de ids:", cantidad);
-        console.log(`\n\ ***** \n\ `);
-        if (cantidad > 1) {
-            // Convertimos la cadena en un array separando por comas
-            const idNotificacionArray = medicamento.idNotificacion.split(',');
+    useEffect(() => {
+        console.log('medicamento:: ',medicamento);
+    },[]);
 
-            // Recorremos el array resultante
-            idNotificacionArray.forEach(async (id) => {
-                console.log('ID de Notificación:', id);
-                // Aquí puedes realizar acciones con cada ID de notificación, por ejemplo, enviar notificaciones, realizar operaciones, etc.
+    const cancelarNotificacion = async (medicamento, estado) => {
+        console.log('=> CANCELANDO NOTIFICACION CON IDNOTIFICACION:', medicamento)
+        if (medicamento.idNotificacion === null) {
+            console.log('NOTIFICACION AUN NO CREADA');
+            return;
+        } else {
+            //cancelar notificaciones
+            const ids = medicamento.idNotificacion.split(',');
+            const cantidad = ids.length;
+            console.log("Cantidad de ids:", cantidad);
+            console.log(`\n\ ***** \n\ `);
+            if (cantidad > 1) {
+                // Convertimos la cadena en un array separando por comas
+                const idNotificacionArray = medicamento.idNotificacion.split(',');
+
+                // Recorremos el array resultante
+                idNotificacionArray.forEach(async (id) => {
+                    console.log('ID de Notificación:', id);
+                    // Aquí puedes realizar acciones con cada ID de notificación, por ejemplo, enviar notificaciones, realizar operaciones, etc.
+                    try {
+                        await Notifications.cancelScheduledNotificationAsync(id);
+                        console.log('1-notificacion cancelada: ', id)
+                    } catch (error) {
+                        console.log("1-idNotificacion error:", id);
+                        console.log('1-error al cancelar notificacion: ', error)
+                    }
+                });
+            } else {
                 try {
-                    await Notifications.cancelScheduledNotificationAsync(id);
-                    console.log('1-notificacion cancelada: ', id)
+                    await Notifications.cancelScheduledNotificationAsync(medicamento.idNotificacion);
+                    console.log('1-notificacion cancelada: ', medicamento.idNotificacion)
                 } catch (error) {
-                    console.log("1-idNotificacion error:", id);
+                    console.log("1-idNotificacion error:", medicamento.idNotificacion);
                     console.log('1-error al cancelar notificacion: ', error)
                 }
-            });
-        }else {
-            try {
-                await Notifications.cancelScheduledNotificationAsync(medicamento.idNotificacion);
-                console.log('1-notificacion cancelada: ', medicamento.idNotificacion)
-            } catch (error) {
-                console.log("1-idNotificacion error:", medicamento.idNotificacion);
-                console.log('1-error al cancelar notificacion: ', error)
             }
-        }
-        console.log(` `);
-        //eliminar el idnotificacion y cambiar estado de la notificacion
-        if(estado==='eliminar'){
-            console.log('NOTIFICACION CANCELADA');
-   
-            try {
-                let newidNotificacion = await actualizarMedicamento(medicamento.id, { estadoNotificacion: estado, idNotificacion: null });
-                console.log('2-idNotificacion-cancelada: ', newidNotificacion)
-                medicamento.idNotificacion = newidNotificacion;
-                console.log('2-medicamento con notificacion cancelada, actualizada: ', medicamento)
-            } catch (error) {
-                console.log("2-idNotificacion error:", medicamento.idNotificacion);
-                console.log('2-error al actualizar recordatorio: ', error)
+            console.log(` `);
+            //eliminar el idnotificacion y cambiar estado de la notificacion
+            if (estado === 'eliminar') {
+                console.log('NOTIFICACION CANCELADA Antes de eliminar medicamento');
+            } else {
+                try {
+                    let newidNotificacion = await actualizarMedicamento(medicamento.id, { estadoNotificacion: estado, idNotificacion: null });
+                    console.log('2-idNotificacion-cancelada: ', newidNotificacion)
+                    medicamento.idNotificacion = newidNotificacion;
+                    medicamento.estadoNotificacion = '0'
+                    console.log('2-medicamento con notificacion cancelada, actualizada: ', medicamento)
+                } catch (error) {
+                    console.log("2-idNotificacion error:", medicamento.idNotificacion);
+                    console.log('2-error al actualizar recordatorio: ', error)
+                }
+                try {
+                    setMedicamentos(prevMedicamentos =>
+                        prevMedicamentos.map(med =>
+                            med.id === medicamento.id ? { ...med, estadoNotificacion: medicamento.estadoNotificacion } : med
+                        )
+                    );
+                } catch (error) {
+                    console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
+        
+                }
             }
-        }
         }
     };
 
@@ -137,7 +168,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     const manejarNotificaciones = async (medicamento) => {
         console.log('*****************************************************************')
         console.log('MANEJANDO NOTIFICACIONES')
-        
+
         try {
             console.log('medicamento en manejo de notificaciones: ', medicamento)
             if (medicamento.estadoNotificacion === ESTADO_ACTIVO) {
@@ -146,7 +177,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                 console.log('estado notificacion antes de pasar a funcion cancelar: ', medicamento.estadoNotificacion);
                 estadoActualizar = ESTADO_INACTIVO;
                 await cancelarNotificacion(medicamento, ESTADO_INACTIVO)
-                
+
             } else {
                 console.log(`\n\ ***** \n\ `);
                 console.log('PROGRAMANDO NOTIFICACION =>')
@@ -196,6 +227,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
         //console.log('Horarios calculados:', horarios);
         return horarios;
     };
+
     const obtenerHora = (horarios) => {
         let horariosArray = horarios.split("  ");
         let primeraHora = horariosArray[0];
@@ -235,18 +267,23 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
             const horariosCalculados = calcularHorarios(hora, periodicidad2);
             setHorarios(horariosCalculados);
         }
-    }, [medicamento.horarios, periodicidad2]);
+    }, [currentMedicamento.horarios, medicamento.horarios, periodicidad2]);
 
     const manejarCambioHora = (horaSeleccionada) => {
         const horaActualizada = horaSeleccionada || hora;
         setHora(horaActualizada);
-        setHorarios(calcularHorarios(horaActualizada, periodicidad2));
+        const horariosCalculados = calcularHorarios(horaActualizada, periodicidad2);
+        setHorarios(horariosCalculados);
     };
+
 
     const manejarCambioPeriodicidad = (valor) => {
         setPeriodicidad2(valor);
-        setHorarios(calcularHorarios(hora, valor));
+        const horariosCalculados = calcularHorarios(hora, valor);
+        setHorarios(horariosCalculados);
+        manejarCambio('horarios', horariosCalculados.join(" "));
     };
+
 
     const manejarCambio = (clave, valor) => {
         setCurrentMedicamento(current => ({
@@ -264,14 +301,18 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     };
 
     const onChangeTime2 = (event, selectedTime) => {
-        const currentTime = selectedTime || hora;
-        setHora(currentTime);
-        setHorarios(calcularHorarios(currentTime, periodicidad2));
+        if (selectedTime) {
+            setHora(selectedTime);
+            setHorarios(calcularHorarios(selectedTime, periodicidad2));
+        }
         setMostrarHora(false);
     };
+
     const abrirHora = () => {
         setMostrarHora(true);
     };
+
+
 
     // ********** MANEJO DE ELIMINAR MEDICAMENTO ***********
     const pressEliminarMedicamento = () => {
@@ -287,11 +328,14 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                     text: "Eliminar",
                     onPress: async () => {
                         await cancelarNotificacion(medicamento, 'eliminar'),
-                        pressDelete(medicamento.id)}
+                            pressDelete(medicamento.id)
+                    }
                 }
             ]
         );
     };
+
+
 
     return (
         <View className="mt-2">
@@ -378,18 +422,38 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
             <View className="flex-row self-center justify-around w-full mt-3">
                 <TouchableOpacity
                     style={styles.rojoIntensoButton}
-                    onPress={async() => {
-                        pressUpdate(medicamento.id, { ...currentMedicamento, horarios: horarios.join("  ") }),
-                        await cancelarNotificacion(currentMedicamento, ESTADO_INACTIVO)
-                        
+                    onPress={async () => {
+                        try {
+                            pressUpdate(medicamento.id, { ...currentMedicamento, horarios: horarios.join(" ") })
+                        } catch (error) {
+                            console.error('ERROR AL ACTUALIZAR MEDICAMENTO:', error);
+                        }
+                        try {
+                            await cancelarNotificacion(medicamento, ESTADO_INACTIVO)
+                        } catch (error) {
+                            console.error('ERROR AL CANCELAR NOTIFICACION AL GUARDAR MODIFICACION:', error);
+                        }
+                        try {
+                            medicamento.estadoNotificacion = '0'
+                            console.log('actualizando estado de la notificacion en pantalla');
+                            setMedicamentos(prevMedicamentos =>
+                                prevMedicamentos.map(med =>
+                                    med.id === medicamento.id ? { ...med, estadoNotificacion: estadoActualizar } : med
+                                )
+                            );
+                        } catch (error) {
+                            console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
+
+                        }
                     }}
                 >
                     <Text style={styles.celesteText}>
                         {isEditing ? 'Guardar cambios' : 'Modificar Medicamento'}
                     </Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
-                     style={styles.celesteButton}
+                    style={styles.celesteButton}
                     onPress={pressEliminarMedicamento}
                 >
                     <Text style={styles.rojoIntensoText}>
@@ -402,20 +466,35 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                     <View style={styles.espacioContainer2}></View>
                     <TouchableOpacity
                         style={styles.celesteButton}
-                        onPress={() => setCurrentMedicamentoId(null)}
+                        onPress={() => {
+                            try {
+                                medicamento.estadoNotificacion = '0'
+                                console.log('actualizando estado de la notificacion en pantalla');
+                                setMedicamentos(prevMedicamentos =>
+                                    prevMedicamentos.map(med =>
+                                        med.id === medicamento.id ? { ...med, estadoNotificacion: estadoActualizar } : med
+                                    )
+                                );
+                            } catch (error) {
+                                console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
+    
+                            }
+                            setCurrentMedicamentoId(null)
+                        }}
                     >
                         <Text style={styles.rojoIntensoText}>
                             Cancelar
                         </Text>
                     </TouchableOpacity>
-                    </>
-            ):null}
+                </>
+            ) : null}
             <View style={styles.lineaContainer}>
             </View>
 
         </View>
     );
 };
+
 
 const Medicamentos = () => {
     const [medicamentos, setMedicamentos] = useState([]);
@@ -429,12 +508,17 @@ const Medicamentos = () => {
 
     const [isAlertVisible, setAlertVisible] = useState(false);
 
+
     useEffect(() => {
         db.transaction(tx => {
             tx.executeSql('SELECT * FROM Medicamentos', [], (_, { rows }) =>
                 setMedicamentos(rows._array)
-            );
-        });
+            ), (error) => {
+                console.error("Error en la transacción de la base de datos: ", error);
+            };
+        }), (error) => {
+            console.error("Error en la transacción de la base de datos: ", error);
+        };
     }, []);
 
     const pressShowAgregarMedicamento = () => {
@@ -451,16 +535,16 @@ const Medicamentos = () => {
                     (_, resultSet) => {
                         console.log("Actualización exitosa!");
                         // Recargar datos
-                        tx.executeSql('SELECT * FROM Medicamentos', [], (_, { rows }) =>
+                        tx.executeSql('SELECT * FROM Medicamentos', [], (_, { rows }) => {
                             setMedicamentos(rows._array)
-                        );
+                            setCurrentMedicamentoId(null); // finalizo edición aquí para evitar asincronía
+                        });
+                    },
+                    (error) => {
+                        console.error("Error en la transacción update tabla medicamentos de la base de datos: ", error);
                     }
                 );
-            }, (error) => {
-                console.error("Error en la transacción update tabla medicamentos de la base de datos: ", error);
             });
-            // Iniciar edición
-            setCurrentMedicamentoId(null);
         } else {
             // Iniciar edición
             setCurrentMedicamentoId(id);
@@ -468,6 +552,7 @@ const Medicamentos = () => {
             setHorarios(timesArray);
         }
     };
+
     const pressDelete = (id) => {
         db.transaction(tx => {
             tx.executeSql(
@@ -564,8 +649,6 @@ const Medicamentos = () => {
 
 
 
-
-
     return (
         <ScrollView className="flex-1 bg-grisClaro px-5 pt-3">
             <View>
@@ -588,6 +671,7 @@ const Medicamentos = () => {
                     pressDelete={pressDelete}
                     setCurrentMedicamentoId={setCurrentMedicamentoId}
                     setMedicamentos={setMedicamentos}
+                    medicamentos={medicamentos}
                 />
             ))}
             <Modal
@@ -671,7 +755,7 @@ const Medicamentos = () => {
                         )}
                         <View className="flex-row self-center justify-around w-full mt-5">
                             <TouchableOpacity style={styles.celesteButton} onPress={() => { setModalVisibleMedicamentos(false) }}>
-                            <Text style={styles.rojoIntensoText}>
+                                <Text style={styles.rojoIntensoText}>
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>

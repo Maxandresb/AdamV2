@@ -1,17 +1,23 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
+import  React , { useEffect, useRef, useState }from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { Linking, View, Text, Image, TouchableOpacity } from 'react-native';
 //PANTALLAS
 
 import Recordatorios from "../screens/Recordatorios";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import * as Notifications from 'expo-notifications';
+import { calcularSegundosHastaProximoHorario } from '../api/notificaciones';
+//import { addIdNotification } from '../api/sqlite';
 
 import PrincipalScreen from '../screens/PrincipalScreen';
 import SaludoScreen from '../screens/SaludoScreen';
+
+
 import Perfil from '../screens/Perfil';
 import DolenciasSintomas from '../screens/DolenciasSintomas';
 import HistorialChats from '../screens/HistorialChats';
@@ -36,8 +42,9 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MyTabs(){
-  return(
-    <Tab.Navigator  initialRouteName="Principal" screenOptions={{headerShown:false, 
+  return (
+    <Tab.Navigator initialRouteName="Principal" screenOptions={{
+      headerShown: false, 
       tabBarActiveBackgroundColor: '#a9a9a9',
       tabBarActiveTintColor: '#000000',
       tabBarLabelStyle: {color: '#ff3e45', fontWeight: 'bold', fontSize: 12, marginBottom: 5},
@@ -131,9 +138,19 @@ function ConfiguracionNestedScreen() {
   
 }
 
+const linking = {
+  prefixes: ['adam://'],
+  config: {
+    screens: {
+      'seguimiento-nocturno': 'seguimiento-nocturno',
+      'medicamento': 'medicamento',
+    },
+  },
+};
+
 export default function AppNavigation() {
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="Saludo">
         {/* <Stack.Screen name="Principal" component={PrincipalScreen} /> */}
         {/* <Stack.Screen name="Tabs" component={MyTabs}/> */}
@@ -142,7 +159,67 @@ export default function AppNavigation() {
         <Stack.Screen name="PerfilNested" component={PerfilNestedScreen} />
         <Stack.Screen name="ConfiguracionNested" component={ConfiguracionNestedScreen} />
         <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="medicamentos" component={Medicamentos} />
       </Stack.Navigator>
+      <NotificationHandler />
     </NavigationContainer>
   );
+}
+function NotificationHandler() {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    try {
+      Notifications.addNotificationResponseReceivedListener(response => {
+        try {
+          console.log(response);
+          if (!response) {
+            return;
+          }
+          if (response.notification.request.content.data) {
+            const navigateTo = response.notification.request.content.data.navigateTo;
+            console.log('content: ', response.notification.request.content);
+            console.log('navigate to: ', navigateTo);
+            try {
+              if (navigateTo && typeof navigateTo === 'string') {
+                navigation.navigate(navigateTo);
+              }
+            } catch (error) {
+              console.log('Error al navegar: ', error);
+            }
+            try {
+              if (response.notification.request.content.data.tipoNotificacion === 'medicamento') {
+                let horario = response.notification.request.content.data.horarioMedicamento
+                let segundos = calcularSegundosHastaProximoHorario(horario)
+                let id = response.notification.request.content.data.idMedicamento
+                
+                let notificacion = Notifications.scheduleNotificationAsync({
+                  content: {
+                    title: response.notification.request.content.title,
+                    body: response.notification.request.content.body,
+                    data: response.notification.request.content.data
+                  },
+                  trigger: {
+                    seconds: segundos 
+                  },
+                });
+                //addIdNotification(id, notificacion)
+              }
+            } catch (error) {
+              
+            }
+
+          }
+        } catch (error) {
+          console.log('Error al manejar la notificación: ', error);
+        }
+      });
+    } catch (error) {
+      console.log('Error al añadir el listener de notificaciones: ', error);
+    }
+
+  }, []);
+
+
+  return;
 }
