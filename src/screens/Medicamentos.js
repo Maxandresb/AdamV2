@@ -9,6 +9,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { programarNotificacionMedica as programarNotificacionMedica } from "../api/notificaciones";
 import * as Notifications from 'expo-notifications';
+import { useIsFocused } from '@react-navigation/native';
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -18,6 +19,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     const [mostrarHora, setMostrarHora] = useState(false);
     const [periodicidad2, setPeriodicidad2] = useState(medicamento.periodicidad);
     const [horarios, setHorarios] = useState([]);
+    const isFocused = useIsFocused();
 
     // ********** MANEJO DE CHECK ***********
     const ESTADO_INACTIVO = '0';
@@ -74,9 +76,6 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
         });
     };
 
-    useEffect(() => {
-        console.log('medicamento:: ',medicamento);
-    },[]);
 
     const cancelarNotificacion = async (medicamento, estado) => {
         console.log('=> CANCELANDO NOTIFICACION CON IDNOTIFICACION:', medicamento)
@@ -137,7 +136,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                     );
                 } catch (error) {
                     console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
-        
+
                 }
             }
         }
@@ -269,22 +268,25 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
         }
     }, [currentMedicamento.horarios, medicamento.horarios, periodicidad2]);
 
+    let horariosCalculados;
+
     const manejarCambioHora = (horaSeleccionada) => {
         const horaActualizada = horaSeleccionada || hora;
         setHora(horaActualizada);
-        const horariosCalculados = calcularHorarios(horaActualizada, periodicidad2);
-        setHorarios(horariosCalculados);
-    };
-
-
-    const manejarCambioPeriodicidad = (valor) => {
-        setPeriodicidad2(valor);
-        const horariosCalculados = calcularHorarios(hora, valor);
+        horariosCalculados = calcularHorarios(horaActualizada, periodicidad2);
+        medicamento.horarios = horariosCalculados
+        currentMedicamento.horarios = horariosCalculados.join(" ")
         setHorarios(horariosCalculados);
         manejarCambio('horarios', horariosCalculados.join(" "));
     };
 
-
+    const manejarCambioPeriodicidad = (valor) => {
+        setPeriodicidad2(valor);
+        horariosCalculados = calcularHorarios(hora, valor);
+        setHorarios(horariosCalculados);
+        medicamento.horarios = horariosCalculados
+        manejarCambio('horarios', horariosCalculados.join(" "));
+    };
     const manejarCambio = (clave, valor) => {
         setCurrentMedicamento(current => ({
             ...current,
@@ -311,8 +313,6 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     const abrirHora = () => {
         setMostrarHora(true);
     };
-
-
 
     // ********** MANEJO DE ELIMINAR MEDICAMENTO ***********
     const pressEliminarMedicamento = () => {
@@ -415,7 +415,9 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                     <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Periodicidad:</Text>
                     <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.periodicidad}</Text>
                     <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Horarios a notificar:</Text>
-                    <Text className="flex-0 mb-2 mx-5 text-azulnegro">{currentMedicamento.horarios}</Text>
+                    <Text className="flex-0 mb-2 mx-5 text-azulnegro">{horarios.join("  ")}</Text>
+
+
                 </>
             )}
 
@@ -438,7 +440,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                             console.log('actualizando estado de la notificacion en pantalla');
                             setMedicamentos(prevMedicamentos =>
                                 prevMedicamentos.map(med =>
-                                    med.id === medicamento.id ? { ...med, estadoNotificacion: estadoActualizar } : med
+                                    med.id === medicamento.id ? { ...med, estadoNotificacion: '0' } : med
                                 )
                             );
                         } catch (error) {
@@ -472,12 +474,12 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                                 console.log('actualizando estado de la notificacion en pantalla');
                                 setMedicamentos(prevMedicamentos =>
                                     prevMedicamentos.map(med =>
-                                        med.id === medicamento.id ? { ...med, estadoNotificacion: estadoActualizar } : med
+                                        med.id === medicamento.id ? { ...med, estadoNotificacion: '0' } : med
                                     )
                                 );
                             } catch (error) {
                                 console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
-    
+
                             }
                             setCurrentMedicamentoId(null)
                         }}
