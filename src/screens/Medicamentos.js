@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
 import { obtenerRut } from "../api/sqlite"
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -10,6 +9,10 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { programarNotificacionMedica as programarNotificacionMedica } from "../api/notificaciones";
 import * as Notifications from 'expo-notifications';
 import { SafeAreaView } from "react-native-safe-area-context";
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
+
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -337,29 +340,31 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     };
 
 
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
 
     return (
         <View className="mt-2">
             {isEditing ? (
                 <>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5 mt-2">Medicamento:</Text>
+                    <Text style={styles.encabezado}>Medicamento:</Text>
                     <TextInput
                         style={styles.input}
                         value={currentMedicamento.medicamento}
                         onChangeText={(val) => manejarCambio('medicamento', val)}
                     />
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5 mt-2">Dosis:</Text>
+                    <Text style={styles.encabezado}>Dosis:</Text>
                     <TextInput
                         style={styles.input}
                         value={currentMedicamento.dosis}
                         onChangeText={(val) => manejarCambio('dosis', val)}
                     />
-                    <Text className="text-redcoral text-lg font-bold mb-3 ml-5 mt-2">Periodicidad:</Text>
-                    <View className="bg-beige h-12 mb-3 mx-5 border-b-2 border-salmon rounded-t-md placeholder:text-azulnegro pl-3">
+                    <Text style={styles.encabezado}>Periodicidad:</Text>
+                    <View style={styles.inputIMC}>
                         <Picker
                             selectedValue={currentMedicamento.periodicidad}
                             onValueChange={(itemValue) => manejarCambio('periodicidad', itemValue)}
-                            style={styles.inputPicker2}
                         >
                             <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                             <Picker.Item label="Cada 24 hrs (Una vez al dia)" value="Cada 24 hrs (Una vez al dia)" />
@@ -369,10 +374,10 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                             <Picker.Item label="Cada 4 hrs (Seis veces al dia)" value="Cada 4 hrs (Seis veces al dia)" />
                         </Picker>
                     </View>
-                    <Text className="text-redcoral text-lg font-bold mb-3 ml-5 mt-2">Indica la hora en la que comenzaras a ingerir el medicamento:</Text>
+                    <Text style={styles.encabezado} className="text-center">Indica la hora en la que comenzaras a ingerir el medicamento:</Text>
                     <TouchableOpacity onPress={abrirHora}>
                         <TextInput
-                            className="bg-beige h-12 mb-3 mx-5 border-b-2 border-salmon rounded-t-md placeholder:text-azulnegro pl-3"
+                            style={styles.horaInputMedicamento}
                             value={hora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             editable={false}
                         />
@@ -387,12 +392,12 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                             onChange={onChangeTime2}
                         />
                     )}
-                    <Text className="text-redcoral text-lg font-bold mb-3 ml-5 mt-2">
+                    <Text style={styles.encabezado} className="text-center">
                         {periodicidad2 === 'Cada 24 hrs (Una vez al dia)'
                             ? 'La alarma de este medicamento se programara a esta hora:'
                             : 'Las alarmas de este medicamento se programaran a estas horas:'}
                     </Text>
-                    <View className="bg-beige flex-0 mb-3 mx-5 border-b-2 border-salmon rounded-t-md placeholder:text-azulnegro pl-3">
+                    <View className="flex-0 mb-3 mx-5 rounded-md placeholder:text-azulnegro pl-3" style={{backgroundColor: activeColors.secondary, borderWidth: 2, borderColor: activeColors.quinary}}>
                         {horarios.map((time, index) => (
                             <Text className="text-center text-azulnegro  text-lg " key={index}>{time}</Text>
                         ))}
@@ -402,27 +407,27 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                 <>
                     <View className="flex-row " style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <View>
-                            <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Estado del medicamento: </Text>
-                            <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.medicamento}</Text>
+                            <Text style={styles.header} className="ml-5">Estado del medicamento: </Text>
+                            <Text style={styles.content} className="ml-5">{currentMedicamento.medicamento}</Text>
                         </View>
                         <TouchableOpacity style={{ paddingRight: 15 }} onPress={() => manejarNotificaciones(medicamento)}>
                             <Text><FontAwesome5 name="check" size={25} color={medicamento.estadoNotificacion === '0' ? 'black' : 'green'} /></Text>
                         </TouchableOpacity>
                     </View>
-                    <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Medicamento:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.medicamento}</Text>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Dosis:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.dosis}</Text>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Periodicidad:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.periodicidad}</Text>
-                    <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Horarios a notificar:</Text>
-                    <Text className="flex-0 mb-2 mx-5 text-azulnegro">{currentMedicamento.horarios}</Text>
+                    <Text style={styles.header} className="ml-5">Medicamento:</Text>
+                    <Text style={styles.content} className="ml-5">{currentMedicamento.medicamento}</Text>
+                    <Text style={styles.header} className="ml-5">Dosis:</Text>
+                    <Text style={styles.content} className="ml-5">{currentMedicamento.dosis}</Text>
+                    <Text style={styles.header} className="ml-5">Periodicidad:</Text>
+                    <Text style={styles.content} className="ml-5">{currentMedicamento.periodicidad}</Text>
+                    <Text style={styles.header} className="ml-5">Horarios a notificar:</Text>
+                    <Text style={styles.content} className="ml-5">{currentMedicamento.horarios}</Text>
                 </>
             )}
 
             <View className="flex-row self-center justify-around w-full mt-3">
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.primaryButton}
                     onPress={async () => {
                         try {
                             pressUpdate(medicamento.id, { ...currentMedicamento, horarios: horarios.join(" ") })
@@ -448,16 +453,16 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                         }
                     }}
                 >
-                    <Text style={styles.celesteText}>
+                    <Text style={styles.buttonText}>
                         {isEditing ? 'Guardar cambios' : 'Modificar Medicamento'}
                     </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={styles.celesteButton}
+                    style={styles.secondaryButton}
                     onPress={pressEliminarMedicamento}
                 >
-                    <Text style={styles.rojoIntensoText}>
+                    <Text style={styles.buttonText2}>
                         Eliminar Medicamento
                     </Text>
                 </TouchableOpacity>
@@ -466,7 +471,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                 <>
                     <View style={styles.espacioContainer2}></View>
                     <TouchableOpacity
-                        style={styles.celesteButton}
+                        style={styles.secondaryButton}
                         onPress={() => {
                             try {
                                 medicamento.estadoNotificacion = '0'
@@ -483,7 +488,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                             setCurrentMedicamentoId(null)
                         }}
                     >
-                        <Text style={styles.rojoIntensoText}>
+                        <Text style={styles.buttonText2}>
                             Cancelar
                         </Text>
                     </TouchableOpacity>
@@ -506,6 +511,7 @@ const Medicamentos = () => {
     const [dosis, setDosis] = useState('');
     const [periodicidad, setPeriodicidad] = useState('');
     const [horarios, setHorarios] = useState('');
+    const [saveMedicamentoAlert, setSaveMedicamentoAlert] = useState(false);
 
     const [isAlertVisible, setAlertVisible] = useState(false);
 
@@ -649,6 +655,9 @@ const Medicamentos = () => {
     let times = calculateTimes(hora)
 
 
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
 
     return (
         
@@ -656,10 +665,10 @@ const Medicamentos = () => {
             <SafeAreaView>
             <View>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.primaryButton}
                     onPress={pressShowAgregarMedicamento} // Agregar esto
                 >
-                    <Text style={styles.celesteText}>
+                    <Text style={styles.buttonText}>
                         Agregar un nuevo medicamento
                     </Text>
                 </TouchableOpacity>
@@ -697,7 +706,7 @@ const Medicamentos = () => {
             >
                 <View className="flex-1 justify-center items-center px-3 bg-fondoOscurecido">
                     <View style={styles.modalView}>
-                        <Text className="text-center text-rojoIntenso font-bold text-lg pb-3">Indica el nombre del medicamento:</Text>
+                        <Text style={styles.encabezado}>Indica el nombre del medicamento:</Text>
                         <TextInput
                             style={styles.input}
                             placeholderTextColor="gray"
@@ -705,7 +714,7 @@ const Medicamentos = () => {
                             onChangeText={text => setNomMedicamento(text)}
                             value={nomMedicamento}
                         />
-                        <Text className="text-center text-rojoIntenso font-bold text-lg pb-3">Indica la dosis a ingerir:</Text>
+                        <Text style={styles.encabezado}>Indica la dosis a ingerir:</Text>
                         <TextInput
                             style={styles.input}
                             placeholderTextColor="gray"
@@ -713,12 +722,18 @@ const Medicamentos = () => {
                             onChangeText={text => setDosis(text)}
                             value={dosis}
                         />
-                        <Text className="text-center text-rojoIntenso font-bold text-lg pb-3">Indica cada cuanto debes tomar el medicamento:</Text>
+
+                        <CustomAlert
+                          isVisible={saveMedicamentoAlert}
+                          onClose={() => {setSaveMedicamentoAlert(false)}}
+                          message='Medicamento Ingresado exitosamente'
+                        />
+
+                        <Text style={styles.encabezado}>Indica cada cuanto debes tomar el medicamento:</Text>
                         <View style={styles.inputPicker}>
                             <Picker
                                 selectedValue={periodicidad}
                                 onValueChange={(itemValue) => setPeriodicidad(itemValue)}
-                                style={styles.inputPicker2}
                             >
                                 <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                                 <Picker.Item label="Cada 24 hrs (Una vez al dia)" value="Cada 24 hrs (Una vez al dia)" />
@@ -728,10 +743,10 @@ const Medicamentos = () => {
                                 <Picker.Item label="Cada 4 hrs (Seis veces al dia)" value="Cada 4 hrs (Seis veces al dia)" />
                             </Picker>
                         </View>
-                        <Text className="text-center text-damasco font-bold text-lg pb-3">Indica la hora en la que comenzaras a ingerir el medicamento:</Text>
+                        <Text style={styles.encabezado} className="text-center">Indica la hora en la que comenzaras a ingerir el medicamento:</Text>
                         <TouchableOpacity onPress={showTimepicker}>
                             <TextInput
-                                className="bg-beige h-12 mb-3 mx-5 border-2 border-salmon rounded-md placeholder:text-azulnegro pl-3"
+                                style={styles.horaInputMedicamento}
                                 value={hora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 editable={false}
                             />
@@ -749,12 +764,12 @@ const Medicamentos = () => {
                         )}
                         {hora && periodicidad ? (
                             <>
-                                <Text className="text-center text-damasco font-bold text-lg pb-3">
+                                <Text style={styles.encabezado} className="text-center">
                                     {periodicidad === 'Cada 24 hrs (Una vez al dia)'
                                         ? 'La alarma de este medicamento se programara a esta hora:'
                                         : 'Las alarmas de este medicamento se programaran a estas horas:'}
                                 </Text>
-                                <View className="bg-beige mb-3 mx-5 border-2 border-salmon rounded-md placeholder:text-azulnegro ">
+                                <View className="mb-3 mx-5 border-2 rounded-md placeholder:text-azulnegro" style={{borderColor: activeColors.quinary, backgroundColor: activeColors.secondary}}>
                                     {times.map((time, index) => (
                                         <Text className="text-center text-azulnegro  text-lg " key={index}>{time}</Text>
                                     ))}
@@ -762,24 +777,25 @@ const Medicamentos = () => {
                             </>
                         ) : (
                             <>
-                                <Text className="text-center text-damasco font-bold text-lg " >{'Aqui veras la o las horas en las el medicamento debe ser administrado'}</Text>
+                                <Text style={styles.encabezado} className="text-center">{'Aqui veras la o las horas en las el medicamento debe ser administrado'}</Text>
                             </>
                         )}
                         <View className="flex-row self-center justify-around w-full mt-5">
-                            <TouchableOpacity style={styles.celesteButton} onPress={() => { setModalVisibleMedicamentos(false) }}>
-                                <Text style={styles.rojoIntensoText}>
+                            <TouchableOpacity style={styles.secondaryButton} onPress={() => { setModalVisibleMedicamentos(false) }}>
+                                <Text style={styles.buttonText2}>
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity className="h-12 w-28 p-2 bg-damasco justify-center rounded-md shadow-md shadow-negro"
+                            <TouchableOpacity style={styles.primaryButton}
                                 onPress={async () => {
                                     try {
                                         await agregarMedicamento();
+                                        setSaveMedicamentoAlert(true);
                                     } catch (error) {
                                         console.error("Error en agregarMedicamento: ", error);
                                     }
                                 }}>
-                                <Text className="text-md text-redcoral font-bold text-center">
+                                <Text style={styles.buttonText}>
                                     Agregar nuevo medicamento
                                 </Text>
                             </TouchableOpacity>

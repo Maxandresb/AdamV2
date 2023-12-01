@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
-import { obtenerRut } from "../api/sqlite"
+import { obtenerRut } from "../api/sqlite";
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -34,6 +36,10 @@ const PatologiaCronica = ({ patologia, isEditing, handlePress, handleDelete, set
             ]
         );
     };
+
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
 
     return (
         <View>
@@ -79,18 +85,18 @@ const PatologiaCronica = ({ patologia, isEditing, handlePress, handleDelete, set
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.primaryButton}
                     onPress={() => handlePress(patologia.id, currentPatologia)}
                 >
-                    <Text style={styles.celesteText}>
+                    <Text style={styles.buttonText}>
                         {isEditing ? 'Guardar cambios' : 'Modificar Patología'}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.celesteButton}
+                    style={styles.secondaryButton}
                     onPress={handleDeletePress}
                 >
-                    <Text style={styles.rojoIntensoText}>
+                    <Text style={styles.buttonText2}>
                         Eliminar Patología
                     </Text>
                 </TouchableOpacity>
@@ -99,10 +105,10 @@ const PatologiaCronica = ({ patologia, isEditing, handlePress, handleDelete, set
                 <>
                     <View style={styles.espacioContainer2}></View>
                     <TouchableOpacity
-                        style={styles.celesteButton}
+                        style={styles.secondaryButton}
                         onPress={() => setCurrentPatologiaId(null)}
                     >
-                        <Text style={styles.rojoIntensoText}>
+                        <Text style={styles.buttonText2}>
                             Cancelar
                         </Text>
                     </TouchableOpacity>
@@ -126,6 +132,7 @@ const PatologiasCronicas = () => {
     const [morbilidad_intensidad, setMorbilidadIntensidad] = useState('');
 
     const [isAlertVisible, setAlertVisible] = useState(false);
+    const [savePatologiaAlert, setSavePatologiaAlert] = useState(false);
 
     useEffect(() => {
         db.transaction(tx => {
@@ -204,14 +211,18 @@ const PatologiasCronicas = () => {
         setMorbilidadIntensidad('');
     };
 
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
+
     return (
         <ScrollView style={styles.container}>
             <View>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.primaryButton}
                     onPress={handleAgregarPatologiaPress}
                 >
-                    <Text style={styles.celesteText}>
+                    <Text style={styles.buttonText}>
                         Agregar una nueva patología
                     </Text>
                 </TouchableOpacity>
@@ -243,7 +254,6 @@ const PatologiasCronicas = () => {
                             <Picker
                                 selectedValue={tipo_patologia}
                                 onValueChange={(itemValue) => setTipoPatologia(itemValue)}
-                                style={styles.inputPicker2}
                             >
                                 <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                                 <Picker.Item label="Patologías crónicas cardiovasculares" value="Patologías crónicas cardiovasculares" />
@@ -256,6 +266,11 @@ const PatologiasCronicas = () => {
                                 <Picker.Item label="Otras Patologías crónicas" value="Otras Patologías crónicas" />
                             </Picker>
                         </View>
+                        <CustomAlert
+                            isVisible={savePatologiaAlert}
+                            onClose={() => setSavePatologiaAlert(false)}
+                            message='Patología Ingresada exitosamente'
+                        />
                         <Text style={styles.header}>Ingresa el nombre de tu patologia:</Text>
                         <TextInput
                             style={styles.input}
@@ -269,7 +284,6 @@ const PatologiasCronicas = () => {
                             <Picker
                                 selectedValue={transmisibilidad}
                                 onValueChange={(itemValue) => setTransmisibilidad(itemValue)}
-                                style={styles.inputPicker2}
                             >
                                 <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                                 <Picker.Item label="Patología crónica no transmisible" value="Patología crónica no transmisible" />
@@ -281,7 +295,6 @@ const PatologiasCronicas = () => {
                             <Picker
                                 selectedValue={morbilidad_intensidad}
                                 onValueChange={(itemValue) => setMorbilidadIntensidad(itemValue)}
-                                style={styles.inputPicker2}
                             >
                                 <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                                 <Picker.Item label="Patología crónica de alto consumo" value="Patología crónica de alto consumo" />
@@ -289,13 +302,13 @@ const PatologiasCronicas = () => {
                             </Picker>
                         </View>
                         <View style={styles.buttonContainerCenter}>
-                            <TouchableOpacity style={styles.closeButton} className="w-28" onPress={() => { setModalVisiblePatologias(false); }}>
-                                <Text className="text-azul text-center font-bold">
+                            <TouchableOpacity style={styles.secondaryButton} onPress={() => { setModalVisiblePatologias(false); }}>
+                                <Text style={styles.buttonText2}>
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.rojoIntensoButton} className="w-32" onPress={() => { agregarPatologia(); }}>
-                                <Text style={styles.celesteText}>
+                            <TouchableOpacity style={styles.primaryButton} onPress={() => { agregarPatologia(); setSavePatologiaAlert(true)}}>
+                                <Text style={styles.buttonText}>
                                     Agregar nueva patología
                                 </Text>
                             </TouchableOpacity>

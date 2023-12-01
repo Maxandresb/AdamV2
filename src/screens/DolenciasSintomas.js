@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
@@ -9,6 +9,9 @@ import { format } from 'date-fns';
 import SelecTiempoAtras from '../api/selecTiempoAtras';
 import EVA from "../api/escalaEVA";
 import { FontAwesome5 } from '@expo/vector-icons';
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 
 const db = SQLite.openDatabase('adamdb.db');
@@ -42,28 +45,31 @@ const DolenciaSintoma = ({ dolenciaSintoma, isEditing, handlePress, handleDelete
 
     const partesCuerpo = ["Cabeza", "Torso", "Brazo derecho", "Brazo izquierdo", "Pierna derecha", "Pierna izquierda"];
 
+    const {theme, updateTheme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
+
     return (
         <View className="mx-5">
             {isEditing ? (
                 <>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5">Dolencia o Síntoma:</Text>
+                    <Text style={styles.encabezado}>Dolencia o Síntoma:</Text>
                     <TextInput
                         style={styles.input}
                         value={currentDolenciaSintoma.dolenciaSintoma}
                         onChangeText={(val) => handleChange('dolenciaSintoma', val)}
                     />
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5">Descripción:</Text>
+                    <Text style={styles.encabezado}>Descripción:</Text>
                     <TextInput
                         style={styles.input}
                         value={currentDolenciaSintoma.descripcion}
                         onChangeText={(val) => handleChange('descripcion', val)}
                     />
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5">Parte del cuerpo afectada:</Text>
+                    <Text style={styles.encabezado}>Parte del cuerpo afectada:</Text>
                     <View style={styles.inputPicker}>
                         <Picker
                             selectedValue={currentDolenciaSintoma.parteCuerpoAfectada}
                             onValueChange={(itemValue) => handleChange('parteCuerpoAfectada', itemValue)}
-                            style={styles.inputPicker2}
                         >
                             <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                             {partesCuerpo.map((parte, index) => (
@@ -71,15 +77,15 @@ const DolenciaSintoma = ({ dolenciaSintoma, isEditing, handlePress, handleDelete
                             ))}
                         </Picker>
                     </View>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5">Tiempo desde aparición:</Text>
+                    <Text style={styles.encabezado}>Tiempo desde aparición:</Text>
                     <SelecTiempoAtras onConfirm={(number, word) => {
                         let tiempodesde = number + ' ' + word
                         //setTiempoDesdeAparicion(tiempodesde)
                         handleChange('tiempoDesdeAparicion', tiempodesde)
                     }} />
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5">Nivel de dolor en escala EVA:</Text>
+                    <Text style={styles.encabezado}>Nivel de dolor en escala EVA:</Text>
                     <EVA onChangeValue={(value) => handleChange('nivelDolor', value)} />
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5">Medicamento utilizado:</Text>
+                    <Text style={styles.encabezado}>Medicamento utilizado:</Text>
                     <TextInput
                         style={styles.input}
                         placeholderTextColor="gray"
@@ -87,7 +93,7 @@ const DolenciaSintoma = ({ dolenciaSintoma, isEditing, handlePress, handleDelete
                         value={currentDolenciaSintoma.medicamentosUtilizados}
                         onChangeText={(val) => handleChange('medicamentosUtilizados', val)}
                     />
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5">Dosis utilizada:</Text>
+                    <Text style={styles.encabezado}>Dosis utilizada:</Text>
                     <TextInput
                         style={styles.input}
                         value={currentDolenciaSintoma.dosisUtilizada}
@@ -97,38 +103,38 @@ const DolenciaSintoma = ({ dolenciaSintoma, isEditing, handlePress, handleDelete
                 </>
             ) : (
                 <>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Dolencia o Síntoma:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-negro">{currentDolenciaSintoma.dolenciaSintoma}</Text>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Fecha y hora del registro:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-negro">{currentDolenciaSintoma.fechaHora}</Text>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Descripción:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-negro">{currentDolenciaSintoma.descripcion}</Text>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Parte del cuerpo afectada:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-negro">{currentDolenciaSintoma.parteCuerpoAfectada}</Text>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Tiempo desde aparición:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-negro">{currentDolenciaSintoma.tiempoDesdeAparicion}</Text>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Nivel de dolor en escala EVA:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-negro">{currentDolenciaSintoma.nivelDolor}</Text>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Medicamento utilizado:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-negro">{currentDolenciaSintoma.medicamentosUtilizados}</Text>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Dosis utilizada:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-negro">{currentDolenciaSintoma.dosisUtilizada}</Text>
+                    <Text style={styles.header}>Dolencia o Síntoma:</Text>
+                    <Text style={styles.content}>{currentDolenciaSintoma.dolenciaSintoma}</Text>
+                    <Text style={styles.header}>Fecha y hora del registro:</Text>
+                    <Text style={styles.content}>{currentDolenciaSintoma.fechaHora}</Text>
+                    <Text style={styles.header}>Descripción:</Text>
+                    <Text style={styles.content}>{currentDolenciaSintoma.descripcion}</Text>
+                    <Text style={styles.header}>Parte del cuerpo afectada:</Text>
+                    <Text style={styles.content}>{currentDolenciaSintoma.parteCuerpoAfectada}</Text>
+                    <Text style={styles.header}>Tiempo desde aparición:</Text>
+                    <Text style={styles.content}>{currentDolenciaSintoma.tiempoDesdeAparicion}</Text>
+                    <Text style={styles.header}>Nivel de dolor en escala EVA:</Text>
+                    <Text style={styles.content}>{currentDolenciaSintoma.nivelDolor}</Text>
+                    <Text style={styles.header}>Medicamento utilizado:</Text>
+                    <Text style={styles.content}>{currentDolenciaSintoma.medicamentosUtilizados}</Text>
+                    <Text style={styles.header}>Dosis utilizada:</Text>
+                    <Text style={styles.content}>{currentDolenciaSintoma.dosisUtilizada}</Text>
                 </>
             )}
             <View className="flex-row  justify-between self-center mt-5">
                 <TouchableOpacity
-                    style={[styles.rojoIntensoButton, { textAlign: 'center', textAlignVertical: 'center', flexWrap: 'wrap' }]}
+                    style={[styles.primaryButton, { textAlign: 'center', textAlignVertical: 'center', flexWrap: 'wrap' }]}
                     onPress={() => handlePress(dolenciaSintoma.id, currentDolenciaSintoma)}
                 >
-                    <Text style={styles.celesteText}>
+                    <Text style={styles.buttonText}>
                         {isEditing ? 'Guardar cambios' : 'Modificar Dolencia/Síntoma'}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.celesteButton}
+                    style={styles.secondaryButton}
                     onPress={handleDeletePress}
                 >
-                    <Text style={styles.rojoIntensoText}>
+                    <Text style={styles.buttonText2}>
                         Eliminar Dolencia/Síntoma
                     </Text>
                 </TouchableOpacity>
@@ -137,10 +143,10 @@ const DolenciaSintoma = ({ dolenciaSintoma, isEditing, handlePress, handleDelete
                 <>
                     <View style={styles.espacioContainer2}></View>
                     <TouchableOpacity
-                        style={styles.celesteButton}
+                        style={styles.secondaryButton}
                         onPress={() => setCurrentDolenciaSintomaId(null)}
                     >
-                        <Text style={styles.rojoIntensoText}>
+                        <Text style={styles.buttonText2}>
                             Cancelar
                         </Text>
                     </TouchableOpacity>
@@ -166,6 +172,7 @@ const DolenciasSintomas = () => {
     const [nivelDolor, setNivelDolor] = useState('');
     const [medicamentosUtilizados, setMedicamentosUtilizados] = useState(null);
     const [dosisUtilizada, setDosisUtilizada] = useState(null);
+    const [saveDolenciaAlert, setSaveDolenciaAlert] = useState(false);
 
     const [isAlertVisible, setAlertVisible] = useState(false);
 
@@ -339,17 +346,20 @@ const DolenciasSintomas = () => {
             );
         });
     }
-    
-    
+
+    const {theme, updateTheme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
+        
 
     return (
-        <ScrollView className="flex-1 bg-grisClaro px-5 pt-3">
+        <ScrollView className="px-2" style={styles.container}>
             <View className="mt-5 mx-3 mb-5">
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.primaryButton}
                     onPress={handleAgregarDolenciaSintomaPress}
                 >
-                    <Text style={styles.celesteText}>
+                    <Text style={styles.buttonText}>
                         Agregar nueva dolencia o síntoma
                     </Text>
                 </TouchableOpacity>
@@ -357,7 +367,7 @@ const DolenciasSintomas = () => {
             <View style={styles.lineaContainer}></View>
             <View className="flex-row " style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop:-10, marginBottom:-20}}>
                 <View>
-                    <Text className="text-redcoral text-lg font-bold mb-3 pl-5">{'Seguimiento diario de \n\dolencias o sintomas: '}</Text>
+                    <Text style={styles.seguimientoDolenciaHeader}>{'Seguimiento diario de \n\dolencias o sintomas: '}</Text>
                 </View>
                 <TouchableOpacity style={{ paddingRight: 15 }} onPress={() => {cambiarEstadoSeguimiento()}}>
                     <Text><FontAwesome5 name="check" size={25} color={ estadoSeguimiento === '0' ? 'black' : 'green'} /></Text>
@@ -391,7 +401,7 @@ const DolenciasSintomas = () => {
                     <ScrollView>
                         <View>
                             <View style={[styles.modalView,]} className="self-center">
-                                <Text className="text-center text-rojoIntenso text-lg font-bold pb-3">Ingresa tu dolencia o síntoma:</Text>
+                                <Text style={styles.seguimientoFormHeader}>Ingresa tu dolencia o síntoma:</Text>
                                 <TextInput
                                     style={styles.input}
                                     placeholderTextColor="gray"
@@ -399,10 +409,10 @@ const DolenciasSintomas = () => {
                                     onChangeText={text => setDolenciaSintoma(text)}
                                     value={dolenciaSintoma}
                                 />
-                                <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5">Fecha y hora del registro:</Text>
+                                <Text style={styles.seguimientoFormHeader}>Fecha y hora del registro:</Text>
                                 <View style={[styles.input, { justifyContent: 'center' }]}><Text>{fec_hor}</Text></View>
 
-                                <Text className="text-center text-rojoIntenso text-lg font-bold pb-3">Ingresa la descripción:</Text>
+                                <Text style={styles.seguimientoFormHeader}>Ingresa la descripción:</Text>
                                 <TextInput
                                     style={[styles.input, { height: 80 }]}
                                     placeholderTextColor="gray"
@@ -410,12 +420,11 @@ const DolenciasSintomas = () => {
                                     onChangeText={text => setDescripcion(text)}
                                     value={descripcion}
                                 />
-                                <Text className="text-center text-rojoIntenso text-lg font-bold pb-3">Selecciona la parte del cuerpo afectada:</Text>
+                                <Text style={styles.seguimientoFormHeader}>Selecciona la parte del cuerpo afectada:</Text>
                                 <View style={styles.inputPicker}>
                                     <Picker
                                         selectedValue={parteCuerpoAfectada}
                                         onValueChange={(itemValue) => setParteCuerpoAfectada(itemValue)}
-                                        style={styles.inputPicker2}
                                     >
                                         <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                                         {partesCuerpo.map((parte, index) => (
@@ -423,16 +432,16 @@ const DolenciasSintomas = () => {
                                         ))}
                                     </Picker>
                                 </View>
-                                <Text className="text-center text-rojoIntenso text-lg font-bold pb-3">Ingresa el tiempo desde aparición:</Text>
+                                <Text style={styles.seguimientoFormHeader}>Ingresa el tiempo desde aparición:</Text>
                                 <SelecTiempoAtras onConfirm={(number, word) => {
                                     let tiempodesde = number + ' ' + word
                                     setTiempoDesdeAparicion(tiempodesde)
                                 }} />
 
-                                <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5">Nivel de dolor en escala EVA:</Text>
+                                <Text style={styles.seguimientoFormHeader}>Nivel de dolor en escala EVA:</Text>
                                 <EVA onChangeValue={cambioNivelDolor} />
 
-                                <Text className="text-center text-rojoIntenso text-lg font-bold pb-3">Ingresa el o los medicamentos utilizados:</Text>
+                                <Text style={styles.seguimientoFormHeader}>Ingresa el o los medicamentos utilizados:</Text>
                                 <TextInput
                                     style={styles.input}
                                     placeholderTextColor="gray"
@@ -440,7 +449,7 @@ const DolenciasSintomas = () => {
                                     onChangeText={text => verificarMedicamento(text)}
                                     value={medicamentosUtilizados}
                                 />
-                                <Text className="text-center text-rojoIntenso text-lg font-bold pb-3">Ingresa la o las dosis utilizadas:</Text>
+                                <Text style={styles.seguimientoFormHeader}>Ingresa la o las dosis utilizadas:</Text>
                                 <TextInput
                                     style={styles.input}
                                     placeholderTextColor="gray"
@@ -449,14 +458,23 @@ const DolenciasSintomas = () => {
                                     value={dosisUtilizada}
                                 />
 
+                                <CustomAlert
+                                  isVisible={saveDolenciaAlert}
+                                  onClose={() => {setSaveDolenciaAlert(false)}}
+                                  message='Dolencia Ingresada exitosamente'
+                                />
+
                                 <View className="flex-row  justify-between self-center mt-5" >
-                                    <TouchableOpacity style={styles.celesteButton} onPress={() => { setModalVisibleDolenciasSintomas(false) }}>
-                                        <Text style={styles.rojoIntensoText}>
+                                    <TouchableOpacity style={styles.secondaryButton} onPress={() => { setModalVisibleDolenciasSintomas(false) }}>
+                                        <Text style={styles.buttonText2}>
                                             Cerrar
                                         </Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.rojoIntensoButton} onPress={() => { agregarDolenciaSintoma() }}>
-                                        <Text style={styles.celesteText}>
+                                    <TouchableOpacity style={styles.primaryButton} 
+                                    onPress={() => { 
+                                        agregarDolenciaSintoma()
+                                        setSaveDolenciaAlert(true) }}>
+                                        <Text style={styles.buttonText}>
                                             Agregar nueva dolencia o síntoma
                                         </Text>
                                     </TouchableOpacity>

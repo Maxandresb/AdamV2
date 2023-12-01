@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, ScrollView, Text, Dimensions, Modal, Button, TouchableHighlight, StyleSheet } from 'react-native';
-import styles from '../api/styles';
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 const { height, width } = Dimensions.get('window');
 
@@ -8,6 +10,8 @@ export default function SelectorRueda({ rango, titulo, onValueChange, metrica })
     const [valorSeleccionado, setValorSeleccionado] = useState(rango[0]);
     const [modalVisible, setModalVisible] = useState(false);
     const [estadoSeleccion, setEstadoSeleccion] = useState(false);
+    const {theme} = useContext(ThemeContext);
+    let styless = getStyless(theme);
 
     const renderItem = (item, index) => (
         <TouchableHighlight
@@ -19,7 +23,7 @@ export default function SelectorRueda({ rango, titulo, onValueChange, metrica })
         >
             <>
                 <Text style={styless.text}>{item}</Text>
-                <View style={styles.lineaContainer4}></View>
+                <View style={styless.lineaContainer4}></View>
             </>
         </TouchableHighlight>
     );
@@ -82,54 +86,71 @@ export default function SelectorRueda({ rango, titulo, onValueChange, metrica })
     );
 }
 
-const styless = StyleSheet.create({
-    textInput: {
-        color: 'black',
-        fontSize: 16,
-        paddingLeft: 18
-    },
-    textInput2: {
-        color: 'black',
-        fontSize: 16,
-        marginBottom: 20,
-        marginTop: 20,
-        fontWeight: 'bold',
-    },
-    textContainer:{
-        justifyContent: 'center',
-        alignItems: 'center',
+const useTheme = (theme) => {
+    return colors[theme.mode];
+}
 
-    },
-    selectedValueContainer: {
-        backgroundColor: '#efefef',
-        height: 40,
-        marginBottom: 10,
-        borderRadius: 5,
-        borderWidth: 2,
-        borderColor: 'black',
-        color: '#00008B',
-        fontWeight: 'bold',
-        justifyContent: 'center',
-    },
-    item: {
-        height: 60,
-        justifyContent: 'center',
-    },
-    text: {
-        textAlign: 'center',
-        fontSize: 18,
-        padding:20
-    },
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    modalContent: {
-        backgroundColor: 'white',
-        borderRadius: 10,
-        width: '80%',
-        maxHeight: height / 2,
-    },
-});
+const getStyless = (theme) => {
+    let activeColors = useTheme(theme);
+
+    return styless = StyleSheet.create({
+        textInput: {
+            color: 'black',
+            fontSize: 16,
+            paddingLeft: 18
+        },
+        textInput2: {
+            color: activeColors.primary,
+            fontSize: 16,
+            marginBottom: 20,
+            marginTop: 20,
+            fontWeight: 'bold',
+        },
+        textContainer:{
+            justifyContent: 'center',
+            alignItems: 'center',
+    
+        },
+        selectedValueContainer: {
+            backgroundColor: activeColors.secondary,
+            height: 45,
+            marginBottom: 10,
+            borderRadius: 5,
+            borderWidth: 2,
+            borderColor: activeColors.quinary,
+            color: activeColors.quinary,
+            fontWeight: 'bold',
+            justifyContent: 'center',
+        },
+        item: {
+            height: 60,
+            justifyContent: 'center',
+        },
+        text: {
+            color: activeColors.tertiary,
+            textAlign: 'center',
+            fontSize: 18,
+            padding:20
+        },
+        modalContainer: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+        modalContent: {
+            backgroundColor: activeColors.quaternary,
+            borderRadius: 10,
+            width: '80%',
+            maxHeight: height / 2,
+        },
+
+        lineaContainer4: {
+            borderBottomColor: activeColors.tertiary,
+            borderBottomWidth: 1,
+            marginLeft: 10,
+            marginRight: 10,
+    
+        },
+    });
+}

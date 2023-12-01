@@ -1,6 +1,6 @@
 //Modulos instalados
 import { Button, Modal, View, Text, Image, SafeAreaView, TouchableOpacity, Alert, ScrollView } from 'react-native'
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useContext } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { GiftedChat, InputToolbar } from 'react-native-gifted-chat'
 import { Audio } from "expo-av";
@@ -21,7 +21,9 @@ import { format } from 'date-fns';
 import { obtenerClima } from "../api/clima";
 import customtInputToolbar from '../api/customInputToolbar';
 import { useNavigation } from "@react-navigation/native";
-
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
   
 
@@ -56,6 +58,10 @@ export default function Emergencias ()  {
   const [mensaje,setMensaje]= useState(false)
 
   const navigation = useNavigation();
+
+  const {theme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
 
 
   async function datos_medicos(){
@@ -224,22 +230,22 @@ export default function Emergencias ()  {
   return (
     <ScrollView className="flex-1  p-5 space-y-5 bg-grisclaro">
       <View className="flex-row h-56 justify-around space-x-10 px-5">
-        <TouchableOpacity className="bg-rojoIntenso rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await llamada_centro()}>
-          <Text className="text-xl text-celeste text-center font-bold">Llamar a centro de salud</Text>
+        <TouchableOpacity style={styles.cardButton} onPress={async() => await llamada_centro()}>
+          <Text style={styles.secondaryText}>Llamar a centro de salud</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity className="bg-rojoIntenso rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={() =>  compartir_ubicacion()}>
-          <Text className="text-xl text-celeste text-center font-bold">Compartir ubicación </Text>
+        <TouchableOpacity style={styles.cardButton} onPress={() =>  compartir_ubicacion()}>
+          <Text style={styles.secondaryText}>Compartir ubicación </Text>
         </TouchableOpacity>
 
         
       </View>
       <View className="flex-row h-56 justify-around space-x-10 px-5">
-        <TouchableOpacity className="bg-rojoIntenso rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await llamada_contacto()}>
-          <Text className="text-xl text-celeste text-center font-bold">Llamar contacto emergencia</Text>
+        <TouchableOpacity style={styles.cardButton} onPress={async() => await llamada_contacto()}>
+          <Text style={styles.secondaryText}>Llamar contacto emergencia</Text>
         </TouchableOpacity>
-        <TouchableOpacity className="bg-rojoIntenso rounded-lg justify-center w-1/2 shadow-xl shadow-negro" onPress={async() => await datos_medicos()}>
-          <Text className="text-xl text-celeste text-center font-bold">Mostrar datos médicos</Text>
+        <TouchableOpacity style={styles.cardButton} onPress={async() => await datos_medicos()}>
+          <Text style={styles.secondaryText}>Mostrar datos médicos</Text>
         </TouchableOpacity>
       </View>
 
@@ -252,7 +258,7 @@ export default function Emergencias ()  {
     >
 
       <View style={[styles.centeredView, {padding:'38%'}] }>
-        <View style={[styles.modalView]}>
+        <View style={styles.modalView}>
         <Image  className="w-12 h-12 bg-negro py-3 rounded-full my-3"
                 source={require('../../assets/images/processingQuestion.gif')}
               />
@@ -284,14 +290,14 @@ export default function Emergencias ()  {
                         centroMedSeleccionado.current = {};
 
                       }}
-                      style={styles.rojoIntensoButton} // Agrega los estilos que desees aquí
+                      style={styles.primaryButton} // Agrega los estilos que desees aquí
                     >
                       <Text style={styles.celesteText}>{`Centro: ${centro.NombreOficial}`}</Text>
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
-                <TouchableOpacity style={styles.closeButton} onPress={() => {setModalNCMVisible(false);}}>
-                  <Text style={styles.rojoIntensoText}>Cerrar</Text>
+                <TouchableOpacity style={styles.secondaryButton} onPress={() => {setModalNCMVisible(false);}}>
+                  <Text style={styles.buttonText2}>Cerrar</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -330,10 +336,10 @@ export default function Emergencias ()  {
                       contactoEmSeleccionado.current = {};
 
                     }}
-                    style={[styles.rojoIntensoButton, {padding:'8%' , margin:'2%'}]} // Agrega los estilos que desees aquí
+                    style={[styles.primaryButton, {padding:'8%' , margin:'2%'}]} // Agrega los estilos que desees aquí
                   >
                    
-                   <Text className="text-celeste font-semibold">
+                   <Text style={styles.buttonText}>
                     {contacto.nombreCompleto !== null && `Contacto: ${contacto.nombreCompleto}`}
                     {contacto.nombreCompleto !== null && contacto.alias !== null && ' y '}
                     {contacto.alias !== null && `Alias: ${contacto.alias}`}
@@ -342,7 +348,7 @@ export default function Emergencias ()  {
                 ))}
                 </ScrollView>
                 <TouchableOpacity
-                  style={styles.closeButton}
+                  style={styles.secondaryButton}
                   
                   onPress={() => {
                     setModalCEVisible(false);
@@ -350,7 +356,7 @@ export default function Emergencias ()  {
                     setMensaje(false)
                   }}
                 >
-                  <Text style={styles.rojoIntensoText}>Cerrar</Text>
+                  <Text style={styles.buttonText2}>Cerrar</Text>
                 </TouchableOpacity>
 
               </View>
@@ -392,18 +398,18 @@ export default function Emergencias ()  {
           }
                 <ScrollView>
                   {datosPerfilMed.current.map((campo,index)=>(
-                    <Text key={index} style={[styles.rojoIntensoButton, {padding:'4%' , margin:'2%'}]}> {campo}</Text>
+                    <Text key={index} style={[styles.primaryButton,styles.buttonText, {padding:'4%' , margin:'2%'}]}> {campo}</Text>
                   ))}
                 </ScrollView>
                 <TouchableOpacity
-                  style={styles.closeButton}
+                  style={styles.secondaryButton}
                   
                   onPress={() => {
                     setModalDMVisible(false);
                     
                   }}
                 >
-                  <Text style={styles.rojoIntensoText}>Cerrar</Text>
+                  <Text style={styles.buttonText2}>Cerrar</Text>
                 </TouchableOpacity>
               </View>
               </View>
