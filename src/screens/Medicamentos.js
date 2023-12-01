@@ -13,7 +13,7 @@ import getStyles from '../api/styles';
 import {colors} from '../api/theme';
 import { ThemeContext } from '../api/themeContext';
 
-
+import { useIsFocused } from '@react-navigation/native';
 const db = SQLite.openDatabase('adamdb.db');
 
 const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurrentMedicamentoId, setMedicamentos, medicamentos, obtenerMedicamentosDeDB }) => {
@@ -22,7 +22,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     const [mostrarHora, setMostrarHora] = useState(false);
     const [periodicidad2, setPeriodicidad2] = useState(medicamento.periodicidad);
     const [horarios, setHorarios] = useState([]);
-
+    const isFocused = useIsFocused();
     // ********** MANEJO DE CHECK ***********
     const ESTADO_INACTIVO = '0';
     const ESTADO_ACTIVO = '1';
@@ -272,19 +272,23 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
             setHorarios(horariosCalculados);
         }
     }, [currentMedicamento.horarios, medicamento.horarios, periodicidad2]);
-
+    let horariosCalculados;
     const manejarCambioHora = (horaSeleccionada) => {
         const horaActualizada = horaSeleccionada || hora;
         setHora(horaActualizada);
-        const horariosCalculados = calcularHorarios(horaActualizada, periodicidad2);
+        horariosCalculados = calcularHorarios(horaActualizada, periodicidad2);
+        medicamento.horarios = horariosCalculados
+        currentMedicamento.horarios = horariosCalculados.join(" ")
         setHorarios(horariosCalculados);
+        manejarCambio('horarios', horariosCalculados.join(" "));
     };
 
 
     const manejarCambioPeriodicidad = (valor) => {
         setPeriodicidad2(valor);
-        const horariosCalculados = calcularHorarios(hora, valor);
+        horariosCalculados = calcularHorarios(hora, valor);
         setHorarios(horariosCalculados);
+        medicamento.horarios = horariosCalculados
         manejarCambio('horarios', horariosCalculados.join(" "));
     };
 
@@ -421,7 +425,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                     <Text style={styles.header} className="ml-5">Periodicidad:</Text>
                     <Text style={styles.content} className="ml-5">{currentMedicamento.periodicidad}</Text>
                     <Text style={styles.header} className="ml-5">Horarios a notificar:</Text>
-                    <Text style={styles.content} className="ml-5">{currentMedicamento.horarios}</Text>
+                    <Text style={styles.content} className="ml-5">{horarios.join("  ")}</Text>
                 </>
             )}
 
@@ -444,7 +448,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                             console.log('actualizando estado de la notificacion en pantalla');
                             setMedicamentos(prevMedicamentos =>
                                 prevMedicamentos.map(med =>
-                                    med.id === medicamento.id ? { ...med, estadoNotificacion: estadoActualizar } : med
+                                    med.id === medicamento.id ? { ...med, estadoNotificacion: '0' } : med
                                 )
                             );
                         } catch (error) {
@@ -478,7 +482,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                                 console.log('actualizando estado de la notificacion en pantalla');
                                 setMedicamentos(prevMedicamentos =>
                                     prevMedicamentos.map(med =>
-                                        med.id === medicamento.id ? { ...med, estadoNotificacion: estadoActualizar } : med
+                                        med.id === medicamento.id ? { ...med, estadoNotificacion: '0' } : med
                                     )
                                 );
                             } catch (error) {
