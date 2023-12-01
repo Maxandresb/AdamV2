@@ -112,7 +112,7 @@ async function programarNotificacionMedica(medicamento) {
     let content = {
       sound: true,
       title: `Recuerda tomar el medicamento ${medicamento.medicamento.medicamento}`,
-      body: `La dosis es ${medicamento.medicamento.dosis} \n\ Los horarios en los que debes tomar este medicamento son: ${medicamento.medicamento.horarios}`,
+      body: `La dosis es ${medicamento.medicamento.dosis} \n\ Los horarios en los que debes tomar este medicamento son: ${medicamento.medicamento.horarios} \n\ Haga clic en esta notificación para garantizar el correcto funcionamiento de la función. `,
       data: {
         navigateTo: 'medicamentos',
         tipoNotificacion: 'medicamento',

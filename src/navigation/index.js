@@ -36,6 +36,7 @@ import SelecDatosVocalizar from '../screens/SelecDatosVocalizar';
 
 import styles from '../api/styles';
 import Emergencias from "../screens/Emergencias";
+import { addIdNotification } from "../api/sqlite";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();

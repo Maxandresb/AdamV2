@@ -9,6 +9,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { programarNotificacionMedica as programarNotificacionMedica } from "../api/notificaciones";
 import * as Notifications from 'expo-notifications';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -650,7 +651,9 @@ const Medicamentos = () => {
 
 
     return (
+        
         <ScrollView className="flex-1 bg-grisClaro px-5 pt-3">
+            <SafeAreaView>
             <View>
                 <TouchableOpacity
                     style={styles.rojoIntensoButton}
@@ -661,6 +664,13 @@ const Medicamentos = () => {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <View style={styles.lineaContainer}></View>
+            <View><Text>
+    Para asegurar que todo funcione bien, simplemente toca la notificación que aparece para cada medicamento.
+  </Text>
+  <Text>
+    Lamentamos cualquier inconveniente.
+  </Text></View>
             <View style={styles.lineaContainer}></View>
             {medicamentos.map(medicamento => (
                 <Medicamento
@@ -674,6 +684,8 @@ const Medicamentos = () => {
                     medicamentos={medicamentos}
                 />
             ))}
+
+            </SafeAreaView>
             <Modal
                 animationType="slide"
                 transparent={true}
