@@ -1,16 +1,22 @@
 
 import * as SQLite from 'expo-sqlite';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity, TouchableHighlight, FlatList } from 'react-native';
 import styles from '../api/styles';
 import moment from 'moment';
 import { useIsFocused } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { obtenerRut } from "../api/sqlite"
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 
 const db = SQLite.openDatabase('adamdb.db');
 const PatologiaCronica = ({ index, patologia, showPatologia, pressPatologia, patologias, pressSelectPatologia }) => {
+  const {theme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
   return (
     <View>
       {showPatologia && (
@@ -58,6 +64,9 @@ const PatologiaCronica = ({ index, patologia, showPatologia, pressPatologia, pat
   )
 }
 const Medicamento = ({ index, medicamento, showMedicamento, pressMedicamento, medicamentos, pressSelectMedicamento }) => {
+  const {theme, updateTheme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
   return (
     <View>
       {showMedicamento && (
@@ -97,6 +106,9 @@ const Medicamento = ({ index, medicamento, showMedicamento, pressMedicamento, me
   )
 }
 const Alergia = ({ index, alergia, showAlergia, pressAlergia, alergias, pressSelectAlergia }) => {
+  const {theme, updateTheme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
   return (
     <View>
       {showAlergia && (
@@ -128,6 +140,9 @@ const Alergia = ({ index, alergia, showAlergia, pressAlergia, alergias, pressSel
   )
 }
 const Limitacion = ({ index, limitacion, showLimitacion, pressLimitacion, limitaciones, pressSelectLimitacion }) => {
+  const {theme, updateTheme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
   return (
     <View>
       {showLimitacion && (
@@ -176,6 +191,9 @@ const Limitacion = ({ index, limitacion, showLimitacion, pressLimitacion, limita
 }
 //ccrear componente usuario
 const Usuario = ({ index, usuario, showUsuario, pressUsuario, pressSelectUsuario }) => {
+  const {theme, updateTheme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
   return (
     <View>
       {showUsuario && (
@@ -645,6 +663,10 @@ export default function SelecDatosVocalizar({ navigation }) {
   const [existenPrevios, setExistenPrevios] = useState(false)
   const [mostrarPrevios, setMostrarPrevios] = useState(false)
 
+  const {theme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
+
   const obtenerImplementarRut = async () => {
     try {
       rutRef.current = await obtenerRut();
@@ -698,18 +720,20 @@ export default function SelecDatosVocalizar({ navigation }) {
     <ScrollView style={styles.container}>
 
 
-      <View className="bg-grisClaro p-10">
-        <View className="bg-celeste p-10 rounded-lg shadow-lg shadow-negro">
+      <View className="p-10" style={{backgroundColor: activeColors.quaternary}}>
+        <View style={styles.containerDatosSeleccionados}>
           {mostrarPrevios ? (
             <>
               {existenPrevios ? (
                 <>
-                  <Text className="text-rojoIntenso font-semibold">Datos Seleccionados previamente:</Text>
-                  <Text className="text-negro mt-5">{datosPrevios}</Text>
+                  <Text style={styles.tituloContainer}>Datos Seleccionados previamente:</Text>
+                  <View style={styles.previousTextContainer}>
+                    <Text style={{color: activeColors.tertiary}}>{datosPrevios}</Text>
+                  </View>
                 </>
               ) : (
                 <>
-                  <Text className="text-negro mt-5">No existen datos previos</Text>
+                  <Text style={styles.tituloContainer}>No existen datos previos</Text>
                 </>
               )}
             </>
@@ -718,11 +742,11 @@ export default function SelecDatosVocalizar({ navigation }) {
               {datosUsuarioSeleccionados.current.length > 0 || patologiasSeleccionadas.current.length > 0 || medicamentosSeleccionados.current.length > 0 || alergiasSeleccionadas.current.length > 0 || limitacionesSeleccionadas.current.length > 0 ? (
                 <>
 
-                  <Text className="text-rojoIntenso font-semibold">En este orden se vera y leera tu informacion:</Text>
+                  <Text style={styles.tituloContainer}>En este orden se vera y leera tu informacion:</Text>
                   {datosUsuarioSeleccionados.current.map((dato, index) => (
-                    <View className="text-negro font-semibold mt-5" key={index}>
+                    <View style={styles.textContainer} key={index}>
                       {Object.entries(dato).map(([key, value]) => (
-                        <Text key={index}>{`${transformKey(key)}: ${value}`}</Text>
+                        <Text style={{color: activeColors.tertiary}} key={index}>{`${transformKey(key)}: ${value}`}</Text>
                       ))}
                     </View>
                   ))}
@@ -802,8 +826,8 @@ export default function SelecDatosVocalizar({ navigation }) {
               {showUsuario && (
                 <>
                   <View style={styles.espacioContainer} ></View>
-                  <TouchableOpacity style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Datos de usuario' }), setShowUsuario(!showUsuario) }}>
-                    <Text style={styles.rojoIntensoText}>Modificar datos</Text>
+                  <TouchableOpacity style={styles.secondaryButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Datos de usuario' }), setShowUsuario(!showUsuario) }}>
+                    <Text style={styles.buttonText2}>Modificar datos</Text>
                   </TouchableOpacity>
                 </>
               )}
@@ -862,21 +886,26 @@ export default function SelecDatosVocalizar({ navigation }) {
               {showPatologia && (
                 <>
                   <View style={styles.espacioContainer} ></View>
-                  <TouchableOpacity style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}>
-                    <Text style={styles.rojoIntensoText}>Añadir o modificar enfermedades</Text>
+                  <TouchableOpacity style={styles.secondaryButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}>
+                    <Text style={styles.buttonText2}>Añadir o modificar enfermedades</Text>
                   </TouchableOpacity>
                 </>
               )}
             </>
           ) : (
-            <View style={styles.rowPerfil}>
-              <View style={styles.alingRowPerfilLeft2}>
-                <Text style={styles.content2}>{'No tienes enfermedades registradas'}</Text>
-              </View>
-              <View style={styles.lineaVertical2}></View>
-              <View style={[styles.alingRowPerfilRight2, styles.centeredText3]}>
-                <Text onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}><FontAwesome5 name="plus" size={25} color={'green'} /></Text>
-              </View>
+            <View>
+                <TouchableOpacity
+                  className={'flex-row  justify-around w-full mt-3'}
+                  style={styles.content4}
+                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}
+                >
+                  <View>
+                    <Text style={styles.textContent4}>{'No tienes enfermedades registradas'}</Text>
+                  </View>
+                  <View >
+                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
+                  </View>
+                </TouchableOpacity>
             </View>
           )}
         </View>
@@ -927,22 +956,26 @@ export default function SelecDatosVocalizar({ navigation }) {
               {showMedicamento && (
                 <>
                   <View style={styles.espacioContainer} ></View>
-                  <TouchableOpacity style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}>
-                    <Text style={styles.rojoIntensoText}>Añadir o modificar medicamentos</Text>
+                  <TouchableOpacity style={styles.secondaryButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}>
+                    <Text style={styles.buttonText2}>Añadir o modificar medicamentos</Text>
                   </TouchableOpacity>
                 </>
               )}
             </>
           ) : (
-            <View style={styles.rowPerfil}>
-              <View style={styles.alingRowPerfilLeft2}>
-                <Text style={styles.content2}>{'No tienes medicamentos registrados'}</Text>
+            <View >
+                <TouchableOpacity
+                  className={'flex-row  justify-around w-full mt-3'}
+                  style={styles.content4}
+                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}                >
+                  <View>
+                    <Text style={styles.textContent4}>{'No tienes medicamentos registrados'}</Text>
+                  </View>
+                  <View >
+                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
+                  </View>
+                </TouchableOpacity>
               </View>
-              <View style={styles.lineaVertical2}></View>
-              <View style={[styles.alingRowPerfilRight2, styles.centeredText3]}>
-                <Text onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}><FontAwesome5 name="plus" size={25} color={'green'} /></Text>
-              </View>
-            </View>
           )}
 
         </View>
@@ -993,22 +1026,27 @@ export default function SelecDatosVocalizar({ navigation }) {
               {showAlergia && (
                 <>
                   <View style={styles.espacioContainer} ></View>
-                  <TouchableOpacity style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}>
-                    <Text style={styles.rojoIntensoText}>Añadir o modificar alergias</Text>
+                  <TouchableOpacity style={styles.secondaryButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}>
+                    <Text style={styles.buttonText2}>Añadir o modificar alergias</Text>
                   </TouchableOpacity>
                 </>
               )}
             </>
           ) : (
-            <View style={styles.rowPerfil}>
-              <View style={styles.alingRowPerfilLeft2}>
-                <Text style={styles.content2}>{'No tienes alergias registradas'}</Text>
+            <View>
+                <TouchableOpacity
+                  className={'flex-row  justify-around w-full mt-3'}
+                  style={styles.content4}
+                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}
+                >
+                  <View>
+                    <Text style={styles.textContent4}>{'No tienes alergias registradas'}</Text>
+                  </View>
+                  <View >
+                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
+                  </View>
+                </TouchableOpacity>
               </View>
-              <View style={styles.lineaVertical2}></View>
-              <View style={[styles.alingRowPerfilRight2, styles.centeredText3]}>
-                <Text onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}><FontAwesome5 name="plus" size={25} color={'green'} /></Text>
-              </View>
-            </View>
           )}
 
         </View>
@@ -1058,22 +1096,27 @@ export default function SelecDatosVocalizar({ navigation }) {
               {showLimitacion && (
                 <>
                   <View style={styles.espacioContainer} ></View>
-                  <TouchableOpacity style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}>
-                    <Text style={styles.rojoIntensoText}>Añadir o modificar limitaciones</Text>
+                  <TouchableOpacity style={styles.secondaryButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}>
+                    <Text style={styles.buttonText2}>Añadir o modificar limitaciones</Text>
                   </TouchableOpacity>
                 </>
               )}
             </>
           ) : (
-            <View style={styles.rowPerfil}>
-              <View style={styles.alingRowPerfilLeft2}>
-                <Text style={styles.content2}>{'No tienes limitaciones registradas'}</Text>
+            <View>
+                <TouchableOpacity
+                  className={'flex-row  justify-around w-full mt-3'}
+                  style={styles.content4}
+                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}
+                >
+                  <View>
+                    <Text style={styles.textContent4}>{'No tienes limitaciones registradas'}</Text>
+                  </View>
+                  <View >
+                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
+                  </View>
+                </TouchableOpacity>
               </View>
-              <View style={styles.lineaVertical2}></View>
-              <View style={[styles.alingRowPerfilRight2, styles.centeredText3]}>
-                <Text onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}><FontAwesome5 name="plus" size={25} color={'green'} /></Text>
-              </View>
-            </View>
           )}
 
         </View>

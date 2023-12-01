@@ -1,14 +1,22 @@
 import react from 'react';
 import { View, Icon, Text } from 'react-native';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
-import styles from './styles';
+import getStyles from './styles';
+import {colors} from './theme';
 
-const CustomSend = props => {
+const useTheme = (theme) => {
+  return colors[theme.mode];
+}
+
+
+const CustomSend = (props, theme) => {
+  const styles = getStyles(theme);
+  let activeColors = useTheme(theme);
   return (
     <Send {...props}
     containerStyle={styles.customSendChat}>
      
-      <Text style={{color:"#cceaf5", textAlign: 'center', alignSelf: 'center', marginBottom: 8}}>Enviar</Text>
+      <Text style={styles.customSendButtonText}>Enviar</Text>
   
       
     </Send>

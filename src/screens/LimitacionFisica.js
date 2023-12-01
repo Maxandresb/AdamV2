@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
 import { obtenerRut } from "../api/sqlite"
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -35,11 +37,15 @@ const Limitacion = ({ limitacion, isEditing, handlePress, handleDelete, setCurre
         );
     };
 
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
+
     return (
         <View>
             {isEditing ? (
                 <>
-                    <Text style={styles.encabezadoInicial}>Tipo de Limitacion:</Text>
+                    <Text style={styles.encabezado}>Tipo de Limitacion:</Text>
                     <TextInput
                         style={styles.input}
                         value={currentLimitacion.tipo_lim}
@@ -66,20 +72,20 @@ const Limitacion = ({ limitacion, isEditing, handlePress, handleDelete, setCurre
                 </>
             ) : (
                 <>
-                    <Text style={styles.encabezadoInicial}>Tipo de Limitacion:</Text>
-                    <Text style={styles.content}>{currentLimitacion.tipo_lim}</Text>
-                    <Text style={styles.encabezado}>Severidad:</Text>
-                    <Text style={styles.content}>{currentLimitacion.severidad_lim}</Text>
-                    <Text style={styles.encabezado}>Origen:</Text>
-                    <Text style={styles.content}>{currentLimitacion.origen_lim}</Text>
-                    <Text style={styles.encabezado}>Descripcion:</Text>
-                    <Text style={styles.content}>{currentLimitacion.descripcion_lim}</Text>
+                    <Text style={styles.encabezado} className="ml-5">Tipo de Limitacion:</Text>
+                    <Text style={styles.content} className="ml-5">{currentLimitacion.tipo_lim}</Text>
+                    <Text style={styles.encabezado} className="ml-5">Severidad:</Text>
+                    <Text style={styles.content} className="ml-5">{currentLimitacion.severidad_lim}</Text>
+                    <Text style={styles.encabezado} className="ml-5">Origen:</Text>
+                    <Text style={styles.content} className="ml-5">{currentLimitacion.origen_lim}</Text>
+                    <Text style={styles.encabezado} className="ml-5">Descripcion:</Text>
+                    <Text style={styles.content} className="ml-5">{currentLimitacion.descripcion_lim}</Text>
                 </>
             )}
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.primaryButton}
                     onPress={() => handlePress(limitacion.id, currentLimitacion)}
                 >
                     <Text style={styles.buttonText}>
@@ -90,7 +96,7 @@ const Limitacion = ({ limitacion, isEditing, handlePress, handleDelete, setCurre
                     style={styles.deleteButton}
                     onPress={handleDeletePress} // Modificar esto
                 >
-                    <Text className="text-rojoIntenso text-center font-bold">
+                    <Text style={styles.buttonText2}>
                         Eliminar Limitacion
                     </Text>
                 </TouchableOpacity>
@@ -99,10 +105,10 @@ const Limitacion = ({ limitacion, isEditing, handlePress, handleDelete, setCurre
                 <>
                     <View style={styles.espacioContainer2}></View>
                     <TouchableOpacity
-                        style={styles.celesteButton}
+                        style={styles.secondaryButton}
                         onPress={() => setCurrentLimitacionId(null)}
                     >
-                        <Text style={styles.rojoIntensoText}>
+                        <Text style={styles.buttonText2}>
                             Cancelar
                         </Text>
                     </TouchableOpacity>
@@ -123,6 +129,8 @@ const Limitaciones = () => {
     const [severidad, setSeveridad] = useState('');
     const [origen_lim, setOrigenLim] = useState('');
     const [descripcion, setDescripcion] = useState('');
+
+    const [saveLimitacionAlert, setSaveLimitacionAlert] = useState(false);
 
     const [isAlertVisible, setAlertVisible] = useState(false);
 
@@ -200,11 +208,15 @@ const Limitaciones = () => {
         setDescripcion('');
     };
 
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
+
     return (
         <ScrollView style={styles.container}>
             <View>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.primaryButton}
                     onPress={handleAgregarLimitacionPress} // Agregar esto
                 >
                     <Text style={styles.buttonText}>
@@ -212,6 +224,7 @@ const Limitaciones = () => {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <View style={styles.lineaContainer}></View>
             {limitaciones.map(limitacion => (
                 <Limitacion
                     key={limitacion.id}
@@ -241,12 +254,18 @@ const Limitaciones = () => {
                             onChangeText={text => setDescripcion(text)}
                             value={descripcion}
                         />
+
+                        <CustomAlert    
+                            isVisible={saveLimitacionAlert}
+                            onClose={() => {setSaveLimitacionAlert(false)}}
+                            message='Limitación Ingresada exitosamente'
+                        />
                         <Text style={styles.header}>Indica tu tipo de limitacion fisica:</Text>
                         <View style={styles.inputPicker}>
                             <Picker
                                 selectedValue={tipoLimitacion}
                                 onValueChange={(itemValue) => setTipoLimitacion(itemValue)}
-                                style={styles.inputPicker2}
+                                
                             >
                                 <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                                 <Picker.Item label="Motricidad" value="Motricidad" />
@@ -259,7 +278,7 @@ const Limitaciones = () => {
                             <Picker
                                 selectedValue={severidad}
                                 onValueChange={(itemValue) => setSeveridad(itemValue)}
-                                style={styles.inputPicker2}
+                                
                             >
                                 <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                                 <Picker.Item label="Grave" value="Grave" />
@@ -272,7 +291,7 @@ const Limitaciones = () => {
                             <Picker
                                 selectedValue={origen_lim}
                                 onValueChange={(itemValue) => setOrigenLim(itemValue)}
-                                style={styles.inputPicker2}
+                                
                             >
                                 <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                                 <Picker.Item label="Adquirida" value="Adquirida" />
@@ -281,13 +300,13 @@ const Limitaciones = () => {
                         </View>
 
                         <View style={styles.buttonContainerCenter}>
-                            <TouchableOpacity className="w-32" style={styles.closeButton} onPress={() => { setModalVisibleLimitaciones(false) }}>
-                                <Text className="text-rojoIntenso text-center font-bold">
+                            <TouchableOpacity style={styles.secondaryButton} onPress={() => { setModalVisibleLimitaciones(false) }}>
+                                <Text style={styles.buttonText2}>
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity className="w-32" style={styles.rojoIntensoButton} onPress={() => { agregarLimitacion(); }}>
-                                <Text className="text-celeste text-center font-bold">
+                            <TouchableOpacity style={styles.primaryButton} onPress={() => { agregarLimitacion(); setSaveLimitacionAlert(true)}}>
+                                <Text style={styles.buttonText}>
                                     Agregar Nueva Limitación
                                 </Text>
                             </TouchableOpacity>

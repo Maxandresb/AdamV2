@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import styles from '../api/styles';
@@ -6,12 +6,17 @@ import moment from 'moment';
 import { useIsFocused } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Icon from 'react-native-multi-selectbox/src/components/Icon';
-
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 
 const db = SQLite.openDatabase('adamdb.db');
 
 const PatologiaCronica = ({ patologia, showPatologia, pressPatologia, patologias }) => {
+  const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
   return (
     <View>
       {showPatologia && (
@@ -39,16 +44,19 @@ const PatologiaCronica = ({ patologia, showPatologia, pressPatologia, patologias
   )
 }
 const Medicamentos = ({ medicamento, showMedicamento, pressMedicamento, medicamentos }) => {
+  const {theme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
   return (
     <View>
       {showMedicamento && (
         <>
-          <Text style={styles.content3}>{'Nombre medicamento:'}</Text>
+          <Text className="mt-5" style={styles.content3}>{'Nombre medicamento:'}</Text>
           <Text style={styles.content2}>{medicamento.medicamento}</Text>
-          <View style={styles.lineaContainer3}></View>
+          <View className="mb-5" style={styles.lineaContainer3}></View>
           <Text style={styles.content3}>{'Dosis:'}</Text>
           <Text style={styles.content2}>{medicamento.dosis}</Text>
-          <View style={styles.lineaContainer3}></View>
+          <View className="mb-5" style={styles.lineaContainer3}></View>
           <Text style={styles.content3}>{'Frecuencia:'}</Text>
           <Text style={styles.content2}>{medicamento.periodicidad}</Text>
           <View style={styles.lineaContainer3}></View>
@@ -64,16 +72,19 @@ const Medicamentos = ({ medicamento, showMedicamento, pressMedicamento, medicame
 }
 
 const Alergias = ({ alergia, showAlergia, pressAlergia, alergias }) => {
+  const {theme, updateTheme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
   return (
     <View>
       {showAlergia && (
         <>
-          <Text style={styles.content3}>{'Tipo de alergia:'}</Text>
+          <Text style={styles.content3} className="mt-5">{'Tipo de alergia:'}</Text>
           <Text style={styles.content2}>{alergia.tipo}</Text>
-          <View style={styles.lineaContainer3}></View>
+          <View style={styles.lineaContainer3} className="mb-5"></View>
           <Text style={styles.content3}>{'Alergeno:'}</Text>
           <Text style={styles.content2}>{alergia.alergeno}</Text>
-          <View style={styles.lineaContainer3}></View>
+          <View style={styles.lineaContainer3} className="mb-5"></View>
           {alergias.length > 1 ? (
             <>
               <View style={styles.lineaContainer4}></View>
@@ -86,22 +97,25 @@ const Alergias = ({ alergia, showAlergia, pressAlergia, alergias }) => {
 }
 
 const Limitaciones = ({ limitacion, showLimitacion, pressLimitacion, limitaciones }) => {
+  const {theme, updateTheme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
   return (
     <View>
       {showLimitacion && (
         <>
-          <Text style={styles.content3}>{'Tipo de limitación:'}</Text>
+          <Text className="mt-5" style={styles.content3}>{'Tipo de limitación:'}</Text>
           <Text style={styles.content2}>{limitacion.tipo_lim}</Text>
-          <View style={styles.lineaContainer3}></View>
+          <View style={styles.lineaContainer3} className="mb-5"></View>
           <Text style={styles.content3}>{'Severidad:'}</Text>
           <Text style={styles.content2}>{limitacion.severidad_lim}</Text>
-          <View style={styles.lineaContainer3}></View>
+          <View style={styles.lineaContainer3} className="mb-5"></View>
           <Text style={styles.content3}>{'Origen:'}</Text>
           <Text style={styles.content2}>{limitacion.origen_lim}</Text>
-          <View style={styles.lineaContainer3}></View>
+          <View style={styles.lineaContainer3} className="mb-5"></View>
           <Text style={styles.content3}>{'Descripción:'}</Text>
           <Text style={styles.content2}>{limitacion.descripcion_lim}</Text>
-          <View style={styles.lineaContainer3}></View>
+          <View style={styles.lineaContainer3} className="mb-5"></View>
           {limitaciones.length > 1 ? (
             <>
               <View style={styles.lineaContainer4}></View>
@@ -304,15 +318,17 @@ export default function Perfil({ navigation }) {
 
   const edad = calcularEdad(fecha_nacimiento);
 
-
+  const {theme, updateTheme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
 
   return (
     <ScrollView contentContainerStyle={styles.containerPerfil}>
       {data.map((item, index) => (
         <View style={styles.container} key={index}>
-          <View className="bg-blanco p-5 shadow-lg shadow-negro rounded-md">
-            <TouchableOpacity className="bg-rojoIntenso h-10  mt-5 rounded-lg justify-center shadow-lg shadow-negro" onPress={() => navigation.navigate('PerfilNested', { screen: 'Datos de usuario' })}>
-              <Text className="text-celeste text-center font-bold py-3">Modificar datos</Text>
+          <View className="p-5 shadow-lg shadow-negro rounded-md" style={{backgroundColor: activeColors.quaternary}}>
+            <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.navigate('PerfilNested', { screen: 'Datos de usuario' })}>
+              <Text style={styles.secondaryText}>Modificar datos</Text>
             </TouchableOpacity>
             <View style={styles.espacioContainer2}></View>
             <Text style={styles.content3}>{'Nombre completo:'}</Text>
@@ -348,14 +364,13 @@ export default function Perfil({ navigation }) {
 
           </View>
 
-          <View style={styles.lineaContainer}></View>
-          <View className="bg-blanco p-5 shadow-lg shadow-negro rounded-md">
+          <View style={styles.content4Container} >
             {patologias.length > 0 ? (
               <>
                 {showPatologia && (
                   <>
-                    <TouchableOpacity className="mb-5" style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}>
-                      <Text style={styles.rojoIntensoText}>Añadir o modificar enfermedades</Text>
+                    <TouchableOpacity className="mb-5" style={styles.secondaryButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}>
+                      <Text style={styles.buttonText2}>Añadir o modificar enfermedades</Text>
                     </TouchableOpacity>
 
                   </>
@@ -378,10 +393,10 @@ export default function Perfil({ navigation }) {
                   onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}
                 >
                   <View>
-                    <Text style={styles.textCeleste}>{'No tienes enfermedades registradas'}</Text>
+                    <Text style={styles.textContent4}>{'No tienes enfermedades registradas'}</Text>
                   </View>
                   <View >
-                    <FontAwesome5 name="plus" size={25} color={'#ff3e45'} />
+                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
                   </View>
                 </TouchableOpacity>
               </View>
@@ -425,14 +440,13 @@ export default function Perfil({ navigation }) {
 
           </View>
 
-          <View style={styles.espacioContainer}></View>
-          <View className="bg-blanco p-5 shadow-lg shadow-negro rounded-md">
+          <View style={styles.content4Container}>
             {medicamentos.length > 0 ? (
               <>
                 {showMedicamento && (
                   <>
-                    <TouchableOpacity className="mb-5" style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}>
-                      <Text style={styles.rojoIntensoText}>Añadir o modificar medicamentos</Text>
+                    <TouchableOpacity className="mb-5" style={styles.secondaryButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}>
+                      <Text style={styles.buttonText2}>Añadir o modificar medicamentos</Text>
                     </TouchableOpacity>
 
                   </>
@@ -454,10 +468,10 @@ export default function Perfil({ navigation }) {
                   style={styles.content4}
                   onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}                >
                   <View>
-                    <Text style={styles.textCeleste}>{'No tienes medicamentos registrados'}</Text>
+                    <Text style={styles.textContent4}>{'No tienes medicamentos registrados'}</Text>
                   </View>
                   <View >
-                    <FontAwesome5 name="plus" size={25} color={'#ff3e45'} />
+                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
                   </View>
                 </TouchableOpacity>
               </View>
@@ -499,14 +513,14 @@ export default function Perfil({ navigation }) {
 
           </View>
 
-          <View style={styles.espacioContainer}></View>
-          <View className="bg-blanco p-5 shadow-lg shadow-negro rounded-md">
+         
+          <View style={styles.content4Container}>
             {alergias.length > 0 ? (
               <>
                 {showAlergia && (
                   <>
-                    <TouchableOpacity className="mb-5" style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}>
-                      <Text style={styles.rojoIntensoText}>Añadir o modificar alergias</Text>
+                    <TouchableOpacity className="mb-5" style={styles.secondaryButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}>
+                      <Text style={styles.buttonText2}>Añadir o modificar alergias</Text>
                     </TouchableOpacity>
 
                   </>
@@ -529,10 +543,10 @@ export default function Perfil({ navigation }) {
                   onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}
                 >
                   <View>
-                    <Text style={styles.textCeleste}>{'No tienes alergias registradas'}</Text>
+                    <Text style={styles.textContent4}>{'No tienes alergias registradas'}</Text>
                   </View>
                   <View >
-                    <FontAwesome5 name="plus" size={25} color={'#ff3e45'} />
+                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
                   </View>
                 </TouchableOpacity>
               </View>
@@ -573,14 +587,13 @@ export default function Perfil({ navigation }) {
             ) : null}
           </View>
 
-          <View style={styles.lineaContainer}></View>
-          <View className="bg-blanco p-5 shadow-lg shadow-negro rounded-md">
+          <View style={styles.content4Container}>
             {limitaciones.length > 0 ? (
               <>
                 {showLimitacion && (
                   <>
-                    <TouchableOpacity className="mb-5" style={styles.celesteButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}>
-                      <Text style={styles.rojoIntensoText}>Añadir o modificar limitaciones</Text>
+                    <TouchableOpacity className="mb-5" style={styles.secondaryButton} onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}>
+                      <Text style={styles.buttonText2}>Añadir o modificar limitaciones</Text>
                     </TouchableOpacity>
 
                   </>
@@ -604,10 +617,10 @@ export default function Perfil({ navigation }) {
                   onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}
                 >
                   <View>
-                    <Text style={styles.textCeleste}>{'No tienes limitaciones registradas'}</Text>
+                    <Text style={styles.textContent4}>{'No tienes limitaciones registradas'}</Text>
                   </View>
                   <View >
-                    <FontAwesome5 name="plus" size={25} color={'#ff3e45'} />
+                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
                   </View>
                 </TouchableOpacity>
               </View>
@@ -649,8 +662,8 @@ export default function Perfil({ navigation }) {
             ) : null}
           </View>
 
-          <TouchableOpacity className="mt-5" style={styles.rojoIntensoButton} onPress={() => navigation.navigate('PerfilNested', { screen: 'Contactos de emergencia' })}>
-            <Text style={styles.celesteText}>Gestionar Contactos</Text>
+          <TouchableOpacity className="mt-5" style={styles.primaryButton} onPress={() => navigation.navigate('PerfilNested', { screen: 'Contactos de emergencia' })}>
+            <Text style={styles.secondaryText}>Gestionar Contactos</Text>
           </TouchableOpacity>
         </View>
       ))}

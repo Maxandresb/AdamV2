@@ -1,11 +1,17 @@
 // Este es el componente EVA modificado que recibe como props la función para notificar el cambio de valor
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableHighlight } from "react-native";
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 const EVA = ({ onChangeValue }) => {
     const [dolor, setDolor] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [estadoSeleccion, setEstadoSeleccion] = useState(false);
+
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
 
     // Esta es la función que se ejecuta cuando el usuario presiona un botón de la escala
     const handlePress = (value) => {
@@ -16,7 +22,7 @@ const EVA = ({ onChangeValue }) => {
         onChangeValue(valor);
     };
 
-    const colors = [ // Crea un array de colores para cada número de la escala
+    const colores = [ // Crea un array de colores para cada número de la escala
         "rgba(0, 255, 0, 0.25)", // 0: verde claro
         "rgba(0, 245, 0, 0.5)", // 1: verde medio claro
         "rgba(0, 235, 0, 0.75)", // 2: verde medio
@@ -81,7 +87,7 @@ const EVA = ({ onChangeValue }) => {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
-                        <Text style={{ fontSize: 16, margin: 10, marginBottom: 30, justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 20, margin: 10, marginBottom: 30, justifyContent: 'center', color: activeColors.primary }}>
                             {`Escala de dolor EVA \n\Selecciona tu nivel de dolor:`}
                         </Text>
                         <View style={{ flexDirection: "column", alignItems: 'flex-start', paddingLeft: '22%' }}>
@@ -91,7 +97,7 @@ const EVA = ({ onChangeValue }) => {
                                         key={i}
                                         style={[
                                             styles.button,
-                                            { backgroundColor: colors[i] }, // Usa el array de colores para asignar el color de cada botón
+                                            { backgroundColor: colores[i] }, // Usa el array de colores para asignar el color de cada botón
 
                                         ]}
                                     >
@@ -104,10 +110,15 @@ const EVA = ({ onChangeValue }) => {
                             ))}
                         </View>
                         <TouchableOpacity
-                            style={{ margin: 10, marginLeft: 30, marginRight: 30, marginTop: 30, padding: 15, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ff3e45' }}
+                            style={{ margin: 10, marginLeft: 30, marginRight: 30, marginTop: 30, padding: 15, justifyContent: 'center', alignItems: 'center', backgroundColor: activeColors.secondary,  shadowColor: '#000000',
+                            shadowOffset: { width: -2, height: 2 },
+                            shadowOpacity: 0.2,
+                            shadowRadius: 3,
+                            elevation: 8, 
+                            borderRadius: 8}}
                             onPress={() => { setModalVisible(false) }}
                         >
-                            <Text style={{ fontSize: 20, color: 'white' }}>{'Cerrar'}</Text>
+                            <Text style={{ fontSize: 20, color: activeColors.primary }}>{'Cerrar'}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -116,50 +127,59 @@ const EVA = ({ onChangeValue }) => {
     );
 };
 
-const styles = StyleSheet.create({
-    textInput: {
-        color: 'black',
-        fontSize: 16,
-        paddingLeft: 18
-    },
-    button: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        margin: 5,
-        justifyContent: "center",
-        alignItems: "center",
-        borderColor: 'black',
-        borderWidth: 1
-    },
-    text: {
-        color: "black",
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-    modalContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(0,0,0,0.5)",
-    },
-    modalContent: {
-        backgroundColor: "white",
-        borderRadius: 10,
-        padding: 20,
-        width: "80%",
-    },
-    selectedValueContainer: {
-        backgroundColor: '#efefef',
-        height: 40,
-        marginBottom: 10,
-        borderRadius: 5,
-        borderWidth: 2,
-        borderColor: 'black',
-        color: '#00008B',
-        fontWeight: 'bold',
-        justifyContent: 'center',
-    },
-});
+const useTheme = (theme) => {
+    return colors[theme.mode];
+}
+
+const getStyles = (theme) => {
+    let activeColors = useTheme(theme);
+
+    return StyleSheet.create({
+        textInput: {
+            color: 'black',
+            fontSize: 16,
+            paddingLeft: 18
+        },
+        button: {
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            margin: 5,
+            justifyContent: "center",
+            alignItems: "center",
+            borderColor: 'black',
+            borderWidth: 1
+        },
+        text: {
+            color: "black",
+            fontSize: 18,
+            fontWeight: "bold",
+        },
+        modalContainer: {
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0,0,0,0.5)",
+        },
+        modalContent: {
+            backgroundColor: activeColors.quaternary,
+            borderRadius: 10,
+            padding: 20,
+            width: "80%",
+        },
+        selectedValueContainer: {
+            backgroundColor: activeColors.secondary,
+            height: 40,
+            marginBottom: 10,
+            borderRadius: 5,
+            borderWidth: 2,
+            borderColor: 'black',
+            color: activeColors.quinary,
+            fontWeight: 'bold',
+            justifyContent: 'center',
+        },
+    });
+    
+}
 
 export default EVA;

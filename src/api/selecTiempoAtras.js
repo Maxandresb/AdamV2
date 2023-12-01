@@ -1,6 +1,8 @@
 // selecTiempoAtras.js
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Modal, Button } from 'react-native';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 const numbers = Array.from({ length: 24 }, (_, i) => i + 1);
 const words = ['hora(s)', 'dia(s)', 'semana(s)', 'año(s)'];
@@ -14,6 +16,11 @@ const SelecTiempoAtras = ({ onConfirm }) => {
     const [selectedWord, setSelectedWord] = useState('hora(s)');
     const [modalVisible, setModalVisible] = useState(false);
     const [estadoSeleccion, setEstadoSeleccion] = useState(false);
+
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme)
+    let activeColors = colors[theme.mode];
+    
 
     // Referencias a los ScrollView para ajustar el desplazamiento inicial
     const numberScrollRef = useRef();
@@ -99,13 +106,18 @@ const SelecTiempoAtras = ({ onConfirm }) => {
                             ))}
                         </ScrollView>
                         <TouchableOpacity
-                            style={{ marginLeft: 10, marginRight: -25, backgroundColor: '#ff3e45', padding: 10 }}
+                            style={{ marginLeft: 10, marginRight: -25, backgroundColor: activeColors.primary, padding: 10 , shadowColor: '#000000',
+                            shadowOffset: { width: -2, height: 2 },
+                            shadowOpacity: 0.2,
+                            shadowRadius: 3,
+                            elevation: 8,
+                            borderRadius: 8}}
                             onPress={() => {
                                 setModalVisible(false);
                                 setEstadoSeleccion(true);
                                 onConfirm(selectedNumber, selectedWord);
                             }} >
-                            <Text style={{fontSize: 17, color:'white'}} >{"Seleccionar"}</Text>
+                            <Text style={{fontSize: 17, color: activeColors.secondary}} >{"Seleccionar"}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -114,72 +126,80 @@ const SelecTiempoAtras = ({ onConfirm }) => {
     );
 };
 
-const styles = StyleSheet.create({
-    textInput: {
-        color: 'black',
-        fontSize: 16,
-        paddingLeft: 18
-    },
-    selectedValueContainer: {
-        backgroundColor: '#efefef',
-        height: 40,
-        marginBottom: 10,
-        borderRadius: 5,
-        borderWidth: 2,
-        borderColor: 'black',
-        color: '#00008B',
-        fontWeight: 'bold',
-        justifyContent: 'center',
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)'
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        flexDirection: 'row',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
+const useTheme = (theme) => {
+    return colors[theme.mode];
+}
+
+const getStyles = (theme) => {
+    let activeColors = useTheme(theme);
+
+    return StyleSheet.create({
+        textInput: {
+            color: activeColors.quinary,
+            fontSize: 16,
+            paddingLeft: 18
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    column: {
-        height: 120,
-        flex: 1,
-    },
-    row: {
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
-    },
-    selectedRow: {
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
-        backgroundColor: 'rgba(255, 62, 69, 0.5)', // Cambia el color de fondo del elemento seleccionado
-    },
-    text: {
-        fontSize: 18,
-    },
-});
+        selectedValueContainer: {
+            backgroundColor: activeColors.secondary,
+            height: 40,
+            marginBottom: 10,
+            borderRadius: 5,
+            borderWidth: 2,
+            borderColor: 'black',
+            color: activeColors.quinary,
+            fontWeight: 'bold',
+            justifyContent: 'center',
+        },
+        container: {
+            flex: 1,
+            justifyContent: 'center',
+        },
+        centeredView: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 22,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)'
+        },
+        modalView: {
+            margin: 20,
+            backgroundColor: activeColors.quaternary,
+            borderRadius: 20,
+            padding: 35,
+            alignItems: 'center',
+            flexDirection: 'row',
+            shadowColor: '#000',
+            shadowOffset: {
+                width: 0,
+                height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+            elevation: 5,
+        },
+        column: {
+            height: 120,
+            flex: 1,
+        },
+        row: {
+            height: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottomWidth: 1,
+            borderBottomColor: '#ddd',
+        },
+        selectedRow: {
+            height: 40,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottomWidth: 1,
+            borderBottomColor: '#ddd',
+            backgroundColor: activeColors.secondary, // Cambia el color de fondo del elemento seleccionado
+        },
+        text: {
+            fontSize: 18,
+        },
+    });
+}
 
 export default SelecTiempoAtras;

@@ -1,29 +1,46 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
 import { obtenerRut } from "../api/sqlite"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { programarNotificacionMedica as programarNotificacionMedica } from "../api/notificaciones";
 import * as Notifications from 'expo-notifications';
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
+
 
 const db = SQLite.openDatabase('adamdb.db');
 
-const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurrentMedicamentoId, setMedicamentos}) => {
+const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurrentMedicamentoId, setMedicamentos, medicamentos, obtenerMedicamentosDeDB }) => {
     const [currentMedicamento, setCurrentMedicamento] = useState(medicamento);
     const [hora, setHora] = useState(new Date());
     const [mostrarHora, setMostrarHora] = useState(false);
     const [periodicidad2, setPeriodicidad2] = useState(medicamento.periodicidad);
     const [horarios, setHorarios] = useState([]);
-    
 
     // ********** MANEJO DE CHECK ***********
     const ESTADO_INACTIVO = '0';
     const ESTADO_ACTIVO = '1';
     let estadoActualizar;
+
+    useEffect(() => {
+        try {
+            let estadoActualizar = medicamento.estadoNotificacion
+            setMedicamentos(prevMedicamentos =>
+                prevMedicamentos.map(med =>
+                    med.id === medicamento.id ? { ...med, estadoNotificacion: estadoActualizar } : med
+                )
+            );
+        } catch (error) {
+            console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
+
+        }
+
+    }, []);
 
     const actualizarMedicamento = async (id, campos) => {
         console.log('ACTUALIZANDO MEDICAMENTO =>')
@@ -42,9 +59,10 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                         console.log('=> MEDICAMENTO ACTUALIZADO')
                         // Realiza una operación de lectura para obtener el idNotificacion actualizado
                         tx.executeSql(
-                            'SELECT idNotificacion FROM Medicamentos WHERE id = ?',
+                            'SELECT * FROM Medicamentos WHERE id = ?',
                             [id],
                             (_, result) => {
+                                console.log('medicamento dsps de actualizar idNotif y estadoNotif: ', result.rows.item(0));
                                 // Resuelve la promesa con el idNotificacion actualizado
                                 resolve(result.rows.item(0).idNotificacion);
                             },
@@ -59,56 +77,72 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
         });
     };
 
-    const cancelarNotificacion = async (medicamento, estado) => {
-        console.log('=> CANCELANDO NOTIFICACION CON IDNOTIFICACION:', medicamento.idNotificacion)
-        if(medicamento.idNotificacion===null){
-            console.log('NOTIFICACION AUN NO CREADA');
-        } else{
-            //cancelar notificaciones
-        const ids = medicamento.idNotificacion.split(',');
-        const cantidad = ids.length;
-        console.log("Cantidad de ids:", cantidad);
-        console.log(`\n\ ***** \n\ `);
-        if (cantidad > 1) {
-            // Convertimos la cadena en un array separando por comas
-            const idNotificacionArray = medicamento.idNotificacion.split(',');
+    useEffect(() => {
+        console.log('medicamento:: ',medicamento);
+    },[]);
 
-            // Recorremos el array resultante
-            idNotificacionArray.forEach(async (id) => {
-                console.log('ID de Notificación:', id);
-                // Aquí puedes realizar acciones con cada ID de notificación, por ejemplo, enviar notificaciones, realizar operaciones, etc.
+    const cancelarNotificacion = async (medicamento, estado) => {
+        console.log('=> CANCELANDO NOTIFICACION CON IDNOTIFICACION:', medicamento)
+        if (medicamento.idNotificacion === null) {
+            console.log('NOTIFICACION AUN NO CREADA');
+            return;
+        } else {
+            //cancelar notificaciones
+            const ids = medicamento.idNotificacion.split(',');
+            const cantidad = ids.length;
+            console.log("Cantidad de ids:", cantidad);
+            console.log(`\n\ ***** \n\ `);
+            if (cantidad > 1) {
+                // Convertimos la cadena en un array separando por comas
+                const idNotificacionArray = medicamento.idNotificacion.split(',');
+
+                // Recorremos el array resultante
+                idNotificacionArray.forEach(async (id) => {
+                    console.log('ID de Notificación:', id);
+                    // Aquí puedes realizar acciones con cada ID de notificación, por ejemplo, enviar notificaciones, realizar operaciones, etc.
+                    try {
+                        await Notifications.cancelScheduledNotificationAsync(id);
+                        console.log('1-notificacion cancelada: ', id)
+                    } catch (error) {
+                        console.log("1-idNotificacion error:", id);
+                        console.log('1-error al cancelar notificacion: ', error)
+                    }
+                });
+            } else {
                 try {
-                    await Notifications.cancelScheduledNotificationAsync(id);
-                    console.log('1-notificacion cancelada: ', id)
+                    await Notifications.cancelScheduledNotificationAsync(medicamento.idNotificacion);
+                    console.log('1-notificacion cancelada: ', medicamento.idNotificacion)
                 } catch (error) {
-                    console.log("1-idNotificacion error:", id);
+                    console.log("1-idNotificacion error:", medicamento.idNotificacion);
                     console.log('1-error al cancelar notificacion: ', error)
                 }
-            });
-        }else {
-            try {
-                await Notifications.cancelScheduledNotificationAsync(medicamento.idNotificacion);
-                console.log('1-notificacion cancelada: ', medicamento.idNotificacion)
-            } catch (error) {
-                console.log("1-idNotificacion error:", medicamento.idNotificacion);
-                console.log('1-error al cancelar notificacion: ', error)
             }
-        }
-        console.log(` `);
-        //eliminar el idnotificacion y cambiar estado de la notificacion
-        if(estado==='eliminar'){
-            console.log('NOTIFICACION CANCELADA');
-   
-            try {
-                let newidNotificacion = await actualizarMedicamento(medicamento.id, { estadoNotificacion: estado, idNotificacion: null });
-                console.log('2-idNotificacion-cancelada: ', newidNotificacion)
-                medicamento.idNotificacion = newidNotificacion;
-                console.log('2-medicamento con notificacion cancelada, actualizada: ', medicamento)
-            } catch (error) {
-                console.log("2-idNotificacion error:", medicamento.idNotificacion);
-                console.log('2-error al actualizar recordatorio: ', error)
+            console.log(` `);
+            //eliminar el idnotificacion y cambiar estado de la notificacion
+            if (estado === 'eliminar') {
+                console.log('NOTIFICACION CANCELADA Antes de eliminar medicamento');
+            } else {
+                try {
+                    let newidNotificacion = await actualizarMedicamento(medicamento.id, { estadoNotificacion: estado, idNotificacion: null });
+                    console.log('2-idNotificacion-cancelada: ', newidNotificacion)
+                    medicamento.idNotificacion = newidNotificacion;
+                    medicamento.estadoNotificacion = '0'
+                    console.log('2-medicamento con notificacion cancelada, actualizada: ', medicamento)
+                } catch (error) {
+                    console.log("2-idNotificacion error:", medicamento.idNotificacion);
+                    console.log('2-error al actualizar recordatorio: ', error)
+                }
+                try {
+                    setMedicamentos(prevMedicamentos =>
+                        prevMedicamentos.map(med =>
+                            med.id === medicamento.id ? { ...med, estadoNotificacion: medicamento.estadoNotificacion } : med
+                        )
+                    );
+                } catch (error) {
+                    console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
+        
+                }
             }
-        }
         }
     };
 
@@ -137,7 +171,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     const manejarNotificaciones = async (medicamento) => {
         console.log('*****************************************************************')
         console.log('MANEJANDO NOTIFICACIONES')
-        
+
         try {
             console.log('medicamento en manejo de notificaciones: ', medicamento)
             if (medicamento.estadoNotificacion === ESTADO_ACTIVO) {
@@ -146,7 +180,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                 console.log('estado notificacion antes de pasar a funcion cancelar: ', medicamento.estadoNotificacion);
                 estadoActualizar = ESTADO_INACTIVO;
                 await cancelarNotificacion(medicamento, ESTADO_INACTIVO)
-                
+
             } else {
                 console.log(`\n\ ***** \n\ `);
                 console.log('PROGRAMANDO NOTIFICACION =>')
@@ -196,6 +230,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
         //console.log('Horarios calculados:', horarios);
         return horarios;
     };
+
     const obtenerHora = (horarios) => {
         let horariosArray = horarios.split("  ");
         let primeraHora = horariosArray[0];
@@ -235,18 +270,23 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
             const horariosCalculados = calcularHorarios(hora, periodicidad2);
             setHorarios(horariosCalculados);
         }
-    }, [medicamento.horarios, periodicidad2]);
+    }, [currentMedicamento.horarios, medicamento.horarios, periodicidad2]);
 
     const manejarCambioHora = (horaSeleccionada) => {
         const horaActualizada = horaSeleccionada || hora;
         setHora(horaActualizada);
-        setHorarios(calcularHorarios(horaActualizada, periodicidad2));
+        const horariosCalculados = calcularHorarios(horaActualizada, periodicidad2);
+        setHorarios(horariosCalculados);
     };
+
 
     const manejarCambioPeriodicidad = (valor) => {
         setPeriodicidad2(valor);
-        setHorarios(calcularHorarios(hora, valor));
+        const horariosCalculados = calcularHorarios(hora, valor);
+        setHorarios(horariosCalculados);
+        manejarCambio('horarios', horariosCalculados.join(" "));
     };
+
 
     const manejarCambio = (clave, valor) => {
         setCurrentMedicamento(current => ({
@@ -264,14 +304,18 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     };
 
     const onChangeTime2 = (event, selectedTime) => {
-        const currentTime = selectedTime || hora;
-        setHora(currentTime);
-        setHorarios(calcularHorarios(currentTime, periodicidad2));
+        if (selectedTime) {
+            setHora(selectedTime);
+            setHorarios(calcularHorarios(selectedTime, periodicidad2));
+        }
         setMostrarHora(false);
     };
+
     const abrirHora = () => {
         setMostrarHora(true);
     };
+
+
 
     // ********** MANEJO DE ELIMINAR MEDICAMENTO ***********
     const pressEliminarMedicamento = () => {
@@ -287,34 +331,39 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                     text: "Eliminar",
                     onPress: async () => {
                         await cancelarNotificacion(medicamento, 'eliminar'),
-                        pressDelete(medicamento.id)}
+                            pressDelete(medicamento.id)
+                    }
                 }
             ]
         );
     };
 
+
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
+
     return (
         <View className="mt-2">
             {isEditing ? (
                 <>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5 mt-2">Medicamento:</Text>
+                    <Text style={styles.encabezado}>Medicamento:</Text>
                     <TextInput
                         style={styles.input}
                         value={currentMedicamento.medicamento}
                         onChangeText={(val) => manejarCambio('medicamento', val)}
                     />
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 ml-5 mt-2">Dosis:</Text>
+                    <Text style={styles.encabezado}>Dosis:</Text>
                     <TextInput
                         style={styles.input}
                         value={currentMedicamento.dosis}
                         onChangeText={(val) => manejarCambio('dosis', val)}
                     />
-                    <Text className="text-redcoral text-lg font-bold mb-3 ml-5 mt-2">Periodicidad:</Text>
-                    <View className="bg-beige h-12 mb-3 mx-5 border-b-2 border-salmon rounded-t-md placeholder:text-azulnegro pl-3">
+                    <Text style={styles.encabezado}>Periodicidad:</Text>
+                    <View style={styles.inputIMC}>
                         <Picker
                             selectedValue={currentMedicamento.periodicidad}
                             onValueChange={(itemValue) => manejarCambio('periodicidad', itemValue)}
-                            style={styles.inputPicker2}
                         >
                             <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                             <Picker.Item label="Cada 24 hrs (Una vez al dia)" value="Cada 24 hrs (Una vez al dia)" />
@@ -324,10 +373,10 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                             <Picker.Item label="Cada 4 hrs (Seis veces al dia)" value="Cada 4 hrs (Seis veces al dia)" />
                         </Picker>
                     </View>
-                    <Text className="text-redcoral text-lg font-bold mb-3 ml-5 mt-2">Indica la hora en la que comenzaras a ingerir el medicamento:</Text>
+                    <Text style={styles.encabezado} className="text-center">Indica la hora en la que comenzaras a ingerir el medicamento:</Text>
                     <TouchableOpacity onPress={abrirHora}>
                         <TextInput
-                            className="bg-beige h-12 mb-3 mx-5 border-b-2 border-salmon rounded-t-md placeholder:text-azulnegro pl-3"
+                            style={styles.horaInputMedicamento}
                             value={hora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             editable={false}
                         />
@@ -342,12 +391,12 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                             onChange={onChangeTime2}
                         />
                     )}
-                    <Text className="text-redcoral text-lg font-bold mb-3 ml-5 mt-2">
+                    <Text style={styles.encabezado} className="text-center">
                         {periodicidad2 === 'Cada 24 hrs (Una vez al dia)'
                             ? 'La alarma de este medicamento se programara a esta hora:'
                             : 'Las alarmas de este medicamento se programaran a estas horas:'}
                     </Text>
-                    <View className="bg-beige flex-0 mb-3 mx-5 border-b-2 border-salmon rounded-t-md placeholder:text-azulnegro pl-3">
+                    <View className="flex-0 mb-3 mx-5 rounded-md placeholder:text-azulnegro pl-3" style={{backgroundColor: activeColors.secondary, borderWidth: 2, borderColor: activeColors.quinary}}>
                         {horarios.map((time, index) => (
                             <Text className="text-center text-azulnegro  text-lg " key={index}>{time}</Text>
                         ))}
@@ -357,42 +406,62 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                 <>
                     <View className="flex-row " style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <View>
-                            <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Estado del medicamento: </Text>
-                            <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.medicamento}</Text>
+                            <Text style={styles.header} className="ml-5">Estado del medicamento: </Text>
+                            <Text style={styles.content} className="ml-5">{currentMedicamento.medicamento}</Text>
                         </View>
                         <TouchableOpacity style={{ paddingRight: 15 }} onPress={() => manejarNotificaciones(medicamento)}>
                             <Text><FontAwesome5 name="check" size={25} color={medicamento.estadoNotificacion === '0' ? 'black' : 'green'} /></Text>
                         </TouchableOpacity>
                     </View>
-                    <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Medicamento:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.medicamento}</Text>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Dosis:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.dosis}</Text>
-                    <Text className="text-rojoIntenso text-lg font-bold mb-3 pl-5">Periodicidad:</Text>
-                    <Text className="h-6 mb-2 mx-5 text-azulnegro">{currentMedicamento.periodicidad}</Text>
-                    <Text className="text-redcoral text-lg font-bold mb-3 pl-5">Horarios a notificar:</Text>
-                    <Text className="flex-0 mb-2 mx-5 text-azulnegro">{currentMedicamento.horarios}</Text>
+                    <Text style={styles.header} className="ml-5">Medicamento:</Text>
+                    <Text style={styles.content} className="ml-5">{currentMedicamento.medicamento}</Text>
+                    <Text style={styles.header} className="ml-5">Dosis:</Text>
+                    <Text style={styles.content} className="ml-5">{currentMedicamento.dosis}</Text>
+                    <Text style={styles.header} className="ml-5">Periodicidad:</Text>
+                    <Text style={styles.content} className="ml-5">{currentMedicamento.periodicidad}</Text>
+                    <Text style={styles.header} className="ml-5">Horarios a notificar:</Text>
+                    <Text style={styles.content} className="ml-5">{currentMedicamento.horarios}</Text>
                 </>
             )}
 
             <View className="flex-row self-center justify-around w-full mt-3">
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
-                    onPress={async() => {
-                        pressUpdate(medicamento.id, { ...currentMedicamento, horarios: horarios.join("  ") }),
-                        await cancelarNotificacion(currentMedicamento, ESTADO_INACTIVO)
-                        
+                    style={styles.primaryButton}
+                    onPress={async () => {
+                        try {
+                            pressUpdate(medicamento.id, { ...currentMedicamento, horarios: horarios.join(" ") })
+                        } catch (error) {
+                            console.error('ERROR AL ACTUALIZAR MEDICAMENTO:', error);
+                        }
+                        try {
+                            await cancelarNotificacion(medicamento, ESTADO_INACTIVO)
+                        } catch (error) {
+                            console.error('ERROR AL CANCELAR NOTIFICACION AL GUARDAR MODIFICACION:', error);
+                        }
+                        try {
+                            medicamento.estadoNotificacion = '0'
+                            console.log('actualizando estado de la notificacion en pantalla');
+                            setMedicamentos(prevMedicamentos =>
+                                prevMedicamentos.map(med =>
+                                    med.id === medicamento.id ? { ...med, estadoNotificacion: estadoActualizar } : med
+                                )
+                            );
+                        } catch (error) {
+                            console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
+
+                        }
                     }}
                 >
-                    <Text style={styles.celesteText}>
+                    <Text style={styles.buttonText}>
                         {isEditing ? 'Guardar cambios' : 'Modificar Medicamento'}
                     </Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
-                     style={styles.celesteButton}
+                    style={styles.secondaryButton}
                     onPress={pressEliminarMedicamento}
                 >
-                    <Text style={styles.rojoIntensoText}>
+                    <Text style={styles.buttonText2}>
                         Eliminar Medicamento
                     </Text>
                 </TouchableOpacity>
@@ -401,21 +470,36 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                 <>
                     <View style={styles.espacioContainer2}></View>
                     <TouchableOpacity
-                        style={styles.celesteButton}
-                        onPress={() => setCurrentMedicamentoId(null)}
+                        style={styles.secondaryButton}
+                        onPress={() => {
+                            try {
+                                medicamento.estadoNotificacion = '0'
+                                console.log('actualizando estado de la notificacion en pantalla');
+                                setMedicamentos(prevMedicamentos =>
+                                    prevMedicamentos.map(med =>
+                                        med.id === medicamento.id ? { ...med, estadoNotificacion: estadoActualizar } : med
+                                    )
+                                );
+                            } catch (error) {
+                                console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
+    
+                            }
+                            setCurrentMedicamentoId(null)
+                        }}
                     >
-                        <Text style={styles.rojoIntensoText}>
+                        <Text style={styles.buttonText2}>
                             Cancelar
                         </Text>
                     </TouchableOpacity>
-                    </>
-            ):null}
+                </>
+            ) : null}
             <View style={styles.lineaContainer}>
             </View>
 
         </View>
     );
 };
+
 
 const Medicamentos = () => {
     const [medicamentos, setMedicamentos] = useState([]);
@@ -426,15 +510,21 @@ const Medicamentos = () => {
     const [dosis, setDosis] = useState('');
     const [periodicidad, setPeriodicidad] = useState('');
     const [horarios, setHorarios] = useState('');
+    const [saveMedicamentoAlert, setSaveMedicamentoAlert] = useState(false);
 
     const [isAlertVisible, setAlertVisible] = useState(false);
+
 
     useEffect(() => {
         db.transaction(tx => {
             tx.executeSql('SELECT * FROM Medicamentos', [], (_, { rows }) =>
                 setMedicamentos(rows._array)
-            );
-        });
+            ), (error) => {
+                console.error("Error en la transacción de la base de datos: ", error);
+            };
+        }), (error) => {
+            console.error("Error en la transacción de la base de datos: ", error);
+        };
     }, []);
 
     const pressShowAgregarMedicamento = () => {
@@ -451,16 +541,16 @@ const Medicamentos = () => {
                     (_, resultSet) => {
                         console.log("Actualización exitosa!");
                         // Recargar datos
-                        tx.executeSql('SELECT * FROM Medicamentos', [], (_, { rows }) =>
+                        tx.executeSql('SELECT * FROM Medicamentos', [], (_, { rows }) => {
                             setMedicamentos(rows._array)
-                        );
+                            setCurrentMedicamentoId(null); // finalizo edición aquí para evitar asincronía
+                        });
+                    },
+                    (error) => {
+                        console.error("Error en la transacción update tabla medicamentos de la base de datos: ", error);
                     }
                 );
-            }, (error) => {
-                console.error("Error en la transacción update tabla medicamentos de la base de datos: ", error);
             });
-            // Iniciar edición
-            setCurrentMedicamentoId(null);
         } else {
             // Iniciar edición
             setCurrentMedicamentoId(id);
@@ -468,6 +558,7 @@ const Medicamentos = () => {
             setHorarios(timesArray);
         }
     };
+
     const pressDelete = (id) => {
         db.transaction(tx => {
             tx.executeSql(
@@ -563,17 +654,18 @@ const Medicamentos = () => {
     let times = calculateTimes(hora)
 
 
-
-
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
 
     return (
         <ScrollView className="flex-1 bg-grisClaro px-5 pt-3">
             <View>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.primaryButton}
                     onPress={pressShowAgregarMedicamento} // Agregar esto
                 >
-                    <Text style={styles.celesteText}>
+                    <Text style={styles.buttonText}>
                         Agregar un nuevo medicamento
                     </Text>
                 </TouchableOpacity>
@@ -588,6 +680,7 @@ const Medicamentos = () => {
                     pressDelete={pressDelete}
                     setCurrentMedicamentoId={setCurrentMedicamentoId}
                     setMedicamentos={setMedicamentos}
+                    medicamentos={medicamentos}
                 />
             ))}
             <Modal
@@ -601,7 +694,7 @@ const Medicamentos = () => {
             >
                 <View className="flex-1 justify-center items-center px-3 bg-fondoOscurecido">
                     <View style={styles.modalView}>
-                        <Text className="text-center text-rojoIntenso font-bold text-lg pb-3">Indica el nombre del medicamento:</Text>
+                        <Text style={styles.encabezado}>Indica el nombre del medicamento:</Text>
                         <TextInput
                             style={styles.input}
                             placeholderTextColor="gray"
@@ -609,7 +702,7 @@ const Medicamentos = () => {
                             onChangeText={text => setNomMedicamento(text)}
                             value={nomMedicamento}
                         />
-                        <Text className="text-center text-rojoIntenso font-bold text-lg pb-3">Indica la dosis a ingerir:</Text>
+                        <Text style={styles.encabezado}>Indica la dosis a ingerir:</Text>
                         <TextInput
                             style={styles.input}
                             placeholderTextColor="gray"
@@ -617,12 +710,18 @@ const Medicamentos = () => {
                             onChangeText={text => setDosis(text)}
                             value={dosis}
                         />
-                        <Text className="text-center text-rojoIntenso font-bold text-lg pb-3">Indica cada cuanto debes tomar el medicamento:</Text>
+
+                        <CustomAlert
+                          isVisible={saveMedicamentoAlert}
+                          onClose={() => {setSaveMedicamentoAlert(false)}}
+                          message='Medicamento Ingresado exitosamente'
+                        />
+
+                        <Text style={styles.encabezado}>Indica cada cuanto debes tomar el medicamento:</Text>
                         <View style={styles.inputPicker}>
                             <Picker
                                 selectedValue={periodicidad}
                                 onValueChange={(itemValue) => setPeriodicidad(itemValue)}
-                                style={styles.inputPicker2}
                             >
                                 <Picker.Item label="Toca aqui para seleccionar una opción" value="" />
                                 <Picker.Item label="Cada 24 hrs (Una vez al dia)" value="Cada 24 hrs (Una vez al dia)" />
@@ -632,10 +731,10 @@ const Medicamentos = () => {
                                 <Picker.Item label="Cada 4 hrs (Seis veces al dia)" value="Cada 4 hrs (Seis veces al dia)" />
                             </Picker>
                         </View>
-                        <Text className="text-center text-damasco font-bold text-lg pb-3">Indica la hora en la que comenzaras a ingerir el medicamento:</Text>
+                        <Text style={styles.encabezado} className="text-center">Indica la hora en la que comenzaras a ingerir el medicamento:</Text>
                         <TouchableOpacity onPress={showTimepicker}>
                             <TextInput
-                                className="bg-beige h-12 mb-3 mx-5 border-2 border-salmon rounded-md placeholder:text-azulnegro pl-3"
+                                style={styles.horaInputMedicamento}
                                 value={hora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 editable={false}
                             />
@@ -653,12 +752,12 @@ const Medicamentos = () => {
                         )}
                         {hora && periodicidad ? (
                             <>
-                                <Text className="text-center text-damasco font-bold text-lg pb-3">
+                                <Text style={styles.encabezado} className="text-center">
                                     {periodicidad === 'Cada 24 hrs (Una vez al dia)'
                                         ? 'La alarma de este medicamento se programara a esta hora:'
                                         : 'Las alarmas de este medicamento se programaran a estas horas:'}
                                 </Text>
-                                <View className="bg-beige mb-3 mx-5 border-2 border-salmon rounded-md placeholder:text-azulnegro ">
+                                <View className="mb-3 mx-5 border-2 rounded-md placeholder:text-azulnegro" style={{borderColor: activeColors.quinary, backgroundColor: activeColors.secondary}}>
                                     {times.map((time, index) => (
                                         <Text className="text-center text-azulnegro  text-lg " key={index}>{time}</Text>
                                     ))}
@@ -666,24 +765,25 @@ const Medicamentos = () => {
                             </>
                         ) : (
                             <>
-                                <Text className="text-center text-damasco font-bold text-lg " >{'Aqui veras la o las horas en las el medicamento debe ser administrado'}</Text>
+                                <Text style={styles.encabezado} className="text-center">{'Aqui veras la o las horas en las el medicamento debe ser administrado'}</Text>
                             </>
                         )}
                         <View className="flex-row self-center justify-around w-full mt-5">
-                            <TouchableOpacity style={styles.celesteButton} onPress={() => { setModalVisibleMedicamentos(false) }}>
-                            <Text style={styles.rojoIntensoText}>
+                            <TouchableOpacity style={styles.secondaryButton} onPress={() => { setModalVisibleMedicamentos(false) }}>
+                                <Text style={styles.buttonText2}>
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity className="h-12 w-28 p-2 bg-damasco justify-center rounded-md shadow-md shadow-negro"
+                            <TouchableOpacity style={styles.primaryButton}
                                 onPress={async () => {
                                     try {
                                         await agregarMedicamento();
+                                        setSaveMedicamentoAlert(true);
                                     } catch (error) {
                                         console.error("Error en agregarMedicamento: ", error);
                                     }
                                 }}>
-                                <Text className="text-md text-redcoral font-bold text-center">
+                                <Text style={styles.buttonText}>
                                     Agregar nuevo medicamento
                                 </Text>
                             </TouchableOpacity>

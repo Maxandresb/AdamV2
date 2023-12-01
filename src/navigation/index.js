@@ -5,6 +5,9 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
+import { useContext } from 'react';
 //PANTALLAS
 
 import Recordatorios from "../screens/Recordatorios";
@@ -30,38 +33,43 @@ import SelecDatosVocalizar from '../screens/SelecDatosVocalizar';
 
 import styles from '../api/styles';
 import Emergencias from "../screens/Emergencias";
+import CambiarTema from '../screens/cambiarTema';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MyTabs(){
+  const {theme} = useContext(ThemeContext);
+  let activeColors = colors[theme.mode];
   return(
     <Tab.Navigator  initialRouteName="Principal" screenOptions={{headerShown:false, 
-      tabBarActiveBackgroundColor: '#a9a9a9',
+      tabBarActiveBackgroundColor: activeColors.tertiary,
       tabBarActiveTintColor: '#000000',
-      tabBarLabelStyle: {color: '#ff3e45', fontWeight: 'bold', fontSize: 12, marginBottom: 5},
+      tabBarLabelStyle: {color: activeColors.quinary, fontWeight: 'bold', fontSize: 12, marginBottom: 5},
     tabBarStyle:{
-      backgroundColor: "#cceaf5",  
+      backgroundColor: activeColors.secondary,  
       height: "10%"}}}>
-       <Tab.Screen name="Emergencias" component={Emergencias} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/sos.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} /> 
-      <Tab.Screen name="Principal" component={PrincipalScreen} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/chat_icon_red.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
-      <Tab.Screen name="Recordatorios" component={Recordatorios} options={{tabBarIcon:({focused}) => <Image source={require('../../assets/images/calendar_icon_red.png')} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
+      <Tab.Screen name="Emergencias" component={Emergencias} options={{tabBarIcon:({focused}) => <Image source={activeColors.sosImage} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} /> 
+      <Tab.Screen name="Principal" component={PrincipalScreen} options={{tabBarIcon:({focused}) => <Image source={activeColors.chatImage} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
+      <Tab.Screen name="Recordatorios" component={Recordatorios} options={{tabBarIcon:({focused}) => <Image source={activeColors.calendarImage} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
       
     </Tab.Navigator>
   )
 }
 
 function PrincipalStack() {
+  const {theme} = useContext(ThemeContext);
+  let activeColors = colors[theme.mode];
   return (
     <Drawer.Navigator initialRouteName="ADAM" screenOptions={{
 
-      drawerActiveTintColor: '#cceaf5',
-      drawerActiveBackgroundColor: '#ff3e45',
-      drawerInactiveTintColor: '#ff3e45',
+      drawerActiveTintColor: activeColors.primary,
+      drawerActiveBackgroundColor: activeColors.secondary,
+      drawerInactiveTintColor: activeColors.secondary,
 
       drawerStyle: {
-        backgroundColor:"#cceaf5",
+        backgroundColor: activeColors.primary,
         },
       
       drawerItemStyle: {
@@ -75,12 +83,12 @@ function PrincipalStack() {
       },
 
       headerStyle: {
-        backgroundColor: '#ff3e45',
+        backgroundColor: activeColors.primary,
         
       },
 
       headerTitleStyle: {
-        color: '#cceaf5'
+        color: activeColors.secondary
       },
 
       
@@ -97,14 +105,16 @@ function PrincipalStack() {
 }
 const PerfilNestedStack = createNativeStackNavigator();
 function PerfilNestedScreen() {
+  const {theme, updateTheme} = useContext(ThemeContext);
+  let activeColors = colors[theme.mode];
   return (
     <PerfilNestedStack.Navigator screenOptions={{
       headerStyle: {
-        backgroundColor: '#cceaf5'
+        backgroundColor: activeColors.primary
       },
 
       headerTitleStyle: {
-        color: '#ff3e45'
+        color: activeColors.secondary
       }
     }}>
       <PerfilNestedStack.Screen name="Perfil" component={Perfil} />
@@ -121,11 +131,23 @@ function PerfilNestedScreen() {
 }
 const ConfiguracionNestedStack = createNativeStackNavigator();
 function ConfiguracionNestedScreen() {
+  const {theme, updateTheme} = useContext(ThemeContext);
+  let activeColors = colors[theme.mode];
   return (
-    <ConfiguracionNestedStack.Navigator>
+    <ConfiguracionNestedStack.Navigator screenOptions={{
+      headerStyle: {
+        backgroundColor: activeColors.primary
+        
+      },
+
+      headerTitleStyle: {
+        color: activeColors.secondary
+      },
+    }}>
       <ConfiguracionNestedStack.Screen name="Configuración" component={Config} />
       <ConfiguracionNestedStack.Screen name="Seleccionar datos a vocalizar" component={SelecDatosVocalizar} />
       <ConfiguracionNestedStack.Screen name="Contactos de emergencia" component={ContactosEmergencia} />
+      <ConfiguracionNestedStack.Screen name="Cambiar tema" component={CambiarTema} />
     </ConfiguracionNestedStack.Navigator>
   );
   

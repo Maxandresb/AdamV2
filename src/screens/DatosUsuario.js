@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
 import SelectorRueda from '../api/selectorRueda';
-
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 const db = SQLite.openDatabase('adamdb.db');
 
@@ -30,6 +32,10 @@ export default function DatosUsuario() {
   const [altura, setAltura] = useState('');
   const [peso, setPeso] = useState('');
   const [imc, setImc] = useState('');
+
+  const {theme, updateTheme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
 
   const [isAlertVisible, setAlertVisible] = useState(false);
 
@@ -123,111 +129,112 @@ export default function DatosUsuario() {
         <View key={index}>
           {showMessage && isEditing && (
             <View className="bg-negro py-4 mb-4 rounded-full shadow-lg shadow-negro">
-              <Text className="text-celeste font-bold text-sm text-center">Ahora puede tocar cada recuadro para modificar sus datos</Text>
+              <Text style={styles.buttonText}>Ahora puede tocar cada recuadro para modificar sus datos</Text>
             </View>
           )}
           {isEditing ? (
             <>
-              <Text className="mb-3 text-gris text-lg font-bold">Primer Nombre:</Text>
+              <Text style={styles.encabezado}>Primer Nombre:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setPnombre}
                 value={pnombre}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Segundo Nombre:</Text>
+              <Text style={styles.encabezado}>Segundo Nombre:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setSnombre}
                 value={snombre}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Primer Apellido:</Text>
+              <Text style={styles.encabezado}>Primer Apellido:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setPapellido}
                 value={papellido}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Segundo Apellido:</Text>
+              <Text style={styles.encabezado}>Segundo Apellido:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setSapellido}
                 value={sapellido}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Alias:</Text>
+              <Text style={styles.encabezado}>Alias:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setAlias}
                 value={alias}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Género:</Text>
+              <Text style={styles.encabezado}>Género:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setGenero}
                 value={genero}
               />
-              <Text className="text-lg font-bold text-redcoral mb-2">Selecciona tu altura: </Text>
+              <Text style={styles.encabezado}>Selecciona tu altura: </Text>
               <SelectorRueda rango={rangoTalla} titulo="Altura (cm)" onValueChange={setAltura} metrica='cm' />
-              <Text className="text-lg font-bold text-redcoral mb-2">Selecciona tu peso: </Text>
+              <Text style={styles.encabezado}>Selecciona tu peso: </Text>
               <SelectorRueda rango={rangoPeso} titulo="Peso (kg)" onValueChange={setPeso} metrica='kg' />
-              <Text className="text-lg font-bold text-redcoral mb-2">Tu IMC es: </Text>
+              <Text style={styles.encabezado}>Tu IMC es: </Text>
               <TextInput
-                className="bg-beige h-10 pl-4 mb-5 rounded-md border-2 border-solid border-salmon"
+                style={styles.inputIMC}
                 editable={false}
                 value={imc}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Tipo de Sangre:</Text>
+              <Text style={styles.encabezado}>Tipo de Sangre:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setTipo_sangre}
                 value={tipo_sangre}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Fecha de Nacimiento:</Text>
+              <Text style={styles.encabezado}>Fecha de Nacimiento:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setFecha_nacimiento}
                 value={fecha_nacimiento}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Alergias:</Text>
+              <Text style={styles.encabezado}>Alergias:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setAlergias}
                 value={alergias}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Cronico:</Text>
+              <Text style={styles.encabezado}>Cronico:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setCronico}
                 value={cronico}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Donante:</Text>
+              <Text style={styles.encabezado}>Donante:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setDonante}
                 value={donante}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Limitación Física:</Text>
+              <Text style={styles.encabezado}>Limitación Física:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-3 text-rojoIntenso pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setLimitacion_fisica}
                 value={limitacion_fisica}
               />
-              <Text className="mb-3 text-gris text-lg font-bold">Toma Medicamentos:</Text>
+              <Text style={styles.encabezado}>Toma Medicamentos:</Text>
               <TextInput
-                className="h-10 border-b-2 border-negro mb-10 text-gris pl-4 bg-celeste shadow-md shadow-negro rounded-md placeholder:font-bold"
+                style={styles.input}
                 onChangeText={setToma_medicamentos}
                 value={toma_medicamentos}
               />
 
               <TouchableOpacity
-                style={styles.rojoIntensoButton}
+                className="mt-5"
+                style={styles.primaryButton}
                 onPress={() => { handlePress(), setShowMessage(false), setIsEditing(!isEditing) }}>
-                <Text style={styles.celesteText}>{'Guardar cambios'}</Text>
+                <Text style={styles.buttonText}>{'Guardar cambios'}</Text>
               </TouchableOpacity>
               <View style={styles.espacioContainer2}></View>
               <TouchableOpacity
-                style={styles.celesteButton}
+                style={styles.secondaryButton}
                 onPress={() => { setIsEditing(!isEditing), setShowMessage(false) }}
               >
-                <Text style={styles.rojoIntensoText}>
+                <Text style={styles.buttonText2}>
                   Cancelar
                 </Text>
               </TouchableOpacity>
@@ -237,44 +244,44 @@ export default function DatosUsuario() {
           ) : (
             <>
               <View className="flex-row self-center justify-center w-auto">
-                <TouchableOpacity className="bg-rojoIntenso p-4 m-2 rounded-lg shadow-lg shadow-negro" onPress={() => { setShowMessage(true), setIsEditing(!isEditing) }}>
-                  <Text className="self-center text-celeste font-bold text-lg">{'Modificar Datos Personales'}</Text>
+                <TouchableOpacity style={styles.primaryButton} onPress={() => { setShowMessage(true), setIsEditing(!isEditing) }}>
+                  <Text style={styles.secondaryText}>{'Modificar Datos Personales'}</Text>
                 </TouchableOpacity>
               </View>
-              <Text className="mb-3 mt-5 text-rojoIntenso text-lg font-bold">RUT:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.rut}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Primer Nombre:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.pnombre}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Segundo Nombre:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.snombre}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Primer Apellido:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.papellido}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Segundo Apellido:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.sapellido}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Alias:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.alias}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Género:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.genero}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Altura:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.altura}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Peso:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.peso}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">IMC:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.imc}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Tipo de Sangre:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.tipo_sangre}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Fecha de Nacimiento:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.fecha_nacimiento}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Alergias:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.alergias}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Cronico:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.cronico}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Donante:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.donante}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Limitación Física:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.limitacion_fisica}</Text>
-              <Text className="mb-3 text-rojoIntenso text-lg font-bold">Toma Medicamentos:</Text>
-              <Text className="mb-4 border-b border-dashed border-gris pb-2 text-negro font-semibold">{item.toma_medicamentos}</Text>
+              <Text className="mt-10" style={styles.header}>RUT:</Text>
+              <Text style={styles.userDataContent}>{item.rut}</Text>
+              <Text style={styles.header}>Primer Nombre:</Text>
+              <Text style={styles.userDataContent}>{item.pnombre}</Text>
+              <Text style={styles.header}>Segundo Nombre:</Text>
+              <Text style={styles.userDataContent}>{item.snombre}</Text>
+              <Text style={styles.header}>Primer Apellido:</Text>
+              <Text style={styles.userDataContent}>{item.papellido}</Text>
+              <Text style={styles.header}>Segundo Apellido:</Text>
+              <Text style={styles.userDataContent}>{item.sapellido}</Text>
+              <Text style={styles.header}>Alias:</Text>
+              <Text style={styles.userDataContent}>{item.alias}</Text>
+              <Text style={styles.header}>Género:</Text>
+              <Text style={styles.userDataContent}>{item.genero}</Text>
+              <Text style={styles.header}>Altura:</Text>
+              <Text style={styles.userDataContent}>{item.altura}</Text>
+              <Text style={styles.header}>Peso:</Text>
+              <Text style={styles.userDataContent}>{item.peso}</Text>
+              <Text style={styles.header}>IMC:</Text>
+              <Text style={styles.userDataContent}>{item.imc}</Text>
+              <Text style={styles.header}>Tipo de Sangre:</Text>
+              <Text style={styles.userDataContent}>{item.tipo_sangre}</Text>
+              <Text style={styles.header}>Fecha de Nacimiento:</Text>
+              <Text style={styles.userDataContent}>{item.fecha_nacimiento}</Text>
+              <Text style={styles.header}>Alergias:</Text>
+              <Text style={styles.userDataContent}>{item.alergias}</Text>
+              <Text style={styles.header}>Cronico:</Text>
+              <Text style={styles.userDataContent}>{item.cronico}</Text>
+              <Text style={styles.header}>Donante:</Text>
+              <Text style={styles.userDataContent}>{item.donante}</Text>
+              <Text style={styles.header}>Limitación Física:</Text>
+              <Text style={styles.userDataContent}>{item.limitacion_fisica}</Text>
+              <Text style={styles.header}>Toma Medicamentos:</Text>
+              <Text style={styles.userDataContent}>{item.toma_medicamentos}</Text>
               <View style={styles.espacioContainer}>
               </View>
             </>

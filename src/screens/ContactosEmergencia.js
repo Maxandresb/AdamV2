@@ -1,14 +1,15 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
-import styles from '../api/styles';
 import CustomAlert from '../api/customAlert';
 import * as Contacts from 'expo-contacts';
 import { CheckBoxRapido } from '../api/checkBoxRapido';
 import { obtenerRut } from "../api/sqlite"
 import { Slider } from 'react-native-elements';
-
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 
 
@@ -40,6 +41,11 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
             ]
         );
     };
+
+    const {theme, updateTheme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
+
     return (
         <View>
             {isEditing ? (
@@ -103,7 +109,7 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
             )}
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.primaryButton}
                     onPress={() => handlePress(contacto.id, Contacto)}
                 >
                     <Text style={styles.buttonText}>
@@ -111,10 +117,10 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.deleteButton}
+                    style={styles.secondaryButton}
                     onPress={handleDeletePress}
                 >
-                    <Text style={styles.rojoIntensoText}>
+                    <Text style={styles.buttonText2}>
                         Eliminar Contacto
                     </Text>
                 </TouchableOpacity>
@@ -124,10 +130,10 @@ const MostrarEditarContactos = ({ contacto, isEditing, handlePress, handleDelete
                     <>
                         <View style={styles.espacioContainer2}></View>
                         <TouchableOpacity
-                            style={styles.celesteButton}
+                            style={styles.secondaryButton}
                             onPress={() => setContactoId(null)}
                         >
-                            <Text style={styles.rojoIntensoText}>
+                            <Text style={styles.buttonText2}>
                                 Cancelar
                             </Text>
                         </TouchableOpacity>
@@ -366,15 +372,18 @@ const Contactos = () => {
     };
 
 
+    const {theme} = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    let activeColors = colors[theme.mode];
 
     return (
         <View style={styles.container}>
             <View>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.primaryButton}
                     onPress={obtenerYGuardarContactos}
                 >
-                    <Text style={styles.celesteText}>Agregar contactos desde el telefono</Text>
+                    <Text style={styles.buttonText}>Agregar contactos desde el telefono</Text>
                 </TouchableOpacity>
             </View>
             <Modal
@@ -399,24 +408,24 @@ const Contactos = () => {
                         </ScrollView>
                         <View style={styles.verticalButtonsContainer}>
                             <TouchableOpacity
-                                style={styles.rojoIntensoButton}
+                                style={styles.primaryButton}
                                 onPress={() => {
                                     guardarContactosSeleccionados();
                                     setModalCTVisible(false);
                                     setContactosSeleccionados([]);
                                 }}
                             >
-                                <Text style={styles.celesteText}>Guardar contactos seleccionados</Text>
+                                <Text style={styles.buttonText}>Guardar contactos seleccionados</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                style={styles.closeButton}
+                                style={styles.secondaryButton}
                                 onPress={() => {
                                     setModalCTVisible(false);
                                     setContactosSeleccionados([]);
                                 }}
                             >
-                                <Text style={styles.rojoIntensoText}>Cancelar</Text>
+                                <Text style={styles.buttonText2}>Cancelar</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -424,10 +433,10 @@ const Contactos = () => {
             </Modal>
             <View>
                 <TouchableOpacity
-                    style={styles.rojoIntensoButton}
+                    style={styles.secondaryButton}
                     onPress={handleAgregarContactoPress}
                 >
-                    <Text style={styles.celesteText}>Agregar nuevo contacto</Text>
+                    <Text style={styles.buttonText2}>Agregar nuevo contacto</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.espacioContainer}></View>
@@ -490,13 +499,13 @@ const Contactos = () => {
                             value={relacion}
                         />
                         <View style={styles.buttonContainerCenter}>
-                            <TouchableOpacity style={styles.closeButton} onPress={() => { setModalVisibleContactos(false); }}>
-                                <Text style={styles.rojoIntensoText}>
+                            <TouchableOpacity style={styles.secondaryButton} onPress={() => { setModalVisibleContactos(false); }}>
+                                <Text style={styles.buttonText2}>
                                     Cerrar
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.rojoIntensoButton} onPress={() => { agregarContacto(); }}>
-                                <Text style={styles.celesteText}>
+                            <TouchableOpacity style={styles.primaryButton} onPress={() => { agregarContacto(); }}>
+                                <Text style={styles.buttonText}>
                                     Agregar Nuevo Contacto
                                 </Text>
                             </TouchableOpacity>
