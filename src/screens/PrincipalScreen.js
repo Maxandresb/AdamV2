@@ -871,15 +871,15 @@ export default function PrincipalScreen() {
         </View>
         {/*<View><Text className="text-center font-bold pt-0 -mt-4 mb-2 ">Chat ADAM</Text></View>*/}
         <View className="flex-1 flex-row justify-center">
-          <View style={styles.msjContainer}>
-            <View style={styles.chatTopButtonsContainer}>
+          <View style={styles.msjContainer} className="flex-1">
+            {/* <View style={styles.chatTopButtonsContainer}>
               <TouchableOpacity style={styles.chatTopButton}>
                 <Text style={styles.chatTopButtonText}>Informacón médica</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.chatTopButton}>
                 <Text style={styles.chatTopButtonText}>Nuevas noticias</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
             <GiftedChat
               renderInputToolbar={props => customtInputToolbar(props)}
               renderSend={props => customSend(props, theme)}

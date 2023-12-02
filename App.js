@@ -7,7 +7,7 @@ import { initDB } from "./src/api/sqlite"
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
-
+import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { ThemeContext } from './src/api/themeContext';
 
 import { InsertCentrosMedicos } from "./src/api/insertCentrosMedicos"
@@ -97,8 +97,10 @@ export default function App() {
   initDB();
   return (
     <ThemeContext.Provider value={{theme, updateTheme}}>
+       <ExpoStatusBar style="auto" />
         <AppNavigation />
     </ThemeContext.Provider>
+    
   )
 
 
