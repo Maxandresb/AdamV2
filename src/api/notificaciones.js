@@ -2,6 +2,48 @@
 import * as Notifications from 'expo-notifications';
 import { useEffect, useState } from "react";
 import { Platform } from 'react-native';
+import { guardarIdsNotificacionesSD, guardarFechaSD } from '../api/sqlite';
+
+//****************************** NOTIFICACIONES DE DOLENCIAS DIARIAS ************************
+// Programa una notificación para los próximos 30 días
+export async function generarNotificacionDolencias() {
+  let idsNotificaciones = [];
+  for (let i = 1; i <= 30; i++) {
+    let date = new Date();
+    date.setDate(date.getDate() + i);
+    date.setHours(12);
+    date.setMinutes(0);
+    date.setSeconds(0);
+
+    const trigger = date.getTime();
+    try {
+      let notification = await Notifications.scheduleNotificationAsync({
+        content: {
+          sound: 'default',
+          title: '¿Tienes una nueva dolencia o malestar?',
+          body: 'Toca aquí si deseas registrarla, esto ayuda a los profesionales de la salud a entender tu caso conocer tu evolucion',
+          data: {
+            navigateTo: 'agenda-dolencias',
+            tipoNotificacion: 'dolencias',
+          },
+        },
+        trigger,
+      });
+      idsNotificaciones.push(notification);
+    } catch (error) {
+      console.error('Error al programar notificación:', error);
+    }
+    // console.log('Notificacion creada exitosamente');
+  }
+  // await MostrarNotificacionesGuardadas()
+  return idsNotificaciones;
+}
+
+
+
+
+
+
 //****************************** NOTIFICACIONES DE MEDICAMENTOS************************
 // Función para programar las notificaciones de los medicamentos
 function convertirAFormato24Horas(horarios) {
@@ -75,7 +117,7 @@ export function calcularSegundosHastaProximoHorario(horaCompleta) {
     console.log('HORA A PROGRAMAR YA PASO');
     fechaHorario.setUTCDate(fechaHorario.getUTCDate() + 1);
   }
-  
+
   let diferenciaMiliSegundos = fechaHorario - ahora;
   let totalSegundos = diferenciaMiliSegundos / 1000;
 
@@ -90,7 +132,7 @@ export function calcularSegundosHastaProximoHorario(horaCompleta) {
 
 async function programarNotificacionMedica(medicamento) {
   console.log('=> medicamento en programarNotificacionMedica: ', medicamento)
- 
+
   // Verifica los permisos de notificación
   console.log(`\n\ ***** \n\ `);
   let permissions = await Notifications.getPermissionsAsync();
@@ -257,20 +299,20 @@ export async function scheduleRecordatorioNotification(recordatorio) {
       proximaFecha = calcularProximaFecha(dias[i], Hora);
     }
 
-    
+
 
     // Configura el contenido de la notificación
     let content = {
       sound: true,
-      badge:true,
-      sticky:false,
-      
+      badge: true,
+      sticky: false,
+
       title: Titulo,
       body: Descripcion,
-      
+
     };
 
-    
+
     // Calcula la diferencia en segundos entre la próxima fecha y la fecha y hora actuales
     let segundos = calcularDiferenciaSegundos(proximaFecha);
     console.log('prox fecha: ', proximaFecha)
@@ -278,7 +320,7 @@ export async function scheduleRecordatorioNotification(recordatorio) {
 
     // Configura el disparador de la notificación
     let trigger = {
-      channelId:'default',
+      channelId: 'default',
       seconds: segundos,
       repeats: dias[i] !== 'Unico' // Repite solo si el día no es 'Unico'
     };
@@ -311,7 +353,7 @@ Notifications.addNotificationResponseReceivedListener(async response => {
         sound: 'default',
         title: data.Titulo,
         body: 'programada para el miercoles ',//data.Descripcion,
-        
+
       },
       trigger: proximaFecha,
     });

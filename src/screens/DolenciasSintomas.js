@@ -12,6 +12,9 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import getStyles from '../api/styles';
 import {colors} from '../api/theme';
 import { ThemeContext } from '../api/themeContext';
+import { obtenerIdsNotificacionesSD, guardarFechaSD, obtenerFechaSD, mostarDB } from "../api/sqlite";
+import { generarNotificacionDolencias } from '../api/notificaciones';
+
 
 
 const db = SQLite.openDatabase('adamdb.db');
@@ -297,13 +300,13 @@ const DolenciasSintomas = () => {
     const [estadoSeguimiento, setEstadoSeguimiento] = useState(ESTADO_INACTIVO);
 
     const ESTADO_ACTIVO = '1'
-    const ESTADO_INACTIVO= '0'
+    const ESTADO_INACTIVO = '0'
     const estado_actual = useRef(null)
 
     const obtenerEstSeguimiento = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                'SELECT * FROM configuracion WHERE SeguimientoDolencias = ?',
+                'SELECT * FROM ConfigNotificaciones WHERE SeguimientoDolencias = ?',
                 [1],
                 (_, { rows }) => {
                     if (rows.length > 0) {
@@ -320,20 +323,19 @@ const DolenciasSintomas = () => {
             );
         });
     }
-    
+
     //useEffect
     useEffect(() => {
         obtenerEstSeguimiento()
     }, [])
 
-    const cambiarEstadoSeguimiento = () => {
+    const cambiarEstadoSeguimiento = async () => {
         // Determinar el nuevo estado
         const nuevoEstado = estadoSeguimiento === ESTADO_ACTIVO ? ESTADO_INACTIVO : ESTADO_ACTIVO;
-    
         // Actualizar la base de datos SQLite
         db.transaction((tx) => {
             tx.executeSql(
-                'UPDATE configuracion SET SeguimientoDolencias = ?',
+                'UPDATE ConfigNotificaciones SET SeguimientoDolencias = ?',
                 [nuevoEstado],
                 (_, resultSet) => {
                     console.log('Cambio de estado de seguimiento exitoso!');
@@ -351,6 +353,113 @@ const DolenciasSintomas = () => {
     const styles = getStyles(theme);
     let activeColors = colors[theme.mode];
         
+    async function guardarIdsNotificacionesSD(idsNotificacionesSD) {
+        console.log('guardar ids SD');
+        // console.log('idsAntes: ', idsNotificacionesSD)
+        let stringIds = idsNotificacionesSD.join(',');
+        // console.log('idsDespues: ', stringIds);
+        if (typeof stringIds === 'string') {
+            console.log('idsNotificacionesSD es una cadena');
+        } else {
+            console.log('idsNotificacionesSD no es una cadena');
+            stringIds = stringIds.toString();
+        }
+        try {
+            return new Promise((resolve, reject) => {
+                db.transaction(tx => {
+                    tx.executeSql(
+                        'INSERT OR REPLACE INTO ConfigNotificaciones (id, idsNotificacionesSD) VALUES (?, ?)',
+                        [1, stringIds],
+                        (_, resultSet) => {
+                            console.log('Inserción o reemplazo idsNotificacionesSD exitoso en la tabla Configuracion');
+                            console.log('Resultado de la consulta SQL:', resultSet);
+                            resolve(resultSet);
+                        },
+                        (_, error) => {
+                            console.log(`Error al insertar o reemplazar idsNotificacionesSD "${stringIds}" en la tabla Configuracion:`, error);
+                            reject(error);
+                            return true;
+                        }
+                    );
+                }, (error) => {
+                    console.log('Error en la transacción guardar ids SD', error);
+                    reject(error);
+                });
+            });
+        } catch (error) {
+            console.log('Error en guardar ids SD', error);
+        }
+    };
+
+    async function cancelarNotificaciones() {
+        try {
+            // Obtiene los IDs de las notificaciones de la base de datos
+            let idsNotificacionesString = await obtenerIdsNotificacionesSD();
+            // Convierte el string JSON de vuelta a un array
+            const idsNotificaciones = idsNotificacionesString.split(',');
+            try {
+                // Recorre el array y cancela cada notificación
+                for (let i = 0; i < idsNotificaciones.length; i++) {
+                    await Notifications.cancelScheduledNotificationAsync(idsNotificaciones[i]);
+                }
+            } catch (error) {
+                console.log('Error al cancelar las notificaciones: ', error);
+            }
+        } catch (error) {
+            console.log('Error al obtener los IDs de las notificaciones: ', error);
+        }
+        return;
+    }
+
+    async function programarNotificacionDolencias() {
+        try {
+            let idsNotificaciones;
+            try {
+                idsNotificaciones = await generarNotificacionDolencias();
+            } catch (error) {
+                console.log('Error al generar notificacion de dolencias: ', error)
+            }
+            try {
+                let result = await guardarIdsNotificacionesSD(idsNotificaciones)
+                console.log('>> Resultado de guardar idsNotificaciones en el storage: ', result);
+            } catch (error) {
+                console.log('Error al guardar idsNotificaciones en el storage: ', error)
+            }
+            return 'ok';
+        } catch (error) {
+            console.log('Error al programar notificacion de dolencias: ', error)
+        }
+    }
+
+    const manejarCheck = async () => {
+        if (estadoSeguimiento === ESTADO_ACTIVO) {
+            // await cancelarNotificaciones()
+            // await guardarFechaSD(null);
+            await cambiarEstadoSeguimiento()
+            mostarDB('ConfigNotificaciones')
+            console.log('CHECK INACTIVO');
+        } else {
+            await cambiarEstadoSeguimiento()
+            let result = await programarNotificacionDolencias();
+            console.log('Resultado programar notificaciones', result)
+            // Guardar la fecha actual como la última vez que se programaron las notificaciones
+            const now = new Date();
+            try {
+                setTimeout(async () => {
+                    let result = await guardarFechaSD(now);
+                    console.log('>> Resultado de guardar fecha en el storage: ', result);
+                }, 1000); // Espera 1 segundo
+            } catch (error) {
+                console.log('Error al guardar fecha en el storage: ', error)
+            }
+            setTimeout(async () => {
+                mostarDB('ConfigNotificaciones');
+            }, 1000); // Espera 1 segundo
+            let idsNotificacionesString = await obtenerIdsNotificacionesSD();
+            console.log("IDs Notificaciones SD", idsNotificacionesString);
+        }
+    }
+
 
     return (
         <ScrollView className="px-2" style={styles.container}>
@@ -365,12 +474,12 @@ const DolenciasSintomas = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.lineaContainer}></View>
-            <View className="flex-row " style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop:-10, marginBottom:-20}}>
+            <View className="flex-row " style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: -10, marginBottom: -20 }}>
                 <View>
                     <Text style={styles.seguimientoDolenciaHeader}>{'Seguimiento diario de \n\dolencias o sintomas: '}</Text>
                 </View>
-                <TouchableOpacity style={{ paddingRight: 15 }} onPress={() => {cambiarEstadoSeguimiento()}}>
-                    <Text><FontAwesome5 name="check" size={25} color={ estadoSeguimiento === '0' ? 'black' : 'green'} /></Text>
+                <TouchableOpacity style={{ paddingRight: 15 }} onPress={async () => { await manejarCheck() }}>
+                    <Text><FontAwesome5 name="check" size={25} color={estadoSeguimiento === '0' ? 'black' : 'green'} /></Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.lineaContainer}></View>

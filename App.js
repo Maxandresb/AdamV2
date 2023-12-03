@@ -94,6 +94,7 @@ export default function App() {
     };
   }, []);
 
+
   initDB();
   return (
     <ThemeContext.Provider value={{theme, updateTheme}}>

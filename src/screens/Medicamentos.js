@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import getStyles from '../api/styles';
 import {colors} from '../api/theme';
 import { ThemeContext } from '../api/themeContext';
+import { useIsFocused } from '@react-navigation/native';
 
 import { useIsFocused } from '@react-navigation/native';
 const db = SQLite.openDatabase('adamdb.db');
@@ -23,6 +24,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     const [periodicidad2, setPeriodicidad2] = useState(medicamento.periodicidad);
     const [horarios, setHorarios] = useState([]);
     const isFocused = useIsFocused();
+
     // ********** MANEJO DE CHECK ***********
     const ESTADO_INACTIVO = '0';
     const ESTADO_ACTIVO = '1';
@@ -50,6 +52,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
         if (campos.idNotificacion) {
             const cadena = campos.idNotificacion.join(',');
             campos.idNotificacion = cadena
+            console.log('cadena: ', cadena)
         }
         return new Promise((resolve, reject) => {
             db.transaction(tx => {
@@ -78,9 +81,6 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
         });
     };
 
-    useEffect(() => {
-        console.log('medicamento:: ',medicamento);
-    },[]);
 
     const cancelarNotificacion = async (medicamento, estado) => {
         console.log('=> CANCELANDO NOTIFICACION CON IDNOTIFICACION:', medicamento)
@@ -141,7 +141,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                     );
                 } catch (error) {
                     console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
-        
+
                 }
             }
         }
@@ -284,6 +284,8 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     };
 
 
+   
+
     const manejarCambioPeriodicidad = (valor) => {
         setPeriodicidad2(valor);
         horariosCalculados = calcularHorarios(hora, valor);
@@ -291,8 +293,6 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
         medicamento.horarios = horariosCalculados
         manejarCambio('horarios', horariosCalculados.join(" "));
     };
-
-
     const manejarCambio = (clave, valor) => {
         setCurrentMedicamento(current => ({
             ...current,
@@ -319,8 +319,6 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
     const abrirHora = () => {
         setMostrarHora(true);
     };
-
-
 
     // ********** MANEJO DE ELIMINAR MEDICAMENTO ***********
     const pressEliminarMedicamento = () => {
@@ -487,7 +485,7 @@ const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurr
                                 );
                             } catch (error) {
                                 console.error('ERROR AL ACTUALIZAR ESTADO DE LA NOTIFICACION EN PANTALLA:', error);
-    
+
                             }
                             setCurrentMedicamentoId(null)
                         }}
