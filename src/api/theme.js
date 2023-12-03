@@ -35,7 +35,7 @@ export const colors = {
     soft: {
         label: 'Suave',
         primary: '#ef7181', //ef7181
-        secondary: '#82d5d1', //82d5d1
+        secondary: '#a0e8e4', //82d5d1
         tertiary: '#04617c', //04617c
         quaternary: '#ecf2e7', //ecf2e7
         quinary: '#000000', //000000

@@ -6,9 +6,11 @@ import { Agenda, LocaleConfig } from "react-native-calendars"
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Icon } from 'react-native-elements';
 import { useIsFocused } from '@react-navigation/native'
-import styles from '../api/styles';
 import moment from 'moment';
 import 'moment/locale/es';
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 
 import * as Notifications from 'expo-notifications';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -16,9 +18,7 @@ import { CheckBoxRapido } from '../api/checkBoxRapido';
 import * as SQLite from 'expo-sqlite';
 import { scheduleRecordatorioNotification } from "../api/notificaciones";
 
-import getStyles from '../api/styles';
-import {colors} from '../api/theme';
-import { ThemeContext } from '../api/themeContext';
+
 const db = SQLite.openDatabase('adamdb.db');
 
 LocaleConfig.locales['es'] = {
@@ -31,17 +31,26 @@ LocaleConfig.locales['es'] = {
 LocaleConfig.defaultLocale = 'es';
 // Define el componente RecordatorioItem y envuélvelo con React.memo
 const RecordatorioItem = React.memo(({ recordatorio, abrirModal, handleCheckPress }) => {
+  const {theme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
   if (recordatorio) {
     for (item in recordatorio) {
       return (
         <View style={styles.lineaContainer2}>
-          <View className="flex-row ">
-            <View className="flex flex-2 py-10"><Text>{recordatorio.Hora}</Text></View>
-            <View className="flex flex-1 px-3 py-2"><Text className=" py-2">{recordatorio.Titulo}</Text>
-              <Text className=" py-2" >{recordatorio.Descripcion}</Text></View>
+          <View className="flex-row" style={{backgroundColor: activeColors.quaternary, paddingHorizontal: 8, shadowColor: 'black',
+            shadowOffset: { width: -2, height: 4 },
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            elevation: 5,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8}}>
+            <View className="flex flex-2 py-10"><Text style={{color: activeColors.primary , fontWeight: 'bold'}}>{recordatorio.Hora}</Text></View>
+            <View className="flex flex-1 px-3 py-2" ><Text className=" py-2" style={{color: activeColors.primary, fontWeight: 'bold'}}>{recordatorio.Titulo}</Text>
+              <Text className="py-2" style={{color: activeColors.tertiary, fontWeight: '600'}}>{recordatorio.Descripcion}</Text></View>
             {recordatorio.id ? (<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <TouchableOpacity style={{ padding: 5 }} onPress={() => abrirModal(recordatorio)}>
-                <Text><FontAwesome5 name="edit" size={25} color="black" /></Text>
+              <TouchableOpacity style={{ padding: 5}} onPress={() => abrirModal(recordatorio)}>
+                <Text><FontAwesome5 name="edit" size={25} color={activeColors.tertiary} /></Text>
               </TouchableOpacity>
               <TouchableOpacity style={{ padding: 5, paddingLeft: 10 }} onPress={() => handleCheckPress(recordatorio)}>
                 <Text><FontAwesome5 name="check" size={25} color={recordatorio.Estado === '0' ? 'black' : 'green'} /></Text>
@@ -585,11 +594,21 @@ const Recordatorios = () => {
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
   let activeColors = colors[theme.mode];
+
+
   // Renderiza el componente
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1}}>
         <Agenda
+          theme={{
+            backgroundColor: activeColors.secondary,
+            calendarBackground: activeColors.quaternary,
+            selectedDayBackgroundColor: activeColors.primary, // Color de fondo seleccionado
+            todayTextColor: activeColors.senary, // Color de texto para el día actual
+            dayTextColor: activeColors.tertiary, // Color de texto para los días
+            monthTextColor: activeColors.secondary, // Color de texto para el mes
+          }}
           items={recordatorios}
           renderItem={renderRecordatorio}
           loadItemsForMonth={loadItems}
@@ -611,7 +630,7 @@ const Recordatorios = () => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text className="text-rojoIntenso text-lg text-center font-bold">Recordatorios futuros:</Text>
+              <Text className="text-lg text-center font-bold" style={{color: activeColors.primary}}>Recordatorios futuros:</Text>
               {recordatoriosFuturos.map((fecha) => {
                 let fechaMoment = moment(fecha);
                 return (
@@ -624,8 +643,8 @@ const Recordatorios = () => {
                 );
               })}
 
-              <TouchableOpacity className="mt-12" style={styles.celesteButton} onPress={handleCloseModal}>
-                <Text style={styles.rojoIntensoText}>Cerrar</Text>
+              <TouchableOpacity className="mt-12" style={styles.secondaryButton} onPress={handleCloseModal}>
+                <Text style={styles.buttonText2}>Cerrar</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -640,7 +659,7 @@ const Recordatorios = () => {
             <View style={styles.modalView}>
               {isEditing ? (
                 <>
-                  <Text style={styles.encabezadoInicial}>Titulo:</Text>
+                  <Text style={styles.encabezado}>Titulo:</Text>
                   <TextInput
                     style={styles.input}
                     value={titulo}
@@ -767,7 +786,7 @@ const Recordatorios = () => {
                 </>
               ) : (
                 <>
-                  <Text style={styles.encabezadoInicial}>Titulo:</Text>
+                  <Text style={styles.encabezado}>Titulo:</Text>
                   <Text style={styles.content}>{recordatorioActual.current?.Titulo}</Text>
                   <Text style={styles.encabezado}>Descripcion:</Text>
                   <Text style={styles.content}>{recordatorioActual.current?.Descripcion}</Text>
@@ -782,26 +801,26 @@ const Recordatorios = () => {
 
               <View>
                 <TouchableOpacity
-                  style={styles.closeButton}
+                  style={styles.primaryButton}
                   onPress={async () => { setIsEditing(!isEditing), await handleUpdateRecordatorio(recordatorioActual, scheduleRecordatorioNotification, db) }}
                 >
-                  <Text style={styles.rojoIntensoText}>
+                  <Text style={styles.buttonText}>
                     {isEditing ? 'Guardar recordatorio' : 'Modificar recordatorio'}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.rojoIntensoButton}
+                  style={styles.primaryButton}
                   onPress={() => handleDeletePress(recordatorioActual)}
                 >
-                  <Text style={[styles.rojoIntensoText ,{color:'white'}]}>
+                  <Text style={styles.buttonText}>
                     Eliminar recordatorio
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.closeButton}
+                  style={styles.secondaryButton}
                   onPress={cerrarModal} // Modificar esto
                 >
-                  <Text style={styles.rojoIntensoText}>
+                  <Text style={styles.buttonText2}>
                     Cerrar
                   </Text>
                 </TouchableOpacity>
