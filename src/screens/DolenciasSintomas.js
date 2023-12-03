@@ -346,7 +346,13 @@ const DolenciasSintomas = () => {
         console.log('guardar ids SD');
         // console.log('idsAntes: ', idsNotificacionesSD)
         let stringIds = idsNotificacionesSD.join(',');
-        console.log('idsDespues: ', stringIds);
+        // console.log('idsDespues: ', stringIds);
+        if (typeof stringIds === 'string') {
+            console.log('idsNotificacionesSD es una cadena');
+        } else {
+            console.log('idsNotificacionesSD no es una cadena');
+            stringIds = stringIds.toString();
+        }
         try {
             return new Promise((resolve, reject) => {
                 db.transaction(tx => {
@@ -416,16 +422,15 @@ const DolenciasSintomas = () => {
 
     const manejarCheck = async () => {
         if (estadoSeguimiento === ESTADO_ACTIVO) {
-            await cancelarNotificaciones()
-            await guardarFechaSD(null);
+            // await cancelarNotificaciones()
+            // await guardarFechaSD(null);
             await cambiarEstadoSeguimiento()
             mostarDB('ConfigNotificaciones')
+            console.log('CHECK INACTIVO');
         } else {
+            await cambiarEstadoSeguimiento()
             let result = await programarNotificacionDolencias();
             console.log('Resultado programar notificaciones', result)
-            setTimeout(async () => {
-                await cambiarEstadoSeguimiento()
-            }, 1000); // Espera 1 segundo
             // Guardar la fecha actual como la última vez que se programaron las notificaciones
             const now = new Date();
             try {
