@@ -9,8 +9,8 @@ export async function obtenerIdsNotificacionesSD() {
         try {
             db.transaction(tx => {
                 tx.executeSql(
-                    `SELECT idsNotificacionesSD FROM Configuracion;`,
-                    [],
+                    `SELECT idsNotificacionesSD FROM ConfigNotificaciones WHERE id = ?;`,
+                    [1],
                     (_, { rows: { _array } }) => {
                         if (_array.length > 0) {
                             let idsNotificacionesSD = _array[0].idsNotificacionesSD;
@@ -33,7 +33,7 @@ export async function obtenerIdsNotificacionesSD() {
         }
     });
 }
-export async function guardarIdsNotificacionesSD(nuevosIds) {
+/*export async function guardarIdsNotificacionesSD(nuevosIds) {
     console.log('guardar ids SD');
     const stringIds = nuevosIds.join(',');
     //console.log('stringIds: ', stringIds);
@@ -147,14 +147,44 @@ export async function guardarIdsNotificacionesSD(nuevosIds) {
             reject(error);
         }
     });
-}
+}*/
+
+/*export const guardarIdsNotificacionesSD = (idsNotificacionesSD) => {
+    console.log('guardar ids SD');
+    // console.log('idsAntes: ', idsNotificacionesSD)
+    // let stringIds = idsNotificacionesSD.join(',');
+    // console.log('idsDespues: ', stringIds);
+    let stringIds = 'intentando ingresar datos'
+    return new Promise((resolve, reject) => {
+      db.transaction(tx => {
+        tx.executeSql(
+          'INSERT OR REPLACE INTO Configuracion (id, idsNotificacionesSD) VALUES (?, ?)',
+          [1, stringIds],
+          (_, resultSet) => {
+            console.log('Inserción o reemplazo idsNotificacionesSD exitoso en la tabla Configuracion');
+            mostarDB('Configuracion')
+            resolve(resultSet);
+          },
+          (_, error) => {
+            console.log('Error al insertar o reemplazar idsNotificacionesSD en la tabla Configuracion:', error);
+            reject(error);
+            return true;
+          }
+        );
+      }, (error) => {
+        console.log('Error en la transacción guardar ids SD', error);
+        reject(error);
+      });
+    });
+  }; */
+
 
 export async function obtenerFechaSD() {
     return new Promise((resolve, reject) => {
         try {
             db.transaction(tx => {
                 tx.executeSql(
-                    `SELECT fechaSD FROM Configuracion;`,
+                    `SELECT fechaSD FROM ConfigNotificaciones WHERE id = ?;`,
                     [],
                     (_, { rows: { _array } }) => {
                         if (_array.length > 0) {
@@ -200,30 +230,25 @@ export async function guardarFechaSD(nuevaFecha) {
             }
 
             // Inicia transacción en la base de datos
-            console.log('iniciando transaccion guardar ids SD');
             db.transaction(
                 tx => {
                     // Ejecuta la consulta SQL
                     tx.executeSql(
-                        `INSERT OR REPLACE INTO Configuracion (id, fechaSD) VALUES (?, ?)`,
+                        `INSERT OR REPLACE INTO ConfigNotificaciones (id, fechaSD) VALUES (?, ?)`,
                         [1, fechaString],
                         (_, resultSet) => {
-                            console.log('Inserción o actualización exitosa');
+                            console.log('Inserción o actualización fechaSD exitosa');
                             resolve('ok');
                         },
                         (_, error) => {
-                            console.log('Error en la consulta', error);
+                            console.log('Error en la consulta fechaSD', error);
                             reject(error);
                         }
                     );
                 },
                 error => {
-                    console.log('Error en la transacción', error);
+                    console.log('Error en la transacción fechaSD', error);
                     reject(error);
-                },
-                () => {
-                    console.log('Transacción completa');
-                    resolve();
                 }
             );
         } catch (error) {
@@ -774,19 +799,32 @@ export function initDB() {
             (_, error) => console.log('Error al crear la tabla:', error)
         );
 
+        //crear tabla confignotificaciones
+        tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS ConfigNotificaciones (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            SeguimientoDolencias TEXT, 
+            fechaSD TEXT,
+            idsNotificacionesSD TEXT,
+            usuario_rut TEXT,
+            FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+            ); `,
+            [],
+            () => { },
+            (_, error) => console.log('Error al crear la tabla Configuracion:', error)
+        )
+
+
         // Crear tabla Configuracion
         tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS Configuracion (
-                id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                DatosSeleccionados TEXT,
-                EstadoLlamadaDS TEXT,
-                Mute TEXT,
-                SeguimientoDolencias TEXT, 
-                fechaSD TEXT,
-                idsNotificacionesSD TEXT,
-                usuario_rut TEXT,
-                FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-            );`,
+            `CREATE TABLE IF NOT EXISTS Configuracion(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            DatosSeleccionados TEXT,
+            EstadoLlamadaDS TEXT,
+            Mute TEXT,
+            usuario_rut TEXT,
+            FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        ); `,
             [],
             () => { },
             (_, error) => console.log('Error al crear la tabla Configuracion:', error)
@@ -794,17 +832,17 @@ export function initDB() {
 
         // Crear tabla Medicamentos
         tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS Medicamentos (
-          id INTEGER PRIMARY KEY NOT NULL,
-          medicamento TEXT,
-          dosis TEXT,
-          periodicidad TEXT,
-          horarios TEXT,
-          estadoNotificacion TEXT,
-          idNotificacion TEXT,
-          usuario_rut TEXT,
-          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-        );`,
+            `CREATE TABLE IF NOT EXISTS Medicamentos(
+            id INTEGER PRIMARY KEY NOT NULL,
+            medicamento TEXT,
+            dosis TEXT,
+            periodicidad TEXT,
+            horarios TEXT,
+            estadoNotificacion TEXT,
+            idNotificacion TEXT,
+            usuario_rut TEXT,
+            FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        ); `,
             [],
             () => { },
             (_, error) => console.log('Error al crear la tabla Medicamentos:', error)
@@ -812,13 +850,13 @@ export function initDB() {
 
         // Crear tabla Alergias
         tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS Alergias (
-          id INTEGER PRIMARY KEY NOT NULL,
-          tipo TEXT,
-          alergeno TEXT,
-          usuario_rut TEXT,
-          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-        );`,
+            `CREATE TABLE IF NOT EXISTS Alergias(
+            id INTEGER PRIMARY KEY NOT NULL,
+            tipo TEXT,
+            alergeno TEXT,
+            usuario_rut TEXT,
+            FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        ); `,
             [],
             () => { },
             (_, error) => console.log('Error al crear la tabla Alergias:', error)
@@ -826,15 +864,15 @@ export function initDB() {
 
         // Crear tabla Patologias cronicas
         tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS PatologiasCronicas (
-          id INTEGER PRIMARY KEY NOT NULL,
-          tipo_patologia TEXT,
-          nombre_patologia TEXT,
-          transmisibilidad TEXT,
-          morbilidad_intensidad TEXT,
-          usuario_rut TEXT,
-          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-        );`,
+            `CREATE TABLE IF NOT EXISTS PatologiasCronicas(
+            id INTEGER PRIMARY KEY NOT NULL,
+            tipo_patologia TEXT,
+            nombre_patologia TEXT,
+            transmisibilidad TEXT,
+            morbilidad_intensidad TEXT,
+            usuario_rut TEXT,
+            FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        ); `,
             [],
             () => { },
             (_, error) => console.log('Error al crear la tabla Alergias:', error)
@@ -842,15 +880,15 @@ export function initDB() {
 
         // Crear tabla Limitaciones
         tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS Limitaciones (
-          id INTEGER PRIMARY KEY NOT NULL,
-          tipo_lim TEXT,
-          severidad_lim TEXT,
-          origen_lim TEXT,
-          descripcion_lim TEXT,
-          usuario_rut TEXT,
-          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-        );`,
+            `CREATE TABLE IF NOT EXISTS Limitaciones(
+            id INTEGER PRIMARY KEY NOT NULL,
+            tipo_lim TEXT,
+            severidad_lim TEXT,
+            origen_lim TEXT,
+            descripcion_lim TEXT,
+            usuario_rut TEXT,
+            FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        ); `,
             [],
             () => { },
             (_, error) => console.log('Error al crear la tabla Limitaciones:', error)
@@ -858,15 +896,15 @@ export function initDB() {
 
         // Crear tabla Historial
         tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS Historial (
-          id TEXT PRIMARY KEY NOT NULL,
-          fecha_hora TEXT,
-          funcion TEXT, 
-          input TEXT,
-          output TEXT,
-          usuario_rut TEXT,
-          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-        );`,
+            `CREATE TABLE IF NOT EXISTS Historial(
+            id TEXT PRIMARY KEY NOT NULL,
+            fecha_hora TEXT,
+            funcion TEXT,
+            input TEXT,
+            output TEXT,
+            usuario_rut TEXT,
+            FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        ); `,
             [],
             () => { },
             (_, error) => console.log('Error al crear la tabla Historial:', error)
@@ -874,16 +912,16 @@ export function initDB() {
 
         // Crear tabla Contacto
         tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS Contacto (
-          id INTEGER PRIMARY KEY NOT NULL,
-          nombreCompleto TEXT,
-          alias TEXT,
-          numero TEXT,
-          relacion TEXT,
-          estadoContacto TEXT,
-          usuario_rut TEXT,
-          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-        );`,
+            `CREATE TABLE IF NOT EXISTS Contacto(
+            id INTEGER PRIMARY KEY NOT NULL,
+            nombreCompleto TEXT,
+            alias TEXT,
+            numero TEXT,
+            relacion TEXT,
+            estadoContacto TEXT,
+            usuario_rut TEXT,
+            FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        ); `,
             [],
             () => { },
             (_, error) => console.log('Error al crear la tabla Contacto:', error)
@@ -891,21 +929,21 @@ export function initDB() {
 
         // Crear tabla centros medicos
         tx.executeSql(
-            `CREATE TABLE IF NOT EXISTS centrosMedicos (
-          id TEXT PRIMARY KEY NOT NULL, 
-          NombreOficial TEXT, 
-          Region TEXT, 
-          Comuna TEXT, 
-          Via TEXT, 
-          Numero TEXT, 
-          Calle TEXT, 
-          Telefono TEXT, 
-          TieneServicioDeUrgencia TEXT, 
-          TipoDeUrgencia TEXT, 
-          TipoDeSAPU TEXT,
-          usuario_rut TEXT,
-          FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
-        );`,
+            `CREATE TABLE IF NOT EXISTS centrosMedicos(
+            id TEXT PRIMARY KEY NOT NULL,
+            NombreOficial TEXT,
+            Region TEXT,
+            Comuna TEXT,
+            Via TEXT,
+            Numero TEXT,
+            Calle TEXT,
+            Telefono TEXT,
+            TieneServicioDeUrgencia TEXT,
+            TipoDeUrgencia TEXT,
+            TipoDeSAPU TEXT,
+            usuario_rut TEXT,
+            FOREIGN KEY(usuario_rut) REFERENCES Usuario(rut)
+        ); `,
             [],
             () => { },
             (_, error) => console.log('Error al crear la tabla centrosMedicos:', error)

@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import SelecTiempoAtras from '../api/selecTiempoAtras';
 import EVA from "../api/escalaEVA";
 import { FontAwesome5 } from '@expo/vector-icons';
-import { obtenerIdsNotificacionesSD, guardarFechaSD, obtenerFechaSD, guardarIdsNotificacionesSD } from "../api/sqlite";
+import { obtenerIdsNotificacionesSD, guardarFechaSD, obtenerFechaSD, mostarDB } from "../api/sqlite";
 import { generarNotificacionDolencias } from '../api/notificaciones';
 
 
@@ -299,7 +299,7 @@ const DolenciasSintomas = () => {
     const obtenerEstSeguimiento = () => {
         db.transaction((tx) => {
             tx.executeSql(
-                'SELECT * FROM configuracion WHERE SeguimientoDolencias = ?',
+                'SELECT * FROM ConfigNotificaciones WHERE SeguimientoDolencias = ?',
                 [1],
                 (_, { rows }) => {
                     if (rows.length > 0) {
@@ -325,11 +325,10 @@ const DolenciasSintomas = () => {
     const cambiarEstadoSeguimiento = async () => {
         // Determinar el nuevo estado
         const nuevoEstado = estadoSeguimiento === ESTADO_ACTIVO ? ESTADO_INACTIVO : ESTADO_ACTIVO;
-
         // Actualizar la base de datos SQLite
         db.transaction((tx) => {
             tx.executeSql(
-                'UPDATE configuracion SET SeguimientoDolencias = ?',
+                'UPDATE ConfigNotificaciones SET SeguimientoDolencias = ?',
                 [nuevoEstado],
                 (_, resultSet) => {
                     console.log('Cambio de estado de seguimiento exitoso!');
@@ -343,14 +342,44 @@ const DolenciasSintomas = () => {
         });
     }
 
+    async function guardarIdsNotificacionesSD(idsNotificacionesSD) {
+        console.log('guardar ids SD');
+        // console.log('idsAntes: ', idsNotificacionesSD)
+        let stringIds = idsNotificacionesSD.join(',');
+        console.log('idsDespues: ', stringIds);
+        try {
+            return new Promise((resolve, reject) => {
+                db.transaction(tx => {
+                    tx.executeSql(
+                        'INSERT OR REPLACE INTO ConfigNotificaciones (id, idsNotificacionesSD) VALUES (?, ?)',
+                        [1, stringIds],
+                        (_, resultSet) => {
+                            console.log('Inserción o reemplazo idsNotificacionesSD exitoso en la tabla Configuracion');
+                            console.log('Resultado de la consulta SQL:', resultSet);
+                            resolve(resultSet);
+                        },
+                        (_, error) => {
+                            console.log(`Error al insertar o reemplazar idsNotificacionesSD "${stringIds}" en la tabla Configuracion:`, error);
+                            reject(error);
+                            return true;
+                        }
+                    );
+                }, (error) => {
+                    console.log('Error en la transacción guardar ids SD', error);
+                    reject(error);
+                });
+            });
+        } catch (error) {
+            console.log('Error en guardar ids SD', error);
+        }
+    };
+
     async function cancelarNotificaciones() {
         try {
             // Obtiene los IDs de las notificaciones de la base de datos
             let idsNotificacionesString = await obtenerIdsNotificacionesSD();
-
             // Convierte el string JSON de vuelta a un array
-            const idsNotificaciones = JSON.parse(idsNotificacionesString);
-
+            const idsNotificaciones = idsNotificacionesString.split(',');
             try {
                 // Recorre el array y cancela cada notificación
                 for (let i = 0; i < idsNotificaciones.length; i++) {
@@ -359,76 +388,60 @@ const DolenciasSintomas = () => {
             } catch (error) {
                 console.log('Error al cancelar las notificaciones: ', error);
             }
-
-
         } catch (error) {
             console.log('Error al obtener los IDs de las notificaciones: ', error);
         }
+        return;
     }
-    async function programarNotificacionDolencias() {
-        let fechaGuardada;
-        let idsNotificaciones;
-        try {
 
+    async function programarNotificacionDolencias() {
+        try {
+            let idsNotificaciones;
             try {
-                // Si no hay una fecha guardada, programa las notificaciones
                 idsNotificaciones = await generarNotificacionDolencias();
             } catch (error) {
                 console.log('Error al generar notificacion de dolencias: ', error)
             }
-
             try {
                 let result = await guardarIdsNotificacionesSD(idsNotificaciones)
                 console.log('>> Resultado de guardar idsNotificaciones en el storage: ', result);
             } catch (error) {
                 console.log('Error al guardar idsNotificaciones en el storage: ', error)
             }
-            // Guarda la fecha actual como la última vez que se programaron las notificaciones
+            return 'ok';
+        } catch (error) {
+            console.log('Error al programar notificacion de dolencias: ', error)
+        }
+    }
+
+    const manejarCheck = async () => {
+        if (estadoSeguimiento === ESTADO_ACTIVO) {
+            await cancelarNotificaciones()
+            await guardarFechaSD(null);
+            await cambiarEstadoSeguimiento()
+            mostarDB('ConfigNotificaciones')
+        } else {
+            let result = await programarNotificacionDolencias();
+            console.log('Resultado programar notificaciones', result)
+            setTimeout(async () => {
+                await cambiarEstadoSeguimiento()
+            }, 1000); // Espera 1 segundo
+            // Guardar la fecha actual como la última vez que se programaron las notificaciones
             const now = new Date();
             try {
-                let result = await guardarFechaSD(now);
-                console.log('>> Resultado de guardar fecha en el storage: ', result);
+                setTimeout(async () => {
+                    let result = await guardarFechaSD(now);
+                    console.log('>> Resultado de guardar fecha en el storage: ', result);
+                }, 1000); // Espera 1 segundo
             } catch (error) {
                 console.log('Error al guardar fecha en el storage: ', error)
             }
-
-
-        } catch (error) {
-            console.log('Error al obtener la fecha: ', error);
+            setTimeout(async () => {
+                mostarDB('ConfigNotificaciones');
+            }, 1000); // Espera 1 segundo
+            let idsNotificacionesString = await obtenerIdsNotificacionesSD();
+            console.log("IDs Notificaciones SD", idsNotificacionesString);
         }
-    }
-    // manejar check
-    const manejarCheck = async () => {
-        if (estadoSeguimiento === ESTADO_ACTIVO) {
-            try {
-                await cancelarNotificaciones()
-            } catch (error) {
-                console.log('Error al cancelar las notificaciones: ', error);
-            }
-            try {
-                await guardarFechaSD(null);
-            } catch (error) {
-                console.log('Error al borrar la fecha: ', error);
-            }
-            try {
-                await cambiarEstadoSeguimiento()
-            } catch (error) {
-                console.log('Error al cambiar el estado de seguimiento: ' + error.message);
-            }
-        } else {
-            try {
-                await programarNotificacionDolencias();
-            } catch (error) {
-                console.log('Error al programar las notificaciones: ', error);
-            }
-            try {
-                await cambiarEstadoSeguimiento()
-            } catch (error) {
-                console.log('Error al cambiar el estado de seguimiento: ' + error.message);
-            }
-
-        }
-
     }
 
 

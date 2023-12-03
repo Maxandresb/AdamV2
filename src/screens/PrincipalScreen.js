@@ -452,7 +452,8 @@ export default function PrincipalScreen() {
           mostarDB('PatologiasCronicas');
           mostarDB('Contacto');
           mostarDB('recordatorios');*/
-          mostarDB('Configuracion');
+          // mostarDB('Configuracion');
+          mostarDB('ConfigNotificaciones');
           // await MostrarNotificacionesGuardadas()
           // mostarDB('DolenciasSintomas');
           //mostarDB('centrosMedicos');
