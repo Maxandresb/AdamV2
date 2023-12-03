@@ -14,7 +14,6 @@ import {colors} from '../api/theme';
 import { ThemeContext } from '../api/themeContext';
 import { useIsFocused } from '@react-navigation/native';
 
-import { useIsFocused } from '@react-navigation/native';
 const db = SQLite.openDatabase('adamdb.db');
 
 const Medicamento = ({ medicamento, isEditing, pressUpdate, pressDelete, setCurrentMedicamentoId, setMedicamentos, medicamentos, obtenerMedicamentosDeDB }) => {
