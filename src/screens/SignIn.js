@@ -222,8 +222,8 @@ const SignIn = ({ navigation }) => {
     medicamentos.forEach(medicamento => {
       db.transaction(tx => {
         tx.executeSql(
-          'INSERT INTO Medicamentos (medicamento, dosis, periodicidad, usuario_rut) values (?, ?, ?, ?)',
-          [medicamento.nom_medicamento, medicamento.dosis, medicamento.periodicidad, rut],
+          'INSERT INTO Medicamentos (medicamento, dosis, periodicidad, horarios, estadoNotificacion, usuario_rut) VALUES (?, ?, ?, ?, ?, ?)',
+          [medicamento.nom_medicamento, medicamento.dosis, medicamento.periodicidad,"11:59 a. m.",'0', rut],
           () => { },
           (_, error) => console.log('Error al insertar datos en la tabla Medicamentos:', error)
         );

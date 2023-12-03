@@ -413,7 +413,7 @@ export async function obtenerDatosPreviosSelec(rutUsuario) {
 
                         } else {
                             console.log('No se encontraron datos previos a vocalizar');
-                            resolve()
+                            resolve(null)
                         }
                     },
                     (_, error) => { reject(error), console.log('Error al obtener los datos al obtener datos previos a vocalizar:', error) }

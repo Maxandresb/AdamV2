@@ -276,8 +276,8 @@ export async function scheduleRecordatorioNotification(recordatorio) {
   console.log('Descripcion, Dias, Fecha, Hora, Titulo: ', Descripcion, Dias, Fecha, Hora, Titulo)
 
   // Comprobar si Dias es una cadena de texto y convertirlo en un array si es así
-  let dias = typeof Dias === 'string' ? [Dias] : Dias;
-
+  let dias = typeof Dias === 'string' ? Dias.split(',') : Dias;
+  console.log(dias)
   // Programa una notificación para cada día
   for (let i = 0; i < dias.length; i++) {
     let proximaFecha;
@@ -367,9 +367,16 @@ function calcularDiferenciaSegundos(proximaFecha) {
   console.log('ahora: ', ahora)
   // Calculate the difference in milliseconds
   let diferenciaMiliSegundos = proximaFecha - ahora;
+  if (diferenciaMiliSegundos >0)
+  {let totalSegundos = diferenciaMiliSegundos / 1000;
+  return totalSegundos;}
+  
+  else{
+    let totalSegundos = 1
+    return totalSegundos;
+  }
+  
+ 
 
-  // Convert the difference to seconds
-  let totalSegundos = diferenciaMiliSegundos / 1000;
-
-  return totalSegundos;
+  
 }

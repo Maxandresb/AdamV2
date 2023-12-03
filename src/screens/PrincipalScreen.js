@@ -335,7 +335,7 @@ export default function PrincipalScreen() {
                 console.log('********* MAS DE UN CENTRO ENCONTRADO *********')
                 setModalNCMVisible(true);
                 if (!modalNCMVisible) {
-                  function_response = `Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
+                  function_response = 'Selecciona un centro de salud al y presionar serás redirigido a la aplicación teléfono para llamar al centro de salud seleccionado  '//`Seras redigido a la aplicacion telefono para llamar al centro de salud ${JSON.stringify(nombreCentro)}.`
                   respuesta = await generarRespuesta('Llamar a centro de salud', function_response, prompt)
                   setNombreCentroMed('')
                 }
@@ -461,8 +461,8 @@ export default function PrincipalScreen() {
           mostarDB('Contacto');
           mostarDB('recordatorios');*/
           // mostarDB('Configuracion');
-          mostarDB('ConfigNotificaciones');
-          // await MostrarNotificacionesGuardadas()
+         // mostarDB('ConfigNotificaciones');
+           await MostrarNotificacionesGuardadas()
           // mostarDB('DolenciasSintomas');
           //mostarDB('centrosMedicos');
           respuesta = await generarRespuesta('Mostrar base de datos', 'La base de datos se mostrara en la consola.', prompt)
@@ -527,7 +527,7 @@ export default function PrincipalScreen() {
               let perfilAnnon = await obtenerDatosPreviosAnon(rut)
               console.log(perfilAnnon)
               function_name = "responder_temas_de_salud"
-              function_response = `El usuario solicita que le respondas una recomendacion medica o de salud para eso puedes considerar que el perfil medico del usuario es  ${perfilAnnon}, intenta responder lo mejor que puedas, entendiendo que no eres medico, y agrega una pequeña frase al final, diciendole al usuario que siempre es recomendable consultar a un profesional, esta frase que sea lo mas corto posible `
+              function_response = `El usuario solicita que le respondas una recomendacion medica o de salud para eso puedes considerar que el perfil medico del usuario es  ${perfilAnnon}, intenta responder lo mejor que puedas, considera que el usuario es chileno y recomienda numeros de telefono utiles para el tema en cuestion como telefonos de ayuda para salud mental o fisica, usa tambien datos publicados por el gobierno y el ministerio de salud de chile( no hace falta mencionar que no posees los mas actualizados), entendiendo que no eres medico, y agrega una pequeña frase al final, diciendole al usuario que siempre es recomendable consultar a un profesional, esta frase que sea lo mas corto posible `
               if (detenerProceso) {
                 console.log('Proceso detenido en generarRespuesta recomendacion medica general');
                 return;

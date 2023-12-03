@@ -1,6 +1,6 @@
 // Importa las librerías necesarias
 import { Alert, TextInput, Modal, Button, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Agenda, LocaleConfig } from "react-native-calendars"
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -16,7 +16,9 @@ import { CheckBoxRapido } from '../api/checkBoxRapido';
 import * as SQLite from 'expo-sqlite';
 import { scheduleRecordatorioNotification } from "../api/notificaciones";
 
-
+import getStyles from '../api/styles';
+import {colors} from '../api/theme';
+import { ThemeContext } from '../api/themeContext';
 const db = SQLite.openDatabase('adamdb.db');
 
 LocaleConfig.locales['es'] = {
@@ -580,7 +582,9 @@ const Recordatorios = () => {
     return dias.join(', ');
   };
 
-
+  const {theme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
+  let activeColors = colors[theme.mode];
   // Renderiza el componente
   return (
     <SafeAreaView style={{ flex: 1 }}>

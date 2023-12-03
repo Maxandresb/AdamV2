@@ -63,7 +63,7 @@ obtenerContactosAlmacenados()
 const functions = [
     {
         "name": "explicar_algo",
-        "description": "el usuario puede solicitar que se le explique un tema especifico, debes hacerlo de manera comprensible. si el usuario solicitar que le expliquen una funcion de la aplicacion, debes hacerlo paso a paso indicando el orden de ejecucion en el cual el usuario debera navegar en la aplicacion para realizar la funcion",
+        "description": "el usuario puede solicitar que se le explique un tema especifico, debes hacerlo de manera comprensible. ", //si el usuario solicitar que le expliquen una funcion de la aplicacion, debes hacerlo paso a paso indicando el orden de ejecucion en el cual el usuario debera navegar en la aplicacion para realizar la funcion
         "parameters": {
             "type": "object",
             "properties": {
@@ -190,7 +190,7 @@ const functions = [
             "properties": {
                 "Titulo": {
                     "type": "string",
-                    "description": "Retornar esta property es obligatorio. El título o encabezado del recordatorio. Por ejemplo, si el usuario dice 'recordarme comprar leche', el título sería 'Comprar leche'. este parámetro es obligatorio."
+                    "description": "Retornar esta property es obligatorio. El título o encabezado del recordatorio. Por ejemplo, si el usuario dice 'recordarme comprar leche', el título sería 'Comprar leche'. este parámetro es obligatorio y no debes incluir caracteres especiales en las letras ."
                 },
                 "Fecha": {
                     "type": "string",
@@ -206,7 +206,7 @@ const functions = [
                 },
                 "Dias": {
                     "type": "string",
-                    "description": "Retornar esta property es obligatorio. Los días en que se repetirá el recordatorio. Por ejemplo, 'Lunes, Miércoles, Viernes'. Si no se especifican días, el valor debe ser 'Unico'. Recuerda que Titulo, Fecha, Hora y Dias son parametros obligatorios. Este parámetro es obligatorio."
+                    "description": "Retornar esta property es obligatorio. Los días en que se repetirá el recordatorio. Por ejemplo, 'Lunes, Miércoles, Viernes', si son todos los dias debes devolver todos los dias como : 'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado' , no puedes solo decir 'TODOS LOS DIAS'. Si no se especifican días, el valor debe ser 'Unico'. Recuerda que Titulo, Fecha, Hora y Dias son parametros obligatorios. Este parámetro es obligatorio."
                 }
             }, "required": ["Fecha", "Hora", "Dias"]
         }
@@ -249,7 +249,7 @@ const functions = [
     },
     {
         "name": "recomendacion_medica_general",
-        "description": "el usuario solicita obtener sus informacion sobre salud general como rutinas, consejos de salud, dietas, actividades recomendadas para adultos mayores, debes reconocer frases como 'que dieta me recomiendas', 'que actividades deberia realizar', 'como mejorar mi salud mental' , 'consejos sobre salud' , 'di mis datos de emergencia' o algo similar",
+        "description": "el usuario solicita obtener sus informacion sobre salud general como rutinas, consejos de salud (fisica y/o mental), dietas, actividades recomendadas para adultos mayores, debes reconocer frases como 'que dieta me recomiendas', 'que actividades deberia realizar', 'como mejorar mi salud mental' , 'consejos sobre salud'  o algo similar",
         "parameters": {
             "type": "object",
             "properties": {
@@ -393,7 +393,7 @@ export async function secondApiCall(prompt, message, function_name, function_res
                     setTimeout(async () => {
                         try {
                             const result = await client.post(chatgptUrl, {
-                                model: "gpt-3.5-turbo-0613",
+                                model: "gpt-4-1106-preview",
                                 messages: [
                                     ...conversationHistory,
                                     message,
@@ -507,7 +507,7 @@ export async function firstApiCall(prompt) {
                     setTimeout(async () => {
                         try {
                             const result = await client.post(chatgptUrl, {
-                                model: "gpt-3.5-turbo-0613",
+                                model: "gpt-4-1106-preview",
                                 messages: [
                                     {
                                         role: 'system',

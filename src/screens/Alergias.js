@@ -106,7 +106,7 @@ const Alergia = ({ alergia, isEditing, handlePress, handleDelete, setCurrentAler
                     </>
             ):null}
                 
-
+                <View style={styles.lineaContainer}></View>
         </View>
     );
 };

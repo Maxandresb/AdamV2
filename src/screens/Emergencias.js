@@ -70,7 +70,22 @@ export default function Emergencias ()  {
 
     let rut = await obtenerRut();
     let datos = await obtenerDatosPreviosSelec(rut)
-    
+    if (datos == null){
+      Alert.alert(
+        "¡No tienes datos de tu perfil seleccionados!",
+        "¿Quieres que te dirija donde puedes configurarlo? Es recomendado realizar este paso con un médico",
+        [
+            {
+                text: "Cancelar",
+                style: "cancel"
+            },
+            {
+                text: "Aceptar",
+                onPress: () =>{navigation.navigate('ConfiguracionNested', { screen: 'Seleccionar datos a vocalizar' })}
+            }
+        ]
+    );
+    }else {
     let arrayDeItems = datos.split('\n').filter(Boolean);
     datosPerfilMed.current = arrayDeItems
    if (datosPerfilMed.current.length >0){
@@ -92,7 +107,7 @@ export default function Emergencias ()  {
       ]
   );
   }
-   
+}
   }
 
   async function compartir_ubicacion(){
