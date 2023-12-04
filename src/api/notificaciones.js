@@ -212,47 +212,22 @@ if (Platform.OS === 'android') {
 }
 
 export function calcularProximaFecha(dia, hora) {
-  if (dia.includes('Unico')) {
-    // Obtén la fecha y hora actuales
-    let ahora = new Date();
+  const diasSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+  let ahora = new Date();
+  let [horaRecordatorio, minutoRecordatorio] = hora.split(':').map(Number);
+  let proximaFecha;
 
-    // Crea un nuevo objeto Date con la fecha actual y la hora del recordatorio
-    let proximaFecha = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate(), hora.split(':')[0], hora.split(':')[1]);
-
-    // Si la hora del recordatorio ya pasó, configura la próxima fecha para la misma fecha pero a la siguiente semana
-    if (ahora > proximaFecha) {
-      proximaFecha.setDate(proximaFecha.getDate() + 7);
-    }
-
+  dia = dia.toLowerCase();
+  if (diasSemana.includes(dia)) {
+    let indiceDia = diasSemana.indexOf(dia);
+    let diasHastaProximo = (indiceDia - ahora.getDay() + 7) % 7;
+    proximaFecha = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() + diasHastaProximo, horaRecordatorio, minutoRecordatorio);
     return proximaFecha;
   } else {
-    // Array de los días de la semana en minúsculas
-    const diasSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-
-    // Convierte el día de la semana a minúsculas
-    dia = dia.toLowerCase();
-
-    // Obtiene el índice del día de la semana
-    let indiceDia = diasSemana.indexOf(dia);
-
-    let timezoneOffset = new Date().getTimezoneOffset();
-    // Crea un nuevo objeto Date para la fecha actual
-    let proximaFecha = new Date();
-    proximaFecha.setMinutes(proximaFecha.getMinutes() - timezoneOffset);
-
-    // Calcula cuántos días faltan hasta el próximo día deseado
-    let diasHastaProximo = (indiceDia - proximaFecha.getDay() + 7) % 7;
-
-    // Añade ese número de días a la fecha actual
-    proximaFecha.setDate(proximaFecha.getDate() + diasHastaProximo);
-
-    // Configura la hora de la fecha a la hora del recordatorio
-    let [horaRecordatorio, minutoRecordatorio] = hora.split(':').map(Number);
-    proximaFecha.setHours(horaRecordatorio, minutoRecordatorio - timezoneOffset, 0, 0);
-
-    return proximaFecha;
+    console.log(`VALOR INCORRECTO INGRESADO: ${dia}`);
   }
 }
+
 
 
 export async function MostrarNotificacionesGuardadas() {
@@ -274,6 +249,11 @@ export async function scheduleRecordatorioNotification(recordatorio) {
   // Desestructurando los datos del recordatorio
   const { Descripcion, Dias, Fecha, Hora, Titulo } = recordatorio;
   console.log('Descripcion, Dias, Fecha, Hora, Titulo: ', Descripcion, Dias, Fecha, Hora, Titulo)
+  // recordatorio idNotificacion
+  const idNotificacion = recordatorio.idNotificacion
+  console.log('idNotificacion: ', idNotificacion)
+  const idRecordatorio = recordatorio.id;
+  console.log('idRecordatorio: ', idRecordatorio)
 
   // Comprobar si Dias es una cadena de texto y convertirlo en un array si es así
   let dias = typeof Dias === 'string' ? Dias.split(',') : Dias;
@@ -295,11 +275,11 @@ export async function scheduleRecordatorioNotification(recordatorio) {
       proximaFecha = new Date(year, month - 1, day, hour, minute - timezoneOffset);
       console.log('prox fec: ', proximaFecha)
     } else {
+      console.log('RECORDATORIO REPETITIVO')
+      console.log('DIA: ', dias[i]);
       // Calcula la próxima fecha que corresponde a este día de la semana
       proximaFecha = calcularProximaFecha(dias[i], Hora);
     }
-
-
 
     // Configura el contenido de la notificación
     let content = {
@@ -309,6 +289,14 @@ export async function scheduleRecordatorioNotification(recordatorio) {
 
       title: Titulo,
       body: Descripcion,
+      data: {
+        navigateTo: 'ADAM',
+        tipoNotificacion: 'recordatorio',
+        idRecordatorio: idRecordatorio,
+        idNotificacion: idNotificacion,
+        diaRecordar: dias[i],
+        horaRecordar: Hora,
+      }
 
     };
 
@@ -322,7 +310,6 @@ export async function scheduleRecordatorioNotification(recordatorio) {
     let trigger = {
       channelId: 'default',
       seconds: segundos,
-      repeats: dias[i] !== 'Unico' // Repite solo si el día no es 'Unico'
     };
 
     // Programa la notificación para esta fecha
@@ -335,48 +322,18 @@ export async function scheduleRecordatorioNotification(recordatorio) {
   }
 }
 
-
-
-
-// Añade un escuchador para las respuestas a las notificaciones
-Notifications.addNotificationResponseReceivedListener(async response => {
-  // Obtiene los datos de la notificación
-  let data = response.notification.request.content.data;
-
-  // Comprueba si el día es 'unico'
-  if (data.dias[0] !== 'Unico') {
-    // Si no es 'unico', recalcula la próxima fecha para ese recordatorio y programa una nueva notificación para esa fecha
-    let proximaFecha = calcularProximaFecha(data.dias);
-    // Reprograma la notificación para la próxima fecha
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        sound: 'default',
-        title: data.Titulo,
-        body: 'programada para el miercoles ',//data.Descripcion,
-
-      },
-      trigger: proximaFecha,
-    });
-  }
-});
-function calcularDiferenciaSegundos(proximaFecha) {
+export function calcularDiferenciaSegundos(proximaFecha) {
   // Obtén la fecha y hora actuales
   let timezoneOffset = new Date().getTimezoneOffset();
   let ahora = new Date()
   ahora.setMinutes(ahora.getMinutes() - timezoneOffset);
   console.log('ahora: ', ahora)
-  // Calculate the difference in milliseconds
+  // diferencia en milisegundos
   let diferenciaMiliSegundos = proximaFecha - ahora;
-  if (diferenciaMiliSegundos >0)
-  {let totalSegundos = diferenciaMiliSegundos / 1000;
-  return totalSegundos;}
-  
-  else{
-    let totalSegundos = 1
-    return totalSegundos;
-  }
-  
- 
+  let diferenciaEnSegundos = diferenciaMiliSegundos / 1000;
 
-  
+  return diferenciaEnSegundos;
+
 }
+
+//para las 

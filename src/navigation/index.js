@@ -1,11 +1,11 @@
 import 'react-native-gesture-handler';
-import  React , { useEffect, useRef, useState }from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import {Linking, View, Text, Image, TouchableOpacity } from 'react-native';
-import {colors} from '../api/theme';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { Linking, View, Text, Image, TouchableOpacity } from 'react-native';
+import { colors } from '../api/theme';
 import { ThemeContext } from '../api/themeContext';
 import { useContext } from 'react';
 //PANTALLAS
@@ -14,8 +14,8 @@ import Recordatorios from "../screens/Recordatorios";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
-import { calcularSegundosHastaProximoHorario } from '../api/notificaciones';
-//import { addIdNotification } from '../api/sqlite';
+import { calcularDiferenciaSegundos, calcularProximaFecha, calcularSegundosHastaProximoHorario } from '../api/notificaciones';
+import { actualizarRecordatorio } from '../api/sqlite';
 
 import PrincipalScreen from '../screens/PrincipalScreen';
 import SaludoScreen from '../screens/SaludoScreen';
@@ -46,27 +46,30 @@ const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function MyTabs(){
-  const {theme} = useContext(ThemeContext);
+function MyTabs() {
+  const { theme } = useContext(ThemeContext);
   let activeColors = colors[theme.mode];
-  return(
-    <Tab.Navigator  initialRouteName="Principal" screenOptions={{headerShown:false, 
+  return (
+    <Tab.Navigator initialRouteName="Principal" screenOptions={{
+      headerShown: false,
       tabBarActiveBackgroundColor: activeColors.tertiary,
       tabBarActiveTintColor: '#000000',
-      tabBarLabelStyle: {color: activeColors.quinary, fontWeight: 'bold', fontSize: 12, marginBottom: 5},
-    tabBarStyle:{
-      backgroundColor: activeColors.secondary,  
-      height: "10%"}}}>
-      <Tab.Screen name="Emergencias" component={Emergencias} options={{tabBarIcon:({focused}) => <Image source={activeColors.sosImage} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} /> 
-      <Tab.Screen name="Principal" component={PrincipalScreen} options={{tabBarIcon:({focused}) => <Image source={activeColors.chatImage} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
-      <Tab.Screen name="Recordatorios" component={Recordatorios} options={{tabBarIcon:({focused}) => <Image source={activeColors.calendarImage} style={{width: 40, height: 40, marginBottom: -5, marginTop: 5}} />}} />
-      
+      tabBarLabelStyle: { color: activeColors.quinary, fontWeight: 'bold', fontSize: 12, marginBottom: 5 },
+      tabBarStyle: {
+        backgroundColor: activeColors.secondary,
+        height: "10%"
+      }
+    }}>
+      <Tab.Screen name="Emergencias" component={Emergencias} options={{ tabBarIcon: ({ focused }) => <Image source={activeColors.sosImage} style={{ width: 40, height: 40, marginBottom: -5, marginTop: 5 }} /> }} />
+      <Tab.Screen name="Principal" component={PrincipalScreen} options={{ tabBarIcon: ({ focused }) => <Image source={activeColors.chatImage} style={{ width: 40, height: 40, marginBottom: -5, marginTop: 5 }} /> }} />
+      <Tab.Screen name="Recordatorios" component={Recordatorios} options={{ tabBarIcon: ({ focused }) => <Image source={activeColors.calendarImage} style={{ width: 40, height: 40, marginBottom: -5, marginTop: 5 }} /> }} />
+
     </Tab.Navigator>
   )
 }
 
 function PrincipalStack() {
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   let activeColors = colors[theme.mode];
   return (
     <Drawer.Navigator initialRouteName="ADAM" screenOptions={{
@@ -77,8 +80,8 @@ function PrincipalStack() {
 
       drawerStyle: {
         backgroundColor: activeColors.primary,
-        },
-      
+      },
+
       drawerItemStyle: {
         height: 65,
       },
@@ -86,22 +89,22 @@ function PrincipalStack() {
       drawerLabelStyle: {
         fontWeight: 'bold',
         fontSize: 25,
-        
+
       },
 
       headerStyle: {
         backgroundColor: activeColors.primary,
-        
+
       },
 
       headerTitleStyle: {
         color: activeColors.secondary
       },
 
-      
 
 
-      }}>
+
+    }}>
       <Drawer.Screen name="ADAM" component={MyTabs} />
       <Drawer.Screen name="Perfil" component={Perfil} />
       <Drawer.Screen name="Agenda de dolencias " component={DolenciasSintomas} />
@@ -112,7 +115,7 @@ function PrincipalStack() {
 }
 const PerfilNestedStack = createNativeStackNavigator();
 function PerfilNestedScreen() {
-  const {theme, updateTheme} = useContext(ThemeContext);
+  const { theme, updateTheme } = useContext(ThemeContext);
   let activeColors = colors[theme.mode];
   return (
     <PerfilNestedStack.Navigator screenOptions={{
@@ -131,20 +134,20 @@ function PerfilNestedScreen() {
       <PerfilNestedStack.Screen name="Patologias" component={Patologias} />
       <PerfilNestedStack.Screen name="Limitacion fisica" component={LimitacionFisica} />
       <PerfilNestedStack.Screen name="Contactos de emergencia" component={ContactosEmergencia} />
-      
+
 
     </PerfilNestedStack.Navigator>
   );
 }
 const ConfiguracionNestedStack = createNativeStackNavigator();
 function ConfiguracionNestedScreen() {
-  const {theme, updateTheme} = useContext(ThemeContext);
+  const { theme, updateTheme } = useContext(ThemeContext);
   let activeColors = colors[theme.mode];
   return (
     <ConfiguracionNestedStack.Navigator screenOptions={{
       headerStyle: {
         backgroundColor: activeColors.primary
-        
+
       },
 
       headerTitleStyle: {
@@ -157,7 +160,7 @@ function ConfiguracionNestedScreen() {
       <ConfiguracionNestedStack.Screen name="Cambiar tema" component={CambiarTema} />
     </ConfiguracionNestedStack.Navigator>
   );
-  
+
 }
 
 const linking = {
@@ -167,6 +170,7 @@ const linking = {
       'seguimiento-nocturno': 'seguimiento-nocturno',
       'medicamento': 'medicamento',
       'agenda-dolencias': 'agenda-dolencias',
+      'ADAM': 'ADAM',
     },
   },
 };
@@ -174,7 +178,7 @@ const linking = {
 export default function AppNavigation() {
   return (
     <NavigationContainer linking={linking}>
-      <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="Saludo">
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Saludo">
         {/* <Stack.Screen name="Principal" component={PrincipalScreen} /> */}
         {/* <Stack.Screen name="Tabs" component={MyTabs}/> */}
         <Stack.Screen name="Saludo" component={SaludoScreen} />
@@ -184,6 +188,7 @@ export default function AppNavigation() {
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="medicamentos" component={Medicamentos} />
         <Stack.Screen name="agenda-dolencias" component={DolenciasSintomas} />
+        <Stack.Screen name="ADAM" component={MyTabs} />
       </Stack.Navigator>
       <NotificationHandler />
     </NavigationContainer>
@@ -212,7 +217,7 @@ function NotificationHandler() {
           }
           if (response.notification.request.content.data.tipoNotificacion === 'medicamento') {
             let horario = response.notification.request.content.data.horarioMedicamento
-            let segundos = await calcularSegundosHastaProximoHorario(horario)
+            let segundos = calcularSegundosHastaProximoHorario(horario)
             let id = response.notification.request.content.data.idMedicamento
             let notificacion;
             try {
@@ -238,7 +243,43 @@ function NotificationHandler() {
             } catch (error) {
               console.log('Error al manejar la notificación: ', error);
             }
+          } else if (response.notification.request.content.data.tipoNotificacion === 'recordatorio') {
+            let hora = response.notification.request.content.data.horaRecordar
+            let dia = response.notification.request.content.data.diaRecordar
+            let id = response.notification.request.content.data.idRecordatorio
+            let idsNotificacion = response.notification.request.content.data.idNotificacion
+            let proximaFecha = calcularProximaFecha(dia, hora)
+            let segundos = calcularDiferenciaSegundos(proximaFecha)
+            let notificacion;
+
+            try {
+              notificacion = await Notifications.scheduleNotificationAsync({
+                content: {
+                  title: response.notification.request.content.title,
+                  body: response.notification.request.content.body,
+                  data: response.notification.request.content.data
+                },
+                trigger: {
+                  seconds: segundos
+                },
+              });
+              console.log('>> Nueva notificacion: ', notificacion);
+            } catch (error) {
+              console.log('Error al crear la notificación: ', error);
+            }
+            try {
+              if (notificacion) {
+                console.log('>> Id del recordatorio: ', id);
+                let ids = idsNotificacion + ',' + notificacion
+                await actualizarRecordatorio(id, { Estado: '0', idNotificacion: ids })
+              }
+            } catch (error) {
+              console.log('Error al manejar la notificación: ', error);
+            }
           }
+        }
+        else {
+          console.log('No hay data en la notificacion');
         }
       } catch (error) {
         console.log('Error al manejar condiciones del addlistener: ', error);

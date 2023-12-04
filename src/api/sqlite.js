@@ -3,6 +3,35 @@ import * as SQLite from 'expo-sqlite';
 import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
+
+// Función para actualizar el recordatorio en la base de datos
+export async function actualizarRecordatorio(id, campos) {
+    console.log('<ACTUALIZANDO RECORDATORIO>')
+    return new Promise((resolve, reject) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                'UPDATE Recordatorios SET Estado = ?, idNotificacion = ? WHERE id = ?',
+                [campos.Estado, campos.idNotificacion, id],
+                (_, result) => {
+                    console.log('</RECORDATORIO ACTUALIZADO>')
+                    // Realiza una operación de lectura para obtener el idNotificacion actualizado
+                    tx.executeSql(
+                        'SELECT idNotificacion FROM Recordatorios WHERE id = ?',
+                        [id],
+                        (_, result) => {
+                            // Resuelve la promesa con el idNotificacion actualizado
+                            resolve(result.rows.item(0).idNotificacion);
+                        },
+                        (_, error) => reject(error)
+                    );
+                },
+                (_, error) => reject(error)
+            );
+        });
+    });
+};
+
+
 //funcion para obtener idsNotificacionesSD
 export async function obtenerIdsNotificacionesSD() {
     return new Promise((resolve, reject) => {
