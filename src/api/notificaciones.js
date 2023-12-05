@@ -2,7 +2,7 @@
 import * as Notifications from 'expo-notifications';
 import { useEffect, useState } from "react";
 import { Platform } from 'react-native';
-import { guardarIdsNotificacionesSD, guardarFechaSD } from '../api/sqlite';
+import { guardarIdsNotificacionesSD, guardarFechaSD, contarRecordatorios } from '../api/sqlite';
 
 //****************************** NOTIFICACIONES DE DOLENCIAS DIARIAS ************************
 // Programa una notificación para los próximos 30 días
@@ -192,28 +192,11 @@ export { programarNotificacionMedica };
 
 
 //****************************** NOTIFICACIONES DE RECORDATORIOS************************
-// Configura el manejador de notificaciones
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
-
-// Configura el canal de notificaciones para Android
-if (Platform.OS === 'android') {
-  Notifications.setNotificationChannelAsync('default', {
-    name: 'default',
-    importance: Notifications.AndroidImportance.MAX, // Establece la importancia al máximo
-    vibrationPattern: [0, 250, 250, 250],
-    lightColor: '#FF231F7C',
-  });
-}
-
 export function calcularProximaFecha(dia, hora) {
   const diasSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-  let ahora = new Date();
+  let timezoneOffset = new Date().getTimezoneOffset();
+  let ahora = new Date()
+
   let [horaRecordatorio, minutoRecordatorio] = hora.split(':').map(Number);
   let proximaFecha;
 
@@ -221,7 +204,7 @@ export function calcularProximaFecha(dia, hora) {
   if (diasSemana.includes(dia)) {
     let indiceDia = diasSemana.indexOf(dia);
     let diasHastaProximo = (indiceDia - ahora.getDay() + 7) % 7;
-    proximaFecha = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() + diasHastaProximo, horaRecordatorio, minutoRecordatorio);
+    proximaFecha = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() + diasHastaProximo, horaRecordatorio, minutoRecordatorio - timezoneOffset);
     return proximaFecha;
   } else {
     console.log(`VALOR INCORRECTO INGRESADO: ${dia}`);
@@ -235,7 +218,24 @@ export async function MostrarNotificacionesGuardadas() {
   console.log(`Notificaciones programadas: \n\ `, scheduledNotifications);
 }
 
-export async function scheduleRecordatorioNotification(recordatorio) {
+export async function scheduleRecordatorioNotification(recordatorio, idRecordatorio) {
+  // Configura el canal de notificaciones para Android
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX, // Establece la importancia al máximo
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+  // Configura el manejador de notificaciones
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    }),
+  });
   console.log('recordatorio: ', recordatorio)
   // Verifica los permisos de notificación
   let permissions = await Notifications.getPermissionsAsync();
@@ -250,14 +250,27 @@ export async function scheduleRecordatorioNotification(recordatorio) {
   const { Descripcion, Dias, Fecha, Hora, Titulo } = recordatorio;
   console.log('Descripcion, Dias, Fecha, Hora, Titulo: ', Descripcion, Dias, Fecha, Hora, Titulo)
   // recordatorio idNotificacion
-  const idNotificacion = recordatorio.idNotificacion
-  console.log('idNotificacion: ', idNotificacion)
-  const idRecordatorio = recordatorio.id;
-  console.log('idRecordatorio: ', idRecordatorio)
+  let idNot = 'vacio'
+  let idRec = idRecordatorio
+  let cantRecordatorios;
+  if (idRec === 'vacio') {
+    try {
+      cantRecordatorios = await contarRecordatorios()
+      console.log('cantidad de recordatorios: ', cantRecordatorios);
+      idRec = cantRecordatorios + 1
+    } catch (error) {
+      console.log('error al contar los recordatorios');
+    }
+
+  }
+  console.log('idNotificacion: ', idNot)
+  console.log('idRecordatorio: ', idRec)
 
   // Comprobar si Dias es una cadena de texto y convertirlo en un array si es así
   let dias = typeof Dias === 'string' ? Dias.split(',') : Dias;
   console.log(dias)
+
+  let notificacionesIds = [];
   // Programa una notificación para cada día
   for (let i = 0; i < dias.length; i++) {
     let proximaFecha;
@@ -278,22 +291,19 @@ export async function scheduleRecordatorioNotification(recordatorio) {
       console.log('RECORDATORIO REPETITIVO')
       console.log('DIA: ', dias[i]);
       // Calcula la próxima fecha que corresponde a este día de la semana
-      proximaFecha = calcularProximaFecha(dias[i], Hora);
+      proximaFecha = calcularProximaFecha(dias[i].trim(), Hora);
     }
 
     // Configura el contenido de la notificación
     let content = {
       sound: true,
-      badge: true,
-      sticky: false,
-
       title: Titulo,
       body: Descripcion,
       data: {
         navigateTo: 'ADAM',
         tipoNotificacion: 'recordatorio',
-        idRecordatorio: idRecordatorio,
-        idNotificacion: idNotificacion,
+        idRecordatorio: idRec,
+        idNotificacion: idNot,
         diaRecordar: dias[i],
         horaRecordar: Hora,
       }
@@ -308,18 +318,22 @@ export async function scheduleRecordatorioNotification(recordatorio) {
 
     // Configura el disparador de la notificación
     let trigger = {
-      channelId: 'default',
       seconds: segundos,
     };
 
+    // log cntent y trigger
+    console.log('content: ', content)
+    console.log('trigger: ', trigger)
+
     // Programa la notificación para esta fecha
     let notification = await Notifications.scheduleNotificationAsync({ content, trigger });
-    // Verifica si la notificación se programó correctamente
-    await MostrarNotificacionesGuardadas()
 
     console.log('ID-NOTIFICATION DESDE LA FUNCION:', notification)
-    return notification;
+    notificacionesIds.push(notification);
   }
+  // Verifica si la notificación se programó correctamente
+  await MostrarNotificacionesGuardadas()
+  return notificacionesIds;
 }
 
 export function calcularDiferenciaSegundos(proximaFecha) {
@@ -336,4 +350,3 @@ export function calcularDiferenciaSegundos(proximaFecha) {
 
 }
 
-//para las 

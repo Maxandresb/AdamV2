@@ -4,31 +4,184 @@ import { InsertCentrosMedicos } from "../api/insertCentrosMedicos"
 
 export const db = SQLite.openDatabase('adamdb.db');
 
+
+// funcion borrar datos de la app
+export const borrarDatos = async () => {
+    db.transaction(tx => {
+        // tx.executeSql(
+        //     'DELETE FROM Usuario',
+        //     [],
+        //     (_, { rows }) => console.log('Registros eliminados tabla Usuario'),
+        //     (_, error) => console.log('Error al eliminar los registros tabla Usuario:', error)
+        // );
+        tx.executeSql(
+            'DELETE FROM Medicamentos',
+            [],
+            (_, { rows }) => console.log('Registros eliminados tabla Medicamentos'),
+            (_, error) => console.log('Error al eliminar los registros tabla Medicamentos:', error)
+        );
+        tx.executeSql(
+            'DELETE FROM Contacto',
+            [],
+            (_, { rows }) => console.log('Registros eliminados tabla Contacto'),
+            (_, error) => console.log('Error al eliminar los registros tabla Contacto:', error)
+        );
+        tx.executeSql(
+            'DELETE FROM Historial',
+            [],
+            (_, { rows }) => console.log('Registros eliminados tabla Historial'),
+            (_, error) => console.log('Error al eliminar los registros tabla Historial:', error)
+        );
+        tx.executeSql(
+            'DELETE FROM Limitaciones',
+            [],
+            (_, { rows }) => console.log('Registros eliminados tabla Limitaciones'),
+            (_, error) => console.log('Error al eliminar los registros tabla Limitaciones:', error)
+        );
+        tx.executeSql(
+            'DELETE FROM PatologiasCronicas',
+            [],
+            (_, { rows }) => console.log('Registros eliminados tabla PatologiasCronicas'),
+            (_, error) => console.log('Error al eliminar los registros tabla PatologiasCronicas:', error)
+        );
+        tx.executeSql(
+            'DELETE FROM Alergias',
+            [],
+            (_, { rows }) => console.log('Registros eliminados tabla Alergias'),
+            (_, error) => console.log('Error al eliminar los registros tabla Alergias:', error)
+        );
+        tx.executeSql(
+            'DELETE FROM Configuracion',
+            [],
+            (_, { rows }) => console.log('Registros eliminados tabla Configuracion'),
+            (_, error) => console.log('Error al eliminar los registros tabla Configuracion:', error)
+        );
+        tx.executeSql(
+            'DELETE FROM ConfigNotificaciones',
+            [],
+            (_, { rows }) => console.log('Registros eliminados tabla ConfigNotificaciones'),
+            (_, error) => console.log('Error al eliminar los registros tabla ConfigNotificaciones:', error)
+        );
+        tx.executeSql(
+            'DELETE FROM DolenciasSintomas',
+            [],
+            (_, { rows }) => console.log('Registros eliminados tabla DolenciasSintomas'),
+            (_, error) => console.log('Error al eliminar los registros tabla DolenciasSintomas:', error)
+        );
+        tx.executeSql(
+            'DELETE FROM recordatorios',
+            [],
+            (_, { rows }) => console.log('Registros eliminados tabla recordatorios'),
+            (_, error) => console.log('Error al eliminar los registros tabla recordatorios:', error)
+        );
+    });
+};
+
+
+//contar la cantidad de recordatorios existentes
+export const contarRecordatorios = async () => {
+    try {
+        return new Promise((resolve, reject) => {
+            db.transaction(tx => {
+                tx.executeSql(
+                    'SELECT COUNT(*) as count FROM recordatorios;',
+                    [],
+                    (_, { rows }) => {
+                        console.log('Número de recordatorios: ' + rows.item(0).count);
+                        resolve(rows.item(0).count)
+                    },
+                    (_, error) => {
+                        console.log('Error al contar los recordatorios: ' + error);
+                        reject()
+                    }
+                );
+            }, (error) => {
+                reject(`Error al iniciar la transacción contar rec: ${error}`);
+            });
+        })
+    } catch (error) {
+        console.log('Error al contar los recordatorios: ' + error);
+    }
+};
+
+// obtener ids notificaciones recordatorios
+export async function obtenerIdsNotificacionesRec(id) {
+    console.log('> ejecutando obtenerIdsNotificacionesRec');
+    try {
+        return new Promise((resolve, reject) => {
+            try {
+                db.transaction(tx => {
+                    tx.executeSql(
+                        `SELECT idNotificacion FROM recordatorios WHERE id = ?;`,
+                        [id],
+                        (_, { rows: { _array } }) => {
+                            // log array
+                            console.log('array:', _array);
+                            console.log('idNotificacion obtenido:', _array[0].idNotificacion);
+                            if (_array.length > 0) {
+                                let idNotificacion = _array[0].idNotificacion;
+                                //console.log('idsNotificacionesSD obtenido con la funcion:', idsNotificacionesSD);
+                                resolve(idNotificacion);
+                            } else {
+                                console.log('No hay idsNotificacionesSD en la tabla Configuracion.');
+                                resolve(null);
+                            }
+                        },
+                        (_, error) => {
+                            console.log('Error al obtener los idsNotificacionesSD:', error);
+                            reject(error);
+                        }
+                    );
+                });
+            } catch (error) {
+                console.log('Error al obtener los idsNotificacionesSD:', error);
+                reject(error);
+            }
+        });
+    } catch (error) {
+
+    }
+}
+
 // Función para actualizar el recordatorio en la base de datos
 export async function actualizarRecordatorio(id, campos) {
     console.log('<ACTUALIZANDO RECORDATORIO>')
-    return new Promise((resolve, reject) => {
-        db.transaction(tx => {
-            tx.executeSql(
-                'UPDATE Recordatorios SET Estado = ?, idNotificacion = ? WHERE id = ?',
-                [campos.Estado, campos.idNotificacion, id],
-                (_, result) => {
-                    console.log('</RECORDATORIO ACTUALIZADO>')
-                    // Realiza una operación de lectura para obtener el idNotificacion actualizado
-                    tx.executeSql(
-                        'SELECT idNotificacion FROM Recordatorios WHERE id = ?',
-                        [id],
-                        (_, result) => {
-                            // Resuelve la promesa con el idNotificacion actualizado
-                            resolve(result.rows.item(0).idNotificacion);
-                        },
-                        (_, error) => reject(error)
-                    );
-                },
-                (_, error) => reject(error)
+    console.log('id: ', id);
+    console.log('campos: ', campos);
+    if (campos.idNotificacion) {
+        const cadena = campos.idNotificacion.join(',');
+        campos.idNotificacion = cadena
+        console.log('cadena: ', cadena)
+    }
+    try {
+        return new Promise((resolve, reject) => {
+            db.transaction(tx => {
+                tx.executeSql(
+                    'UPDATE recordatorios SET Estado = ?, idNotificacion = ? WHERE id = ?',
+                    [campos.Estado, campos.idNotificacion, id],
+                    (_, result) => {
+                        console.log('</RECORDATORIO ACTUALIZADO>')
+                        // Realiza una operación de lectura para obtener el idNotificacion actualizado
+                        tx.executeSql(
+                            'SELECT idNotificacion FROM Recordatorios WHERE id = ?',
+                            [id],
+                            (_, result) => {
+                                // Resuelve la promesa con el idNotificacion actualizado
+                                resolve(result.rows.item(0).idNotificacion);
+                            },
+                            (_, error) => reject(error)
+                        );
+                    },
+                    (_, error) => reject(error)
+                );
+            }, error => reject(error)
             );
         });
-    });
+    } catch (error) {
+        console.log('Error al actualizar el recordatorio:', error);
+
+    }
+
 };
 
 
@@ -506,20 +659,56 @@ export async function obtenerDatosPreviosAnon(rutUsuario) {
 }
 
 export async function addRecordatorio(recordatorio, idNotificacion) {
-    let data = recordatorio
-    let usuario_rut = await obtenerRut()
-    console.log('idNitification: ', idNotificacion.toString())
-    db.transaction(tx => {
-        tx.executeSql(
-            "INSERT OR IGNORE INTO Recordatorios ( Titulo, Fecha, Hora, Descripcion, Estado, Dias, idNotificacion, usuario_rut ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
-            [data.Titulo, data.Fecha, data.Hora, data.Descripcion, '0', data.Dias.toString(), idNotificacion.toString(), usuario_rut],
-
-            (_, { rows }) => console.log('Recordatorio insertado:', data.Titulo, data.Fecha, data.Hora, data.Descripcion, '0', data.Dias.toString(), idNotificacion.toString(), usuario_rut,),
-            (_, error) => console.log('Error al insertar datos:', error)
-        );
-
+    return new Promise( (resolve, reject) => {
+        let data = recordatorio;
+        obtenerRut()
+            .then(async (usuario_rut) => {
+                console.log('idNotification: ', idNotificacion.toString());
+                try {
+                    db.transaction(async (tx) => {
+                        tx.executeSql(
+                            "INSERT OR IGNORE INTO Recordatorios (Titulo, Fecha, Hora, Descripcion, Estado, Dias, idNotificacion, usuario_rut) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
+                            [
+                                data.Titulo,
+                                data.Fecha,
+                                data.Hora,
+                                data.Descripcion,
+                                '0',
+                                data.Dias.toString(),
+                                idNotificacion.toString(),
+                                usuario_rut,
+                            ],
+                            (_, { rows }) =>
+                                console.log(
+                                    'Recordatorio insertado:',
+                                    data.Titulo,
+                                    data.Fecha,
+                                    data.Hora,
+                                    data.Descripcion,
+                                    '0',
+                                    data.Dias.toString(),
+                                    idNotificacion.toString(),
+                                    usuario_rut
+                                ),
+                            (_, error) => {
+                                console.log('Error al insertar datos:', error);
+                                reject(error);
+                            }
+                        );
+                    });
+                    resolve();
+                } catch (error) {
+                    console.log('Error en la transacción:', error);
+                    reject(error);
+                }
+            })
+            .catch((error) => {
+                console.log('Error al obtener el rut:', error);
+                reject(error);
+            });
     });
-};
+}
+
 
 // resto de la implementacion de la bd
 
@@ -662,7 +851,7 @@ export async function guardarHistoriarChats(id, fecha_hora, function_name, promp
     });
 };
 
-export function mostarDB(tabla) {
+export async function mostarDB(tabla) {
     db.transaction(tx => {
         tx.executeSql(`SELECT * FROM ${tabla}`, [], (_, { rows }) => {
             console.log(tabla, JSON.stringify(rows));

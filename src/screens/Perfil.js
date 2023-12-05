@@ -412,8 +412,8 @@ export default function Perfil({ navigation }) {
 
                         <Text style={styles.content2}>{`Tienes ${patologias.length} enfermedades registradas`}</Text>
 
-                        <TouchableOpacity className="bg-rojoIntenso" onPress={() => pressPatologia()}>
-                          <Text className="text-center text-rojoIntenso">{showPatologia ? 'Ocultar enfermedades' : 'Mostar enfermedades'}</Text>
+                        <TouchableOpacity style={styles.buttonPerfil} onPress={() => pressPatologia()}>
+                          <Text style={styles.buttonTextPerfil}>{showPatologia ? 'Ocultar enfermedades' : 'Mostar enfermedades'}</Text>
                         </TouchableOpacity>
                       </>
                     ) : (

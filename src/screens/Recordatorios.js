@@ -9,7 +9,7 @@ import { useIsFocused } from '@react-navigation/native'
 import moment from 'moment';
 import 'moment/locale/es';
 import getStyles from '../api/styles';
-import {colors} from '../api/theme';
+import { colors } from '../api/theme';
 import { ThemeContext } from '../api/themeContext';
 
 import * as Notifications from 'expo-notifications';
@@ -32,25 +32,27 @@ LocaleConfig.locales['es'] = {
 LocaleConfig.defaultLocale = 'es';
 // Define el componente RecordatorioItem y envuélvelo con React.memo
 const RecordatorioItem = React.memo(({ recordatorio, abrirModal, handleCheckPress }) => {
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const styles = getStyles(theme);
   let activeColors = colors[theme.mode];
   if (recordatorio) {
     for (item in recordatorio) {
       return (
         <View style={styles.lineaContainer2}>
-          <View className="flex-row" style={{backgroundColor: activeColors.quaternary, paddingHorizontal: 8, shadowColor: 'black',
+          <View className="flex-row" style={{
+            backgroundColor: activeColors.quaternary, paddingHorizontal: 8, shadowColor: 'black',
             shadowOffset: { width: -2, height: 4 },
             shadowOpacity: 0.2,
             shadowRadius: 3,
             elevation: 5,
             borderTopLeftRadius: 8,
-            borderTopRightRadius: 8}}>
-            <View className="flex flex-2 py-10"><Text style={{color: activeColors.primary , fontWeight: 'bold'}}>{recordatorio.Hora}</Text></View>
-            <View className="flex flex-1 px-3 py-2" ><Text className=" py-2" style={{color: activeColors.primary, fontWeight: 'bold'}}>{recordatorio.Titulo}</Text>
-              <Text className="py-2" style={{color: activeColors.tertiary, fontWeight: '600'}}>{recordatorio.Descripcion}</Text></View>
+            borderTopRightRadius: 8
+          }}>
+            <View className="flex flex-2 py-10"><Text style={{ color: activeColors.primary, fontWeight: 'bold' }}>{recordatorio.Hora}</Text></View>
+            <View className="flex flex-1 px-3 py-2" ><Text className=" py-2" style={{ color: activeColors.primary, fontWeight: 'bold' }}>{recordatorio.Titulo}</Text>
+              <Text className="py-2" style={{ color: activeColors.tertiary, fontWeight: '600' }}>{recordatorio.Descripcion}</Text></View>
             {recordatorio.id ? (<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-              <TouchableOpacity style={{ padding: 5}} onPress={() => abrirModal(recordatorio)}>
+              <TouchableOpacity style={{ padding: 5 }} onPress={() => abrirModal(recordatorio)}>
                 <Text><FontAwesome5 name="edit" size={25} color={activeColors.tertiary} /></Text>
               </TouchableOpacity>
               <TouchableOpacity style={{ padding: 5, paddingLeft: 10 }} onPress={() => handleCheckPress(recordatorio)}>
@@ -320,12 +322,37 @@ const Recordatorios = () => {
 
   const cancelarNotificacion = async (recordatorio, estado) => {
     console.log('CANCELANDO NOTIFICACION CON IDNOTIFICACION:', recordatorio.idNotificacion)
-    try {
-      await Notifications.cancelScheduledNotificationAsync(recordatorio.idNotificacion);
-      console.log('notificacion cancelada: ', recordatorio.idNotificacion)
-    } catch (error) {
-      console.log("idNotificacion error:", recordatorio.idNotificacion);
-      console.log('error al cancelar notificacion: ', error)
+    //si id notificatio es null
+    if (recordatorio.idNotificacion === null) {
+      console.log('EL MEDICAMENTO NO TIENE NOTIFICACIONES ACTIVAS')
+      return;
+    }
+    const ids = recordatorio.idNotificacion.split(',');
+    const cantidad = ids.length;
+    console.log("Cantidad de ids:", cantidad);
+    if (cantidad > 1) {
+      const idNotificacionArray = recordatorio.idNotificacion.split(',');
+
+      // Recorremos el array resultante
+      idNotificacionArray.forEach(async (id) => {
+        console.log('ID de Notificación:', id);
+        // Aquí puedes realizar acciones con cada ID de notificación, por ejemplo, enviar notificaciones, realizar operaciones, etc.
+        try {
+          await Notifications.cancelScheduledNotificationAsync(id);
+          console.log('1-notificacion cancelada: ', id)
+        } catch (error) {
+          console.log("1-idNotificacion error:", id);
+          console.log('1-error al cancelar notificacion: ', error)
+        }
+      });
+    } else {
+      try {
+        await Notifications.cancelScheduledNotificationAsync(recordatorio.idNotificacion);
+        console.log('notificacion cancelada: ', recordatorio.idNotificacion)
+      } catch (error) {
+        console.log("idNotificacion error:", recordatorio.idNotificacion);
+        console.log('error al cancelar notificacion: ', error)
+      }
     }
     try {
       let newidNotificacion = await actualizarRecordatorio(recordatorio.id, { Estado: estado, idNotificacion: null });
@@ -340,7 +367,8 @@ const Recordatorios = () => {
 
   const programarNotificacion = async (recordatorio) => {
     console.log('PROGRAMANDO NOTIFICACION RECORDATORIO: ', recordatorio.Titulo)
-    let nuevoIdNotificacion = await scheduleRecordatorioNotification(recordatorio);
+    let nuevoIdNotificacion = await scheduleRecordatorioNotification(recordatorio, recordatorio.id);
+    console.log('IDS NOTIFICACIONES OBTENIDOS: ', nuevoIdNotificacion);
     let newidNotificacion = await actualizarRecordatorio(recordatorio.id, { Estado: ESTADO_ACTIVO, idNotificacion: nuevoIdNotificacion });
     console.log('newidNotificacion-programada: ', newidNotificacion)
     // Actualiza el idNotificacion en el objeto recordatorio
@@ -592,7 +620,7 @@ const Recordatorios = () => {
     return dias.join(', ');
   };
 
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const styles = getStyles(theme);
   let activeColors = colors[theme.mode];
 
@@ -600,7 +628,7 @@ const Recordatorios = () => {
   // Renderiza el componente
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1}}>
+      <View style={{ flex: 1 }}>
         <Agenda
           theme={{
             backgroundColor: activeColors.secondary,
@@ -631,7 +659,7 @@ const Recordatorios = () => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text className="text-lg text-center font-bold" style={{color: activeColors.primary}}>Recordatorios futuros:</Text>
+              <Text className="text-lg text-center font-bold" style={{ color: activeColors.primary }}>Recordatorios futuros:</Text>
               {recordatoriosFuturos.map((fecha) => {
                 let fechaMoment = moment(fecha);
                 return (

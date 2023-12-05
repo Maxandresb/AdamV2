@@ -19,7 +19,7 @@ import { buscarEnDB } from "../api/centrosMedicos";
 import { enviarMensajeWSP, enviarMensajeEmergencia, realizarLlamada } from "../api/llamada";
 import { seleccionarRespuestaRecordatorio } from "../api/respuestasPredeterminadas";
 import getStyles from '../api/styles';
-import {colors} from '../api/theme';
+import { colors } from '../api/theme';
 import { ThemeContext } from '../api/themeContext';
 
 
@@ -63,7 +63,7 @@ export default function PrincipalScreen() {
   const navigation = useNavigation();
 
 
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const styles = getStyles(theme);
   let activeColors = colors[theme.mode];
 
@@ -71,38 +71,38 @@ export default function PrincipalScreen() {
   const isFocused = useIsFocused();
 
 
-  async function cambiarMute(estado){
+  async function cambiarMute(estado) {
     let rut = await obtenerRut()
-     muteADAM(rut,estado)
-    
-    if (estado == '1'){
+    muteADAM(rut, estado)
+
+    if (estado == '1') {
       setMute(true)
-      
-    }else if (estado == '0' ){
+
+    } else if (estado == '0') {
       setMute(false)
-      
+
     }
-    
-    
+
+
   }
-  
-  useEffect(  ()=>{
-    async function estadoMUTE(){
-    let rut= await obtenerRut()
-    let est= await obtenerMute(rut)
-    //console.log(est[0].Mute)
-    if( est !== null){
-      if (est[0].Mute == 0 ){
-        setMute(false)
-      }
-      else if (est[0].Mute == 1 ){
-        setMute(true)
+
+  useEffect(() => {
+    async function estadoMUTE() {
+      let rut = await obtenerRut()
+      let est = await obtenerMute(rut)
+      //console.log(est[0].Mute)
+      if (est !== null) {
+        if (est[0].Mute == 0) {
+          setMute(false)
+        }
+        else if (est[0].Mute == 1) {
+          setMute(true)
+        }
       }
     }
-    }
-    
+
     estadoMUTE()
-  },[isFocused]);
+  }, [isFocused]);
   const [MostrarDetenerProceso, setMostrarDetenerProceso] = useState(false)
   const [detenerProceso, setDetenerProceso] = useState(false)
   const estadoDetener = useRef(false)
@@ -453,18 +453,20 @@ export default function PrincipalScreen() {
         } else {
           // tablas: Usuario Alergias PatologiasCronicas Medicamentos Limitaciones Contacto Historial centrosMedicos 
           console.log('MOSTRANDO BD')
-          /*mostarDB('Usuario');
-          mostarDB('Alergias');
-          mostarDB('Medicamentos');
-          mostarDB('Limitaciones');
-          mostarDB('PatologiasCronicas');
-          mostarDB('Contacto');
-          mostarDB('recordatorios');*/
-          // mostarDB('Configuracion');
-         // mostarDB('ConfigNotificaciones');
-           await MostrarNotificacionesGuardadas()
-          // mostarDB('DolenciasSintomas');
-          //mostarDB('centrosMedicos');
+          /*await mostarDB('Usuario');
+          await mostarDB('Alergias');
+          await mostarDB('Limitaciones');
+          await mostarDB('PatologiasCronicas');
+          await mostarDB('Contacto');*/
+          // await mostarDB('Configuracion');
+          // await mostarDB('ConfigNotificaciones');
+          await MostrarNotificacionesGuardadas()
+          await mostarDB('recordatorios');
+
+          //await mostarDB('Medicamentos');
+
+          // await mostarDB('DolenciasSintomas');
+          //await mostarDB('centrosMedicos');
           respuesta = await generarRespuesta('Mostrar base de datos', 'La base de datos se mostrara en la consola.', prompt)
         }
       } else if (function_name === "recordatorio") {
@@ -478,7 +480,7 @@ export default function PrincipalScreen() {
             console.log('Proceso detenido en scheduleRecordatorioNotification');
             return;
           } else {
-            let idNotificacion = await scheduleRecordatorioNotification(JSON.parse(args))
+            let idNotificacion = await scheduleRecordatorioNotification(JSON.parse(args), 'vacio', 'vacio')
             if (detenerProceso) {
               console.log('Proceso detenido en addRecordatorio');
               return;
@@ -909,7 +911,7 @@ export default function PrincipalScreen() {
         <View className="flex justify-center items-center">
           {
             cargando ? (
-              <Image className="w-12 h-12 py-3 rounded-full my-3" style={{backgroundColor: activeColors.quinary}}
+              <Image className="w-12 h-12 py-3 rounded-full my-3" style={{ backgroundColor: activeColors.quinary }}
                 source={require('../../assets/images/processingQuestion.gif')}
               />
             ) :
@@ -1055,20 +1057,20 @@ export default function PrincipalScreen() {
           {
             mute ? (
               <TouchableOpacity
-                onPress={()=> {cambiarMute('0') }}
+                onPress={() => { cambiarMute('0') }}
                 className="bg-negro rounded-3xl p-3 absolute left-10 shadow-lg shadow-black"
               >
                 <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice-off" size={28} color="#ff3e45" /></Text>
               </TouchableOpacity>
-            ):
-            (
-              <TouchableOpacity
-                onPress={()=>{cambiarMute('1'); detenerVoz()}}
-                className="bg-negro rounded-3xl p-3 absolute left-10 shadow-lg shadow-black"
-              >
-                <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice" size={28} color="#ff3e45" /></Text>
-              </TouchableOpacity>
-            )
+            ) :
+              (
+                <TouchableOpacity
+                  onPress={() => { cambiarMute('1'); detenerVoz() }}
+                  className="bg-negro rounded-3xl p-3 absolute left-10 shadow-lg shadow-black"
+                >
+                  <Text className="text-white font-semibold"><MaterialCommunityIcons name="account-tie-voice" size={28} color="#ff3e45" /></Text>
+                </TouchableOpacity>
+              )
           }
 
 

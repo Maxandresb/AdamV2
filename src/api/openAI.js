@@ -63,7 +63,7 @@ obtenerContactosAlmacenados()
 const functions = [
     {
         "name": "explicar_algo",
-        "description": "el usuario puede solicitar que se le explique un tema especifico, debes hacerlo de manera comprensible. ", //si el usuario solicitar que le expliquen una funcion de la aplicacion, debes hacerlo paso a paso indicando el orden de ejecucion en el cual el usuario debera navegar en la aplicacion para realizar la funcion
+        "description": " ESTA FUNCION NO CREA RECORDATORIOS. El usuario puede solicitar que se le explique un tema especifico, debes hacerlo de manera comprensible. ", //si el usuario solicitar que le expliquen una funcion de la aplicacion, debes hacerlo paso a paso indicando el orden de ejecucion en el cual el usuario debera navegar en la aplicacion para realizar la funcion
         "parameters": {
             "type": "object",
             "properties": {
@@ -511,7 +511,7 @@ export async function firstApiCall(prompt) {
                                 messages: [
                                     {
                                         role: 'system',
-                                        content: "Segun el prompt proporcionado a continuacion debes identificar que funcion se desea seleccionar y responder segun lo mencionado en el detalle de cada funcion esta ultima parte es estrictamente obligatoria, debes seguir las instrucciones de cada parametro de la funcion seleccionada. "
+                                        content: "Segun el prompt proporcionado a continuacion debes identificar que funcion se desea seleccionar , se preciso identificando que desea el usuario, especialmente con los recordatorios, con cualquier indicio se que el usuario desea crear un recordatorio debes seleccionar esa funcion. ademas debes responder segun lo mencionado en el detalle de cada funcion esta ultima parte es estrictamente obligatoria, debes seguir las instrucciones de cada parametro de la funcion seleccionada. RECUERDA QUE SI EL USUARIO MENCION 'RECUERDAME ...' LA FUNCION QUE DEBES SELECCIONAR ES recordatorio"
                                     },
                                     {
                                         role: "user",

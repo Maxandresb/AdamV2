@@ -15,7 +15,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
 import { calcularDiferenciaSegundos, calcularProximaFecha, calcularSegundosHastaProximoHorario } from '../api/notificaciones';
-import { actualizarRecordatorio } from '../api/sqlite';
+import { actualizarRecordatorio, obtenerIdsNotificacionesRec } from '../api/sqlite';
 
 import PrincipalScreen from '../screens/PrincipalScreen';
 import SaludoScreen from '../screens/SaludoScreen';
@@ -248,7 +248,7 @@ function NotificationHandler() {
             let dia = response.notification.request.content.data.diaRecordar
             let id = response.notification.request.content.data.idRecordatorio
             let idsNotificacion = response.notification.request.content.data.idNotificacion
-            let proximaFecha = calcularProximaFecha(dia, hora)
+            let proximaFecha = calcularProximaFecha(dia.trim(), hora)
             let segundos = calcularDiferenciaSegundos(proximaFecha)
             let notificacion;
 
@@ -270,8 +270,21 @@ function NotificationHandler() {
             try {
               if (notificacion) {
                 console.log('>> Id del recordatorio: ', id);
-                let ids = idsNotificacion + ',' + notificacion
-                await actualizarRecordatorio(id, { Estado: '0', idNotificacion: ids })
+                if (idsNotificacion === 'vacio') {
+                  try {
+                    idsNotificacion = await obtenerIdsNotificacionesRec(id)
+                    notificacion = idsNotificacion + ',' + notificacion
+                  } catch (error) {
+                    console.log('Error al obtener ids de notificaciones recordatorios: ', error);
+                  }
+
+
+                }
+                try {
+                  await actualizarRecordatorio(id, { Estado: '0', idNotificacion: notificacion })
+                } catch (error) {
+                  console.log('Error al actualizar el recordatorio: ', error);
+                }
               }
             } catch (error) {
               console.log('Error al manejar la notificación: ', error);

@@ -3,7 +3,12 @@ export function seleccionarRespuestaRecordatorio(args) {
     let partes = args.Fecha.split('-');
     args.Fecha = `${partes[2]}-${partes[1]}-${partes[0]}`;
     let respuestas = [];
-    if (args.Dias === 'Unico') {
+    let dias = args.Dias
+
+    if (dias === "domingo, lunes, martes, miércoles, jueves, viernes, sábado") {      
+      dias = 'todos los dias'
+    }
+    if (dias === 'Unico') {
       respuestas = [
         `¡Perfecto! He configurado un recordatorio para el ${args.Fecha} a las ${args.Hora} para que no olvides '${args.Titulo}'. Te avisaré mediante una notificación cuando llegue el momento.`,
         `¡Hecho! No te preocupes, te recordaré '${args.Titulo}' el ${args.Fecha} a las ${args.Hora} mediante una notificación.`,

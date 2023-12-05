@@ -443,7 +443,7 @@ export default function SelecDatosVocalizar({ navigation }) {
       try {
         db.transaction(async tx => {
           tx.executeSql(
-            'SELECT * FROM Medicamentos',
+            'SELECT medicamento ,dosis,periodicidad FROM Medicamentos',
             [],
             (_, { rows: { _array } }) => {
               const medicamentosConSeleccion = _array.map(medicamento => ({
