@@ -388,7 +388,7 @@ export default function Perfil({ navigation }) {
             ) : (
               <View>
                 <TouchableOpacity
-                  className={'flex-row  justify-around w-full mt-3'}
+                  className={'flex-row  justify-between w-full mt-3'}
                   style={styles.content4}
                   onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}
                 >
@@ -464,7 +464,7 @@ export default function Perfil({ navigation }) {
             ) : (
               <View >
                 <TouchableOpacity
-                  className={'flex-row  justify-around w-full mt-3'}
+                  className={'flex-row  justify-between w-full mt-3'}
                   style={styles.content4}
                   onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}                >
                   <View>
@@ -538,7 +538,7 @@ export default function Perfil({ navigation }) {
             ) : (
               <View>
                 <TouchableOpacity
-                  className={'flex-row  justify-around w-full mt-3'}
+                  className={'flex-row  justify-between w-full mt-3'}
                   style={styles.content4}
                   onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}
                 >
@@ -612,7 +612,7 @@ export default function Perfil({ navigation }) {
 
               <View>
                 <TouchableOpacity
-                  className={'flex-row  justify-around w-full mt-3'}
+                  className={'flex-row  justify-between w-full mt-3'}
                   style={styles.content4}
                   onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}
                 >

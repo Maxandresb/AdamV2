@@ -646,7 +646,7 @@ const Recordatorios = () => {
         />
         <TouchableOpacity onPress={handleShowRecordatoriosFuturos}>
           <View style={{ alignSelf: 'center', paddingBottom: 30 }}>
-            <Text style={{ color: 'green', fontSize: 18 }}>
+            <Text style={[styles.colorRecFuturos, { fontSize: 18 }]}>
               {obtenerRecordatoriosFuturos()}
             </Text>
           </View>
@@ -740,7 +740,7 @@ const Recordatorios = () => {
                   <Text style={styles.encabezado}>Dias:</Text>
                   <TouchableOpacity onPress={() => showCheckBox()}>
                     <TextInput
-                      style={styles.input}
+                      style={[styles.input]}
                       value={diasSeleccionadosComoCadena()}
                       editable={false}
                     />
@@ -824,11 +824,11 @@ const Recordatorios = () => {
                   <Text style={styles.encabezado}>Hora:</Text>
                   <Text style={styles.content}>{recordatorioActual.current?.Hora}</Text>
                   <Text style={styles.encabezado}>Dias:</Text>
-                  <Text style={styles.content}>{recordatorioActual.current?.Dias}</Text>
+                  <Text style={[styles.content, {minHeight:45, maxHeight: 90, height:'auto'}]}>{recordatorioActual.current?.Dias}</Text>
                 </>
               )}
 
-              <View>
+              <View style={{marginTop:20}}>
                 <TouchableOpacity
                   style={styles.primaryButton}
                   onPress={async () => { setIsEditing(!isEditing), await handleUpdateRecordatorio(recordatorioActual, scheduleRecordatorioNotification, db) }}

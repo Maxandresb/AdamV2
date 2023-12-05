@@ -10,7 +10,7 @@ import SelecTiempoAtras from '../api/selecTiempoAtras';
 import EVA from "../api/escalaEVA";
 import { FontAwesome5 } from '@expo/vector-icons';
 import getStyles from '../api/styles';
-import {colors} from '../api/theme';
+import { colors } from '../api/theme';
 import { ThemeContext } from '../api/themeContext';
 import { obtenerIdsNotificacionesSD, guardarFechaSD, obtenerFechaSD, mostarDB } from "../api/sqlite";
 import { generarNotificacionDolencias } from '../api/notificaciones';
@@ -48,7 +48,7 @@ const DolenciaSintoma = ({ dolenciaSintoma, isEditing, handlePress, handleDelete
 
     const partesCuerpo = ["Cabeza", "Torso", "Brazo derecho", "Brazo izquierdo", "Pierna derecha", "Pierna izquierda"];
 
-    const {theme, updateTheme} = useContext(ThemeContext);
+    const { theme, updateTheme } = useContext(ThemeContext);
     const styles = getStyles(theme);
     let activeColors = colors[theme.mode];
 
@@ -124,13 +124,15 @@ const DolenciaSintoma = ({ dolenciaSintoma, isEditing, handlePress, handleDelete
                     <Text style={styles.content}>{currentDolenciaSintoma.dosisUtilizada}</Text>
                 </>
             )}
-            <View className="flex-row  justify-between self-center mt-5">
+            {/* <View className="flex-row  justify-between self-center mt-5 "> */}
+            <View className="flex-row justify-around items-center w-full mt-3">
+
                 <TouchableOpacity
                     style={[styles.primaryButton, { textAlign: 'center', textAlignVertical: 'center', flexWrap: 'wrap' }]}
                     onPress={() => handlePress(dolenciaSintoma.id, currentDolenciaSintoma)}
                 >
                     <Text style={styles.buttonText}>
-                        {isEditing ? 'Guardar cambios' : 'Modificar Dolencia/Síntoma'}
+                        {isEditing ? 'Guardar cambios' : 'Modificar \n\ Dolencia/Síntoma'}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -138,7 +140,7 @@ const DolenciaSintoma = ({ dolenciaSintoma, isEditing, handlePress, handleDelete
                     onPress={handleDeletePress}
                 >
                     <Text style={styles.buttonText2}>
-                        Eliminar Dolencia/Síntoma
+                        {'Eliminar \n\ Dolencia/Síntoma'}
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -156,7 +158,7 @@ const DolenciaSintoma = ({ dolenciaSintoma, isEditing, handlePress, handleDelete
                 </>
             ) : null}
             <View style={styles.lineaContainer}></View>
-
+            <View style={{ marginBottom: '10%' }}></View>
 
         </View>
     );
@@ -349,10 +351,10 @@ const DolenciasSintomas = () => {
         });
     }
 
-    const {theme, updateTheme} = useContext(ThemeContext);
+    const { theme, updateTheme } = useContext(ThemeContext);
     const styles = getStyles(theme);
     let activeColors = colors[theme.mode];
-        
+
     async function guardarIdsNotificacionesSD(idsNotificacionesSD) {
         console.log('guardar ids SD');
         // console.log('idsAntes: ', idsNotificacionesSD)
@@ -523,11 +525,12 @@ const DolenciasSintomas = () => {
 
                                 <Text style={styles.seguimientoFormHeader}>Ingresa la descripción:</Text>
                                 <TextInput
-                                    style={[styles.input, { height: 80 }]}
+                                    style={[styles.input, { minHeight: 90, maxHeight: 250, height: 'auto'}]}
                                     placeholderTextColor="gray"
                                     placeholder={`Describe aqui tu dolencia o sintoma a detalle \n\junto con la zona especifica afectada. \n\ \n\Si crees que existe una causa, tambien añadela `}
                                     onChangeText={text => setDescripcion(text)}
                                     value={descripcion}
+                                    multiline={true}
                                 />
                                 <Text style={styles.seguimientoFormHeader}>Selecciona la parte del cuerpo afectada:</Text>
                                 <View style={styles.inputPicker}>
@@ -568,9 +571,9 @@ const DolenciasSintomas = () => {
                                 />
 
                                 <CustomAlert
-                                  isVisible={saveDolenciaAlert}
-                                  onClose={() => {setSaveDolenciaAlert(false)}}
-                                  message='Dolencia Ingresada exitosamente'
+                                    isVisible={saveDolenciaAlert}
+                                    onClose={() => { setSaveDolenciaAlert(false) }}
+                                    message='Dolencia Ingresada exitosamente'
                                 />
 
                                 <View className="flex-row  justify-between self-center mt-5" >
@@ -579,10 +582,11 @@ const DolenciasSintomas = () => {
                                             Cerrar
                                         </Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.primaryButton} 
-                                    onPress={() => { 
-                                        agregarDolenciaSintoma()
-                                        setSaveDolenciaAlert(true) }}>
+                                    <TouchableOpacity style={styles.primaryButton}
+                                        onPress={() => {
+                                            agregarDolenciaSintoma()
+                                            setSaveDolenciaAlert(true)
+                                        }}>
                                         <Text style={styles.buttonText}>
                                             Agregar nueva dolencia o síntoma
                                         </Text>

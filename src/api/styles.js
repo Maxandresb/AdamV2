@@ -72,6 +72,11 @@ const getStyles = (theme) => {
             marginBottom: 5,
             paddingTop: 10
         },
+
+        colorRecFuturos:{
+            color: activeColors.tertiary,
+        },
+
         input: {
             height: 45,
             borderBottomColor: activeColors.quinary,
@@ -551,7 +556,6 @@ const getStyles = (theme) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: '100%',
-            height: 20,
         },
     
         rowPerfil2: {
@@ -564,6 +568,19 @@ const getStyles = (theme) => {
             backgroundColor: activeColors.primary,
             borderRadius: 15,
             height: 35,
+            shadowColor: 'black',
+            shadowOffset: { width: -2, height: 4 },
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            elevation: 5,
+            justifyContent: 'center',
+            marginTop: 12
+    
+        },
+        buttonPerfil2: {
+            backgroundColor: activeColors.tertiary,
+            borderRadius: 7.5,
+            height: 55,
             shadowColor: 'black',
             shadowOffset: { width: -2, height: 4 },
             shadowOpacity: 0.2,
@@ -663,7 +680,7 @@ const getStyles = (theme) => {
             alignItems: 'center',
           },
           selectedOption: {
-            backgroundColor: activeColors.secondary,
+            backgroundColor: activeColors.primary,
           },
           switchText: {
             color: activeColors.primary,
@@ -798,7 +815,14 @@ const getStyles = (theme) => {
             shadowOffset: {width: -2, height: 4},
             shadowOpacity: 0.2,
             shadowRadius: 3,
-            elevation: 5
+            elevation: 5        
+        },
+
+        viewVertical:{
+            alignItems: 'center',
+            width: 10,
+            height: 10,
+            margin:5
         },
 
         secondaryButton: {

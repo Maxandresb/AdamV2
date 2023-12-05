@@ -17,7 +17,7 @@ import { source, generarRespuesta, crearRespuesta, secondApiCall, firstApiCall, 
 import { obtenerUbicacion } from "../api/location";
 import { buscarEnDB } from "../api/centrosMedicos";
 import { enviarMensajeWSP, enviarMensajeEmergencia, realizarLlamada } from "../api/llamada";
-import { seleccionarRespuestaRecordatorio } from "../api/respuestasPredeterminadas";
+import { seleccionarRespuestaRecordatorio, respuestaProcesoDetenido } from "../api/respuestasPredeterminadas";
 import getStyles from '../api/styles';
 import { colors } from '../api/theme';
 import { ThemeContext } from '../api/themeContext';
@@ -683,7 +683,7 @@ export default function PrincipalScreen() {
             let answer = `Tiempo de espera agotado, revisa tu conexion a internet`
             respuesta = await generarRespuesta('tiempo_agotado_sac', answer, prompt)
           } else if (respuesta === `respuesta cancelada`) {
-            let answer = 'Haz detenido el proceso, esperare tu siguiente mensaje'
+            let answer = respuestaProcesoDetenido()
             respuesta = await generarRespuesta('respuesta cancelada', answer, prompt)
           }
           //si todo dale bien se muestra respuesta en pantalla
@@ -696,7 +696,7 @@ export default function PrincipalScreen() {
         } else {
           // si no existe, se verifica si se detuvo el proceso y se genera respuesta acorde
           if (detenerProceso) {
-            let answer = 'Haz detenido el proceso, esperare tu siguiente mensaje'
+            let answer = respuestaProcesoDetenido()
             if (mute == false) {
               respuestaVoz(answer)
             }
@@ -727,14 +727,14 @@ export default function PrincipalScreen() {
         setCargando(false);
         setRespondiendo(false)
         if (detenerProceso) {
-          let answer = 'Haz detenido el proceso, esperare tu siguiente mensaje'
+          let answer = respuestaProcesoDetenido()
           if (mute == false) {
             respuestaVoz(answer)
           }
           respuesta = await generarRespuesta('Proceso detenido', answer, prompt)
           setDetenerProceso(false)
         } else if (error instanceof TypeError && /Cannot read property 'function_name' of undefined/.test(error.message)) {
-          let answer = 'Haz detenido el proceso, esperare tu siguiente mensaje'
+          let answer = respuestaProcesoDetenido()
           if (mute == false) {
             respuestaVoz(answer)
           }

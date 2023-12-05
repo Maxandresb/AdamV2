@@ -8,13 +8,13 @@ import { useIsFocused } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { obtenerRut } from "../api/sqlite"
 import getStyles from '../api/styles';
-import {colors} from '../api/theme';
+import { colors } from '../api/theme';
 import { ThemeContext } from '../api/themeContext';
 
 
 const db = SQLite.openDatabase('adamdb.db');
 const PatologiaCronica = ({ index, patologia, showPatologia, pressPatologia, patologias, pressSelectPatologia }) => {
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const styles = getStyles(theme);
   let activeColors = colors[theme.mode];
   return (
@@ -64,7 +64,7 @@ const PatologiaCronica = ({ index, patologia, showPatologia, pressPatologia, pat
   )
 }
 const Medicamento = ({ index, medicamento, showMedicamento, pressMedicamento, medicamentos, pressSelectMedicamento }) => {
-  const {theme, updateTheme} = useContext(ThemeContext);
+  const { theme, updateTheme } = useContext(ThemeContext);
   const styles = getStyles(theme);
   let activeColors = colors[theme.mode];
   return (
@@ -95,6 +95,14 @@ const Medicamento = ({ index, medicamento, showMedicamento, pressMedicamento, me
             <Text style={styles.content2}>{medicamento.Periodicidad.valor}</Text>
           </TouchableOpacity>
           <View style={styles.lineaContainer3}></View>
+          <TouchableOpacity
+            style={medicamento.Horarios.isSelected ? styles.selectedText : styles.unselectedText}
+            onPress={() => pressSelectMedicamento(index, 'Horarios')}
+          >
+            <Text style={styles.content3}>{'Horarios:'}</Text>
+            <Text style={styles.content2}>{medicamento.Horarios.valor}</Text>
+          </TouchableOpacity>
+          <View style={styles.lineaContainer3}></View>
           {medicamentos.length > 1 ? (
             <>
               <View style={styles.lineaContainer4}></View>
@@ -106,7 +114,7 @@ const Medicamento = ({ index, medicamento, showMedicamento, pressMedicamento, me
   )
 }
 const Alergia = ({ index, alergia, showAlergia, pressAlergia, alergias, pressSelectAlergia }) => {
-  const {theme, updateTheme} = useContext(ThemeContext);
+  const { theme, updateTheme } = useContext(ThemeContext);
   const styles = getStyles(theme);
   let activeColors = colors[theme.mode];
   return (
@@ -140,7 +148,7 @@ const Alergia = ({ index, alergia, showAlergia, pressAlergia, alergias, pressSel
   )
 }
 const Limitacion = ({ index, limitacion, showLimitacion, pressLimitacion, limitaciones, pressSelectLimitacion }) => {
-  const {theme, updateTheme} = useContext(ThemeContext);
+  const { theme, updateTheme } = useContext(ThemeContext);
   const styles = getStyles(theme);
   let activeColors = colors[theme.mode];
   return (
@@ -191,7 +199,7 @@ const Limitacion = ({ index, limitacion, showLimitacion, pressLimitacion, limita
 }
 //ccrear componente usuario
 const Usuario = ({ index, usuario, showUsuario, pressUsuario, pressSelectUsuario }) => {
-  const {theme, updateTheme} = useContext(ThemeContext);
+  const { theme, updateTheme } = useContext(ThemeContext);
   const styles = getStyles(theme);
   let activeColors = colors[theme.mode];
   return (
@@ -443,14 +451,17 @@ export default function SelecDatosVocalizar({ navigation }) {
       try {
         db.transaction(async tx => {
           tx.executeSql(
-            'SELECT medicamento ,dosis,periodicidad FROM Medicamentos',
+            'SELECT medicamento, dosis, periodicidad, horarios  FROM Medicamentos',
             [],
             (_, { rows: { _array } }) => {
+              // log 
+              //console.log('medicamentos: ', _array);
               const medicamentosConSeleccion = _array.map(medicamento => ({
                 ...medicamento,
                 Medicamento: { valor: medicamento.medicamento, isSelected: false },
                 Dosis: { valor: medicamento.dosis, isSelected: false },
                 Periodicidad: { valor: medicamento.periodicidad, isSelected: false },
+                Horarios: { valor: medicamento.horarios, isSelected: false },
               }));
               setMedicamentos(medicamentosConSeleccion);
               resolve()
@@ -568,12 +579,13 @@ export default function SelecDatosVocalizar({ navigation }) {
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
-      console.log('ACTUALIZANDO DATOS PANTALLA SDV');
+      //console.log('ACTUALIZANDO DATOS PANTALLA SDV');
       obtenerDatosUsuario();
       obtenerPatologias();
       obtenerMedicamentos();
       obtenerAlergias();
       obtenerLimitaciones();
+      obtenerDatosPreviosSelec();
     }
   }, [isFocused]);
   function calcularEdad(fechaNacimiento) {
@@ -609,45 +621,60 @@ export default function SelecDatosVocalizar({ navigation }) {
 
 
   const guardarDatos = async (usuario_rut) => {
+    console.log('GUARDANDO DATOS SELECCIONADOS');
+    const datosGuardados = [
+      ...datosUsuarioSeleccionados.current,
+      ...patologiasSeleccionadas.current,
+      ...medicamentosSeleccionados.current,
+      ...alergiasSeleccionadas.current,
+      ...limitacionesSeleccionadas.current
+    ].map(dato =>
+      Object.entries(dato).map(([key, value]) =>
+        `${transformKey(key)}: ${value}`
+      ).join('\n')
+    ).join('\n\n');
+    console.log('datosGuardados: ', datosGuardados);
     try {
       return new Promise((resolve, reject) => {
-
-        const datosGuardados = [
-          ...datosUsuarioSeleccionados.current,
-          ...patologiasSeleccionadas.current,
-          ...medicamentosSeleccionados.current,
-          ...alergiasSeleccionadas.current,
-          ...limitacionesSeleccionadas.current
-        ].map(dato =>
-          Object.entries(dato).map(([key, value]) =>
-            `${transformKey(key)}: ${value}`
-          ).join('\n')
-        ).join('\n\n');
-
         db.transaction(async tx => {
           tx.executeSql(
-            'SELECT * FROM Configuracion WHERE usuario_rut = ?',
-            [usuario_rut],
+            'SELECT * FROM Configuracion WHERE id = ?',
+            [1],
             (_, { rows: { _array } }) => {
               if (_array.length > 0) {
-                // Si ya existe un registro para el usuario, actualiza los datos
+                // Si ya existe un registro para el id 1, actualiza los datos
                 tx.executeSql(
-                  'UPDATE Configuracion SET DatosSeleccionados = ? WHERE usuario_rut = ?',
-                  [datosGuardados, usuario_rut],
-                  () => console.log('Datos a vocalizar actualizados correctamente'),
-                  (_, error) => { reject(error), console.log('Error al actualizar los datos:', error) }
+                  'UPDATE Configuracion SET DatosSeleccionados = ? WHERE id = ?',
+                  [datosGuardados, 1],
+                  () => {
+                    console.log('Datos a vocalizar actualizados correctamente');
+                    resolve();
+                  },
+                  (_, error) => {
+                    console.log('Error al actualizar los datos:', error);
+                    reject(error);
+                  }
                 );
               } else {
-                // Si no existe un registro para el usuario, inserta los datos
+                // Si no existe un registro para el id 1, inserta los datos
                 tx.executeSql(
-                  'INSERT INTO Configuracion (DatosSeleccionados, usuario_rut) VALUES (?, ?)',
-                  [datosGuardados, usuario_rut],
-                  () => console.log('Datos a vocalizar insertados correctamente'),
-                  (_, error) => { reject(error), console.log('Error al insertar los datos a vocalizar:', error) }
+                  'INSERT INTO Configuracion (DatosSeleccionados, id) VALUES (?, ?)',
+                  [datosGuardados, 1],
+                  () => {
+                    console.log('Datos a vocalizar insertados correctamente');
+                    resolve();
+                  },
+                  (_, error) => {
+                    console.log('Error al insertar los datos a vocalizar:', error);
+                    reject(error);
+                  }
                 );
               }
             },
-            (_, error) => { reject(error), console.log('Error al obtener los datos a vocalizar :', error) }
+            (_, error) => {
+              console.log('Error al obtener los datos a vocalizar:', error);
+              reject(error);
+            }
           );
           await obtenerImplementarRut();
           resolve()
@@ -663,7 +690,7 @@ export default function SelecDatosVocalizar({ navigation }) {
   const [existenPrevios, setExistenPrevios] = useState(false)
   const [mostrarPrevios, setMostrarPrevios] = useState(false)
 
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const styles = getStyles(theme);
   let activeColors = colors[theme.mode];
 
@@ -678,16 +705,18 @@ export default function SelecDatosVocalizar({ navigation }) {
 
 
   const obtenerDatosPreviosSelec = (rutUsuario) => {
-    //console.log('OBTENIENDO DATOS MEDICOS PREVIOS DEL RUT: ', rutUsuario);
+    // console.log('OBTENIENDO DATOS PREVIOS SELECCIONADOS');
     return new Promise((resolve, reject) => {
-      try {
-        db.transaction(tx => {
+      db.transaction(tx => {
+        try {
           tx.executeSql(
-            'SELECT * FROM Configuracion WHERE usuario_rut = ?',
-            [rutUsuario],
+            'SELECT * FROM Configuracion WHERE id = ?',
+            [1],
             (_, { rows: { _array } }) => {
               if (_array.length > 0) {
                 const datosPreviosSelec = _array[0].DatosSeleccionados;
+                // console.log(_array);
+                // console.log('datosPreviosSelec: ', datosPreviosSelec.trim());
                 setDatosPrevios(datosPreviosSelec);
                 if (datosPreviosSelec === null) {
                   setExistenPrevios(false);
@@ -697,18 +726,21 @@ export default function SelecDatosVocalizar({ navigation }) {
               } else {
                 console.log('No se encontraron datos previos a vocalizar');
               }
-              resolve()
+              resolve();
             },
-            (_, error) => { reject(error), console.log('Error al obtener los datos al obtener datos previos a vocalizar:', error) }
+            (_, error) => {
+              console.log('Error al obtener datos previos a vocalizar:', error);
+              reject(error);
+            }
           );
-        });
-      } catch (error) {
-        console.log('Error al obtener los datos al obtener datos previos a vocalizar:', error)
-        reject(error)
-
-      }
-    })
-  }
+        } catch (error) {
+          console.log('Error al obtener datos previos a vocalizar:', error);
+          reject(error);
+        }
+      });
+    });
+  };
+  
 
   /*console.log('--showUsuario:', showUsuario);
   console.log('showPatologia:', showPatologia);
@@ -720,7 +752,7 @@ export default function SelecDatosVocalizar({ navigation }) {
     <ScrollView style={styles.container}>
 
 
-      <View className="p-10" style={{backgroundColor: activeColors.quaternary}}>
+      <View className="p-4" style={{ backgroundColor: activeColors.quaternary }}>
         <View style={styles.containerDatosSeleccionados}>
           {mostrarPrevios ? (
             <>
@@ -728,7 +760,7 @@ export default function SelecDatosVocalizar({ navigation }) {
                 <>
                   <Text style={styles.tituloContainer}>Datos Seleccionados previamente:</Text>
                   <View style={styles.previousTextContainer}>
-                    <Text style={{color: activeColors.tertiary}}>{datosPrevios}</Text>
+                    <Text style={{ color: activeColors.tertiary, textAlign:'center', marginBottom:10, marginTop:10 }}>{datosPrevios}</Text>
                   </View>
                 </>
               ) : (
@@ -746,35 +778,35 @@ export default function SelecDatosVocalizar({ navigation }) {
                   {datosUsuarioSeleccionados.current.map((dato, index) => (
                     <View style={styles.textContainer} key={index}>
                       {Object.entries(dato).map(([key, value]) => (
-                        <Text style={{color: activeColors.tertiary}} key={index}>{`${transformKey(key)}: ${value}`}</Text>
+                        <Text style={{ color: activeColors.tertiary }} key={index}>{`${transformKey(key)}: ${value}`}</Text>
                       ))}
                     </View>
                   ))}
                   {patologiasSeleccionadas.current.map((patologia, index) => (
                     <View style={styles.textContainer} key={index}>
                       {Object.entries(patologia).map(([key, value]) => (
-                        <Text key={index}>{`${transformKey(key)}: ${value}`}</Text>
+                        <Text style={{ color: activeColors.tertiary }} key={index}>{`${transformKey(key)}: ${value}`}</Text>
                       ))}
                     </View>
                   ))}
                   {medicamentosSeleccionados.current.map((medicamento, index) => (
                     <View style={styles.textContainer} key={index}>
                       {Object.entries(medicamento).map(([key, value]) => (
-                        <Text key={index}>{`${transformKey(key)}: ${value}`}</Text>
+                        <Text style={{ color: activeColors.tertiary }} key={index}>{`${transformKey(key)}: ${value}`}</Text>
                       ))}
                     </View>
                   ))}
                   {alergiasSeleccionadas.current.map((alergia, index) => (
                     <View style={styles.textContainer} key={index}>
                       {Object.entries(alergia).map(([key, value]) => (
-                        <Text key={index}>{`${transformKey(key)}: ${value}`}</Text>
+                        <Text style={{ color: activeColors.tertiary }} key={index}>{`${transformKey(key)}: ${value}`}</Text>
                       ))}
                     </View>
                   ))}
                   {limitacionesSeleccionadas.current.map((limitacion, index) => (
                     <View style={styles.textContainer} key={index}>
                       {Object.entries(limitacion).map(([key, value]) => (
-                        <Text key={index}>{`${transformKey(key)}: ${value}`}</Text>
+                        <Text style={{ color: activeColors.tertiary }} key={index}>{`${transformKey(key)}: ${value}`}</Text>
                       ))}
                     </View>
                   ))}
@@ -789,7 +821,7 @@ export default function SelecDatosVocalizar({ navigation }) {
         <View style={styles.espacioContainer}></View>
         <View style={styles.container3}>
           <TouchableOpacity
-            style={styles.buttonPerfil}
+            style={styles.buttonPerfil2}
             onPress={() => { obtenerImplementarRut(), setMostrarPrevios(!mostrarPrevios) }}
           >
             <Text style={styles.buttonTextPerfil}>
@@ -798,7 +830,7 @@ export default function SelecDatosVocalizar({ navigation }) {
           </TouchableOpacity>
           <View style={styles.espacioContainer}></View>
           <TouchableOpacity
-            style={styles.buttonPerfil}
+            style={styles.buttonPerfil2}
             onPress={async () => { await guardarDatos(rutUsuario) }}
           >
             <Text style={styles.buttonTextPerfil}>Guardar seleccion actual</Text>
@@ -894,18 +926,18 @@ export default function SelecDatosVocalizar({ navigation }) {
             </>
           ) : (
             <View>
-                <TouchableOpacity
-                  className={'flex-row  justify-around w-full mt-3'}
-                  style={styles.content4}
-                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}
-                >
-                  <View>
-                    <Text style={styles.textContent4}>{'No tienes enfermedades registradas'}</Text>
-                  </View>
-                  <View >
-                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
-                  </View>
-                </TouchableOpacity>
+              <TouchableOpacity
+                className={'flex-row  justify-between w-full mt-3'}
+                style={styles.content4}
+                onPress={() => { navigation.navigate('PerfilNested', { screen: 'Patologias' }), setShowPatologia(!showPatologia) }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.textContent4}>{'No tienes enfermedades registradas'}</Text>
+                </View>
+                <View >
+                  <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
+                </View>
+              </TouchableOpacity>
             </View>
           )}
         </View>
@@ -964,18 +996,19 @@ export default function SelecDatosVocalizar({ navigation }) {
             </>
           ) : (
             <View >
-                <TouchableOpacity
-                  className={'flex-row  justify-around w-full mt-3'}
-                  style={styles.content4}
-                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}                >
-                  <View>
-                    <Text style={styles.textContent4}>{'No tienes medicamentos registrados'}</Text>
-                  </View>
-                  <View >
-                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
-                  </View>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                className={'flex-row  justify-between w-full mt-3'}
+                style={styles.content4}
+                onPress={() => { navigation.navigate('PerfilNested', { screen: 'Medicamentos' }), setShowMedicamento(!showMedicamento) }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.textContent4}>{'No tienes medicamentos registrados'}</Text>
+                </View>
+                <View >
+                  <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
+                </View>
+              </TouchableOpacity>
+            </View>
           )}
 
         </View>
@@ -1034,19 +1067,19 @@ export default function SelecDatosVocalizar({ navigation }) {
             </>
           ) : (
             <View>
-                <TouchableOpacity
-                  className={'flex-row  justify-around w-full mt-3'}
-                  style={styles.content4}
-                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}
-                >
-                  <View>
-                    <Text style={styles.textContent4}>{'No tienes alergias registradas'}</Text>
-                  </View>
-                  <View >
-                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
-                  </View>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                className={'flex-row  justify-between w-full mt-3'}
+                style={styles.content4}
+                onPress={() => { navigation.navigate('PerfilNested', { screen: 'Alergias' }), setShowAlergia(!showAlergia) }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.textContent4}>{'No tienes alergias registradas'}</Text>
+                </View>
+                <View >
+                  <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
+                </View>
+              </TouchableOpacity>
+            </View>
           )}
 
         </View>
@@ -1104,21 +1137,21 @@ export default function SelecDatosVocalizar({ navigation }) {
             </>
           ) : (
             <View>
-                <TouchableOpacity
-                  className={'flex-row  justify-around w-full mt-3'}
-                  style={styles.content4}
-                  onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}
-                >
-                  <View>
-                    <Text style={styles.textContent4}>{'No tienes limitaciones registradas'}</Text>
-                  </View>
-                  <View >
-                    <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
-                  </View>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                className={'flex-row  justify-between w-full mt-3'}
+                style={styles.content4}
+                onPress={() => { navigation.navigate('PerfilNested', { screen: 'Limitacion fisica' }), setShowLimitacion(!showLimitacion) }}
+              >
+                <View>
+                  <Text style={styles.textContent4}>{'No tienes limitaciones registradas'}</Text>
+                </View>
+                <View >
+                  <FontAwesome5 name="plus" size={25} color={activeColors.tertiary} />
+                </View>
+              </TouchableOpacity>
+            </View>
           )}
-
+          <View style={styles.espacioContainer}></View>
         </View>
         <ComponenteLlenado
           patologias={patologias}
