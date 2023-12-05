@@ -64,9 +64,10 @@ const DolenciaSintoma = ({ dolenciaSintoma, isEditing, handlePress, handleDelete
                     />
                     <Text style={styles.encabezado}>Descripción:</Text>
                     <TextInput
-                        style={styles.input}
+                        style={[styles.input, {minHeight:45, maxHeight: 90, height:'auto'}]}
                         value={currentDolenciaSintoma.descripcion}
                         onChangeText={(val) => handleChange('descripcion', val)}
+                        multiline={true}
                     />
                     <Text style={styles.encabezado}>Parte del cuerpo afectada:</Text>
                     <View style={styles.inputPicker}>
@@ -111,7 +112,7 @@ const DolenciaSintoma = ({ dolenciaSintoma, isEditing, handlePress, handleDelete
                     <Text style={styles.header}>Fecha y hora del registro:</Text>
                     <Text style={styles.content}>{currentDolenciaSintoma.fechaHora}</Text>
                     <Text style={styles.header}>Descripción:</Text>
-                    <Text style={styles.content}>{currentDolenciaSintoma.descripcion}</Text>
+                    <Text style={[styles.content, {minHeight:45, maxHeight: 90, height:'auto', marginBottom:16}]}>{currentDolenciaSintoma.descripcion}</Text>
                     <Text style={styles.header}>Parte del cuerpo afectada:</Text>
                     <Text style={styles.content}>{currentDolenciaSintoma.parteCuerpoAfectada}</Text>
                     <Text style={styles.header}>Tiempo desde aparición:</Text>

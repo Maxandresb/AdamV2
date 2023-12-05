@@ -132,7 +132,9 @@ export async function obtenerIdsNotificacionesRec(id) {
                             reject(error);
                         }
                     );
-                });
+                },
+
+                );
             } catch (error) {
                 console.log('Error al obtener los idsNotificacionesSD:', error);
                 reject(error);
@@ -148,10 +150,13 @@ export async function actualizarRecordatorio(id, campos) {
     console.log('<ACTUALIZANDO RECORDATORIO>')
     console.log('id: ', id);
     console.log('campos: ', campos);
-    if (campos.idNotificacion) {
+    if (Array.isArray(campos.idNotificacion)) {
+        console.log('idNotificacion no es string');
         const cadena = campos.idNotificacion.join(',');
         campos.idNotificacion = cadena
         console.log('cadena: ', cadena)
+    } else {
+        console.log('idNotificacion es string');
     }
     try {
         return new Promise((resolve, reject) => {
@@ -659,7 +664,7 @@ export async function obtenerDatosPreviosAnon(rutUsuario) {
 }
 
 export async function addRecordatorio(recordatorio, idNotificacion) {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         let data = recordatorio;
         obtenerRut()
             .then(async (usuario_rut) => {

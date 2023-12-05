@@ -205,16 +205,6 @@ function NotificationHandler() {
           return;
         }
         if (response.notification.request.content.data) {
-          const navigateTo = response.notification.request.content.data.navigateTo;
-          console.log('content: ', response.notification.request.content);
-          console.log('navigate to: ', navigateTo);
-          try {
-            if (navigateTo && typeof navigateTo === 'string') {
-              navigation.navigate(navigateTo);
-            }
-          } catch (error) {
-            console.log('Error al navegar: ', error);
-          }
           if (response.notification.request.content.data.tipoNotificacion === 'medicamento') {
             let horario = response.notification.request.content.data.horarioMedicamento
             let segundos = calcularSegundosHastaProximoHorario(horario)
@@ -289,6 +279,16 @@ function NotificationHandler() {
             } catch (error) {
               console.log('Error al manejar la notificación: ', error);
             }
+          }
+          const navigateTo = response.notification.request.content.data.navigateTo;
+          console.log('content: ', response.notification.request.content);
+          console.log('navigate to: ', navigateTo);
+          try {
+            if (navigateTo && typeof navigateTo === 'string') {
+              navigation.navigate(navigateTo);
+            }
+          } catch (error) {
+            console.log('Error al navegar: ', error);
           }
         }
         else {
